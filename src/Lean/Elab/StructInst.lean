@@ -1294,7 +1294,7 @@ where
     else
       throwError "invalid \{...} notation, {kind} type is not of the form (C ...){indentExpr type}"
 
-@[builtin_term_elab structInst] def elabStructInst : TermElab := fun stx expectedType? => do
+def elabStructInstBody : TermElab := fun stx expectedType? => do
   match (← expandNonAtomicExplicitSources stx) with
   | some stxNew => withMacroExpansion stx stxNew <| elabTerm stxNew expectedType?
   | none =>
@@ -1308,6 +1308,31 @@ where
       let r ← withSynthesize (postpone := .yes) <| elabStructInstView struct structName structType?
       trace[Elab.struct] "result:{indentExpr r}"
       return r
+
+@[builtin_term_elab structInst] def elabStructInst : TermElab := fun stx expectedType? => do
+  match stx with
+  | `(Parser.Term.structInst| {}) =>
+    let state ← Term.saveState
+    let structExpr ← try
+      elabStructInstBody stx expectedType?
+    catch _ =>
+      state.restore
+      try
+        return ← elabTerm (←`(EmptyCollection.emptyCollection)) expectedType?
+      catch _ =>
+        throwError "both FAILED"
+
+    let stateStruct ← Term.saveState
+    state.restore
+    try
+      discard <|
+      elabTerm (←`(EmptyCollection.emptyCollection)) expectedType?
+      throwError "BOTH SUCCEDED WTF"
+    catch _ =>
+      stateStruct.restore
+      return structExpr
+
+  | _ => elabStructInstBody stx expectedType?
 
 builtin_initialize
   registerTraceClass `Elab.struct
