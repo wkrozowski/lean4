@@ -1332,7 +1332,9 @@ def elabStructInstBody : TermElab := fun stx expectedType? => do
       stateStruct.restore
       return structExpr
 
-  | _ => elabStructInstBody stx expectedType?
+  | _ =>
+    logInfo "Trying the default path"
+    elabStructInstBody stx expectedType?
 
 builtin_initialize
   registerTraceClass `Elab.struct
