@@ -93,7 +93,15 @@ private def numberNames (n : Nat) (base : String) : Array Name :=
   .ofFn (n := n) fun ⟨i, _⟩ =>
     if n == 1 then .mkSimple base else .mkSimple s!"{base}_{i+1}"
 
-def deriveInduction (name : Name) : MetaM Unit :=
+def getFixpointTypeOfName (name : Name) : MetaM PartialFixpointType := do
+  let some eqnInfo := eqnInfoExt.find? (← getEnv) name | throwError "{name} is not defined by partial_fixpoint, least_fixpoint, nor greatest_fixpoint"
+  let idx := eqnInfo.declNames.idxOf name
+  let some res := eqnInfo.fixpointType[idx]? | throwError "Cannot get fixpoint type for {name}"
+  return res
+
+def deriveInduction (name : Name) : MetaM Unit := do
+  let fixpointType ← getFixpointTypeOfName name
+  trace[Elab.definition.partialFixpoint] "The name is {name}, isGreatest: {isGreatest fixpointType}, isLeast: {isLeast fixpointType}, isPartial: {isPartial fixpointType}"
   let inductName := name ++ `fixpoint_induct
   realizeConst name inductName do
   trace[Elab.definition.partialFixpoint] "Called deriveInduction for {inductName}"
@@ -251,6 +259,16 @@ def isInductName (env : Environment) (name : Name) : Bool := Id.run do
   | "fixpoint_induct" =>
     if let some eqnInfo := eqnInfoExt.find? env p then
       return p == eqnInfo.declNames[0]!
+    return false
+  | "coind" =>
+    if let some eqnInfo := eqnInfoExt.find? env p then
+      let idx := eqnInfo.declNames.idxOf p
+      return isGreatest eqnInfo.fixpointType[idx]!
+    return false
+  | "ind" =>
+    if let some eqnInfo := eqnInfoExt.find? env p then
+      let idx := eqnInfo.declNames.idxOf p
+      return isLeast eqnInfo.fixpointType[idx]!
     return false
   | _ => return false
 
