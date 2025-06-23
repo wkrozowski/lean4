@@ -179,11 +179,11 @@ namespace mixed1
   mutual
     def tick : Prop :=
       ¬tock
-    greatest_fixpoint
+    coinductive_fixpoint
 
     def tock : Prop :=
       ¬tick
-    least_fixpoint
+    inductive_fixpoint
   end
 end mixed1
 
@@ -191,11 +191,11 @@ namespace mixed2
   mutual
     def tick : Prop :=
       ¬tock
-    greatest_fixpoint
+    inductive_fixpoint
 
     def tock : Prop :=
       ¬tick
-    least_fixpoint
+    coinductive_fixpoint
   end
 end mixed2
 
@@ -203,11 +203,11 @@ namespace mixed3
   mutual
     def tick : Prop :=
       tock → tick
-    greatest_fixpoint
+    coinductive_fixpoint
 
     def tock : Prop :=
       tick → tock
-    least_fixpoint
+    inductive_fixpoint
   end
 end mixed3
 
@@ -215,10 +215,10 @@ namespace mixed4
   mutual
     def tick : Prop :=
       tock → tick
-    least_fixpoint
+    inductive_fixpoint
 
     def tock : Prop :=
       tick → tock
-    greatest_fixpoint
+    coinductive_fixpoint
   end
 end mixed4
