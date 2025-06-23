@@ -93,16 +93,18 @@ private def numberNames (n : Nat) (base : String) : Array Name :=
   .ofFn (n := n) fun ⟨i, _⟩ =>
     if n == 1 then .mkSimple base else .mkSimple s!"{base}_{i+1}"
 
-def getFixpointTypeOfName (name : Name) : MetaM PartialFixpointType := do
+def getInductionPrinciplePostfix (name : Name) : MetaM Name := do
   let some eqnInfo := eqnInfoExt.find? (← getEnv) name | throwError "{name} is not defined by partial_fixpoint, least_fixpoint, nor greatest_fixpoint"
   let idx := eqnInfo.declNames.idxOf name
   let some res := eqnInfo.fixpointType[idx]? | throwError "Cannot get fixpoint type for {name}"
-  return res
+  match res with
+  | .partialFixpoint => return `fixpoint_induct
+  | .leastFixpoint => return `ind
+  | .greatestFixpoint => return `coind
 
 def deriveInduction (name : Name) : MetaM Unit := do
-  let fixpointType ← getFixpointTypeOfName name
-  trace[Elab.definition.partialFixpoint] "The name is {name}, isGreatest: {isGreatest fixpointType}, isLeast: {isLeast fixpointType}, isPartial: {isPartial fixpointType}"
-  let inductName := name ++ `fixpoint_induct
+  let postFix ← getInductionPrinciplePostfix name
+  let inductName := name ++ postFix
   realizeConst name inductName do
   trace[Elab.definition.partialFixpoint] "Called deriveInduction for {inductName}"
   prependError m!"Cannot derive fixpoint induction principle (please report this issue)" do
