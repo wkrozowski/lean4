@@ -260,7 +260,7 @@ def isInductName (env : Environment) (name : Name) : Bool := Id.run do
   match s with
   | "fixpoint_induct" =>
     if let some eqnInfo := eqnInfoExt.find? env p then
-      return p == eqnInfo.declNames[0]!
+      return p == eqnInfo.declNames[0]! && isPartial (eqnInfo.fixpointType[0]!)
     return false
   | "coind" =>
     if let some eqnInfo := eqnInfoExt.find? env p then
