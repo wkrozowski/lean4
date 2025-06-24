@@ -1,28 +1,44 @@
 open Lean.Order
 
-instance : Lean.Order.CCPO Lean.Order.ReverseImplicationOrder where
-  csup := CompleteLattice.sup
-  csup_spec _ := CompleteLattice.sup_spec
-instance : Lean.Order.CCPO Lean.Order.ImplicationOrder where
-  csup := CompleteLattice.sup
-  csup_spec _ := CompleteLattice.sup_spec
+set_option trace.Elab.Tactic.monotonicity true
 
-/--
-error: (kernel) application type mismatch
-  monotone_of_monotone_apply (fun f n => f.2 (n + 1)) fun n =>
-    monotone_apply (n + 1) (fun x => x.snd) (PProd.monotone_snd monotone_id)
-argument has type
-  ∀ (n : Nat), monotone fun x => (fun x => x.snd) x (n + 1)
-but function has type
-  (∀ (y : Nat), monotone fun x => (fun f n => f.2 (n + 1)) x y) → monotone fun f n => f.2 (n + 1)
--/
-#guard_msgs in
+def A : Type := Prop
+def B : Type := Prop
+
+instance : Lean.Order.PartialOrder A where
+  rel := sorry
+  rel_refl := sorry
+  rel_trans := sorry
+  rel_antisymm := sorry
+
+instance : Lean.Order.PartialOrder B where
+  rel := sorry
+  rel_refl := sorry
+  rel_trans := sorry
+  rel_antisymm := sorry
+
+instance : Lean.Order.CCPO A where
+  csup := sorry
+  csup_spec := sorry
+
+instance : Lean.Order.CCPO B where
+  csup := sorry
+  csup_spec := sorry
+
+-- instance : Lean.Order.CCPO Lean.Order.ReverseImplicationOrder where
+--   csup := ReverseImplicationOrder.instCompleteLattice.sup
+--   csup_spec _ := ReverseImplicationOrder.instCompleteLattice.sup_spec
+-- instance : Lean.Order.CCPO Lean.Order.ImplicationOrder where
+--   csup := ImplicationOrder.instCompleteLattice.sup
+--   csup_spec _ := ImplicationOrder.instCompleteLattice.sup_spec
+
+
 mutual
-  def tick (n : Nat): Lean.Order.ReverseImplicationOrder :=
+  def tick (n : Nat): A :=
     tock (n + 1)
   partial_fixpoint
 
-  def tock (n : Nat) : Lean.Order.ImplicationOrder :=
+  def tock (n : Nat) : A :=
     tick (n + 1)
   partial_fixpoint
 end

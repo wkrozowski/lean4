@@ -78,6 +78,7 @@ It's tricky to solve them compositionally from the outside in, so here we constr
 from the inside out.
 -/
 partial def solveMonoCall (α inst_α : Expr) (e : Expr) : MetaM (Option Expr) := do
+  trace[Elab.Tactic.monotonicity] "called solveMonoCall {e} for the type {α} with instance {inst_α}"
   if e.isApp && !e.appArg!.hasLooseBVars then
     let some hmono ← solveMonoCall α inst_α e.appFn! | return none
     let hmonoType ← inferType hmono
@@ -87,9 +88,11 @@ partial def solveMonoCall (α inst_α : Expr) (e : Expr) : MetaM (Option Expr) :
     return ← mkAppOptM ``monotone_apply #[γ, δ, α, inst_α, inst, e.appArg!, none, hmono]
 
   if e.isProj then
+    trace[Elab.Tactic.monotonicity] "solveMonoCall: the term {e} is a projection"
     let some hmono ← solveMonoCall α inst_α e.projExpr! | return none
     let hmonoType ← inferType hmono
-    let_expr monotone _ _ _ inst _ := hmonoType | throwError "solveMonoCall {e}: unexpected type {hmonoType}"
+    let_expr monotone sourceType sourceInst dstType inst f := hmonoType | throwError "solveMonoCall {e}: unexpected type {hmonoType}"
+    trace[Elab.Tactic.monotonicity] "solveMonoCall: source = {sourceType}, dst = {dstType}, soutceInst = {sourceInst}, inst = {inst}, f = {f}"
     let some inst ← whnfUntil inst ``instPartialOrderPProd | throwError "solveMonoCall {e}: unexpected instance {inst}"
     let_expr instPartialOrderPProd β γ inst_β inst_γ ← inst | throwError "solveMonoCall {e}: whnfUntil failed?{indentExpr inst}"
     let n := if e.projIdx! == 0 then ``PProd.monotone_fst else ``PProd.monotone_snd
@@ -184,9 +187,12 @@ def solveMonoStep (failK : ∀ {α}, Expr → Array Name → MetaM α := @defaul
     -- A recursive call
     if let some hmono ← solveMonoCall α inst_α e then
       trace[Elab.Tactic.monotonicity] "Found recursive call {e}:{indentExpr hmono}"
-      unless ← goal.checkedAssign hmono do
-        trace[Elab.Tactic.monotonicity] "Failed to assign {hmono} : {← inferType hmono} to goal"
-        failK f #[]
+      trace[Elab.Tactic.monotonicity] "goal type is: {type}"
+      let checkedAssign ← goal.checkedAssign hmono
+      let defEq ← isDefEq type (← inferType hmono)
+      unless checkedAssign && defEq do
+          trace[Elab.Tactic.monotonicity] "Failed to assign {hmono} : {← inferType hmono} to goal"
+          failK f #[]
       return []
 
     let monoThms ← withLocalDeclD `f f.bindingDomain! fun f =>
