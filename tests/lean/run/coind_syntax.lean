@@ -41,3 +41,6 @@ theorem InfSeqLemma (r : α → α → Prop) (infSeq : α → α → Prop) :
     . exact h2
 
 #print InfSeqLemma
+
+inductive dumb (a : α) (b : β) (r : α → β → Prop)  : Prop where
+  | construc : r a c → r d c → r d b → dumb a b r

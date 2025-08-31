@@ -886,7 +886,7 @@ private def mkDisj (xs : Array Expr) : MetaM Expr :=
   else
     PProdN.genMk genDisj xs
 
-private def extractFunctor  (numParams : Nat) (indType : InductiveType) : TermElabM Expr := do
+private def extractFunctor (indFVars : Array Expr) (numParams : Nat) (indType : InductiveType) : TermElabM Expr := do
   forallTelescope indType.type fun params body => do
     trace[Elab.inductive] "params: {params}, body: {body}"
     let mut ctorPropsDisj : Array Expr := #[]
@@ -915,8 +915,7 @@ private def extractFunctor  (numParams : Nat) (indType : InductiveType) : TermEl
     trace[Elab.inductive] "ctorProps: {ctorPropsDisj}"
     trace[Elab.inductive] "disjunctionForm : {disjunctionForm} "
     let res ← mkLambdaFVars params disjunctionForm
-    trace[Elab.inductive] "res: {res}"
-  return indType.type
+    mkLambdaFVars indFVars res
 
 private def mkInductiveDecl (vars : Array Expr) (elabs : Array InductiveElabStep1) : TermElabM FinalizeContext :=
   Term.withoutSavingRecAppSyntax do
@@ -970,7 +969,7 @@ private def mkInductiveDecl (vars : Array Expr) (elabs : Array InductiveElabStep
         | .ok levelParams => do
           trace[Elab.inductive] "levelParams: {levelParams}"
           for indType in indTypes do
-            let res ← extractFunctor numParams indType
+            let res ← extractFunctor indFVars numParams indType
             trace[Elab.inductive] "Result of calling `extractFunctor` is {res}"
           let indTypes ← replaceIndFVarsWithConsts views indFVars levelParams numVars numParams indTypes
           let decl := Declaration.inductDecl levelParams numParams indTypes isUnsafe
