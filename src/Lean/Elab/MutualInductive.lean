@@ -151,6 +151,7 @@ structure InductiveElabStep2 where
 structure InductiveElabStep1 where
   view : InductiveView
   elabCtors (rs : Array ElabHeaderResult) (r : ElabHeaderResult) (params : Array Expr) : TermElabM InductiveElabStep2
+  isCoinductive := false
   deriving Inhabited
 
 /--
@@ -870,11 +871,11 @@ private structure FinalizeContext where
   localInsts : LocalInstances
   replaceIndFVars : Expr → MetaM Expr
 
-private def mkExistsFVars  (xs : Array Expr) (e : Expr) : MetaM Expr := do
+private def mkExistsFVars (xs : Array Expr) (e : Expr) : MetaM Expr := do
   let mut res := e
   for x in xs.reverse do
     res ← mkLambdaFVars #[x] res
-    res := mkAppN (← mkConstWithLevelParams `Exists) #[x, res]
+    res := mkAppN (← mkConstWithLevelParams `Exists) #[←inferType x, res]
   return res
 
 private def genDisj (e1 e2 : Expr) : MetaM Expr := do
@@ -893,29 +894,19 @@ private def extractFunctor (indFVars : Array Expr) (numParams : Nat) (indType : 
     for ctor in indType.ctors do
       let ctor ← instantiateForall ctor.type params
       trace[Elab.inductive] "ctor: {ctor}"
-      let existsForm ← forallTelescope ctor fun ctorArgs ctorBody => do
-        trace[Elab.inductive] "ctorArgs: {ctorArgs}, ctorBody: {ctorBody}"
-        let mut ctorParams : Array Expr := #[]
-        let mut ctorProps : Array Expr := #[]
-        for ctorArg in ctorArgs do
-          let ctorArgType ← inferType ctorArg
-          if ((← getLevel ctorArgType).isZero) then
-            ctorProps := ctorProps.push ctorArgType
-          else
-            ctorParams := ctorParams.push ctorArg
-        trace[Elab.inductive] "ctorParams: {ctorParams}, ctorProps: {ctorProps} "
-
-        let ctorParamsConj ← PProdN.pack .zero ctorProps
-        trace[Elab.inductive] "ctorParamsConj: {ctorParamsConj}"
-
-        mkExistsFVars ctorParams ctorParamsConj
+      let existsForm ← forallTelescope ctor fun ctorArgs _ => do
+        let ctorExpr : Expr := .const `True []
+        mkExistsFVars ctorArgs ctorExpr
       trace[Elab.inductive] "existsForm: {existsForm}"
       ctorPropsDisj := ctorPropsDisj.push existsForm
     let disjunctionForm ← mkDisj ctorPropsDisj
     trace[Elab.inductive] "ctorProps: {ctorPropsDisj}"
     trace[Elab.inductive] "disjunctionForm : {disjunctionForm} "
-    let res ← mkLambdaFVars params disjunctionForm
-    mkLambdaFVars indFVars res
+    let defParams := params.extract numParams
+    let defArgs := params.extract 0 numParams
+    let res ← mkLambdaFVars defParams disjunctionForm
+    let res ← mkLambdaFVars indFVars res
+    mkLambdaFVars defArgs res
 
 private def mkInductiveDecl (vars : Array Expr) (elabs : Array InductiveElabStep1) : TermElabM FinalizeContext :=
   Term.withoutSavingRecAppSyntax do
@@ -967,31 +958,41 @@ private def mkInductiveDecl (vars : Array Expr) (elabs : Array InductiveElabStep
         match sortDeclLevelParams scopeLevelNames allUserLevelNames usedLevelNames with
         | .error msg      => throwErrorAt view0.declId msg
         | .ok levelParams => do
-          trace[Elab.inductive] "levelParams: {levelParams}"
-          for indType in indTypes do
-            let res ← extractFunctor indFVars numParams indType
-            trace[Elab.inductive] "Result of calling `extractFunctor` is {res}"
-          let indTypes ← replaceIndFVarsWithConsts views indFVars levelParams numVars numParams indTypes
-          let decl := Declaration.inductDecl levelParams numParams indTypes isUnsafe
-          Term.ensureNoUnassignedMVars decl
-          addDecl decl
+          if elabs.any (·.isCoinductive) then
+            let mut allNames : Array Name := #[]
+            -- we collect names of all functions in the clique
+            for indType in indTypes do
+              allNames := allNames.push (indType.name ++ `functor)
+            for indType in indTypes do
+              let res ← extractFunctor indFVars numParams indType
+              trace[Elab.inductive] "hasLvlMVars: {res.hasLevelMVar}"
+              let res ← Term.levelMVarToParam res
+              trace[Elab.inductive] "Result of calling `extractFunctor` is {res}"
+              let funDecl := Declaration.defnDecl {name := (indType.name ++ `functor), levelParams := levelParams, type := (←inferType res), value := res, hints := ReducibilityHints.regular (getMaxHeight (← getEnv) res + 1), safety := if isUnsafe then DefinitionSafety.unsafe else DefinitionSafety.safe, all := allNames.toList }
+              Term.ensureNoUnassignedMVars funDecl
+              addDecl funDecl
+          else
+            let indTypes ← replaceIndFVarsWithConsts views indFVars levelParams numVars numParams indTypes
+            let decl := Declaration.inductDecl levelParams numParams indTypes isUnsafe
+            Term.ensureNoUnassignedMVars decl
+            addDecl decl
 
-          -- For nested inductive types, the kernel adds a variable number of auxiliary recursors.
-          -- Let the elaborator know about them as well. (Other auxiliaries have already been
-          -- registered by `addDecl` via `Declaration.getNames`.)
-          -- NOTE: If we want to make inductive elaboration parallel, this should switch to using
-          -- reserved names.
-          for indType in indTypes do
-            let mut i := 1
-            while true do
-              let auxRecName := indType.name ++ `rec |>.appendIndexAfter i
-              let env ← getEnv
-              let some const := env.toKernelEnv.find? auxRecName | break
-              let res ← env.addConstAsync auxRecName .recursor
-              res.commitConst res.asyncEnv (info? := const)
-              res.commitCheckEnv res.asyncEnv
-              setEnv res.mainEnv
-              i := i + 1
+            -- For nested inductive types, the kernel adds a variable number of auxiliary recursors.
+            -- Let the elaborator know about them as well. (Other auxiliaries have already been
+            -- registered by `addDecl` via `Declaration.getNames`.)
+            -- NOTE: If we want to make inductive elaboration parallel, this should switch to using
+            -- reserved names.
+            for indType in indTypes do
+              let mut i := 1
+              while true do
+                let auxRecName := indType.name ++ `rec |>.appendIndexAfter i
+                let env ← getEnv
+                let some const := env.toKernelEnv.find? auxRecName | break
+                let res ← env.addConstAsync auxRecName .recursor
+                res.commitConst res.asyncEnv (info? := const)
+                res.commitCheckEnv res.asyncEnv
+                setEnv res.mainEnv
+                i := i + 1
 
           let replaceIndFVars (e : Expr) : MetaM Expr := do
             let indFVar2Const := mkIndFVar2Const views indFVars levelParams

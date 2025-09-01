@@ -327,6 +327,7 @@ def elabCoinductiveCommand : InductiveElabDescr where
       elabCtors := fun rs r params => do
         let ctors ← elabCtors (rs.map (·.indFVar)) params r
         return { ctors }
+      isCoinductive := true
     }
 
 end Lean.Elab.Command
