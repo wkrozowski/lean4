@@ -331,6 +331,14 @@ private def elabHeadersAux (views : Array InductiveView) (i : Nat) (acc : Array 
     else
       return acc
 
+def collectNames (headers : Array PreElabHeaderResult) : TermElabM (Array (Name × Expr)) := do
+  let mut names := #[]
+  let mut types := #[]
+  for header in headers do
+    names := names.push header.view.declName
+    types := types.push header.type
+  return names.zip types
+
 /--
 Elaborates all the headers in the inductive views.
 -/
@@ -882,6 +890,8 @@ private def mkInductiveDecl (vars : Array Expr) (elabs : Array InductiveElabStep
   withRef view0.ref <| Term.withLevelNames allUserLevelNames do
     let rs ← elabHeaders views
     Term.synthesizeSyntheticMVarsNoPostponing
+    let res ← collectNames rs
+    trace[Elab.inductive] "res: {res}"
     ElabHeaderResult.checkLevelNames rs
     let allUserLevelNames := rs[0]!.levelNames
     trace[Elab.inductive] "level names: {allUserLevelNames}"
