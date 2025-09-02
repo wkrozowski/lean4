@@ -28,6 +28,8 @@ def infSeq (r : α → α → Prop) : α → Prop := @infSeq_functor α r (infSe
       . apply P_le_Q
         exact h4
 
+#check infSeq.coinduct
+
 
 
 mutual
