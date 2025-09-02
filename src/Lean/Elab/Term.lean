@@ -925,6 +925,9 @@ def withoutPostponing (x : TermElabM α) : TermElabM α :=
 def mkExplicitBinder (ident : Syntax) (type : Syntax) : Syntax :=
   mkNode ``Lean.Parser.Term.explicitBinder #[mkAtom "(", mkNullNode #[ident], mkNullNode #[mkAtom ":", type], mkNullNode, mkAtom ")"]
 
+def mkImplicitBinder (ident : Syntax) (type : Syntax) : Syntax :=
+  mkNode ``Lean.Parser.Term.implicitBinder #[mkAtom "{", mkNullNode #[ident], mkNullNode #[mkAtom ":", type], mkNullNode, mkAtom "}"]
+
 /--
   Convert unassigned universe level metavariables into parameters.
   The new parameter names are fresh names of the form `u_i` with regard to `ctx.levelNames`, which is updated with the new names. -/

@@ -152,6 +152,7 @@ structure InductiveElabStep2 where
 structure InductiveElabStep1 where
   view : InductiveView
   elabCtors (rs : Array ElabHeaderResult) (r : ElabHeaderResult) (params : Array Expr) : TermElabM InductiveElabStep2
+  isCoinductive : Bool := false
   deriving Inhabited
 
 /--
@@ -330,14 +331,6 @@ private def elabHeadersAux (views : Array InductiveView) (i : Nat) (acc : Array 
       elabHeadersAux views (i+1) acc
     else
       return acc
-
-def collectNames (headers : Array PreElabHeaderResult) : TermElabM (Array (Name × Expr)) := do
-  let mut names := #[]
-  let mut types := #[]
-  for header in headers do
-    names := names.push header.view.declName
-    types := types.push header.type
-  return names.zip types
 
 /--
 Elaborates all the headers in the inductive views.
@@ -879,9 +872,81 @@ private structure FinalizeContext where
   localInsts : LocalInstances
   replaceIndFVars : Expr → MetaM Expr
 
+section
+open Parser
+def Replace.replaceCoinductiveCall (offset : Std.HashMap String Nat): Syntax → MetaM Syntax := fun stx => do
+  match stx with
+    | stx@(Syntax.node _ ``Term.app #[(Syntax.ident _ _ fun_name _), args]) =>
+      let lookupName := (fun_name.toString ++ "_functor")
+      match offset.get? lookupName with
+      | .some offsetVal =>
+        let newArgs := args.modifyArgs fun oldArgs => oldArgs.extract offsetVal
+        let newFun := mkIdent (Name.mkSimple <| fun_name.toString ++ "_functor_call")
+        let newApplication := mkNode ``Term.app #[newFun, mkNullNode newArgs.getArgs]
+        trace[Elab.inductive] "detected_call: fun_name: {fun_name}, args: {args}, new_args: {newArgs}, offset_val : {offsetVal}, newApplication: {newApplication}"
+        return newApplication
+      | .none => return stx
+    | _ => return stx
+
+partial def Replace.replaceStx (offset : Std.HashMap String Nat) : Syntax → MetaM Syntax := fun stx =>
+  match stx with
+    | stx@(Syntax.node info ``Term.arrow #[arg, arrow, tail]) => do
+        trace[Elab.inductive] "arg is: {arg}"
+        let newArg ← Replace.replaceCoinductiveCall offset arg
+        let newTail ← Replace.replaceStx offset tail
+        return (Syntax.node info ``Term.arrow #[newArg, arrow, newTail])
+
+    | stx@(Syntax.node _ ``Term.arrow _) =>
+        throwErrorAt stx "Internal bug: encountered an unexpected form of arrow syntax"
+
+    | stx@(Syntax.node _ ``Term.depArrow _) =>
+        throwErrorAt stx "Dependent arrows are not supported, please only use plain arrow types"
+    | stx@(Syntax.node _ ``Term.app #[function, args]) => do
+      pure stx
+    | ctor_type => do
+        trace[Elab.inductive] "got stuck : {stx}"
+        pure stx
+end
+private def collectNamesAndTypesFromViews (views: Array InductiveView) : TermElabM (Array (Name × Syntax × Nat)) :=
+  views.mapM fun v => do
+    let some type := v.type? | throwError "Type of {v.declName} is unspecified"
+    return (v.declName, type, v.binders.getArgs.size)
+
+private def collectOffsets (views : Array InductiveView) : TermElabM (Std.HashMap String Nat) := do
+  let mut map := Std.HashMap.emptyWithCapacity views.size
+  for v in views do
+    map := map.insert v.declName.toString v.binders.getArgs.size
+
+  return map
+
+private def makeBinder : Name × Syntax × Nat → Syntax := fun ⟨n,t,_⟩ =>
+  Term.mkImplicitBinder (mkIdent (Name.mkSimple <| n.toString ++ "_call")) t
+
+private def modifyView (v : InductiveView) (namesAndTypes : Array (Name × Syntax × Nat)) (offsets : Std.HashMap String Nat) : TermElabM InductiveView := do
+  let numParams := v.binders.getArgs.size
+  trace[Elab.inductive] "There are {numParams} many parameters"
+  let newBinders := namesAndTypes.map makeBinder
+  let newBinders := v.binders.modifyArgs fun args => args ++ newBinders
+  let newCtors ← v.ctors.mapM (fun ctorView => do
+    let some ctorType := ctorView.type? | throwError "must have type"
+    let newCtor ← Replace.replaceStx offsets ctorType
+    trace[Elab.inductive] "newCtor: {newCtor}"
+    return {ctorView with type? := .some newCtor }
+  )
+  trace[Elab.inductive] "v.binders: {v.binders}"
+  return {v with binders := newBinders, ctors := newCtors}
+
+private def modifyIfCoinductive (elabs : Array InductiveElabStep1) (val : α) (c : TermElabM α) : TermElabM α := do
+  if elabs.any (·.isCoinductive) then c else return val
+
 private def mkInductiveDecl (vars : Array Expr) (elabs : Array InductiveElabStep1) : TermElabM FinalizeContext :=
   Term.withoutSavingRecAppSyntax do
   let views := elabs.map (·.view)
+  let views ← modifyIfCoinductive elabs views do
+    let offset ← collectOffsets views
+    let namesAndTypes ← collectNamesAndTypesFromViews views
+    trace[Elab.inductive] "namesAndTypes: {namesAndTypes}"
+    views.mapM (modifyView · namesAndTypes offset)
   let view0 := views[0]!
   let scopeLevelNames ← Term.getLevelNames
   InductiveElabStep1.checkLevelNames views
@@ -890,8 +955,6 @@ private def mkInductiveDecl (vars : Array Expr) (elabs : Array InductiveElabStep
   withRef view0.ref <| Term.withLevelNames allUserLevelNames do
     let rs ← elabHeaders views
     Term.synthesizeSyntheticMVarsNoPostponing
-    let res ← collectNames rs
-    trace[Elab.inductive] "res: {res}"
     ElabHeaderResult.checkLevelNames rs
     let allUserLevelNames := rs[0]!.levelNames
     trace[Elab.inductive] "level names: {allUserLevelNames}"
