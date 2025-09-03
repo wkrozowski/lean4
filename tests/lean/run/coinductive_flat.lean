@@ -23,18 +23,17 @@ def infSeq (r : α → α → Prop) : α → Prop := @infSeq_functor α r (infSe
     intro P Q P_le_Q arg h1
     cases h1
     case infSeq.step h2 h3 h4 =>
-      apply infSeq.step
-      . exact h3
-      . apply P_le_Q
-        exact h4
-
-#check infSeq.coinduct
+      exact infSeq.step h3 (P_le_Q h2 h4)
 
 
+coinductive infSeq2 (r : α → α → Prop) : α → Prop where
+| step : r a b → infSeq2 r b → infSeq2 r a
 
 mutual
-  coinductive Tick : Prop where
-  | mk : Tock → Tick
-  coinductive Tock : Prop where
-  | mk : Tick → Tock
+  coinductive Tick (a : α) : Prop where
+  | mk : Tock a → Tick a
+  inductive Tock (a : α) : Prop where
+  | mk : Tick a → Tock a
 end
+
+#check Tick.mk
