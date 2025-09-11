@@ -126,8 +126,8 @@ class CompleteLattice (α : Sort u) extends PartialOrder α where
   sup_spec {c : α → Prop} : sup c ⊑ x ↔ (∀ y, c y → y ⊑ x)
 
 open PartialOrder CompleteLattice
-
 variable {α  : Sort u} [CompleteLattice α]
+
 
 theorem sup_le {c : α → Prop} : (∀ y, c y → y ⊑ x) → sup c ⊑ x :=
   (sup_spec).mpr
@@ -158,6 +158,40 @@ theorem inf_spec {c : α → Prop} : x ⊑ inf c ↔ (∀ y, c y → x ⊑ y) wh
 theorem le_inf {c : α → Prop} : (∀ y, c y → x ⊑ y) → x ⊑ inf c := inf_spec.mpr
 
 theorem inf_le  {c : α → Prop} {y : α} (hy : c y) : inf c ⊑ y := inf_spec.mp (rel_refl) y hy
+
+def min (x y : α) : α := inf (fun z => x = z ∨ y = z)
+
+scoped infixl:60 " ⊓ " => min
+
+def min_spec (x y : α) : z ⊑ x ⊓ y ↔ z ⊑ x ∧ z ⊑ y := by
+  unfold min
+  apply Iff.trans
+  . apply inf_spec
+  . constructor
+    . intro h
+      constructor
+      . apply h
+        simp only [true_or]
+      . apply h
+        simp only [or_true]
+    . intro ⟨h1, h2⟩
+      intro w
+      intro h3
+      cases h3
+      next eq =>
+        rw [←eq]
+        exact h1
+      next eq =>
+        rw [←eq]
+        exact h2
+
+def min_le (x y : α) : min x y ⊑ x ∧ min x y ⊑ y := by
+  constructor
+  all_goals (unfold min; apply inf_le; simp only [true_or, or_true])
+
+def min_eq (x y : α) : min x y = x ∨ min x y = y := by
+  sorry
+
 
 end CompleteLattice
 
@@ -335,6 +369,22 @@ theorem lfp_le_of_le_monotone (f : α → α) {hm : monotone f} (x : α):
   f x ⊑ x → lfp_monotone f hm ⊑ x := by
     unfold lfp_monotone
     apply lfp_le_of_le
+
+/--
+Park induction for least fixpoint of a monotone function `f`.
+Takes an explicit witness of `f` being monotone.
+-/
+theorem strong_lfp_le_of_le (f : α → α) {hm : monotone f} (x : α):
+  f (x ⊓ lfp f) ⊑ x → lfp f ⊑ x := by
+    intro h
+    have h₂ :  f (x ⊓ lfp f) ⊑ (lfp f)  := by
+      refine rel_trans ?_ (@lfp_prefixed _ _ _ hm)
+      apply hm
+      apply (min_le x (lfp f)).2
+    have := (Iff.mpr <| @min_spec _ _ (f (x ⊓ lfp f)) x (lfp f)) ⟨h,h₂⟩
+    have := @lfp_le_of_le _ _ (x ⊓ lfp f) f this
+    have := (Iff.mp <| @min_spec _ _ (lfp f) x (lfp f)) this
+    apply this.1
 
 end lattice_fix
 
@@ -926,6 +976,39 @@ instance ReverseImplicationOrder.instCompleteLattice : CompleteLattice ReverseIm
       apply h
       exact ccy
       exact y
+
+
+theorem ReverseImplicationOrder.min_characterisation (p q : ReverseImplicationOrder) : (p ⊓ q : ReverseImplicationOrder) = (p ∨ q : ReverseImplicationOrder) := by
+  apply PartialOrder.rel_antisymm
+  . sorry
+  . apply le_inf
+    intro y
+    intro hyp
+    cases hyp
+    next h =>
+      rw [h]
+      intro h₂
+      exact Or.inl h₂
+    next h =>
+      rw [h]
+      intro h₃
+      exact Or.inr h₃
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- Monotonicity lemmas for coinductive predicates
 @[partial_fixpoint_monotone] theorem coind_monotone_exists
