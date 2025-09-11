@@ -174,9 +174,7 @@ def min_spec (x y : α) : z ⊑ x ⊓ y ↔ z ⊑ x ∧ z ⊑ y := by
         simp only [true_or]
       . apply h
         simp only [or_true]
-    . intro ⟨h1, h2⟩
-      intro w
-      intro h3
+    . intro ⟨h1, h2⟩ w h3
       cases h3
       next eq =>
         rw [←eq]
@@ -188,9 +186,6 @@ def min_spec (x y : α) : z ⊑ x ⊓ y ↔ z ⊑ x ∧ z ⊑ y := by
 def min_le (x y : α) : min x y ⊑ x ∧ min x y ⊑ y := by
   constructor
   all_goals (unfold min; apply inf_le; simp only [true_or, or_true])
-
-def min_eq (x y : α) : min x y = x ∨ min x y = y := by
-  sorry
 
 
 end CompleteLattice
@@ -917,6 +912,40 @@ instance ImplicationOrder.instCompleteLattice : CompleteLattice ImplicationOrder
       intro caa
       exact h a caa.1 caa.2
 
+theorem ImplicationOrder.min_characterisation (p q : ImplicationOrder) : (p ⊓ q : Prop) = (p ∧ q : Prop) := by
+  apply iff_iff_eq.1
+  unfold min
+  unfold inf
+  unfold CompleteLattice.sup
+  unfold instCompleteLattice
+  dsimp
+  constructor
+  . intro ⟨r, h, hr⟩
+    refine h (p ∧ q) ?_ hr
+    sorry
+  . intro ⟨hp, hq⟩
+    refine ⟨p ∧ q, ?_⟩
+    refine ⟨?_, hp, hq⟩
+    intro r
+    intro h
+    rcases h
+    next is_p =>
+      intro _
+      rw [←is_p]
+      exact hp
+    next is_q =>
+      intro _
+      rw [←is_q]
+      exact hq
+
+
+
+
+
+
+
+
+
 -- Monotonicity lemmas for inductive predicates
 @[partial_fixpoint_monotone] theorem implication_order_monotone_exists
     {α} [PartialOrder α] {β} (f : α → β → ImplicationOrder)
@@ -977,38 +1006,37 @@ instance ReverseImplicationOrder.instCompleteLattice : CompleteLattice ReverseIm
       exact ccy
       exact y
 
-
-theorem ReverseImplicationOrder.min_characterisation (p q : ReverseImplicationOrder) : (p ⊓ q : ReverseImplicationOrder) = (p ∨ q : ReverseImplicationOrder) := by
-  apply PartialOrder.rel_antisymm
-  . sorry
-  . apply le_inf
-    intro y
-    intro hyp
-    cases hyp
-    next h =>
-      rw [h]
-      intro h₂
-      exact Or.inl h₂
-    next h =>
-      rw [h]
-      intro h₃
-      exact Or.inr h₃
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+theorem ReverseImplicationOrder.min_characterisation (p q : ReverseImplicationOrder) : (p ⊓ q : Prop) = (p ∨ q : Prop) := by
+  apply iff_iff_eq.1
+  unfold min
+  unfold inf
+  unfold CompleteLattice.sup
+  unfold instCompleteLattice
+  dsimp
+  constructor
+  . intro h
+    specialize h (p ∨ q)
+    apply h
+    intro r hyp
+    rcases hyp
+    next is_p =>
+      intro hr
+      apply Or.intro_left
+      rw [is_p]
+      exact hr
+    next is_q =>
+      intro hr
+      apply Or.intro_right
+      rw [is_q]
+      exact hr
+  . intro p_or_q
+    rcases p_or_q
+    next hp =>
+      intro r h
+      exact h p (Or.inl rfl) hp
+    next hq =>
+      intro r h
+      exact h q (Or.inr rfl) hq
 
 -- Monotonicity lemmas for coinductive predicates
 @[partial_fixpoint_monotone] theorem coind_monotone_exists
