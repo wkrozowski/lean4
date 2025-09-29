@@ -20,7 +20,7 @@ This file defines the type `Std.Data.DHashMap.Raw`. All of its functions are def
 set_option linter.missingDocs true
 set_option autoImplicit false
 
-universe u v
+universe u v w w'
 
 namespace Std.DHashMap
 
@@ -49,5 +49,13 @@ structure Raw (α : Type u) (β : α → Type v) where
   size : Nat
   /-- Internal implementation detail of the hash map -/
   buckets : Array (DHashMap.Internal.AssocList α β)
+
+section Raw
+variable {α : Type u} {β : α → Type v} {δ : Type w} {m : Type w → Type w'} [Monad m]
+/-- Support for the `for` loop construct in `do` blocks. -/
+@[inline] def myforIn (f : (a : α) → β a → δ → m (ForInStep δ)) (init : δ) (b : Raw α β) : m δ :=
+  ForIn.forIn b.buckets init (fun bucket acc => bucket.forInStep acc f)
+
+end Raw
 
 end Std.DHashMap

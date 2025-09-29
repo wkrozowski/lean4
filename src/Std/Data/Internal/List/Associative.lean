@@ -2972,6 +2972,62 @@ theorem length_insertList [BEq α] [EquivBEq α]
     (insertList l toInsert).length = l.length + toInsert.length := by
   simpa using (perm_insertList distinct_l distinct_toInsert distinct_both).length_eq
 
+def insertListIfNew [BEq α] (l : List ((a : α) × β a)) (toInsert : List ((a : α) × β a)) :
+    List ((a : α) × β a) :=
+  match toInsert with
+  | .nil => l
+  | .cons ⟨k, v⟩ tl => insertListIfNew (insertEntryIfNew k v l) tl
+
+theorem DistinctKeys.insertListIfNew [BEq α] [PartialEquivBEq α] {l₁ l₂ : List ((a : α) × β a)}
+    (h : DistinctKeys l₁) :
+    DistinctKeys (insertListIfNew l₁ l₂) := by
+  induction l₂ using assoc_induction generalizing l₁
+  · simpa [insertListIfNew]
+  · rename_i k v t ih
+    rw [insertListIfNew.eq_def]
+    exact ih h.insertEntryIfNew
+
+theorem insertListIfNew_perm_of_perm_first [BEq α] [EquivBEq α] {l1 l2 toInsert : List ((a : α) × β a)}
+    (h : Perm l1 l2) (distinct : DistinctKeys l1) :
+    Perm (insertListIfNew l1 toInsert) (insertListIfNew l2 toInsert) := by
+  induction toInsert generalizing l1 l2 with
+  | nil => simp [insertListIfNew, h]
+  | cons hd tl ih =>
+    simp only [insertListIfNew]
+    apply ih (insertEntryIfNew_of_perm distinct h) (DistinctKeys.insertEntryIfNew distinct)
+
+theorem containsKey_insertListIfNew [BEq α] [PartialEquivBEq α] {l toInsert : List ((a : α) × β a)}
+    {k : α} : containsKey k (List.insertListIfNew l toInsert) =
+    (containsKey k l || (toInsert.map Sigma.fst).contains k) := by
+  induction toInsert generalizing l with
+  | nil =>  simp only [insertListIfNew, List.map_nil, List.elem_nil, Bool.or_false]
+  | cons hd tl ih =>
+    unfold insertListIfNew
+    rw [ih]
+    rw [containsKey_insertEntryIfNew]
+    simp only [List.map_cons, List.contains_cons]
+    rw [BEq.comm]
+    conv => left; left; rw [Bool.or_comm]
+    rw [Bool.or_assoc]
+
+/-- Internal implementation detail of the hash map -/
+def insertSmallerList [BEq α] (l₁ l₂ : List ((a : α) × β a)) : List ((a : α) × β a) :=
+  if l₁.length ≤ l₂.length then insertListIfNew l₂ l₁ else insertList l₁ l₂
+
+theorem DistinctKeys.insertSmallerList [BEq α] [PartialEquivBEq α] {l₁ l₂ : List ((a : α) × β a)}
+    (h₁ : DistinctKeys l₁) (h₂ : DistinctKeys l₂) : DistinctKeys (insertSmallerList l₁ l₂) := by
+  rw [List.insertSmallerList]
+  split
+  · exact DistinctKeys.insertListIfNew ‹_›
+  · exact DistinctKeys.insertList ‹_›
+
+theorem containsKey_insertSmallerList [BEq α] [PartialEquivBEq α] {l₁ l₂ : List ((a : α) × β a)}
+    {k : α} : containsKey k (List.insertSmallerList l₁ l₂) = (containsKey k l₁ || containsKey k l₂) := by
+  rw [List.insertSmallerList]
+  split
+  · rw [containsKey_insertListIfNew, ← containsKey_eq_contains_map_fst, Bool.or_comm]
+  · rw [containsKey_insertList, ← containsKey_eq_contains_map_fst]
+
 theorem length_le_length_insertList [BEq α]
     {l toInsert : List ((a : α) × β a)} :
     l.length ≤ (insertList l toInsert).length := by
@@ -2998,6 +3054,78 @@ theorem isEmpty_insertList [BEq α]
   | cons hd tl ih =>
     rw [insertList, List.isEmpty_cons, ih, isEmpty_insertEntry]
     simp
+
+theorem isEmpty_insertListIfNew [BEq α]
+    {l toInsert : List ((a : α) × β a)} :
+    (List.insertListIfNew l toInsert).isEmpty = (l.isEmpty && toInsert.isEmpty) := by
+  induction toInsert generalizing l with
+  | nil => simp [insertListIfNew]
+  | cons hd tl ih =>
+    rw [insertListIfNew, List.isEmpty_cons, ih, isEmpty_insertEntryIfNew]
+    simp
+
+theorem isEmpty_insertSmallerList [BEq α]
+    {l toInsert : List ((a : α) × β a)} :
+    (List.insertSmallerList l toInsert).isEmpty = (l.isEmpty && toInsert.isEmpty) := by
+  rw [insertSmallerList]
+  split
+  case isTrue =>
+    simp only [isEmpty_insertListIfNew, Bool.and_comm]
+  case isFalse =>
+    simp only [isEmpty_insertList]
+
+theorem length_insertListIfNew_le [BEq α]
+    {l toInsert : List ((a : α) × β a)} :
+    (List.insertListIfNew l toInsert).length ≤ l.length + toInsert.length := by
+      induction toInsert generalizing l with
+      | nil => simp only [List.insertListIfNew, List.length_nil, Nat.add_zero, Nat.le_refl]
+      | cons hd tl ih =>
+          simp only [insertListIfNew, List.length_cons]
+          apply Nat.le_trans ih
+          rw [Nat.add_comm tl.length 1, ← Nat.add_assoc]
+          apply Nat.add_le_add _ (Nat.le_refl _)
+          apply length_insertEntryIfNew_le
+
+theorem length_insertSmallerList_le [BEq α]
+    {l toInsert : List ((a : α) × β a)} :
+    (List.insertSmallerList l toInsert).length ≤ l.length + toInsert.length := by
+      unfold insertSmallerList
+      split
+      case isTrue =>
+        apply Nat.le_trans
+        . apply length_insertListIfNew_le
+        . simp only [Nat.add_comm, Nat.le_refl]
+      case isFalse => simp only [length_insertList_le]
+
+theorem length_left_le_length_insertListIfNew [BEq α] [EquivBEq α]
+   {l toInsert : List ((a : α) × β a)} :
+    l.length ≤ (insertListIfNew l toInsert).length := by
+  induction toInsert generalizing l with
+  | nil => apply Nat.le_refl
+  | cons hd tl ih => exact Nat.le_trans length_le_length_insertEntryIfNew ih
+
+theorem length_left_le_length_insertSmallerList [BEq α] [EquivBEq α]
+    {l toInsert : List ((a : α) × β a)} :
+    l.length ≤ (List.insertSmallerList l toInsert).length := by
+      unfold insertSmallerList
+      split
+      case isTrue h =>
+        apply Nat.le_trans
+        . exact h
+        . apply length_left_le_length_insertListIfNew
+      case isFalse => simp only [length_le_length_insertList]
+
+theorem length_right_le_length_insertSmallerList [BEq α] [EquivBEq α]
+    {l toInsert : List ((a : α) × β a)} :
+    toInsert.length ≤ (List.insertSmallerList l toInsert).length := by
+      unfold insertSmallerList
+      split
+      case isTrue => apply length_left_le_length_insertListIfNew
+      case isFalse h =>
+        simp only [Nat.not_le] at h
+        apply Nat.le_trans
+        . apply le_of_lt h
+        . simp only [length_le_length_insertList]
 
 section
 
