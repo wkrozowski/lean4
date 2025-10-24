@@ -327,6 +327,20 @@ def insertMany [EquivBEq α] [LawfulHashable α] {ρ : Type w}
     m := ⟨m.1.insert a b, fun _ init step => step (m.2 _ init step)⟩
   return m.1
 
+/--
+Inserts multiple wntires into the hash map by iterating over the given collection
+and calling `insertIfNew`. If the same key appears multiple times, the first occurrence takes
+precedence.
+-/
+@[inline]
+def insertManyIfNew [EquivBEq α] [LawfulHashable α] {ρ : Type w}
+    [ForIn Id ρ ((a : α) × β a)] (m : ExtDHashMap α β) (l : ρ) : ExtDHashMap α β := Id.run do
+  let mut m : { x // ∀ P : ExtDHashMap α β → Prop,
+    P m → (∀ {m a b}, P m → P (m.insertIfNew a b)) → P x } := ⟨m, fun _ h _ => h⟩
+  for ⟨a, b⟩ in l do
+    m := ⟨m.1.insertIfNew a b, fun _ init step => step (m.2 _ init step)⟩
+  return m.1
+
 @[inline, inherit_doc DHashMap.Const.insertMany]
 def Const.insertMany [EquivBEq α] [LawfulHashable α] {β : Type v} {ρ : Type w}
     [ForIn Id ρ (α × β)] (m : ExtDHashMap α (fun _ => β))
