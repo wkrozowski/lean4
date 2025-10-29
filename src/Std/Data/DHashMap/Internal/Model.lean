@@ -398,6 +398,12 @@ def insertListIfNewₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l : List ((a :
   | .cons hd tl => insertListIfNewₘ (m.insertIfNew hd.1 hd.2) tl
 
 /-- Internal implementation detail of the hash map -/
+def keepIfPresentₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l : List ((a : α) × β a)) : Raw₀ α β :=
+  match l with
+  | .nil => emptyWithCapacity
+  | .cons ⟨k, v⟩ tl => if m.containsₘ k then (m.keepIfPresentₘ tl).consₘ k v else m.keepIfPresentₘ tl
+
+/-- Internal implementation detail of the hash map -/
 def unionₘ [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
   if m₁.1.size ≤ m₂.1.size then
     insertListIfNewₘ m₂ (toListModel m₁.1.buckets)

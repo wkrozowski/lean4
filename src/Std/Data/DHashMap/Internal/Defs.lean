@@ -424,6 +424,26 @@ def insertMany {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hashable
   return r
 
 /-- Internal implementation detail of the hash map -/
+def keepIfPresent {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hashable α]
+    (m : Raw₀ α β) (l : ρ) : Raw₀ α β := Id.run do
+  let mut r := m
+  for ⟨a, _⟩ in l do
+    if !m.contains a then
+      r := r.erase a
+  return r
+
+/-- Internal implementation detail of the hash map -/
+def keepIfPresentIfNew {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hashable α]
+    (m : Raw₀ α β) (l : ρ) : Raw₀ α β := Id.run do
+  let mut r := m
+  for ⟨a, b⟩ in l do
+    if m.contains a then
+      r := r.insert a b
+    else
+      r := r.erase a
+  return r
+
+/-- Internal implementation detail of the hash map -/
 @[inline] def insertManyIfNew {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hashable α]
     (m : Raw₀ α β) (l : ρ) : { m' : Raw₀ α β // ∀ (P : Raw₀ α β → Prop),
       (∀ {m'' a b}, P m'' → P (m''.insertIfNew a b)) → P m → P m' } := Id.run do
@@ -437,6 +457,9 @@ def insertMany {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hashable
 @[inline] def union [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
   if m₁.1.size ≤ m₂.1.size then (m₂.insertManyIfNew m₁.1).1 else (m₁.insertMany m₂.1).1
 
+/-- Internal implementation detail of the hash map -/
+@[inline] def inter [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
+  if m₁.1.size ≤ m₂.1.size then m₂.keepIfPresentIfNew m₁.1  else m₁.filter fun k _ => m₂.contains k
 section
 
 variable {β : Type v}

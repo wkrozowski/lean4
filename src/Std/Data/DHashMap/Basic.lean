@@ -321,6 +321,16 @@ This function always merges the smaller map into the larger map, so the expected
 
 instance [BEq α] [Hashable α] : Union (DHashMap α β) := ⟨union⟩
 
+@[inline] def inter [BEq α] [Hashable α] (m₁ m₂ : DHashMap α β) : DHashMap α β where
+  inner := Raw₀.inter ⟨m₁.1, m₁.2.size_buckets_pos⟩ ⟨m₂.1, m₂.2.size_buckets_pos⟩
+  wf := sorry
+
+def test₁ : DHashMap String (fun _ => String) := (DHashMap.emptyWithCapacity).insertMany [⟨"hello", "world"⟩, ⟨"my", "test"⟩]
+def test₂ : DHashMap String (fun _ => String) := (DHashMap.emptyWithCapacity).insertMany [⟨"hello", "world2"⟩, ⟨"mine", "test"⟩]
+
+#eval! (test₁.inter test₂).toList
+
+
 section Unverified
 
 /-! We currently do not provide lemmas for the functions below. -/
