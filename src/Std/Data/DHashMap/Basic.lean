@@ -325,8 +325,8 @@ instance [BEq α] [Hashable α] : Union (DHashMap α β) := ⟨union⟩
   inner := Raw₀.inter ⟨m₁.1, m₁.2.size_buckets_pos⟩ ⟨m₂.1, m₂.2.size_buckets_pos⟩
   wf := sorry
 
-def test₁ : DHashMap String (fun _ => String) := (DHashMap.emptyWithCapacity).insertMany [⟨"hello", "world"⟩, ⟨"my", "test"⟩]
-def test₂ : DHashMap String (fun _ => String) := (DHashMap.emptyWithCapacity).insertMany [⟨"hello", "world2"⟩, ⟨"mine", "test"⟩]
+def test₁ : DHashMap String (fun _ => String) := (DHashMap.emptyWithCapacity).insertMany [⟨"hello", "world"⟩, ⟨"mine", "test1"⟩, ⟨"my", "test0"⟩]
+def test₂ : DHashMap String (fun _ => String) := (DHashMap.emptyWithCapacity).insertMany [⟨"hello", "world2"⟩, ⟨"mine", "test"⟩, ⟨"my", "test"⟩]
 
 #eval! (test₁.inter test₂).toList
 

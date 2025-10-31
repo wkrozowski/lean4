@@ -1058,7 +1058,6 @@ theorem insertMany_eq_insertListₘ_toListModel [BEq α] [Hashable α] (m m₂ :
     simp only [List.foldl_cons, insertListₘ]
     apply ih
 
-
 theorem insertManyIfNew_eq_insertListIfNewₘ_toListModel [BEq α] [Hashable α] (m m₂ : Raw₀ α β) :
     insertManyIfNew m m₂.1 = insertListIfNewₘ m (toListModel m₂.1.buckets) := by
   simp only [insertManyIfNew, bind_pure_comp, map_pure, bind_pure]
@@ -1093,7 +1092,43 @@ theorem toListModel_unionₘ [BEq α] [Hashable α] [EquivBEq α] [LawfulHashabl
   · exact toListModel_insertListIfNewₘ ‹_›
   · exact toListModel_insertListₘ ‹_›
 
+/-! # `iterₘ` -/
+theorem keepIfPresentIfNew_eq_keepIfPresentIfNewₘ_toListModel [BEq α] [Hashable α] (m m₂ : Raw₀ α β) :
+    keepIfPresentIfNew m m₂.1 = keepIfPresentIfNewₘ m (toListModel m₂.1.buckets) := by
+  simp only [keepIfPresentIfNew, bind_pure_comp, map_pure, bind_pure]
+  simp only [ForIn.forIn]
+  simp only [Raw.forIn_eq_forIn_toListModel, forIn_pure_yield_eq_foldl, Id.run_pure]
+  generalize toListModel m₂.val.buckets = l
+  suffices ∀ (t : { m' // ∀ (P : Raw₀ α β → Prop),
+    (∀ {m'' : Raw₀ α β} {a : α} {b : β a}, P m'' → P (m''.updateIfContains a b)) → P m → P m' }),
+      (List.foldl (fun m' p => ⟨m'.val.updateIfContains p.1 p.2, fun P h₁ h₂ => h₁ (m'.2 _ h₁ h₂)⟩) t l).val =
+    t.val.keepIfPresentIfNewₘ l from this _
+  intro t
+  induction l generalizing m with
+  | nil => simp [keepIfPresentIfNewₘ]
+  | cons hd tl ih =>
+    simp only [List.foldl_cons, keepIfPresentIfNewₘ]
+    apply ih
+
+theorem keepLemma  [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : (m₂.keepIfPresentIfNewₘ (toListModel m₁.1.buckets)).1.Equiv (m₁.filter (fun k _ => m₂.contains k)) := by
+  generalize heq : toListModel m₁.val.buckets = l
+  induction l
+  case nil =>
+    constructor
+    simp [keepIfPresentIfNewₘ]
+    sorry
+  case cons h t t_ih =>
+    sorry
+
+
+
+
+
+
+
 end Raw₀
+
+
 
 namespace Raw
 

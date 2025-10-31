@@ -398,10 +398,15 @@ def insertListIfNewₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l : List ((a :
   | .cons hd tl => insertListIfNewₘ (m.insertIfNew hd.1 hd.2) tl
 
 /-- Internal implementation detail of the hash map -/
-def keepIfPresentₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l : List ((a : α) × β a)) : Raw₀ α β :=
+def updateIfContainsₘ [BEq α] [Hashable α] (m : Raw₀ α β) (k : α) (v : β k)  : Raw₀ α β :=
+  if m.contains k then m.insert k v else m.erase k
+
+/-- Internal implementation detail of the hash map -/
+def keepIfPresentIfNewₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l : List ((a : α) × β a)) : Raw₀ α β :=
   match l with
-  | .nil => emptyWithCapacity
-  | .cons ⟨k, v⟩ tl => if m.containsₘ k then (m.keepIfPresentₘ tl).consₘ k v else m.keepIfPresentₘ tl
+  | .nil => m
+  | .cons hd tl =>
+      keepIfPresentIfNewₘ (updateIfContainsₘ m hd.1 hd.2) tl
 
 /-- Internal implementation detail of the hash map -/
 def unionₘ [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
@@ -628,6 +633,8 @@ theorem insertMany_eq_insertListₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l
     simp only [List.foldl_cons, insertListₘ]
     apply ih
 
+
+
 theorem insertManyIfNew_eq_insertListIfNewₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l : List ((a : α) × β a)) :
     insertManyIfNew m l = insertListIfNewₘ m l := by
   simp only [insertManyIfNew, Id.run_pure, pure_bind, List.forIn_pure_yield_eq_foldl]
@@ -641,6 +648,25 @@ theorem insertManyIfNew_eq_insertListIfNewₘ [BEq α] [Hashable α] (m : Raw₀
   | cons hd tl ih =>
     simp only [List.foldl_cons, insertListIfNewₘ]
     apply ih
+
+@[simp] theorem ite_pure {α : Type}  (c : Bool) (x y : α) :
+    (if c then pure x else pure y) = (pure (if c then x else y) : Id α):= by
+  split <;> rfl
+
+theorem keepIfPresentIfNew_eq_keepIfPresentIfNewₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l : List ((a : α) × β a)) :
+    keepIfPresentIfNew m l = keepIfPresentIfNewₘ m l := by
+  simp only [keepIfPresentIfNew, Id.run_pure, pure_bind, List.forIn_pure_yield_eq_foldl]
+  suffices ∀ (t : { m' // ∀ (P : Raw₀ α β → Prop),
+    (∀ {m'' : Raw₀ α β} {a : α} {b : β a}, P m'' → P (m''.updateIfContains a b)) → P m → P m' }),
+      (List.foldl (fun m' p => ⟨m'.val.updateIfContains p.1 p.2, fun P h₁ h₂ => h₁ (m'.2 _ h₁ h₂)⟩) t l).val =
+    t.val.keepIfPresentIfNewₘ l from this _
+  intro t
+  induction l generalizing m with
+  | nil => simp [keepIfPresentIfNewₘ]
+  | cons hd tl ih =>
+    simp only [List.foldl_cons, keepIfPresentIfNewₘ]
+    apply ih
+
 
 section
 

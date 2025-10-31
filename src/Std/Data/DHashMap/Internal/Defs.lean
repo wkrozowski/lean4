@@ -393,6 +393,10 @@ def erase [BEq α] [Hashable α] (m : Raw₀ α β) (a : α) : Raw₀ α β :=
   else
     ⟨⟨size, buckets⟩, hb⟩
 
+/-- Internal implementation detail of the hash map -/
+@[inline] def updateIfContains [BEq α] [Hashable α] (m : Raw₀ α β) (a : α) (b : β a) : Raw₀ α β :=
+  if m.contains a then m.insert a b else m
+
 -- Computing the size after the fact was determined to be faster than computing it inline
 /-- Internal implementation detail of the hash map -/
 @[specialize] def filterMap {γ : α → Type w} (f : (a : α) → β a → Option (γ a))
@@ -434,13 +438,12 @@ def keepIfPresent {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hasha
 
 /-- Internal implementation detail of the hash map -/
 def keepIfPresentIfNew {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hashable α]
-    (m : Raw₀ α β) (l : ρ) : Raw₀ α β := Id.run do
-  let mut r := m
+    (m : Raw₀ α β) (l : ρ) : { m' : Raw₀ α β // ∀ (P : Raw₀ α β → Prop),
+      (∀ {m'' a b}, P m'' → P (m''.updateIfContains a b)) → P m → P m' } := Id.run do
+  let mut r : { m' : Raw₀ α β // ∀ (P : Raw₀ α β → Prop),
+    (∀ {m'' a b}, P m'' → P (m''.updateIfContains a b)) → P m → P m' } := ⟨m, fun _ _ => id⟩
   for ⟨a, b⟩ in l do
-    if m.contains a then
-      r := r.insert a b
-    else
-      r := r.erase a
+      r := ⟨r.1.updateIfContains a b, fun _ h hm => h (r.2 _ h hm)⟩
   return r
 
 /-- Internal implementation detail of the hash map -/
@@ -459,7 +462,9 @@ def keepIfPresentIfNew {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [
 
 /-- Internal implementation detail of the hash map -/
 @[inline] def inter [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
-  if m₁.1.size ≤ m₂.1.size then m₂.keepIfPresentIfNew m₁.1  else m₁.filter fun k _ => m₂.contains k
+  if m₁.1.size ≤ m₂.1.size then m₂.keepIfPresentIfNew m₁.1 else m₁.filter fun k _ => m₂.contains k
+
+
 section
 
 variable {β : Type v}
