@@ -327,6 +327,10 @@ def insertₘ [BEq α] [Hashable α] (m : Raw₀ α β) (a : α) (b : β a) : Ra
   if m.containsₘ a then m.replaceₘ a b else Raw₀.expandIfNecessary (m.consₘ a b)
 
 /-- Internal implementation detail of the hash map -/
+def replaceIfPresentₘ [BEq α] [Hashable α] (m : Raw₀ α β) (a : α) (b : β a) : Raw₀ α β :=
+  if m.containsₘ a then m.replaceₘ a b else m
+
+/-- Internal implementation detail of the hash map -/
 def insertIfNewₘ [BEq α] [Hashable α] (m : Raw₀ α β) (a : α) (b : β a) : Raw₀ α β :=
   if m.containsₘ a then m else Raw₀.expandIfNecessary (m.consₘ a b)
 
@@ -411,6 +415,8 @@ def unionₘ [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
     insertListIfNewₘ m₂ (toListModel m₁.1.buckets)
   else
     insertListₘ m₁ (toListModel m₂.1.buckets)
+
+def replaceManyIfPresentₘ [BEq α] [Hashable α] (m : Raw₀ α β) (l : List ((a : α) × β a)) : Raw₀ α β := sorry
 
 section
 
@@ -610,6 +616,16 @@ theorem erase_eq_eraseₘ [BEq α] [Hashable α] (m : Raw₀ α β) (a : α) :
   dsimp only [Array.ugetElem_eq_getElem, Array.uset]
   split
   · simp only [eraseₘaux, Subtype.mk.injEq, Raw.mk.injEq, true_and]
+    rw [Array.set_set, updateBucket]
+    simp only [Array.uset, Array.ugetElem_eq_getElem]
+  · rfl
+
+theorem replaceIfPresent_eq_replaceIfPresentₘ [BEq α] [Hashable α] (m : Raw₀ α β) (a : α) (b : β a) :
+    m.replaceIfPresent a b = m.replaceIfPresentₘ a b := by
+  rw [replaceIfPresent, replaceIfPresentₘ, containsₘ, bucket]
+  dsimp only [Array.ugetElem_eq_getElem, Array.uset]
+  split
+  · simp only [replaceₘ, Subtype.mk.injEq, Raw.mk.injEq, true_and]
     rw [Array.set_set, updateBucket]
     simp only [Array.uset, Array.ugetElem_eq_getElem]
   · rfl

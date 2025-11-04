@@ -1045,6 +1045,18 @@ theorem toListModel_insertListₘ [BEq α] [Hashable α] [EquivBEq α] [LawfulHa
     apply Perm.trans (ih (wfImp_insert h))
     apply List.insertList_perm_of_perm_first (toListModel_insert h) (wfImp_insert h).distinct
 
+/-! # `replaceIfNewₘ`-/
+theorem toListModel_replaceIfPresentₘ [BEq α] [Hashable α] [EquivBEq α] [LawfulHashable α]
+    {m : Raw₀ α β} {a : α} {b : β a} (h : Raw.WFImp m.1) :
+    Perm (toListModel (replaceIfPresentₘ m a b).1.buckets)
+      (List.replaceIfPresent (toListModel m.1.buckets) a b) := by
+    rw [List.replaceIfPresent, replaceIfPresentₘ, containsₘ_eq_containsKey]
+    split
+    . exact @toListModel_replaceₘ α β _ _ _ _ m h a b
+    . simp only [Perm.refl]
+    . exact h
+
+
 /-! # `insertListₘ` -/
 
 theorem toListModel_insertListIfNewₘ [BEq α] [Hashable α] [EquivBEq α] [LawfulHashable α]
@@ -1077,7 +1089,6 @@ theorem insertMany_eq_insertListₘ_toListModel [BEq α] [Hashable α] (m m₂ :
   | cons hd tl ih =>
     simp only [List.foldl_cons, insertListₘ]
     apply ih
-
 
 theorem insertManyIfNew_eq_insertListIfNewₘ_toListModel [BEq α] [Hashable α] (m m₂ : Raw₀ α β) :
     insertManyIfNew m m₂.1 = insertListIfNewₘ m (toListModel m₂.1.buckets) := by

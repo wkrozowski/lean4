@@ -448,8 +448,35 @@ def insertMany {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hashable
   return r
 
 /-- Internal implementation detail of the hash map -/
+@[specialize] def replaceIfPresent [BEq α] [Hashable α] (m : Raw₀ α β) (a : α) (b : β a) :
+    Raw₀ α β :=
+  let ⟨⟨size, buckets⟩, hm⟩ := m
+  let size' := size
+  let ⟨i, hi⟩ := mkIdx buckets.size hm (hash a)
+  let bucket := buckets[i]
+  if h : bucket.contains a then
+    let buckets := buckets.uset i .nil hi
+    let bucket := bucket.replace a b
+    ⟨⟨size, buckets.uset i bucket (by simpa [buckets])⟩, (by simpa [buckets])⟩
+  else
+    m
+
+/-- Internal implementation detail of the hash map -/
+@[inline] def replaceManyIfPresent {ρ : Type w} [ForIn Id ρ ((a : α) × β a)] [BEq α] [Hashable α]
+    (m : Raw₀ α β) (l : ρ) : Raw₀ α β := Id.run do
+  let mut r : Raw₀ α β := m
+  for ⟨a, b⟩ in l do
+  -- if m contains a b then we insert
+    r := replaceIfPresent r a b
+  return r
+
+/-- Internal implementation detail of the hash map -/
 @[inline] def union [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
   if m₁.1.size ≤ m₂.1.size then (m₂.insertManyIfNew m₁.1).1 else (m₁.insertMany m₂.1).1
+
+/-- Internal implementation detail of the hash map -/
+@[inline] def inter [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
+  if m₁.1.size ≤ m₂.1.size then (m₁.filter (fun k _ => m₂.contains k)) else replaceManyIfPresent m₂ m₁.1
 
 section
 

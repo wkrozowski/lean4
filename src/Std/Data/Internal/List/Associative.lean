@@ -3489,6 +3489,10 @@ theorem insertList_insertEntry_right_equiv_insertEntry_insertList [BEq α] [Equi
   . simp only [Option.some_or]
   . rw [@getEntry?_insertList α β _ _ l toInsert distinct_l (DistinctKeys_impl_Pairwise_distinct distinct_toInsert) a]
 
+/-- Internal implementation detail of the hash map -/
+def replaceIfPresent [BEq α] (l : List ((a : α) × β a)) (a : α) (b : β a) : List ((a : α) × β a) :=
+  if containsKey a l then replaceEntry a b l else l
+
 section
 
 variable {β : Type v}
