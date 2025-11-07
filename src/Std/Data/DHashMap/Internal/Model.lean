@@ -422,6 +422,11 @@ def interSmallerFnₘ [BEq α] [Hashable α] (m sofar : Raw₀ α β) (k : α) :
   | some kv' => sofar.insertₘ kv'.1 kv'.2
   | none => sofar
 
+/-- Internal implementation detail of the hash map -/
+def diffSmallerFnₘ [BEq α] [Hashable α] (m sofar : Raw₀ α β) (k : α) : Raw₀ α β :=
+  if m.containsₘ k then sofar.eraseₘ k else
+   sofar
+
 section
 
 variable {β : Type v}
@@ -667,6 +672,11 @@ theorem interSmallerFn_eq_interSmallerFnₘ [BEq α] [Hashable α] (m sofar : Ra
   congr
   ext
   rw [insert_eq_insertₘ]
+
+theorem diffSmallerFn_eq_diffSmallerFnₘ [BEq α] [Hashable α] (m sofar : Raw₀ α β) (k : α) :
+    diffSmallerFn m sofar k = diffSmallerFnₘ m sofar k := by
+  rw [diffSmallerFn, diffSmallerFnₘ]
+  rw [contains_eq_containsₘ, erase_eq_eraseₘ]
 
 section
 

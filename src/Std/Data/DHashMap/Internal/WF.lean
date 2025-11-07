@@ -1313,6 +1313,10 @@ theorem foldl_eq_foldlₘ {δ} (f : δ → (a : α) → β a → δ) (init : δ)
 def interSmallerₘ [BEq α] [Hashable α] (m₁ : Raw₀ α β) (l : List ((a : α) × β a)) : Raw₀ α β :=
   foldlₘ (fun sofar k _ => interSmallerFnₘ m₁ sofar k) emptyWithCapacity l
 
+/-- Internal implementation detail of the hash map -/
+def diffSmallerₘ [BEq α] [Hashable α] (m₁ : Raw₀ α β) (l : List ((a : α) × β a)) : Raw₀ α β :=
+  foldlₘ (fun sofar k _ => diffSmallerFnₘ m₁ sofar k) m₁ l
+
 theorem foldl_perm_cong  [BEq α] {init₁ init₂ : List ((a : α) × β a)} {l : List ((a : α) × β a)}
     {f : List ((a : α) × β a) → ((a : α) × β a) → List ((a : α) × β a)} (h₁ : Perm init₁ init₂)
     (h₂ : ∀ h l₁ l₂, (w : DistinctKeys l₁) → Perm l₁ l₂ → Perm (f l₁ h) (f l₂ h) ∧ DistinctKeys (f l₁ h))
@@ -1341,6 +1345,21 @@ theorem toListModel_interSmallerFnₘ [BEq α] [EquivBEq α] [Hashable α] [Lawf
     case h_2 _ heq =>
       simp [heq]
   . exact hm₁
+
+theorem toListModel_diffSmallerFnₘ [BEq α] [EquivBEq α] [Hashable α] [LawfulHashable α] (m sofar : Raw₀ α β) (hm₁ : Raw.WFImp m.1) (hm₂ : Raw.WFImp sofar.1) (k : α) :
+    Perm (toListModel ((diffSmallerFnₘ m sofar k).1.buckets)) (if (toListModel m.val.buckets).containsKey k then ((toListModel sofar.val.buckets).eraseKey k) else (toListModel sofar.val.buckets)) := by
+  rw [diffSmallerFnₘ]
+  split
+  case isTrue hc =>
+    rw [containsₘ_eq_containsKey] at hc
+    rw [hc]
+    simp
+    apply toListModel_eraseₘ hm₂
+    . exact hm₁
+  case isFalse hnc =>
+    rw [containsₘ_eq_containsKey] at hnc
+    simp [hnc]
+    . exact hm₁
 
 theorem toListModel_interSmallerₘ [BEq α] [EquivBEq α] [Hashable α] [LawfulHashable α] (m₁ m₂ : Raw₀ α β) (hm₁ : Raw.WFImp m₁.1) (hm₂ : Raw.WFImp m₂.1) (l : List ((a : α) × β a)) :
     toListModel

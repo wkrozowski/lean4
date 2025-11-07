@@ -475,6 +475,22 @@ def interSmaller [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α �
 def inter [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
   if m₁.1.size ≤ m₂.1.size then m₁.filter fun k _ => m₂.contains k else interSmaller m₁ m₂
 
+/-- Internal implementation detail of the hash map -/
+def diffSmallerFn [BEq α] [Hashable α] (m sofar : Raw₀ α β) (k : α) : Raw₀ α β :=
+  if m.contains k then sofar.erase k else
+   sofar
+
+/-- Internal implementation detail of the hash map -/
+def diffSmaller [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
+   (m₂.foldl (fun sofar k _ => diffSmallerFn m₁ sofar k) m₁).1
+
+/-- Internal implementation detail of the hash map -/
+def diff [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) : Raw₀ α β :=
+  if m₁.1.size ≤ m₂.1.size  then
+    m₁.filter fun k _ => !m₂.contains k
+  else
+    diffSmaller m₁ m₂
+
 section
 
 variable {β : Type v}
