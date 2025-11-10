@@ -1429,12 +1429,74 @@ theorem toListModel_interSmallerₘ [BEq α] [EquivBEq α] [Hashable α] [Lawful
         case h_2 _ =>
           exact hm₂.distinct
 
+theorem toListModel_diffSmallerₘ [BEq α] [EquivBEq α] [Hashable α] [LawfulHashable α] (m₁ m₂ : Raw₀ α β) (hm₁ : Raw.WFImp m₁.1) (hm₂ : Raw.WFImp m₂.1) (l : List ((a : α) × β a)) :
+    toListModel
+    (List.foldl
+          (fun sofar x =>
+            match x with
+            | ⟨k, _⟩ => m₁.diffSmallerFnₘ sofar k)
+          m₂ l).val.buckets ~
+  List.foldl
+    (fun sofar x =>
+      match x with
+      | ⟨k, _⟩ =>
+        if (toListModel m₁.val.buckets).containsKey k then
+          sofar.eraseKey k
+        else
+          sofar)
+    (toListModel m₂.val.buckets) l := by
+  induction l generalizing m₂
+  case nil =>
+    simp
+  case cons kv t ih =>
+    simp
+    apply Perm.trans
+    . apply ih
+      . unfold diffSmallerFnₘ
+        split <;> try (rw [← erase_eq_eraseₘ]; apply wfImp_erase hm₂)
+        exact hm₂
+    . apply foldl_perm_cong
+      . apply toListModel_diffSmallerFnₘ
+        . exact hm₁
+        . exact hm₂
+      . intro h l₁ l₂ hd hp
+        simp
+        apply And.intro
+        . split
+          . next hc =>
+            apply eraseKey_of_perm
+            . exact hd
+            . exact hp
+          . next hnc =>
+            exact hp
+        . split
+          . next hc =>
+            apply DistinctKeys.eraseKey
+            . exact hd
+          . next hnc =>
+            exact hd
+      . unfold diffSmallerFnₘ
+        split
+        . next hc =>
+          apply DistinctKeys.perm
+          . apply toListModel_eraseₘ hm₂
+          . apply DistinctKeys.eraseKey hm₂.distinct
+        . next _ =>
+          exact hm₂.distinct
+
 theorem interSmaller_eq_interSmallerₘ [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) :
   interSmaller m₁ m₂ = interSmallerₘ m₁ (toListModel m₂.1.buckets) := by
     rw [interSmaller, foldl_eq_foldlₘ]
     rw [interSmallerₘ]
     rw [Raw.toList_eq_toListModel]
     simp only [interSmallerFn_eq_interSmallerFnₘ]
+
+theorem diffSmaller_eq_diffSmallerₘ [BEq α] [Hashable α] (m₁ m₂ : Raw₀ α β) :
+  diffSmaller m₁ m₂ = diffSmallerₘ m₁ (toListModel m₂.1.buckets) := by
+    rw [diffSmaller, foldl_eq_foldlₘ]
+    rw [diffSmallerₘ]
+    rw [Raw.toList_eq_toListModel]
+    simp only [diffSmallerFn_eq_diffSmallerFnₘ]
 
 theorem getEntry_foldl [BEq α] [EquivBEq α] (a : α) {acc l₁ l₂ : List ((a : α) × β a)} (hd : DistinctKeys l₁) (hyp : ∀ (a : α) (kv''), List.getEntry? a l₁ = some kv'' → (List.getEntry? a acc = none) ∨ (List.getEntry? a acc = some kv'')): List.getEntry? a
     (List.foldl
@@ -1550,6 +1612,61 @@ theorem getEntry_foldl [BEq α] [EquivBEq α] (a : α) {acc l₁ l₂ : List ((a
       . exact hd
       . exact hd
 
+theorem getEntry_foldl_erase [BEq α] [EquivBEq α] (a : α) {l₁ l₂ : List ((a : α) × β a)} (hd_acc : DistinctKeys l₁) : List.getEntry? a
+    (List.foldl
+      (fun sofar x =>
+        match x with
+        | ⟨k, _⟩ =>
+          if containsKey k l₁ then
+            eraseKey k sofar
+          else
+            sofar)
+      l₁ l₂) = List.getEntry? a (List.filter (fun p => !containsKey p.fst l₂) l₁) := by
+  induction l₂ generalizing l₁
+  case nil =>
+    simp only [List.foldl_nil, containsKey_nil, Bool.not_false]
+    have : List.filter (fun _ => true) l₁ = l₁ := by
+      induction l₁ with
+      | nil => rfl
+      | cons h t ih => simp
+    rw [this]
+  case cons h t ih =>
+    simp only [foldl_cons]
+    split
+    case isTrue w =>
+      sorry
+
+    case isFalse w =>
+      simp only [Bool.not_eq_true] at w
+      sorry
+
+theorem foldl_eraseKey_distinctKeys [BEq α] [PartialEquivBEq α] (l₁ l₂ : List ((a : α) × β a)) (acc : List ((a : α) × β a))
+    (h_acc : DistinctKeys acc) :
+    DistinctKeys
+      (List.foldl
+        (fun sofar x =>
+          match x with
+          | ⟨k, _⟩ =>
+            if containsKey k l₁ then
+              eraseKey k sofar
+            else
+              sofar)
+        acc l₂) := by
+  induction l₂ generalizing acc with
+  | nil =>
+    simp [List.foldl]
+    exact h_acc
+  | cons h t ih =>
+    simp only [List.foldl_cons]
+    split
+    case isTrue _ =>
+      apply ih
+      apply DistinctKeys.eraseKey
+      exact h_acc
+    case isFalse _ =>
+      apply ih
+      exact h_acc
+
 theorem foldl_insertEntry_distinctKeys [BEq α] [PartialEquivBEq α] (l₁ l₂ : List ((a : α) × β a)) (acc : List ((a : α) × β a))
     (h_acc : DistinctKeys acc) :
     DistinctKeys
@@ -1614,6 +1731,50 @@ theorem toListModel_inter [BEq α] [EquivBEq α] [Hashable α] [LawfulHashable �
           . intro a _ _
             apply Or.inl
             simp
+
+theorem toListModel_diff [BEq α] [EquivBEq α] [Hashable α] [LawfulHashable α] (m₁ m₂ : Raw₀ α β) (hm₁ : Raw.WFImp m₁.1) (hm₂ : Raw.WFImp m₂.1) :
+    Perm (toListModel (m₁.diff m₂).1.buckets) ((toListModel m₁.1.buckets).filter fun p => !containsKey p.1 (toListModel m₂.1.buckets) ) := by
+  simp only [diff]
+  split
+  . rw [filter_eq_filterₘ]
+    apply Perm.trans
+    . apply toListModel_filterₘ
+    . suffices (fun p : (a : α) × β a => !m₂.contains p.fst) = (fun p : (a : α) × β a => !containsKey p.fst (toListModel m₂.val.buckets)) by rw [this]
+      ext x
+      rw [contains_eq_containsKey]
+      exact hm₂
+  . apply Perm.trans
+    . rw [diffSmaller_eq_diffSmallerₘ]
+    . rw [diffSmallerₘ, foldlₘ]
+      apply Perm.trans
+      . apply toListModel_diffSmallerₘ
+        . exact hm₁
+        . exact hm₁
+      . generalize heq1 : (toListModel m₁.val.buckets) = l₁
+        generalize heq2 : (toListModel m₂.val.buckets) = l₂
+        apply getEntry?_ext
+        . apply foldl_eraseKey_distinctKeys
+          rw [← heq1]
+          exact hm₁.distinct
+        . apply @DistinctKeys.filter _ _ _ l₁ (fun k v => !containsKey k l₂)
+          rw [← heq1]
+          exact hm₁.distinct
+        . intro a
+          apply getEntry_foldl_erase
+          . rw [← heq1]
+            exact hm₁.distinct
+          . sorry
+
+
+
+
+
+
+
+
+
+
+
 
 theorem wf_inter₀ [BEq α] [Hashable α] [LawfulHashable α]
     {m₁ m₂ : Raw α β} {h₁ : 0 < m₁.buckets.size} {h₂ : 0 < m₂.buckets.size} (h'₁ : m₁.WF)
