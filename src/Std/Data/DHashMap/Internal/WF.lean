@@ -1612,33 +1612,77 @@ theorem getEntry_foldl [BEq α] [EquivBEq α] (a : α) {acc l₁ l₂ : List ((a
       . exact hd
       . exact hd
 
-theorem getEntry_foldl_erase [BEq α] [EquivBEq α] (a : α) {l₁ l₂ : List ((a : α) × β a)} (hd_acc : DistinctKeys l₁) : List.getEntry? a
-    (List.foldl
-      (fun sofar x =>
-        match x with
-        | ⟨k, _⟩ =>
-          if containsKey k l₁ then
-            eraseKey k sofar
-          else
-            sofar)
-      l₁ l₂) = List.getEntry? a (List.filter (fun p => !containsKey p.fst l₂) l₁) := by
-  induction l₂ generalizing l₁
+theorem getEntry_filter_eraseKey_comm [BEq α] [EquivBEq α] (a : α)
+    (h : (a : α) × β a) (t acc : List ((a : α) × β a)) :
+    List.getEntry? a (List.filter (fun x => !(h.fst == x.fst) && !containsKey x.fst t) acc) =
+    List.getEntry? a (List.filter (fun x => !containsKey x.fst t) (eraseKey h.fst acc)) := by
+  sorry
+
+theorem getEntry_foldl_erase_aux [BEq α] [EquivBEq α] (a : α)
+    (l₁ l₂ : List ((a : α) × β a)) (acc : List ((a : α) × β a))
+    (hd_acc : DistinctKeys acc)
+    (h_keys₁ : ∀ k, containsKey k acc → containsKey k l₁)
+     :
+    List.getEntry? a
+      (List.foldl
+        (fun sofar x =>
+          match x with
+          | ⟨k, _⟩ => if containsKey k l₁ then eraseKey k sofar else sofar)
+        acc l₂)
+    = List.getEntry? a (List.filter (fun p => !containsKey p.fst l₂) acc) := by
+  induction l₂ generalizing acc
   case nil =>
-    simp only [List.foldl_nil, containsKey_nil, Bool.not_false]
-    have : List.filter (fun _ => true) l₁ = l₁ := by
-      induction l₁ with
-      | nil => rfl
-      | cons h t ih => simp
-    rw [this]
+    simp only [foldl_nil, containsKey_nil, Bool.not_false]
+    congr 1
+    clear hd_acc h_keys₁
+    induction acc
+    . simp
+    . rename_i _ _ ih
+      simp [← ih]
   case cons h t ih =>
     simp only [foldl_cons]
     split
     case isTrue w =>
-      sorry
-
+      conv =>
+        rhs
+        rhs
+        lhs
+        ext x
+        congr
+        rw [containsKey_cons]
+      simp
+      have : List.getEntry? a (List.filter (fun x => !h.fst == x.fst && !containsKey x.fst t) acc) = List.getEntry? a (List.filter (fun x => !containsKey x.fst t) (eraseKey h.fst acc)) := by sorry
+      rw [this]
+      apply ih
+      . apply DistinctKeys.eraseKey hd_acc
+      . intro k mem
+        rw [containsKey_eraseKey] at mem
+        simp at mem
+        apply h_keys₁
+        exact mem.2
+        exact hd_acc
     case isFalse w =>
-      simp only [Bool.not_eq_true] at w
-      sorry
+      simp at w
+      conv =>
+        rhs
+        rhs
+        lhs
+        ext x
+        congr
+        rw [containsKey_cons]
+      simp
+      have : List.getEntry? a (List.filter (fun x => !h.fst == x.fst && !containsKey x.fst t) acc) = List.getEntry? a (List.filter (fun x => !containsKey x.fst t) acc) := by
+        sorry
+      rw [this]
+      apply ih
+      . exact hd_acc
+      . exact h_keys₁
+
+
+
+
+
+
 
 theorem foldl_eraseKey_distinctKeys [BEq α] [PartialEquivBEq α] (l₁ l₂ : List ((a : α) × β a)) (acc : List ((a : α) × β a))
     (h_acc : DistinctKeys acc) :
@@ -1763,18 +1807,6 @@ theorem toListModel_diff [BEq α] [EquivBEq α] [Hashable α] [LawfulHashable α
           apply getEntry_foldl_erase
           . rw [← heq1]
             exact hm₁.distinct
-          . sorry
-
-
-
-
-
-
-
-
-
-
-
 
 theorem wf_inter₀ [BEq α] [Hashable α] [LawfulHashable α]
     {m₁ m₂ : Raw α β} {h₁ : 0 < m₁.buckets.size} {h₂ : 0 < m₂.buckets.size} (h'₁ : m₁.WF)
