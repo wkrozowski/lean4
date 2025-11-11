@@ -349,17 +349,6 @@ This function ensures that the value is used linearly.
   else
     ∅
 
-/--
-Monadically computes a value by folding the given function over the mappings in the hash
-map in some order.
--/
-@[inline] def foldM (f : δ → (a : α) → β a → m δ) (init : δ) (b : Raw α β) : m δ :=
-  b.buckets.foldlM (fun acc l => l.foldlM f acc) init
-
-/-- Folds the given function over the mappings in the hash map in some order. -/
-@[inline] def fold (f : δ → (a : α) → β a → δ) (init : δ) (b : Raw α β) : δ :=
-  Id.run (b.foldM (pure <| f · · ·) init)
-
 namespace Internal
 
 /--
