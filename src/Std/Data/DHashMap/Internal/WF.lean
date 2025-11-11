@@ -1613,10 +1613,43 @@ theorem getEntry_foldl [BEq α] [EquivBEq α] (a : α) {acc l₁ l₂ : List ((a
       . exact hd
 
 theorem getEntry_filter_eraseKey_comm [BEq α] [EquivBEq α] (a : α)
-    (h : (a : α) × β a) (t acc : List ((a : α) × β a)) :
-    List.getEntry? a (List.filter (fun x => !(h.fst == x.fst) && !containsKey x.fst t) acc) =
-    List.getEntry? a (List.filter (fun x => !containsKey x.fst t) (eraseKey h.fst acc)) := by
-  sorry
+    (h : (a : α) × β a) (acc : List ((a : α) × β a)) (w : (a : α) × β a → Bool) (hd : DistinctKeys acc) :
+    List.getEntry? a (List.filter (fun x => !(h.fst == x.fst) && w x) acc) =
+    List.getEntry? a (List.filter w (eraseKey h.fst acc)) := by
+  rw [getEntry?_filter, getEntry?_filter, getEntry?_eraseKey]
+  split
+  case isTrue heq =>
+    simp [Option.filter]
+    split
+    case _ val heq2 =>
+      simp
+      intro hyp
+      rw [getEntry?_eq_some_iff] at heq2
+      . rw [PartialEquivBEq.trans heq heq2.1] at hyp
+        contradiction
+      . exact hd
+    case _ => rfl
+  case isFalse heq =>
+    simp at heq
+    simp [Option.filter]
+    split
+    case _ val heq2 =>
+      suffices (h.fst == val.fst) = false by
+        simp [this]
+      rw [getEntry?_eq_some_iff] at heq2
+      . replace heq2 := heq2.1
+        apply BEq.symm_false
+        apply Classical.byContradiction
+        intro hyp
+        simp at hyp
+        replace hyp := PartialEquivBEq.symm <| PartialEquivBEq.trans heq2 hyp
+        rw [hyp] at heq
+        contradiction
+      . exact hd
+    . rfl
+  . exact hd
+  . apply DistinctKeys.eraseKey hd
+  . exact hd
 
 theorem getEntry_foldl_erase_aux [BEq α] [EquivBEq α] (a : α)
     (l₁ l₂ : List ((a : α) × β a)) (acc : List ((a : α) × β a))
@@ -1651,7 +1684,9 @@ theorem getEntry_foldl_erase_aux [BEq α] [EquivBEq α] (a : α)
         congr
         rw [containsKey_cons]
       simp
-      have : List.getEntry? a (List.filter (fun x => !h.fst == x.fst && !containsKey x.fst t) acc) = List.getEntry? a (List.filter (fun x => !containsKey x.fst t) (eraseKey h.fst acc)) := by sorry
+      have : List.getEntry? a (List.filter (fun x => !h.fst == x.fst && !containsKey x.fst t) acc) = List.getEntry? a (List.filter (fun x => !containsKey x.fst t) (eraseKey h.fst acc)) := by
+        rw [getEntry_filter_eraseKey_comm]
+        exact hd_acc
       rw [this]
       apply ih
       . apply DistinctKeys.eraseKey hd_acc
@@ -1672,17 +1707,30 @@ theorem getEntry_foldl_erase_aux [BEq α] [EquivBEq α] (a : α)
         rw [containsKey_cons]
       simp
       have : List.getEntry? a (List.filter (fun x => !h.fst == x.fst && !containsKey x.fst t) acc) = List.getEntry? a (List.filter (fun x => !containsKey x.fst t) acc) := by
-        sorry
+        rw [getEntry_filter_eraseKey_comm]
+        rw [getEntry?_filter, getEntry?_filter]
+        . rw [getEntry?_eraseKey]
+          . split
+            case isTrue heq =>
+              by_cases heq2 : containsKey h.fst acc
+              case pos =>
+                specialize h_keys₁ h.fst heq2
+                rw [h_keys₁] at w
+                contradiction
+              case neg =>
+                simp [Option.filter]
+                simp at heq2
+                rw [containsKey_congr heq] at heq2
+                simp [getEntry?_eq_none.2 heq2]
+            case isFalse heq => rfl
+          . exact hd_acc
+        . exact hd_acc
+        . apply DistinctKeys.eraseKey hd_acc
+        . exact hd_acc
       rw [this]
       apply ih
       . exact hd_acc
       . exact h_keys₁
-
-
-
-
-
-
 
 theorem foldl_eraseKey_distinctKeys [BEq α] [PartialEquivBEq α] (l₁ l₂ : List ((a : α) × β a)) (acc : List ((a : α) × β a))
     (h_acc : DistinctKeys acc) :
@@ -1804,9 +1852,10 @@ theorem toListModel_diff [BEq α] [EquivBEq α] [Hashable α] [LawfulHashable α
           rw [← heq1]
           exact hm₁.distinct
         . intro a
-          apply getEntry_foldl_erase
+          apply getEntry_foldl_erase_aux
           . rw [← heq1]
             exact hm₁.distinct
+          . simp
 
 theorem wf_inter₀ [BEq α] [Hashable α] [LawfulHashable α]
     {m₁ m₂ : Raw α β} {h₁ : 0 < m₁.buckets.size} {h₂ : 0 < m₂.buckets.size} (h'₁ : m₁.WF)
