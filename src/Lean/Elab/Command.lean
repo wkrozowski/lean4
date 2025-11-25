@@ -9,7 +9,6 @@ prelude
 public import Lean.Meta.Diagnostics
 public import Lean.Elab.Binders
 public import Lean.Elab.Command.Scope
-public import Lean.Elab.SetOption
 import Lean.Elab.DeprecatedSyntax
 public meta import Lean.Parser.Command
 

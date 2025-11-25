@@ -93,6 +93,8 @@ def logLintIf [Monad m] [MonadLog m] [AddMessageContext m] [MonadOptions m] [Mon
 
 end Linter
 
+open Elab Command
+
 /--
 Given a command elaborator `cmd`, returns a new command elaborator that
 first evaluates any local `set_option ... in ...` clauses and then invokes `cmd` on what remains.
