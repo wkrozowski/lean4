@@ -13,16 +13,17 @@ structure EvalResult where
   value : Expr
   proof : Expr
 
+def mkRefl (e : Expr) : MetaM EvalResult := do
+  return {value := e, proof := (← mkEqRefl e) }
+
 mutual
  partial def evalCbv (e : Expr) : MetaM EvalResult := do
   match e with
   | .lam _ _ _ _ => return {value := e, proof := (← mkEqRefl e) }
   | .app fn arg =>
       evalApp fn arg
-  | .proj _ _ _ =>
-    let some reduced ← reduceProj? e | throwError "Could not reduce projection"
-    return {value := reduced, proof := (← mkEqRefl e) }
-  | _ => return {value := e, proof := (← mkEqRefl e) }
+  | _ => mkRefl e
+
 
   partial def evalApp (f arg : Expr) : MetaM EvalResult := do
     let ⟨fRes, fProof⟩ ← evalCbv f
@@ -38,7 +39,13 @@ mutual
       trace[Meta.Tactic] "We got: {appFn}"
       try
         let unfoldRes ← unfold (.app f arg) appFn
-        trace[Meta.Tactic] "We got: {unfoldRes.expr}, {unfoldRes.proof?}"
+        let fallback ← mkEqRefl (.app f arg)
+        let proof := Option.getD (unfoldRes.proof?) fallback
+        let resExpr := unfoldRes.expr
+        trace[Meta.Tactic] "res: {resExpr}"
+
+
+
       catch _ =>
         trace[Meta.Tactic] "Didnt succeed unfolding"
 
