@@ -1,10 +1,16 @@
-def myFun (n : Nat) : String :=
+inductive myNat where
+| myZero : myNat
+| mySucc : myNat → myNat
+
+def myFun (n : Nat) : Nat :=
   match n with
-  | .zero => "hi"
-  | .succ n => (myFun n) ++ "hi"
-termination_by n
+  | .zero => .zero
+  | .succ n => (myFun n).succ.succ
+--termination_by n
+
+def t : Nat → Nat := fun x => .zero
 
 set_option trace.Meta.Tactic true
-theorem two_plus_two_eq_four : myFun (.succ .zero) = "hihi" := by conv =>
+theorem test : myFun 0 = 0 := by conv =>
   lhs
   cbv
