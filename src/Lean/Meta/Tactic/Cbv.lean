@@ -4,100 +4,15 @@ prelude
 public import Lean.Meta.Tactic.Delta
 public import Lean.Meta.Tactic.Unfold
 public import Lean.Meta.Tactic.Simp.Main
+public import Lean.Meta.Tactic.Apply
+import Lean.Meta.Tactic.Assumption
+import Lean.Meta.Tactic.Refl
 
 public section
 
 namespace Lean.Meta
 
-structure EvalResult where
-  value : Expr
-  proof : Expr
-
-def mkRefl (e : Expr) : MetaM EvalResult := do
-  return {value := e, proof := (← mkEqRefl e) }
-
--- def isValue (e : Expr) : MetaM Bool := do
---   match e with
---   | .lam _ _ _ _ => return false
---   | .const name _ =>
---     let info ← getConstInfo name
---     return info.isCtor
---   | .app fn arg =>
---     if (← isValue fn) then
---       isValue arg
---     else
---       return false
---   | .forallE _ _ _ _ => return false
---   | .lit _ => return true
---   | .proj _ _ _ => return false
---   | .mdata _ e => isValue e
---   | .bvar _ => return false
---   | .letE _ _ _ _ _ => return false
---   | .sort _ => return true
---   | .mvar _ => return false
---   | .fvar _  => return false
-
--- mutual
---  partial def evalCbv (e : Expr) (fuel : Nat) : MetaM EvalResult := do
---   trace[Meta.Tactic] "Fuel is: {fuel}"
---   if (fuel = 0) then
---     throwError "ran out of fuel"
---   let isVal ← isValue e
---   if isVal then
---     trace[Meta.Tactic] "Returning, as detected a value {e}"
---     mkRefl e
---   else
---     match e with
---     | .lam _ _ _ _ => mkRefl e
---     | .app fn arg =>
---         evalApp fn arg (fuel - 1)
---     | .letE _ _ _ _ _ => evalCbv (← zetaReduce e) (fuel-1)
---     | .proj _ _ _ =>
---       let some reduced ← reduceProj? e | throwError "could not reduce projection"
---       evalCbv (reduced) (fuel-1)
-
---     | _ => mkRefl e
-
---   partial def evalApp (f arg : Expr) (fuel : Nat) : MetaM EvalResult := do
---     trace[Meta.Tactic] "fuel {fuel}, evaluating {f} with argument {arg}"
---     let ⟨fRes, fProof⟩ ← evalCbv f (fuel - 1)
---     let ⟨argRes, argProof⟩ ← evalCbv arg (fuel - 1)
---     trace[Meta.Tactic] "lhs : {f} -*-> {fRes}, {arg} -*-> {argRes}"
---     if fRes.isLambda then
---       evalCbv (← instantiateLambda f #[arg]) (fuel - 1)
---     else
---       let appFn := fRes.getAppFn.constName
---       let info ← getConstInfo appFn
---       trace[Elab.Meta] "info for Fn: {info.isCtor}"
---       match info with
---       | .axiomInfo _ => throwError "not Supported axiom"
---       | .thmInfo _   => throwError "not Supported thm"
---       | .opaqueInfo _  => throwError "not Supported opaque"
---       | .quotInfo _ => throwError "not Supported quot"
---       | .inductInfo _ => throwError "not Supported induct"
---       | .ctorInfo _ =>
---           let ⟨bodyRes, bodyProof⟩ ← evalCbv arg (fuel - 1)
-
---           let resProof ← mkCongrArg f bodyProof
---           return {value := mkApp f bodyRes, proof := resProof}
-
---       | .recInfo _ => throwError "not Supported rec"
---       | .defnInfo info   =>
---         let unfoldRes ← unfold (.app f arg) appFn
---         let fallback ← mkEqRefl (.app f arg)
---         let some proof := unfoldRes.proof? | throwError "Couldnt unfold"
---         let resExpr := unfoldRes.expr
---         if resExpr == (.app f arg) then
---           throwError "Didnt unfold"
---         trace[Meta.Tactic] "resExpr: {resExpr}"
---         let ⟨finalRes, finalProof⟩ ← evalCbv resExpr (fuel - 1)
---         let lhs ← mkCongr fProof argProof
---         let final ← mkEqTrans (← mkEqTrans lhs proof) finalProof
---         return {value := finalRes, proof := final}
-
--- end
-
-def genCongrEqn (n : Name) : MetaM Unit := do
+def genCongrEqn (n : Name) : MetaM Expr := do
   trace[Meta.Tactic] "generating congruence eqn out of {n}"
   let e ← mkConstWithLevelParams n
   let eTy ← inferType e
@@ -126,31 +41,101 @@ def genCongrEqn (n : Name) : MetaM Unit := do
         let res ← mkEqTrans hp (mkAppN e xs)
         let res ← mkLambdaFVars hFVars res
         let res ← mkLambdaFVars xs res
-        let res ← mkLambdaFVars unrestrictedFVars res
-        trace[Meta.Tactic] "res: {res}"
-        -- let decl ← mkThmOrUnsafeDef { name := ←mkFreshUserName `wojtek,
-        --                               levelParams := (← getConstInfo n).levelParams,
-        --                               type := ← inferType res,
-        --                               value := res}
-        -- addDecl decl
+        mkLambdaFVars unrestrictedFVars res
 
 
-
-
-    pure ()
-
-
-def genCongrEqns (n : Name) : MetaM Unit := do
+def genCongrEqns (n : Name) : MetaM (Array Expr) := do
   let some res ← getEqnsFor? n | throwError "no eqns found for {n}"
+  let mut eqns := #[]
   for eqn in res do
-    genCongrEqn eqn
+    eqns := eqns.push (← genCongrEqn eqn)
+  return eqns
 
+
+structure EvalResult where
+  value : Expr
+  proof : Expr
+
+def mkRefl (e : Expr) : MetaM EvalResult := do
+  return {value := e, proof := (← mkEqRefl e) }
+
+def isValue (e : Expr) : MetaM Bool := do
+  match e with
+  | .lam _ _ _ _ => return false
+  | .const name _ =>
+    let info ← getConstInfo name
+    return info.isCtor
+  | .app fn arg =>
+    if (← isValue fn) then
+      isValue arg
+    else
+      return false
+  | .forallE _ _ _ _ => return false
+  | .lit _ => return true
+  | .proj _ _ _ => return false
+  | .mdata _ e => isValue e
+  | .bvar _ => return false
+  | .letE _ _ _ _ _ => return false
+  | .sort _ => return true
+  | .mvar _ => return false
+  | .fvar _  => return false
+
+mutual
+ partial def evalCbv (e : Expr) : MetaM EvalResult := do
+  let isVal ← isValue e
+  if isVal then
+    trace[Meta.Tactic] "Returning, as detected a value {e}"
+    mkRefl e
+  else
+    match e with
+    | .lam _ _ _ _ => mkRefl e
+    | .app _ _ =>
+        evalApp e
+    | .letE _ _ _ _ _ => evalCbv (← zetaReduce e)
+    | .proj _ _ _ => mkRefl e
+
+    | _ => mkRefl e
+
+  partial def evalApp (e : Expr) : MetaM EvalResult := do
+   trace[Meta.Tactic] "Evaluating application {e.getAppFn} {e.getAppArgs}"
+   if e.getAppFn.isConst then
+    let name := e.getAppFn.constName
+    trace[Meta.Tactic] "name: {name}"
+    let eqns ← genCongrEqns name
+    trace[Meta.Tactic] "eqns: {eqns}"
+    let rhsId ← mkFreshMVarId
+    let rhs ← mkFreshExprMVarWithId rhsId
+
+    trace[Meta.Tactic] "unfolded: {rhs}"
+    let goalType ← mkEq e rhs
+    let goal ← mkFreshExprMVar goalType
+    let state ← saveState
+    trace[Meta.Tactic] "goal: {goal}"
+    for eqn in eqns do
+      trace[Meta.Tactic] "Trying: {eqn}"
+      try
+        let newGoals ← goal.mvarId!.apply eqn
+        for goal in newGoals do
+          if !(← goal.isAssigned) then
+            trace[Meta.Tactic] "Solving it using refl"
+            goal.refl
+            trace[Meta.Tactic] "Assigned after refl: {← goal.isAssigned}"
+        break
+      catch _ =>
+        trace[Meta.Tactic] "Restoring state"
+        restoreState state
+    let goal ← instantiateMVars goal
+    let some (_, _, rhs) := (← inferType goal).eq? | throwError "Expected equation"
+    return {value := rhs, proof := goal}
+
+   else
+    mkRefl e
+
+end
 def cbv (e : Expr) : MetaM EvalResult := do
   trace[Meta.Tactic] "Trying to evaluate expression {e}"
   trace[Meta.Tactic] "The function is: {e.getAppFn.constName}"
-  genCongrEqns e.getAppFn.constName
-
-  mkRefl e
+  evalCbv e
 
 
 
