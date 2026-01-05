@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Leonardo de Moura
 -/
 module
-
 prelude
 public import Lean.Meta.AppBuilder
 public import Lean.Compiler.CSimpAttr
@@ -12,9 +11,8 @@ public import Lean.Compiler.ImplementedByAttr
 public import Lean.Compiler.LCNF.Bind
 public import Lean.Compiler.NeverExtractAttr
 import Lean.Meta.CasesInfo
-
+import Lean.Meta.WHNF
 public section
-
 namespace Lean.Compiler.LCNF
 namespace ToLCNF
 
@@ -613,12 +611,12 @@ where
     let arity := 6
     etaIfUnderApplied e arity do
       let mut args := e.getAppArgs
-      let α := args[0]!
-      let r := args[1]!
+      let α ← visitAppArg args[0]!
+      let r ← visitAppArg args[1]!
       let f ← visitAppArg args[3]!
       let q ← visitAppArg args[5]!
       let .const _ [u, _] := e.getAppFn | unreachable!
-      let invq ← mkAuxLetDecl (.const ``Quot.lcInv [u] #[.type α, .type r, q])
+      let invq ← mkAuxLetDecl (.const ``Quot.lcInv [u] #[α, r, q])
       match f with
       | .erased => return .erased
       | .type _ => unreachable!
