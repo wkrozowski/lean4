@@ -21,7 +21,7 @@ def isSuc (n : Nat) : Bool :=
 def t : Nat → Nat := fun x => .zero
 
 set_option trace.Meta.Tactic true
-theorem test : myFun 0 = 0 := by
+theorem test : myFun2 0 0  = 0 := by
   conv =>
     lhs
     cbv

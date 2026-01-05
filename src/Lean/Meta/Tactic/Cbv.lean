@@ -43,12 +43,45 @@ def genCongrEqn (n : Name) : MetaM Expr := do
         let res ← mkLambdaFVars xs res
         mkLambdaFVars unrestrictedFVars res
 
+partial def myTelescope (e : Expr) (patterns : Array Expr) (f : Array Expr → Array Expr  → Expr → MetaM α) : MetaM α :=
+  go e patterns #[] #[]
+    where
+  go (e : Expr) (patterns : Array Expr) (accUr accHs : Array Expr) : MetaM α := match
+    patterns with
+    | #[] => f accUr accHs e
+    | _ => do
+      lambdaBoundedTelescope e 1 fun xs body => do
+        let accUr := accUr ++ xs
+        lambdaBoundedTelescope (←whnf (mkApp body patterns[0]!)) 1 fun ys body => do
+          let accHs := accHs ++ ys
+          go body (patterns.extract 1) accUr accHs
+
+def genCongrEqn' (n : Name) : MetaM Expr := do
+  trace[Meta.Tactic] "generating congruence eqn out of {n}"
+  let e ← mkConstWithLevelParams n
+  forallTelescope (← inferType e) fun xs eqBody => do
+    let some (_, lhs, _) := eqBody.eq? | throwError "Expected equation"
+    let func := lhs.getAppFn
+    let patterns := lhs.getAppArgs
+    let otherCongr ← mkHCongr func
+    myTelescope otherCongr.proof patterns fun unrestricted heqs eqType => do
+      let applied := mkAppN e xs
+      trace[Meta.Tactic] "applied: {←mkHEqOfEq applied}, eqType: {eqType}"
+      let res ← mkHEqTrans eqType (←mkHEqOfEq applied)
+      let res ← mkLambdaFVars heqs res
+      let res ← mkLambdaFVars xs res
+      let res ← mkLambdaFVars unrestricted res
+      trace[Meta.Tactic] "generated eqn: {res}"
+
+
+
+    return otherCongr.proof
 
 def genCongrEqns (n : Name) : MetaM (Array Expr) := do
   let some res ← getEqnsFor? n | throwError "no eqns found for {n}"
   let mut eqns := #[]
   for eqn in res do
-    eqns := eqns.push (← genCongrEqn eqn)
+    eqns := eqns.push (← genCongrEqn' eqn)
   return eqns
 
 
@@ -133,9 +166,16 @@ mutual
 
 end
 def cbv (e : Expr) : MetaM EvalResult := do
-  trace[Meta.Tactic] "Trying to evaluate expression {e}"
-  trace[Meta.Tactic] "The function is: {e.getAppFn.constName}"
-  evalCbv e
+  let appFn := e.getAppFn
+  let name := appFn.constName!
+  let res ← genCongrEqns name
+  trace[Meta.Tactic] "congr eqns for {name}: {res}"
+
+
+  mkRefl e
+  -- trace[Meta.Tactic] "Trying to evaluate expression {e}"
+  -- trace[Meta.Tactic] "The function is: {e.getAppFn.constName}"
+  -- evalCbv e
 
 
 
