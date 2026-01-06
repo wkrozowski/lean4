@@ -13,15 +13,23 @@ def myFun2 (n m : Nat) :=
   | .zero => m
   | .succ n => myFun2 n m.succ
 
+#check myFun2.eq_2
+
 def isSuc (n : Nat) : Bool :=
   match n with
   | .zero => false
   | .succ _ => true
 
+def vecFun (n : Nat) (v : Vector Nat n) : Nat := match n with
+| 0 => v.size + n
+| Nat.succ m => vecFun m (v.tail) + n
+
 def t : Nat → Nat := fun x => .zero
 
+#check @vecFun.eq_1
+
 set_option trace.Meta.Tactic true
-theorem test : myFun2 0 0  = 0 := by
+theorem test : vecFun 0 #v[] = 0 := by
   conv =>
     lhs
     cbv

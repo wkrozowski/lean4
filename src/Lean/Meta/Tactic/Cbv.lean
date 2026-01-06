@@ -69,6 +69,7 @@ def genCongrHEqn (n : Name) : MetaM Expr := do
       let mut res := otherCongr.proof
       for ((uf, pv), hv) in toApply do
         res := mkAppN res #[uf, pv, hv]
+      res ← mkHEqTrans res (← mkHEqOfEq (mkAppN e xs))
       res ← mkLambdaFVars heqs res
       res ← mkLambdaFVars xs res
       res ← mkLambdaFVars unrestricted res
@@ -80,7 +81,6 @@ def genCongrEqns (n : Name) : MetaM (Array Expr) := do
   for eqn in res do
     eqns := eqns.push (← genCongrHEqn eqn)
   return eqns
-
 
 structure EvalResult where
   value : Expr
@@ -137,7 +137,7 @@ mutual
     let rhs ← mkFreshExprMVarWithId rhsId
 
     trace[Meta.Tactic] "unfolded: {rhs}"
-    let goalType ← mkEq e rhs
+    let goalType ← mkHEq e rhs
     let goal ← mkFreshExprMVar goalType
     let state ← saveState
     trace[Meta.Tactic] "goal: {goal}"
@@ -145,8 +145,8 @@ mutual
       trace[Meta.Tactic] "Trying: {eqn}"
       try
         let newGoals ← goal.mvarId!.apply eqn
+        trace[Meta.Tactic] "Applied, new goals: {newGoals}"
         for goal in newGoals do
-          if !(← goal.isAssigned) then
             trace[Meta.Tactic] "Solving it using refl"
             goal.refl
             trace[Meta.Tactic] "Assigned after refl: {← goal.isAssigned}"
@@ -155,6 +155,9 @@ mutual
         trace[Meta.Tactic] "Restoring state"
         restoreState state
     let goal ← instantiateMVars goal
+    trace[Meta.Tactic] "After applying eqns, goal: {goal}"
+    let goal ← mkEqOfHEq goal
+    trace[Meta.Tactic] "Final goal: {goal}"
     let some (_, _, rhs) := (← inferType goal).eq? | throwError "Expected equation"
     return {value := rhs, proof := goal}
 
@@ -163,16 +166,9 @@ mutual
 
 end
 def cbv (e : Expr) : MetaM EvalResult := do
-  let appFn := e.getAppFn
-  let name := appFn.constName!
-  let res ← genCongrEqns name
-  trace[Meta.Tactic] "congr eqns for {name}: {res}"
-
-
-  mkRefl e
-  -- trace[Meta.Tactic] "Trying to evaluate expression {e}"
-  -- trace[Meta.Tactic] "The function is: {e.getAppFn.constName}"
-  -- evalCbv e
+  trace[Meta.Tactic] "Trying to evaluate expression {e}"
+  trace[Meta.Tactic] "The function is: {e.getAppFn.constName}"
+  evalCbv e
 
 
 
