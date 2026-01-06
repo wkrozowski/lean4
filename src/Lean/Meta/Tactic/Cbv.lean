@@ -12,37 +12,6 @@ public section
 
 namespace Lean.Meta
 
-def genCongrEqn (n : Name) : MetaM Expr := do
-  trace[Meta.Tactic] "generating congruence eqn out of {n}"
-  let e ← mkConstWithLevelParams n
-  let eTy ← inferType e
-  forallTelescope eTy fun xs eqBody => do
-    let some (_, lhs, rhs) := eqBody.eq? | throwError "Expected equation"
-    let func := lhs.getAppFn
-    let patterns := lhs.getAppArgs
-    trace[Meta.Tactic] "func: {func}, patterns: {patterns}, rhs: {rhs}"
-
-    let patternTypes ← patterns.mapM inferType
-    let unrestricatedNames ← patternTypes.mapM (fun _ => mkFreshUserName `x)
-
-    withLocalDeclsDND (unrestricatedNames.zip patternTypes) fun unrestrictedFVars => do
-      let eqTypes := unrestrictedFVars.zip patterns
-      let eqTypes ← eqTypes.mapM (fun (ufv, pat) => mkEq ufv pat)
-      let hypNames ← eqTypes.mapM (fun _ => mkFreshUserName `h)
-      withLocalDeclsDND (hypNames.zip eqTypes) fun hFVars => do
-        trace[Meta.Tactic] "unrestricted fvars: {unrestrictedFVars}, hFVars: {hFVars}"
-        let otherCongr ← mkHCongr func
-        let some congr ← mkCongrSimp? func | throwError "failed"
-        trace[Meta.Tactic] "otherCongr: {otherCongr.type}, og: {congr.type}"
-        let mut hp := congr.proof
-        let toApply := (unrestrictedFVars.zip patterns).zip hFVars
-        for ((ufv, pv), heq) in toApply do
-          hp := mkAppN hp #[ufv, pv, heq]
-        let res ← mkEqTrans hp (mkAppN e xs)
-        let res ← mkLambdaFVars hFVars res
-        let res ← mkLambdaFVars xs res
-        mkLambdaFVars unrestrictedFVars res
-
 partial def traverseHCongr (e : Expr) (patterns : Array Expr) (f : Array Expr → Array Expr  → Expr → MetaM α) : MetaM α :=
   go e patterns #[] #[]
     where
@@ -90,6 +59,9 @@ def mkRefl (e : Expr) : MetaM EvalResult := do
   return {value := e, proof := (← mkEqRefl e) }
 
 def isValue (e : Expr) : MetaM Bool := do
+  if (←inferType e).isProp then
+    return true
+  else
   match e with
   | .lam _ _ _ _ => return false
   | .const name _ =>
@@ -97,7 +69,7 @@ def isValue (e : Expr) : MetaM Bool := do
     return info.isCtor
   | .app fn arg =>
     if (← isValue fn) then
-      isValue arg
+        isValue arg
     else
       return false
   | .forallE _ _ _ _ => return false
@@ -110,8 +82,75 @@ def isValue (e : Expr) : MetaM Bool := do
   | .mvar _ => return false
   | .fvar _  => return false
 
+def tryCongEqns (e : Expr) : MetaM EvalResult := do
+  let name := e.getAppFn.constName
+  let eqns ← genCongrEqns name
+  let rhsId ← mkFreshMVarId
+  let rhs ← mkFreshExprMVarWithId rhsId
+
+  trace[Meta.Tactic] "unfolded: {rhs}"
+  let goalType ← mkHEq e rhs
+  let goal ← mkFreshExprMVar goalType
+  let state ← saveState
+  for eqn in eqns do
+    try
+      let newGoals ← goal.mvarId!.apply eqn
+      for goal in newGoals do
+          let goalType ← goal.getType
+          if goalType.isHEq then
+            goal.hrefl
+          if goalType.isEq then
+            goal.refl
+      break
+    catch _ =>
+      trace[Meta.Tactic] "Restoring state"
+      restoreState state
+  let goal ← instantiateMVars goal
+  guard !goal.hasMVar
+  trace[Meta.Tactic] "After applying eqns, goal: {goal}"
+  let goal ← mkEqOfHEq goal
+  trace[Meta.Tactic] "Final goal: {goal}"
+  let some (_, _, rhs) := (← inferType goal).eq? | throwError "Expected equation"
+  return {value := rhs, proof := goal}
+
+def tryUnfold (e : Expr) (args : Array EvalResult) : MetaM EvalResult := do
+  assert! e.getAppFn.isConst
+  let name := e.getAppFn.constName
+  let withValArguments := mkAppN (e.getAppFn) (args.map (·.value))
+  trace[Meta.Tactic] "Trying to unfold {name} with args {withValArguments}"
+  let otherCongr ← mkHCongr e.getAppFn
+  trace[Meta.Tactic] "Congruence lemma: {otherCongr.proof}"
+  let hCongrArgs := (e.getAppArgs.zip (args.map (·.value))).zip (args.map (·.proof))
+  trace[Meta.Tactic] "hCongrArgs: {hCongrArgs}"
+  let mut congrProof := otherCongr.proof
+  for (((arg, val), prf), type) in hCongrArgs.zip otherCongr.argKinds do
+    if type == .heq then
+      congrProof := mkAppN congrProof #[arg, val, (←mkHEqOfEq prf)]
+    else
+      congrProof := mkAppN congrProof #[arg, val, prf]
+  let unfoldRes ← unfold withValArguments name
+  let goalType ← mkEq withValArguments unfoldRes.expr
+  let proof ← mkFreshExprMVar goalType
+  if unfoldRes.proof?.isSome then
+    proof.mvarId!.assign unfoldRes.proof?.get!
+  else
+    proof.mvarId!.refl
+  let proof ← instantiateMVars proof
+  let proof ← mkHEqOfEq proof
+  try
+    let res ← mkHEqTrans congrProof proof
+    let res ← mkEqOfHEq res
+    return {value := unfoldRes.expr, proof := res}
+  catch _ =>
+    trace[Meta.Tactic] "proof: {proof}, congrProof: {congrProof}"
+    throwError "Caught the error"
+
+
+
+
 mutual
  partial def evalCbv (e : Expr) : MetaM EvalResult := do
+
   let isVal ← isValue e
   if isVal then
     trace[Meta.Tactic] "Returning, as detected a value {e}"
@@ -121,49 +160,53 @@ mutual
     | .lam _ _ _ _ => mkRefl e
     | .app _ _ =>
         evalApp e
-    | .letE _ _ _ _ _ => evalCbv (← zetaReduce e)
-    | .proj _ _ _ => mkRefl e
-
+    | .letE _ _ _ _ _ => return ⟨(← zetaReduce e), (← mkEqRefl e)⟩
+    | .proj _ _ _ =>  do
+      trace[Meta.Tactic] "Reducing projection {e}"
+      let some reduced ← reduceProj? e | throwError "Failed to reduce projection {e}"
+      return ⟨(reduced), (← mkEqRefl e)⟩
     | _ => mkRefl e
 
   partial def evalApp (e : Expr) : MetaM EvalResult := do
-   trace[Meta.Tactic] "Evaluating application {e.getAppFn} {e.getAppArgs}"
-   if e.getAppFn.isConst then
-    let name := e.getAppFn.constName
-    trace[Meta.Tactic] "name: {name}"
-    let eqns ← genCongrEqns name
-    trace[Meta.Tactic] "eqns: {eqns}"
-    let rhsId ← mkFreshMVarId
-    let rhs ← mkFreshExprMVarWithId rhsId
-
-    trace[Meta.Tactic] "unfolded: {rhs}"
-    let goalType ← mkHEq e rhs
-    let goal ← mkFreshExprMVar goalType
-    let state ← saveState
-    trace[Meta.Tactic] "goal: {goal}"
-    for eqn in eqns do
-      trace[Meta.Tactic] "Trying: {eqn}"
-      try
-        let newGoals ← goal.mvarId!.apply eqn
-        trace[Meta.Tactic] "Applied, new goals: {newGoals}"
-        for goal in newGoals do
-            trace[Meta.Tactic] "Solving it using refl"
-            goal.refl
-            trace[Meta.Tactic] "Assigned after refl: {← goal.isAssigned}"
-        break
-      catch _ =>
-        trace[Meta.Tactic] "Restoring state"
-        restoreState state
-    let goal ← instantiateMVars goal
-    trace[Meta.Tactic] "After applying eqns, goal: {goal}"
-    let goal ← mkEqOfHEq goal
-    trace[Meta.Tactic] "Final goal: {goal}"
-    let some (_, _, rhs) := (← inferType goal).eq? | throwError "Expected equation"
-    return {value := rhs, proof := goal}
-
-   else
-    mkRefl e
-
+    trace[Meta.Tactic] "Evaluating application {e.getAppFn} {e.getAppArgs}"
+    if e.getAppFn.isConst then
+      trace[Meta.Tactic] "Function is a constant"
+      let args ← e.getAppArgs.mapM evalCbv
+      let reduceResult ← reduceRecMatcher? e
+      if reduceResult.isSome then
+        return ⟨reduceResult.get!, ←mkEqRefl e⟩
+      else
+        tryUnfold e args
+    else
+      if e.getAppFn.isLambda then
+        let args := e.getAppArgs
+        let ⟨argVal, argProof⟩ ← evalCbv args[0]!
+        let remainingArgs := args.extract 1
+        trace[Meta.Tactic] "body reduces to: {argVal}"
+        let mut newBody ← instantiateLambda e.getAppFn #[argVal]
+        let mut proof1 := argProof
+        try
+          proof1 ← mkCongrArg e.getAppFn argProof
+        catch _ =>
+          let hcongr ← mkHCongrWithArity e.getAppFn 1
+          proof1 := mkAppN hcongr.proof #[args[0]!, argVal, ←mkHEqOfEq (argProof)]
+          proof1 ← mkEqOfHEq proof1
+        let goal2 ← mkEq (mkApp e.getAppFn argVal) newBody
+        let proof2 ← mkFreshExprMVar goal2
+        proof2.mvarId!.refl
+        let mut proof3 ← mkEqTrans proof1 proof2
+        for arg in remainingArgs do
+          proof3 ← mkCongrFun proof3 arg
+        newBody := mkAppN newBody remainingArgs
+        return ⟨newBody, proof3⟩
+      else
+        let ⟨funVal, funProof⟩ ← evalCbv e.getAppFn
+        let args := e.getAppArgs
+        let newRes := mkAppN funVal args
+        let mut newProof := funProof
+        for arg in args do
+          newProof ← mkCongrFun newProof arg
+        return ⟨newRes, newProof⟩
 end
 def cbv (e : Expr) : MetaM EvalResult := do
   trace[Meta.Tactic] "Trying to evaluate expression {e}"
