@@ -43,31 +43,90 @@ def t : Nat → Nat := fun x => .zero
 
 set_option trace.Meta.Tactic true
 
-theorem test : "h" ++ "" = "h" := by
+def broken (n : Nat) : Nat → Nat := match n with
+| 0 => fun x => match x with
+                | 0 => 0
+                | n + 1 => n
+| n + 1 => fun x => x + n
+
+#check broken.eq_unfold
+
+
+theorem myTest : (fun x => x) 1 = 1  := by
   conv =>
     lhs
     cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-    cbv
-  sorry
 
 
-#print test
+
+-- theorem test : "h" ++ "" = "h" := by
+--   conv =>
+--     lhs
+--     cbv
+--     dsimp
+--     cbv
+--     cbv
+--     dsimp
+--     cbv
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+--     cbv
+--     dsimp
+
+def ident := String deriving BEq, Repr, Hashable
+
+inductive aexp : Type where
+  | CONST (n : Int)               -- a constant, or
+  | VAR (x : ident)               -- a variable, or
+  | PLUS (a1 : aexp) (a2 : aexp)  -- a sum of two expressions, or
+  | MINUS (a1 : aexp) (s2 : aexp) -- a difference of two expressions
+
+
+def store : Type := ident → Int
+
+def mymeasure (a : aexp) : Nat :=
+   match a with
+  | .CONST n => 1
+  | .VAR x => 1
+  | .PLUS a1 a2 => mymeasure a1 + mymeasure a2 + 1
+  | .MINUS a1 a2 => mymeasure a1 + mymeasure a2 + 1
+
+def aeval (s : store) (a : aexp) : Int :=
+  match a with
+  | .CONST n => n
+  | .VAR x => s x
+  | .PLUS a1 a2 => aeval s a1 + aeval s a2
+  | .MINUS a1 a2 => aeval s a1 - aeval s a2
+    termination_by (mymeasure a)
+    decreasing_by
+    all_goals grind [mymeasure]
+
+theorem leroy1 : aeval (λ _ => 2) (.PLUS (.VAR "x") (.MINUS (.VAR "x") (.CONST 1))) = 3 := by simp [aeval]
+
+#print leroy1
