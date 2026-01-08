@@ -161,11 +161,14 @@ partial def cbvCore (goal : MVarId) : MetaM Unit := do
               assert! e.getAppNumArgs = matcherInfo.arity
               let ⟨lower, upper⟩ := matcherInfo.getDiscrRange
               let discrs := e.getAppArgs.extract lower upper
-              trace[Meta.Tactic] "congrEqns: {congrEqns}"
-              trace[Meta.Tactic] "discrs: {discrs}"
-              trace[Meta.Tactic] "motive: {e.getAppArgs[matcherInfo.getMotivePos]!}"
+              let motive := e.getAppArgs[matcherInfo.getMotivePos]!
               let ⟨altLower, altUpper⟩ := matcherInfo.getAltRange
-              trace[Meta.Tactic] "alts: {e.getAppArgs.extract altLower altUpper}"
+              let alts := e.getAppArgs.extract altLower altUpper
+              let congrEqns := congrEqns.map (fun x => mkAppN x (#[motive] ++ discrs ++ alts))
+              trace[Meta.Tactic] "congrEqns: {congrEqns}"
+              let res ← goal.apply congrEqns[0]!
+
+              trace[Meta.Tactic] "res: {res}"
               throwError "matcher case"
             else
               if info.isCtor then
