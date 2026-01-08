@@ -157,8 +157,15 @@ partial def cbvCore (goal : MVarId) : MetaM Unit := do
               let levels := e.getAppFn.constLevels!
               let congrEqns ← Match.genMatchCongrEqns e.getAppFn.constName!
               let congrEqns := congrEqns.map (fun x => mkConst x levels)
+              -- We do not handle overapplied matchers
+              assert! e.getAppNumArgs = matcherInfo.arity
+              let ⟨lower, upper⟩ := matcherInfo.getDiscrRange
+              let discrs := e.getAppArgs.extract lower upper
               trace[Meta.Tactic] "congrEqns: {congrEqns}"
-              trace[Meta.Tactic] "matcherInfo: {matcherInfo.numDiscrs}, {matcherInfo.numParams}"
+              trace[Meta.Tactic] "discrs: {discrs}"
+              trace[Meta.Tactic] "motive: {e.getAppArgs[matcherInfo.getMotivePos]!}"
+              let ⟨altLower, altUpper⟩ := matcherInfo.getAltRange
+              trace[Meta.Tactic] "alts: {e.getAppArgs.extract altLower altUpper}"
               throwError "matcher case"
             else
               if info.isCtor then

@@ -52,11 +52,13 @@ def broken (n : Nat) : Nat → Nat := match n with
 #check myInc.eq_unfold
 
 
-def boolFun (b : Bool ) : Bool := match b with
-  | true => false
-  | false => true
+def boolFun (b : Bool ) : Bool := match b, b with
+  | true, true => false
+  | false, false => true
+  | true, false => false
+  | false, true => false
 
-theorem myTest : (true, true) = (true, true) := by
+theorem myTest : boolFun false = true:= by
   conv =>
     lhs
     cbv
