@@ -122,21 +122,8 @@ mutual
       let solvedDiscriminants := discriminantsGoals.map (Expr.mvar ·)
 
       trace[Meta.Tactic] "Discriminants are: {solvedDiscriminants}"
-      let remaining ← goal.apply congrEqns[1]!
-      trace[Meta.Tactic] "remaining: {remaining}"
-      -- let solution ← congrEqns.firstM (tryMatchCongrEqns · solvedDiscriminants)
-      -- trace[Meta.Tactic] "solution: {solution}"
-      -- let [] ← goal.apply solution | throwError "didnt expect any subgoals"
-      throwError "breakpoint"
-
-      -- let some (_, _, _, b) := (← inferType solution).heq? | throwError "Heternogenous equality expected"
-      -- let rhs ← extractRhsFromGoal goal
-      -- let newGoalType ← mkHEq b rhs
-      -- let continueGoal ← mkFreshExprMVar newGoalType
-      -- cbvCore continueGoal.mvarId!
-      -- trace[Meta.Tactic] "newGoalType: {newGoalType}, solution: {solution}"
-      -- let res ← mkHEqTrans solution (← instantiateMVars continueGoal)
-      -- let remaining ← goal.apply res
+      let solution ← congrEqns.firstM (tryMatchCongrEqns · solvedDiscriminants)
+      let [] ← goal.apply solution | throwError "failed applying"
       -- discard <| remaining.mapM (MVarId.hrefl)
 
 
