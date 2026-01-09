@@ -106,115 +106,160 @@ def makeGoalWithRhs (e : Expr) : MetaM (MVarId × MVarId) := do
   let goalType ← mkHEq e rhs
   return ((← mkFreshExprMVar goalType).mvarId!, rhs.mvarId!)
 
-def mkMainGoalFrom (e : Expr) : MetaM MVarId := do
-  let rhs ← mkFreshExprMVarWithId (← mkFreshMVarId)
-  let goalType ← mkEq e rhs
-  let eqMVar := (← mkFreshExprMVar goalType).mvarId!
-  eqMVar.eqOfHEq
-
-partial def cbvCore (goal : MVarId) : MetaM Unit := do
-  trace[Meta.Tactic] "Called {← goal.getType}"
+def extractLhsFromGoal (goal : MVarId) : MetaM Expr := do
   let type ← goal.getType
-  let some (_, e, _, f) := type.heq? | throwError "Expected HEq"
-  trace[Meta.Tactic] "The expression is: {e}"
+  let some (_, e, _, _) := type.heq? | throwError "Expected HEq"
+  return e
+
+def extractRhsFromGoal (goal : MVarId) : MetaM Expr := do
+  let type ← goal.getType
+  let some (_, _, _, e) := type.heq? | throwError "Expected HEq"
+  return e
+
+/- We expect that goal is a heterogenous equality -/
+def tryValue (goal : MVarId) : MetaM Unit := do
+  let e ← extractLhsFromGoal goal
   if (← isValue e) then
     goal.hrefl
-    let proof ← instantiateMVars (.mvar goal)
-    trace[Meta.Tactic] "The resulting proof is : {proof}"
   else
-    if e.isFVar then
-      goal.assumption
-    else
-      if e.isApp then
-        trace[Meta.Tactic] "{e} is an application"
-        if e.getAppFn.isLambda then
-          trace[Meta.Tactic] "evaluating lambda"
-          let arg := e.getAppArgs
-          assert! arg.size = 1 -- for now we assume that we can only apply lambdas of arity one
-          let arg := arg[0]!
-          goal.withContext do
-            let newGoal ← makeGoalFrom arg
-            cbvCore newGoal
-            let (fvars, generalizedGoal) ← goal.generalize #[{expr := arg, hName? := ← mkFreshUserName `h}]
-            generalizedGoal.withContext do
-              let new ← mkEqSymm (.fvar fvars[1]!)
-              let new ← mkHEqOfEq new
-              let new ← mkHEqTrans new (.mvar newGoal)
-              let ⟨_, uponReplacement, _⟩ ← generalizedGoal.replace fvars[1]! new
-              let goalType ← uponReplacement.getType
-              let some (_, lhs, _, rhs) := goalType.heq? | throwError "heq expected"
-              let newGoal ← mkHEq (lhs.headBeta) rhs
-              let uponSubst ← uponReplacement.change newGoal
-              cbvCore uponSubst
-              trace[Meta.Tactic] "evaluated lambda"
-        else
-          trace[Meta.Tactic] "is Assigned: {← goal.isAssigned}"
-          if (e.getAppFn.isConst) then
-            let info ← getConstInfo e.getAppFn.constName
-            let matcherInfo ← getMatcherInfo? e.getAppFn.constName!
-            if matcherInfo.isSome then
-              let matcherInfo := matcherInfo.get!
-              let levels := e.getAppFn.constLevels!
-              let congrEqns ← Match.genMatchCongrEqns e.getAppFn.constName!
-              let congrEqns := congrEqns.map (fun x => mkConst x levels)
-              -- We do not handle overapplied matchers
-              assert! e.getAppNumArgs = matcherInfo.arity
-              let ⟨lower, upper⟩ := matcherInfo.getDiscrRange
-              let discrs := e.getAppArgs.extract lower upper
-              let motive := e.getAppArgs[matcherInfo.getMotivePos]!
-              let ⟨altLower, altUpper⟩ := matcherInfo.getAltRange
-              let alts := e.getAppArgs.extract altLower altUpper
-              let congrEqns := congrEqns.map (fun x => mkAppN x (#[motive] ++ discrs ++ alts))
-              trace[Meta.Tactic] "congrEqns: {congrEqns}"
-              let res ← goal.apply congrEqns[0]!
+    throwError "The left hand side {e} of the goal {← goal.getType} is not a value."
 
-              trace[Meta.Tactic] "res: {res}"
-              throwError "matcher case"
-            else
-              if info.isCtor then
-                trace[Meta.Tactic] "is const"
-                let numArgs := e.getAppNumArgs
-                let levels := e.getAppFn.constLevels!
-                let some congrThm ← mkHCongrWithArityForConst? e.getAppFn.constName levels numArgs | throwError "could not genereate congruence theorem for constructor"
-                let args := e.getAppArgs
-                goal.withContext do
-                  let mut congrThmProof := congrThm.proof
-                  for (arg, argKind) in args.zip congrThm.argKinds do
-                    let (proof, rhs) ← makeGoalWithRhs arg
-                    cbvCore proof
-                    congrThmProof := mkAppN congrThmProof #[arg, (Expr.mvar rhs)]
-                    if argKind == .eq then
-                      congrThmProof := mkApp congrThmProof (← mkEqOfHEq (.mvar proof))
-                    else
-                      congrThmProof := (.mvar proof)
-                    goal.assign congrThmProof
-              else
-                let name := e.getAppFn.constName
-                let levels := e.getAppFn.constLevels!
-                let some unfoldEq ← getConstUnfoldEqnFor? name | throwError
-                "cannot be unfolded"
-                let unfoldEq := mkConst unfoldEq levels
-                let unfoldEqTy ← inferType unfoldEq
-                trace[Meta.Tactic] "unfoldEqTy: {unfoldEqTy}"
-                let some (_,_,rhs) := unfoldEqTy.eq? | throwError "equality expected"
-                let newLhs := mkAppN rhs e.getAppArgs
-                let newGoalType ← mkHEq newLhs f
-                goal.withContext do
-                  let newGoal ← mkFreshExprMVar newGoalType
-                  cbvCore newGoal.mvarId!
-                  -- We create fvar of the type of the lhs
-                  let funType ← inferType e.getAppFn
-                  let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default  funType fun var => do
-                    let theoremLhs := mkAppN var e.getAppArgs
-                    let theoremBody ← mkHEq theoremLhs f
-                    mkLambdaFVars #[var] theoremBody
-                  let congrArg ← mkCongrArg congrArgFun unfoldEq
-                  let congrArg ← mkAppOptM ``Eq.mpr #[.none, .none, congrArg, newGoal]
-                  goal.assign congrArg
-                  trace[Meta.Tactic] "is Assigned: {← goal.isAssigned}"
-                  return
+mutual
+  partial def handleUnfolding (goal : MVarId) : MetaM Unit := do
+    let e ← extractLhsFromGoal goal
+    guard e.isApp
+    let f := e.getAppFn
+    guard f.isConst
+    let name := f.constName
+    let some unfoldEq ← getConstUnfoldEqnFor? name | throwError
+                  "Could not obtain unfold equation for: {name}"
+    let unfoldEq := mkConst unfoldEq f.constLevels!
+    let some (_,_,rhs) := (←inferType unfoldEq).eq? | throwError "fatal error : equality expected at {←inferType unfoldEq}"
+    let newGoalType ← mkHEq (mkAppN rhs e.getAppArgs) (← extractRhsFromGoal goal)
+    trace[Meta.Tactic] "newGoalType: {newGoalType}"
+
+
+    trace[Meta.Tactic] "Unfold equation is: {unfoldEq}"
+
+  partial def handleLambda (goal : MVarId) : MetaM Unit := do
+    let e ← extractLhsFromGoal goal
+    guard e.isApp
+    let lambdaFn := e.getAppFn
+    let args := e.getAppArgs
+    guard lambdaFn.isLambda
+    -- For now we assume that there is only one argument to a lambda function
+    guard (args.size == 1)
+    let headArg := args[0]!
+    goal.withContext do
+      let valGoal ← makeGoalFrom headArg
+      cbvCore valGoal
+      let (fvars, generalizedGoal) ← goal.generalize #[{expr := headArg, hName? := ← mkFreshUserName `h}]
+      -- Since we abstract only one goal we should have two fvars in the context
+      assert! (fvars.size = 2)
+      generalizedGoal.withContext do
+        let newHyp ← mkEqSymm (.fvar fvars[1]!)
+        let newHyp ← mkHEqOfEq newHyp
+        let newHyp ← mkHEqTrans newHyp (.mvar valGoal)
+        let ⟨_, uponReplacement, _⟩ ← generalizedGoal.replace fvars[1]! newHyp
+        -- We now perform a beta reduction
+        let some (_, lhs, _, rhs) := (← uponReplacement.getType).heq? | throwError "Heternogenous equality expected, instead got {← uponReplacement.getType}"
+        let betaReducedGoal ← mkHEq (lhs.headBeta) rhs
+        let betaReduced ← uponReplacement.change betaReducedGoal
+        trace[Meta.Tactic] "Continuing with goal: {betaReducedGoal}"
+        cbvCore betaReduced
+
+
+  partial def cbvCore (goal : MVarId) : MetaM Unit := do
+    trace[Meta.Tactic] "Called {← goal.getType}"
+    let type ← goal.getType
+    let some (_, e, _, f) := type.heq? | throwError "Expected HEq"
+    trace[Meta.Tactic] "The expression is: {e}"
+    tryValue goal <|> do
+      if e.isFVar then
+        goal.assumption
+      else
+        if e.isApp then
+          trace[Meta.Tactic] "{e} is an application"
+          if e.getAppFn.isLambda then
+            handleLambda goal
           else
-            throwError "Unhandled case"
+            trace[Meta.Tactic] "is Assigned: {← goal.isAssigned}"
+            if (e.getAppFn.isConst) then
+              let info ← getConstInfo e.getAppFn.constName
+              let matcherInfo ← getMatcherInfo? e.getAppFn.constName!
+              if matcherInfo.isSome then
+                let matcherInfo := matcherInfo.get!
+                -- We do not handle overapplied matchers
+                assert! e.getAppNumArgs = matcherInfo.arity
+                let congrEqns ← Match.genMatchCongrEqns e.getAppFn.constName!
+                let congrEqns := congrEqns.map (fun x => mkAppN (mkConst x e.getAppFn.constLevels!) e.getAppArgs)
+                trace[Meta.Tactic] "congrEqns: {congrEqns}"
+                let congrEqn := congrEqns[1]!
+                trace[Meta.Tactic] "Processing equation: {congrEqn}"
+                goal.withContext do
+                  let (hyps, _, eqType) ← forallMetaTelescope (← inferType congrEqn)
+                  let hyps := hyps.map (·.mvarId!)
+                  for hyp in hyps do
+                    let hypType ← hyp.getType
+                    if hypType.isEq then
+                      let res ← hyp.eqOfHEq
+                      res.assumption
+                  let res := mkAppN congrEqn (hyps.map (.mvar ·))
+                  goal.assign res
+                  let res ← instantiateMVars <| .mvar goal
+                  trace[Meta.Tactic] "res: {res}"
+
+                  throwError "stop processing"
+
+                throwError "matcher case"
+              else
+                if info.isCtor then
+                  trace[Meta.Tactic] "is const"
+                  let numArgs := e.getAppNumArgs
+                  let levels := e.getAppFn.constLevels!
+                  let some congrThm ← mkHCongrWithArityForConst? e.getAppFn.constName levels numArgs | throwError "could not genereate congruence theorem for constructor"
+                  let args := e.getAppArgs
+                  goal.withContext do
+                    let mut congrThmProof := congrThm.proof
+                    for (arg, argKind) in args.zip congrThm.argKinds do
+                      let (proof, rhs) ← makeGoalWithRhs arg
+                      cbvCore proof
+                      congrThmProof := mkAppN congrThmProof #[arg, (Expr.mvar rhs)]
+                      if argKind == .eq then
+                        congrThmProof := mkApp congrThmProof (← mkEqOfHEq (.mvar proof))
+                      else
+                        congrThmProof := (.mvar proof)
+                      goal.assign congrThmProof
+                else
+                  handleUnfolding goal
+                  throwError "breakpoint"
+                  -- let name := e.getAppFn.constName
+                  -- let levels := e.getAppFn.constLevels!
+                  -- let some unfoldEq ← getConstUnfoldEqnFor? name | throwError
+                  -- "cannot be unfolded"
+                  -- let unfoldEq := mkConst unfoldEq levels
+                  -- let unfoldEqTy ← inferType unfoldEq
+                  -- trace[Meta.Tactic] "unfoldEqTy: {unfoldEqTy}"
+                  -- let some (_,_,rhs) := unfoldEqTy.eq? | throwError "equality expected"
+                  -- let newLhs := mkAppN rhs e.getAppArgs
+                  -- let newGoalType ← mkHEq newLhs f
+                  -- goal.withContext do
+                  --   let newGoal ← mkFreshExprMVar newGoalType
+                  --   cbvCore newGoal.mvarId!
+                  --   -- We create fvar of the type of the lhs
+                  --   let funType ← inferType e.getAppFn
+                  --   let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default  funType fun var => do
+                  --     let theoremLhs := mkAppN var e.getAppArgs
+                  --     let theoremBody ← mkHEq theoremLhs f
+                  --     mkLambdaFVars #[var] theoremBody
+                  --   let congrArg ← mkCongrArg congrArgFun unfoldEq
+                  --   let congrArg ← mkAppOptM ``Eq.mpr #[.none, .none, congrArg, newGoal]
+                  --   goal.assign congrArg
+                  --   trace[Meta.Tactic] "is Assigned: {← goal.isAssigned}"
+                  --   return
+            else
+              throwError "Unhandled case"
+end
 
 def cbv (e : Expr) : MetaM EvalResult := do
 
