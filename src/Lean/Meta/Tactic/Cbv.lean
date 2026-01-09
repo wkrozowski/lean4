@@ -97,7 +97,6 @@ mutual
     let hyps := hyps.map Expr.mvar
     return mkAppN congrEqn hyps
 
-
   partial def tryMatcher (goal : MVarId) : MetaM Unit := do
     let e ← extractLhsFromGoal goal
     let f := e.getAppFn
@@ -124,8 +123,6 @@ mutual
       trace[Meta.Tactic] "Discriminants are: {solvedDiscriminants}"
       let solution ← congrEqns.firstM (tryMatchCongrEqns · solvedDiscriminants)
       let [] ← goal.apply solution | throwError "failed applying"
-      -- discard <| remaining.mapM (MVarId.hrefl)
-
 
   partial def handleCtor (goal : MVarId) : MetaM Unit := do
     let e ← extractLhsFromGoal goal
@@ -143,8 +140,8 @@ mutual
           congrThmProof := mkApp congrThmProof (← mkEqOfHEq (.mvar proof))
         else
           congrThmProof := (.mvar proof)
-        goal.assign congrThmProof
-        trace[Meta.Tactic] "ctor goal: {goal}"
+      goal.assign congrThmProof
+      trace[Meta.Tactic] "ctor goal: {goal}"
 
   partial def handleUnfolding (goal : MVarId) : MetaM Unit := do
     let e ← extractLhsFromGoal goal
