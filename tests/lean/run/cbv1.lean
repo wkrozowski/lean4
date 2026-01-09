@@ -6,18 +6,20 @@ inductive myNat where
 
 def myId (n : Nat) : Nat := n
 
-def natFun (n : Nat) : Bool := match n with
-  | .zero => false
-  | .succ _ => true
+def natFun (n : Nat) : Nat := match n with
+  | .zero => .zero
+  | .succ n => natFun n
 
 def myRev (b : Bool) : Nat := match b with
   | true => .zero
   | false => Nat.zero.succ
 
-theorem myTest0 : (fun x => x) true = true := by
+theorem myTest0 : natFun (Nat.zero.succ) = Nat.zero := by
   conv =>
     lhs
     cbv
+
+
 
 
 

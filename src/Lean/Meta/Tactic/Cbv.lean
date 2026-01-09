@@ -122,10 +122,12 @@ mutual
       let solvedDiscriminants := discriminantsGoals.map (Expr.mvar ·)
 
       trace[Meta.Tactic] "Discriminants are: {solvedDiscriminants}"
-
-      let solution ← congrEqns.firstM (tryMatchCongrEqns · solvedDiscriminants)
-      trace[Meta.Tactic] "solution: {solution}"
-      let [] ← goal.apply solution | throwError "didnt expect any subgoals"
+      let remaining ← goal.apply congrEqns[1]!
+      trace[Meta.Tactic] "remaining: {remaining}"
+      -- let solution ← congrEqns.firstM (tryMatchCongrEqns · solvedDiscriminants)
+      -- trace[Meta.Tactic] "solution: {solution}"
+      -- let [] ← goal.apply solution | throwError "didnt expect any subgoals"
+      throwError "breakpoint"
 
       -- let some (_, _, _, b) := (← inferType solution).heq? | throwError "Heternogenous equality expected"
       -- let rhs ← extractRhsFromGoal goal
@@ -188,6 +190,7 @@ mutual
 
   partial def handleLambda (goal : MVarId) : MetaM Unit := do
     let e ← extractLhsFromGoal goal
+    let rhs ← extractRhsFromGoal goal
     guard e.isApp
     let lambdaFn := e.getAppFn
     let args := e.getAppArgs
@@ -198,27 +201,18 @@ mutual
     goal.withContext do
       let valGoal ← makeGoalFrom headArg
       cbvCore valGoal
-      let evaluatedVal ← inferType (.mvar valGoal)
-      let some (_, _, _, evaluatedVal) := evaluatedVal.heq? | throwError "heq expected"
-      let (argFVar ,test) ← goal.note (← mkFreshUserName `x) headArg
-      test.withContext do
-        let (_, test2) ← test.note (← mkFreshUserName `h) (.mvar valGoal) (← mkEq (.fvar argFVar) evaluatedVal)
-        trace[Meta.Tactic] "test2: {test2}, evaluatedVal: {evaluatedVal}"
-        throwError "sorry"
-      let (fvars, generalizedGoal) ← goal.generalize #[{expr := headArg, hName? := ← mkFreshUserName `h}]
-      -- Since we abstract only one goal we should have two fvars in the context
-      assert! (fvars.size = 2)
+      let argType ← inferType headArg
+      let newMVarType : Expr ← withLocalDeclD (← mkFreshUserName `x) argType fun argVar => do
+        let eqType ← mkHEq argVar (←extractRhsFromGoal valGoal)
+        withLocalDeclD (←mkFreshUserName `h) eqType fun eqType => do
+          let body ← mkHEq (← instantiateLambda lambdaFn #[argVar]) rhs
+          mkForallFVars #[argVar, eqType] body
+      let newMVar ← mkFreshExprMVar newMVarType
+      let toFill := mkAppN newMVar #[headArg, (.mvar valGoal)]
+      goal.assign toFill
+      let (_, generalizedGoal) ← newMVar.mvarId!.introN 2
       generalizedGoal.withContext do
-        let newHyp ← mkEqSymm (.fvar fvars[1]!)
-        let newHyp ← mkHEqOfEq newHyp
-        let newHyp ← mkHEqTrans newHyp (.mvar valGoal)
-        let ⟨_, uponReplacement, _⟩ ← generalizedGoal.replace fvars[1]! newHyp
-        -- We now perform a beta reduction
-        let some (_, lhs, _, rhs) := (← uponReplacement.getType).heq? | throwError "Heternogenous equality expected, instead got {← uponReplacement.getType}"
-        let betaReducedGoal ← mkHEq (lhs.headBeta) rhs
-        let betaReduced ← uponReplacement.change betaReducedGoal
-        trace[Meta.Tactic] "Continuing with goal: {betaReducedGoal}"
-        cbvCore betaReduced
+        cbvCore generalizedGoal
 
   partial def cbvCore (goal : MVarId) : MetaM Unit := do
     let e ← extractLhsFromGoal goal
