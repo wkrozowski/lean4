@@ -158,7 +158,9 @@ mutual
     goal.withContext do
       let unfoldedGoal ← mkFreshExprMVar newGoalType
       cbvCore unfoldedGoal.mvarId!
-      trace[Meta.Tactic] "UnfoldedGoal: {unfoldedGoal.mvarId!}"
+      let unfoldedGoalMVarID := unfoldedGoal.mvarId!
+      let unfoldedGoal ← instantiateMVars unfoldedGoal
+      guard (← unfoldedGoalMVarID.isAssigned)
       -- Then we prepare to fill the goal
       let fType ← inferType f
       let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default fType fun var => do
