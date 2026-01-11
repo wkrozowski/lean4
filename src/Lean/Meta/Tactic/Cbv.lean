@@ -135,12 +135,18 @@ mutual
       for (arg, argKind) in args.zip congrThm.argKinds do
         let (proof, rhs) ← makeGoalWithRhs arg
         cbvCore proof
-        congrThmProof := mkAppN congrThmProof #[arg, (Expr.mvar rhs)]
+        let evalResult ← instantiateMVars (.mvar proof)
+        let evalResultType ← inferType evalResult
+        let some (_, _, _, value) := evalResultType.heq? | throwError "Expected heterogenous equality"
+        trace[Meta.Tactic] "evalResult: {evalResult}, value: {value}"
+        congrThmProof := mkAppN congrThmProof #[arg, value]
         if argKind == .eq then
-          congrThmProof := mkApp congrThmProof (← mkEqOfHEq (.mvar proof))
+          congrThmProof := mkApp congrThmProof (← mkEqOfHEq (evalResult))
         else
           congrThmProof := (.mvar proof)
+      assert! (!congrThmProof.hasMVar)
       goal.assign congrThmProof
+      trace[Meta.Tactic] "congrThmProof: {congrThmProof}"
       trace[Meta.Tactic] "ctor goal: {goal}"
 
   partial def handleUnfolding (goal : MVarId) : MetaM Unit := do
