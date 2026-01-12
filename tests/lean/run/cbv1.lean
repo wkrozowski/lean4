@@ -1,47 +1,15 @@
 set_option trace.Meta.Tactic true
 
-inductive myNat where
-  | myZero : myNat
-  | mySucc : myNat → myNat
-
 def myId (n : myNat) : myNat := n
 
-def natFun (n : myNat) : myNat := match n with
-  | .myZero => .myZero
-  | .mySucc n => (natFun n).mySucc
+def natFun (n : Nat) : Nat := match n with
+  | 0 => 0
+  | n + 1 => (natFun n).succ
   termination_by n
 
-def myRev (b : Bool) : Nat := match b with
-  | true => .zero
-  | false => Nat.zero.succ
-
-theorem myTest0 : natFun (myNat.myZero.mySucc.mySucc.mySucc.mySucc) = (myNat.myZero.mySucc.mySucc.mySucc.mySucc) := by
+theorem myTest0 : (fun x y => y) (myId 1) (myId 2) = 2:= by
   conv =>
     lhs
     cbv
-    cbv
-    cbv
-    cbv
-    cbv
-
-
-theorem myTest1 : (myId .myZero).mySucc.mySucc = myNat.myZero := by
-  conv =>
-    lhs
-    cbv
-  sorry
-
-
-
-
-#print myTest0
-
-
-
-
-
-
-
-
 
 #print myTest0
