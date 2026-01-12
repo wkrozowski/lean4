@@ -49,7 +49,7 @@ def isValue (e : Expr) : MetaM Bool := do
   | .bvar _ => return false
   | .letE _ _ _ _ _ => return false
   | .sort _ => return true
-  | .mvar _ => return false
+  | .mvar _ => throwError "Trying to evaluate an unassigned metavariable"
   | .fvar _  => return false
 
 def makeGoalFrom (e : Expr) : MetaM MVarId := do
@@ -57,10 +57,6 @@ def makeGoalFrom (e : Expr) : MetaM MVarId := do
   let goalType ← mkHEq e rhs
   return (← mkFreshExprMVar goalType).mvarId!
 
-def makeGoalWithRhs (e : Expr) : MetaM (MVarId × MVarId) := do
-  let rhs ← mkFreshExprMVarWithId (← mkFreshMVarId)
-  let goalType ← mkHEq e rhs
-  return ((← mkFreshExprMVar goalType).mvarId!, rhs.mvarId!)
 
 def extractLhsFromGoal (goal : MVarId) : MetaM Expr := do
   let type ← goal.getType
@@ -93,8 +89,14 @@ mutual
         if (hypTy.isEq) then
           let heqGoal ← hyp.eqOfHEq
           tryClosingGoal solvedDiscriminants heqGoal <|> throwError "applying didnt work"
-    assert! (← hyps.allM (·.isAssigned))
+    unless (← hyps.allM (·.isAssigned)) do
+      throwError "Not all goals are assigned"
+
     let hyps := hyps.map Expr.mvar
+    let hyps ← hyps.mapM instantiateMVars
+    let res := mkAppN congrEqn hyps
+    if res.hasMVar then
+      throwError "result has unassigned mvars"
     return mkAppN congrEqn hyps
 
   partial def tryMatcher (goal : MVarId) : MetaM Unit := do
@@ -122,7 +124,12 @@ mutual
 
       trace[Meta.Tactic] "Discriminants are: {solvedDiscriminants}"
       let solution ← congrEqns.firstM (tryMatchCongrEqns · solvedDiscriminants)
-      let [] ← goal.apply solution | throwError "failed applying"
+      let some (_, _, _, solutionValue) := (← inferType solution).heq? | throwError "Heterogenous equality expected"
+      let newGoal ← makeGoalFrom solutionValue
+      cbvCore newGoal
+      let rhsResult ← instantiateMVars (.mvar newGoal)
+      let toAssign ← mkHEqTrans solution rhsResult
+      let [] ← goal.apply toAssign | throwError "could not apply"
 
   partial def handleCtor (goal : MVarId) : MetaM Unit := do
     let e ← extractLhsFromGoal goal
@@ -133,7 +140,7 @@ mutual
     goal.withContext do
       let mut congrThmProof := congrThm.proof
       for (arg, argKind) in args.zip congrThm.argKinds do
-        let (proof, rhs) ← makeGoalWithRhs arg
+        let proof ← makeGoalFrom arg
         cbvCore proof
         let evalResult ← instantiateMVars (.mvar proof)
         let evalResultType ← inferType evalResult
