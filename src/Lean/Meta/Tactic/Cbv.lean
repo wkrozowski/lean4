@@ -312,12 +312,30 @@ trace[Meta.Tactic] "{e} is an application"
           let [] ← goal.apply <| .fvar result.get! | throwError "Could not unify"
         else
           goal.hrefl
-      | .proj .. =>
-        let some reducedLhs ← reduceProj? e | throwError "Error while reducing a projection"
-        let rhs ← extractRhsFromGoal goal
-        let newGoalType ← mkHEq reducedLhs rhs
-        let changed ← goal.change newGoalType
-        cbvCore context changed
+      | .proj typeName idx val =>
+        let newGoal ← makeGoalFrom val
+        cbvCore context newGoal
+        let proof ← instantiateMVars <| Expr.mvar newGoal
+        let proof ← mkEqOfHEq proof
+        let some (_, _, rhs) := (← inferType proof).eq? | throwError "expected an equality"
+        let goalRhs ← extractRhsFromGoal goal
+        let rhsType ← inferType rhs
+        let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default rhsType fun var => do
+          let theoremLhs := .proj typeName idx var
+          let theoremBody ← mkHEq theoremLhs goalRhs
+          mkLambdaFVars #[var] theoremBody
+        let congrArg ← mkCongrArg congrArgFun proof
+        let congrArg ← mkAppOptM ``Eq.mpr #[.none, .none, congrArg]
+        let newValue := Expr.proj typeName idx rhs
+        let some newValue ← reduceProj? newValue | throwError "Could not reduce"
+        goal.withContext do
+          let continuedGoal ← mkHEq newValue goalRhs
+          let continuedGoal ← mkFreshExprMVar continuedGoal
+          let continuedGoal := continuedGoal.mvarId!
+          cbvCore context continuedGoal
+          let proof ← instantiateMVars <| .mvar continuedGoal
+          let congrArg := Expr.app congrArg proof
+          goal.assign congrArg
       | .mvar _ => throwError "Cannot evaluate metavariables"
       | .bvar _ => throwError "Cannot evaluate bound variable"
       | .mdata .. => throwError "not implemented yet"

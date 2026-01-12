@@ -15,7 +15,7 @@ def test (b : Bool) : Bool := match b,(!b) with
 
 #check test.match_1.congr_eq_4
 
-theorem myTest0 : 2 * 2 = 4 := by
+theorem myTest0 : "a" ++ "a" = "aa" := by
   conv =>
     lhs
     cbv
@@ -43,6 +43,12 @@ def store : Type := ident → Int
   | .VAR x => s x
   | .PLUS a1 a2 => aeval s a1 + aeval s a2
   | .MINUS a1 a2 => aeval s a1 - aeval s a2
+
+/- Cannot get Deciddable.rec working -/
+theorem myTest : String.utf8EncodeChar 'b' = sorry := by
+  conv =>
+    lhs
+    cbv
 
 inductive bexp : Type where
   | TRUE                              -- always true
@@ -92,7 +98,9 @@ inductive com : Type where
       else
         .some s
 
-/- Violates an assertion -/
+#check cexec_bounded.match_1.splitter
+
+/- Violates an assertion that deals with match compilation -/
 theorem cexec1 : cexec_bounded 1 (fun _ => 0) (.SKIP) = sorry := by
   conv =>
     lhs
