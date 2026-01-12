@@ -20,6 +20,15 @@ theorem myTest0 : "a" ++ "a" = "aa" := by
     lhs
     cbv
 
+def myFun : Unit → Nat × Nat := fun _ => (1,2)
+
+theorem projectionTest : (myFun ()).1 = 1 := by
+  conv =>
+    lhs
+    cbv
+
+#print projectionTest
+
 def ident := String deriving BEq, Repr, Hashable
 
 /-
@@ -46,6 +55,27 @@ def store : Type := ident → Int
 
 /- Cannot get Deciddable.rec working -/
 theorem myTest : String.utf8EncodeChar 'b' = sorry := by
+  conv =>
+    lhs
+    cbv
+
+structure Point where
+  x : Nat
+  y : Nat
+
+theorem pointTest : ({x := 21, y := 37} : Point).x = 21 := by
+  conv =>
+    lhs
+    cbv
+
+
+theorem hadd_issue : (instHAdd : HAdd Nat Nat Nat) = sorry := by
+  conv =>
+    lhs
+    cbv
+
+
+theorem modTest : 2 + 2 = 4 := by
   conv =>
     lhs
     cbv

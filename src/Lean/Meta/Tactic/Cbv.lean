@@ -195,7 +195,7 @@ mutual
           congrThmProof := mkApp congrThmProof (← mkEqOfHEq (evalResult))
         else
           congrThmProof := (.mvar proof)
-      assert! (!congrThmProof.hasMVar)
+      --assert! (!congrThmProof.hasMVar)
       goal.assign congrThmProof
       trace[Meta.Tactic] "congrThmProof: {congrThmProof}"
       trace[Meta.Tactic] "ctor goal: {goal}"
@@ -260,7 +260,7 @@ mutual
         cbvCore (context.insert value fvar) generalizedGoal
 
   partial def handleApplication (e : Expr) (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
-trace[Meta.Tactic] "{e} is an application"
+    trace[Meta.Tactic] "{e} is an application with arguments {e.getAppArgs}"
           if e.getAppFn.isLambda then
             handleLambda context goal
           else
@@ -301,6 +301,25 @@ trace[Meta.Tactic] "{e} is an application"
                 goal.assign congrArg
                 guard (← goal.isAssigned)
 
+  partial def handleProjection (typeName : Name) (idx : Nat) (e : Expr) (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
+    trace[Meta.Tactic] "Handling projection expression of the type {typeName}, index {idx} and inner expression {e}"
+    let innerGoal ← makeGoalFrom e
+    cbvCore context innerGoal
+    throwError "try breaking here"
+    let innerGoalProof ← instantiateMVars <| .mvar <| innerGoal
+    let some (_, _, _, innerGoalValue) := (← inferType innerGoalProof).heq? | throwError "Expected heterogenous equality at {e}"
+    trace[Meta.Tactic] "{e} evaluates to {innerGoalValue} with proof {innerGoalProof}"
+
+    let newGoalLhs := Expr.proj typeName idx innerGoalValue
+    let some newGoalLhs ← reduceProj? newGoalLhs | throwError "Could not reduce projection"
+    let newGoalRhs ← extractRhsFromGoal goal
+    let newGoalType ← mkHEq newGoalLhs newGoalRhs
+    goal.withContext do
+      let newGoal ← mkFreshExprMVar newGoalType
+      trace[Meta.Tactic] "newGoal: {newGoal}"
+      throwError "breakpoint"
+
+
   partial def cbvCore (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
     let e ← extractLhsFromGoal goal
     trace[Meta.Tactic] "The expression is: {e}"
@@ -313,29 +332,7 @@ trace[Meta.Tactic] "{e} is an application"
         else
           goal.hrefl
       | .proj typeName idx val =>
-        let newGoal ← makeGoalFrom val
-        cbvCore context newGoal
-        let proof ← instantiateMVars <| Expr.mvar newGoal
-        let proof ← mkEqOfHEq proof
-        let some (_, _, rhs) := (← inferType proof).eq? | throwError "expected an equality"
-        let goalRhs ← extractRhsFromGoal goal
-        let rhsType ← inferType rhs
-        let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default rhsType fun var => do
-          let theoremLhs := .proj typeName idx var
-          let theoremBody ← mkHEq theoremLhs goalRhs
-          mkLambdaFVars #[var] theoremBody
-        let congrArg ← mkCongrArg congrArgFun proof
-        let congrArg ← mkAppOptM ``Eq.mpr #[.none, .none, congrArg]
-        let newValue := Expr.proj typeName idx rhs
-        let some newValue ← reduceProj? newValue | throwError "Could not reduce"
-        goal.withContext do
-          let continuedGoal ← mkHEq newValue goalRhs
-          let continuedGoal ← mkFreshExprMVar continuedGoal
-          let continuedGoal := continuedGoal.mvarId!
-          cbvCore context continuedGoal
-          let proof ← instantiateMVars <| .mvar continuedGoal
-          let congrArg := Expr.app congrArg proof
-          goal.assign congrArg
+        handleProjection typeName idx val context goal
       | .mvar _ => throwError "Cannot evaluate metavariables"
       | .bvar _ => throwError "Cannot evaluate bound variable"
       | .mdata .. => throwError "not implemented yet"
