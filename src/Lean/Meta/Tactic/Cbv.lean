@@ -287,6 +287,7 @@ mutual
               cbvCore funArg
               let funArgProof ← instantiateMVars <| .mvar <| funArg
               let funArgProof ← mkEqOfHEq funArgProof
+
               trace[Meta.Tactic] "We need to handle: {funArgProof}"
               throwError "Unhandled case"
         if e.isProj then
