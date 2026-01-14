@@ -1,40 +1,42 @@
-set_option trace.Meta.Tactic true
--- def myId (n : myNat) : myNat := n
+theorem dependentMatchIssue : [2,3,4].length = 3 := by
+  conv =>
+    lhs
+    cbv
 
--- def natFun (n : Nat) : Nat := match n with
---   | 0 => 0
---   | n + 1 => (natFun n).succ
+def myFun (n : Nat) : Nat :=
+  match n with
+  | 0 => 0
+  | n + 1 => (myFun n) + 1
+  termination_by id n
+
+/- We need to be able to normalize this to a `OfNat.ofNat` -/
+theorem myFunCbv : myFun 170 = 170 := by
+  conv =>
+    lhs
+    cbv
+
+/--
+error: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+-/
+#guard_msgs in
+theorem myFunSimp : myFun 170 = 170 := by
+  simp [myFun]
 
 
--- def test (b : Bool) : Bool := match b,(!b) with
--- | true, true => false
--- | false, true => false
--- | true, false => false
--- | false, false => true
+/- Triggers an error due to having free variables under the lambda -/
 
--- #check test.match_1.congr_eq_4
+/--
+error: Tactic `hrefl` failed
 
-
--- theorem ite_test : (fun x => decide (x > 3)) 4 = true := by simp
-
--- #print ite_test
-
--- theorem myTest0 : "a" ++ "a" = "aa" := by
---   conv =>
---     lhs
---     cbv
-
--- def myFun (ls : List Nat) : Bool :=
---   match ls with
---   | [] => false
---   | _ :: tl => !(myFun tl)
-
--- theorem myFunTest : myFun [1] = true := by
---   conv =>
---     lhs
---     cbv
-
-theorem projectionTest : ([] : List Nat).length = 0 := by
+x✝ : Bool
+h✝ : x✝ ≍ false
+⊢ (fun x => if true = true then x✝ else true) ≍ ?m.13
+-/
+#guard_msgs in
+theorem free_variable_issue : (fun y => (fun x : Nat => if true then y else true)) false = (fun _ => false) := by
   conv =>
     lhs
     cbv

@@ -68,7 +68,6 @@ partial def isValue (e : Expr) : MetaM Bool := do
   | .app .. =>
     let fn := e.getAppFn
     let args := e.getAppArgs
-    trace[Meta.Tactic] "Checking what kind of application {e} is"
     match fn with
     | .const name _ =>
       let info ← getConstInfo name
@@ -116,11 +115,8 @@ def extractRhsFromGoal (goal : MVarId) : MetaM Expr := do
 
 /- We expect that goal is a heterogenous equality -/
 def tryValue (goal : MVarId) : MetaM Unit := do
-  trace[Meta.Tactic] "Called tryValue"
   let e ← extractLhsFromGoal goal
-  trace[Meta.Tactic] "lhs is: {e}"
   if (← isValue e) then
-    trace[Meta.Tactic] "Stopping with value: {e}"
     goal.hrefl
   else
     throwError "The left hand side {e} of the goal {← goal.getType} is not a value."
@@ -134,20 +130,7 @@ def tryFilterMapM(f : α → MetaM β) (arr : Array α) : MetaM (Array β) :=
       return none
 
 def tryClosingGoal (candidates : Array Expr) (goal : MVarId) : MetaM Unit := do
-  let mut candidates := candidates
-  let oldCandidatesLen := candidates.size
-  if (← goal.getType).isEq then
-    candidates ← tryFilterMapM mkEqOfHEq candidates
-    trace[Meta.Tactic] "Triggered: old: {oldCandidatesLen}, {candidates.size}, goal: {goal}, candidates: {candidates}"
-  try
-    for candidate in candidates do
-      let isDefEq ← isDefEq (← inferType candidate) (← goal.getType)
-      trace[Meta.Tactic] "isDefEq: {isDefEq}"
-
     candidates.firstM (do let [] ← goal.apply · | throwError "Produces subgoals")
-  catch e =>
-    trace[Meta.Tactic] "inner exception: {e.toMessageData}"
-    throwError "rethrow"
 
 mutual
   partial def tryMatchCongrEqns (congrEqn : Expr) (solvedDiscriminants : Array Expr) : MetaM Expr := do
@@ -229,13 +212,11 @@ partial def tryMatcher (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit
     goal.withContext do
       let mut congrThmProof := congrThm.proof
       for (arg, argKind) in args.zip congrThm.argKinds do
-        trace[Meta.Tactic] "ctor: arg: {arg}, arg.isFVar: {arg.isFVar}"
         let proof ← makeGoalFrom arg
         cbvCore context proof
         let evalResult ← instantiateMVars (.mvar proof)
         let evalResultType ← inferType evalResult
         let some (_, _, _, value) := evalResultType.heq? | throwError "Expected heterogenous equality"
-        trace[Meta.Tactic] "evalResult: {evalResult}, value: {value}"
         congrThmProof := mkAppN congrThmProof #[arg, value]
         if argKind == .eq then
           congrThmProof := mkApp congrThmProof (← mkEqOfHEq (evalResult))
@@ -282,12 +263,10 @@ partial def handleUnfolding (context : FVarIdMap FVarId) (goal : MVarId) : MetaM
     let e ← extractLhsFromGoal goal
     trace[Meta.Tactic] "Evaluating lambda expression: {e} with arguments {e.getAppArgs} and type {← inferType e}"
     let rhs ← extractRhsFromGoal goal
-    trace[Meta.Tactic] "Outer goal RHS: {rhs}, isMVar: {rhs.isMVar}"
     assert! e.isApp
     let lambdaFn := e.getAppFn
     let args := e.getAppArgs
     assert! lambdaFn.isLambda
-    trace[Meta.Tactic] "Lambda arguments: {args}"
     let headArg := args[0]!
     let remainingArgs := args.extract 1
     goal.withContext do
@@ -296,7 +275,6 @@ partial def handleUnfolding (context : FVarIdMap FVarId) (goal : MVarId) : MetaM
       let valProof ← instantiateMVars <| .mvar valGoal
       let some (_, _, _, value) := (← inferType valProof).heq? | throwError "Heterogenous equality expected"
       assert! !value.hasMVar
-      trace[Meta.Tactic] "valProof: {valProof}, value: {value}"
 
       let argType ← inferType headArg
       let newMVarType : Expr ← withLocalDeclD (← mkFreshUserName `x) argType fun argVar => do
@@ -305,7 +283,6 @@ partial def handleUnfolding (context : FVarIdMap FVarId) (goal : MVarId) : MetaM
           let newBody := (Expr.app lambdaFn argVar).headBeta
           let newBody := mkAppN newBody remainingArgs
           let body ← mkHEq newBody rhs
-          trace[Meta.Tactic] "Created forall type with body: {body}"
           mkForallFVars #[argVar, eqType] body
       let newMVar ← mkFreshExprMVar newMVarType
       let toFill := mkAppN newMVar #[headArg, (← instantiateMVars <| .mvar valGoal)]
@@ -314,95 +291,99 @@ partial def handleUnfolding (context : FVarIdMap FVarId) (goal : MVarId) : MetaM
       generalizedGoal.withContext do
         trace[Meta.Tactic] "Adding to context: {Expr.fvar value} : {Expr.fvar fvar} "
         cbvCore (context.insert value fvar) generalizedGoal
-        trace[Meta.Tactic] "After solving generalizedGoal, checking if assigned: {← generalizedGoal.isAssigned}"
-        let generalizedGoalProof ← instantiateMVars (.mvar generalizedGoal)
-        trace[Meta.Tactic] "Generalized goal proof: {generalizedGoalProof}"
 
   partial def handleApplication (e : Expr) (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
     trace[Meta.Tactic] "{e} is an application with arguments {e.getAppArgs}"
-          if e.getAppFn.isLambda then
-            handleLambda context goal
-          else
-            trace[Meta.Tactic] "is Assigned: {← goal.isAssigned}"
-            if (e.getAppFn.isConst) then
-              let info ← getConstInfo e.getAppFn.constName
-              let matcherInfo ← getMatcherInfo? e.getAppFn.constName!
-              if matcherInfo.isSome then
-                tryMatcher context goal
-              else
-                match info with
-                | .defnInfo _ => handleUnfolding context goal
-                | .ctorInfo _ => handleCtor context goal
-                | .recInfo recInfo =>
-                  let some congrThm ← mkHCongrWithArityForConst? recInfo.name (e.getAppFn.constLevels!) (← getFunInfo (e.getAppFn)).getArity | throwError "Could not get congruence theorems for recursor"
-                   goal.withContext do
-                    let mut congrThmProof := congrThm.proof
-                    for (arg, argKind) in (e.getAppArgs).zip congrThm.argKinds do
-                      trace[Meta.Tactic] "recursor: arg: {arg}, arg.isFVar: {arg.isFVar}"
-                      let proof ← makeGoalFrom arg
-                      cbvCore context proof
-                      let evalResult ← instantiateMVars (.mvar proof)
-                      let evalResultType ← inferType evalResult
-                      let some (_, _, _, value) := evalResultType.heq? | throwError "Expected heterogenous equality"
-                      trace[Meta.Tactic] "evalResult: {evalResult}, value: {value}"
-                      congrThmProof := mkAppN congrThmProof #[arg, value]
-                      if argKind == .eq then
-                        congrThmProof := mkApp congrThmProof (← mkEqOfHEq (evalResult))
-                      else
-                        congrThmProof := mkApp congrThmProof evalResult
-
-                    let some (_, _, _, congrThmValue) := (← inferType congrThmProof).heq? | throwError "heq expected"
-                    let some reduced ← reduceRecMatcher? congrThmValue | throwError "Could not reduce recursor"
-                    let continuedGoal ← makeGoalFrom reduced
-                    cbvCore context continuedGoal
-                    let continuedProof ← instantiateMVars <| .mvar continuedGoal
-                    let finalResult ← mkHEqTrans congrThmProof continuedProof
-                    goal.assign finalResult
-                | .inductInfo _ => handleCtor context goal
-                | .quotInfo _ => throwError "quotients are not implemented"
-                | .axiomInfo _ => throwError "cannot reduce axioms"
-                | .opaqueInfo _ => throwError "Cannot reduce opaque"
-                | .thmInfo _ => throwError "Cannot reduce theorems"
-            else
+    if e.getAppFn.isLambda then
+      handleLambda context goal
+    else
+      if (e.getAppFn.isConst) then
+        let info ← getConstInfo e.getAppFn.constName
+        let matcherInfo ← getMatcherInfo? e.getAppFn.constName!
+        if matcherInfo.isSome then
+          let goalLhs ← extractLhsFromGoal goal
+          goal.withContext do
+            let congrGoal ← makeGoalFrom goalLhs
+            handleCtor context congrGoal
+            let congrProof ← instantiateMVars <| .mvar congrGoal
+            let some (_, _, _, congrProofValue) := (← inferType congrProof).heq? | throwError "Heterogenous equality expected"
+            let continuedGoal ← makeGoalFrom congrProofValue
+            tryMatcher context continuedGoal
+            let continuedGoalProof ← instantiateMVars <| .mvar continuedGoal
+            let combinedProof ← mkHEqTrans congrProof continuedGoalProof
+            goal.assign combinedProof
+          -- tryMatcher context goal
+        else
+          match info with
+          | .defnInfo _ => handleUnfolding context goal
+          | .ctorInfo _ => handleCtor context goal
+          | .recInfo recInfo =>
+            let some congrThm ← mkHCongrWithArityForConst? recInfo.name (e.getAppFn.constLevels!) (← getFunInfo (e.getAppFn)).getArity | throwError "Could not get congruence theorems for recursor"
               goal.withContext do
-                -- We evaluate the left hand side to a value
-                let funArg ← makeGoalFrom e.getAppFn
-                cbvCore context funArg
-                let funArgProof ← instantiateMVars <| .mvar <| funArg
-                let funArgProof ← mkEqOfHEq funArgProof
-                let some (_, _, funArgValue) := (← inferType funArgProof).eq? | throwError "equality expected"
+              let mut congrThmProof := congrThm.proof
+              for (arg, argKind) in (e.getAppArgs).zip congrThm.argKinds do
+                trace[Meta.Tactic] "recursor: arg: {arg}, arg.isFVar: {arg.isFVar}"
+                let proof ← makeGoalFrom arg
+                cbvCore context proof
+                let evalResult ← instantiateMVars (.mvar proof)
+                let evalResultType ← inferType evalResult
+                let some (_, _, _, value) := evalResultType.heq? | throwError "Expected heterogenous equality"
+                trace[Meta.Tactic] "evalResult: {evalResult}, value: {value}"
+                congrThmProof := mkAppN congrThmProof #[arg, value]
+                if argKind == .eq then
+                  congrThmProof := mkApp congrThmProof (← mkEqOfHEq (evalResult))
+                else
+                  congrThmProof := mkApp congrThmProof evalResult
 
-                -- We create a new goal
-                let continuedGoal ← makeGoalFrom (mkAppN funArgValue e.getAppArgs)
-                cbvCore context continuedGoal
-                let continuedProof ← instantiateMVars <| .mvar continuedGoal
-                let some (_, _, _, continuedValue) := (← inferType continuedProof).heq? | throwError "Heterogenous equality expected"
+              let some (_, _, _, congrThmValue) := (← inferType congrThmProof).heq? | throwError "heq expected"
+              let some reduced ← reduceRecMatcher? congrThmValue | throwError "Could not reduce recursor"
+              let continuedGoal ← makeGoalFrom reduced
+              cbvCore context continuedGoal
+              let continuedProof ← instantiateMVars <| .mvar continuedGoal
+              let finalResult ← mkHEqTrans congrThmProof continuedProof
+              goal.assign finalResult
+          | .inductInfo _ => handleCtor context goal
+          | .quotInfo _ => throwError "quotients are not implemented"
+          | .axiomInfo _ => throwError "cannot reduce axioms"
+          | .opaqueInfo _ => throwError "Cannot reduce opaque"
+          | .thmInfo _ => throwError "Cannot reduce theorems"
+      else
+        goal.withContext do
+          -- We evaluate the left hand side to a value
+          let funArg ← makeGoalFrom e.getAppFn
+          cbvCore context funArg
+          let funArgProof ← instantiateMVars <| .mvar <| funArg
+          let funArgProof ← mkEqOfHEq funArgProof
+          let some (_, _, funArgValue) := (← inferType funArgProof).eq? | throwError "equality expected"
 
-                let fType ← inferType e.getAppFn
-                let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default fType fun var => do
-                  let theoremLhs := mkAppN var e.getAppArgs
-                  let theoremBody ← mkHEq theoremLhs continuedValue
-                  mkLambdaFVars #[var] theoremBody
+          -- We create a new goal
+          let continuedGoal ← makeGoalFrom (mkAppN funArgValue e.getAppArgs)
+          cbvCore context continuedGoal
+          let continuedProof ← instantiateMVars <| .mvar continuedGoal
+          let some (_, _, _, continuedValue) := (← inferType continuedProof).heq? | throwError "Heterogenous equality expected"
 
-                -- mkCongrArg gives us: (fun x => x args ≍ goalRhs) f = (fun x => x args ≍ goalRhs) rhs
-                -- which beta-reduces to: (f args ≍ goalRhs) = (rhs args ≍ goalRhs)
-                let congrArg ← mkCongrArg congrArgFun funArgProof
-                let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedProof]
-                goal.assign finalProof
+          let fType ← inferType e.getAppFn
+          let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default fType fun var => do
+            let theoremLhs := mkAppN var e.getAppArgs
+            let theoremBody ← mkHEq theoremLhs continuedValue
+            mkLambdaFVars #[var] theoremBody
+
+          -- mkCongrArg gives us: (fun x => x args ≍ goalRhs) f = (fun x => x args ≍ goalRhs) rhs
+          -- which beta-reduces to: (f args ≍ goalRhs) = (rhs args ≍ goalRhs)
+          let congrArg ← mkCongrArg congrArgFun funArgProof
+          let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedProof]
+          goal.assign finalProof
 
   partial def handleProjection (typeName : Name) (idx : Nat) (e : Expr) (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
     trace[Meta.Tactic] "Handling projection expression of the type {typeName}, index {idx} and inner expression {e}"
     goal.withContext do
       let innerGoal ← makeGoalFrom e
-      trace[Meta.Tactic] "trying to evaluate: {innerGoal} in projection evaluation"
       cbvCore context innerGoal
       let innerGoalProof ← instantiateMVars <| .mvar <| innerGoal
-      trace[Meta.Tactic] "Inner goal proof: {innerGoalProof}"
       let some (_, _, _, innerGoalValue) := (← inferType innerGoalProof).heq? | throwError "Expected heterogenous equality at {e}"
 
       -- We solve the projection
       let newGoalLhs := Expr.proj typeName idx innerGoalValue
-      trace[Meta.Tactic] "newGoalLhs: {newGoalLhs}"
       let some newGoalLhs ← reduceProj? newGoalLhs | throwError "Could not reduce projection {newGoalLhs}"
 
       -- We continue evaluation
