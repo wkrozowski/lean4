@@ -133,6 +133,15 @@ def tryFilterMapM(f : α → MetaM β) (arr : Array α) : MetaM (Array β) :=
 def tryClosingGoal (candidates : Array Expr) (goal : MVarId) : MetaM Unit := do
     candidates.firstM (do let [] ← goal.apply · | throwError "Produces subgoals")
 
+def makeCustomCongr (e : Expr) : MetaM Expr := do
+  let appFn := e.getAppFn
+  let headArg := e.getAppArgs[0]!
+  let remaining := e.getAppArgs.extract 1
+  let headArgType ← inferType headArg
+  let congrFun ← withLocalDeclD `x headArgType fun headArgVar => do
+    mkForallFVars #[headArgVar] <| mkAppN (Expr.app appFn headArgVar) remaining
+  throwError "congrFun: {congrFun}"
+
 mutual
   partial def tryMatchCongrEqns (congrEqn : Expr) (solvedDiscriminants : Array Expr) : MetaM Expr := do
     let (hyps, _) ← forallMetaTelescope (← inferType congrEqn)
@@ -262,6 +271,42 @@ partial def handleUnfolding (context : FVarIdMap FVarId) (goal : MVarId) : MetaM
 
   partial def handleLambda (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
     let e ← extractLhsFromGoal goal
+    let lambdaFn := e.getAppFn
+    let args := e.getAppArgs
+
+    let congruenceLemma ← mkHCongrWithArity lambdaFn args.size
+    let mut evalResults : Array (Expr × Expr) := #[]
+    for arg in args do
+      let argGoal ← makeGoalFrom arg
+      cbvCore context argGoal
+      let argProof ← instantiateMVars <| .mvar argGoal
+      let some (_, _, _, value) := (← inferType argProof).heq? | throwError "Heq expected"
+      evalResults := evalResults.push (value, argProof)
+
+    let toApply := args.zip evalResults
+    let toApply := toApply.zip (congruenceLemma.argKinds)
+    let mut firstPartOfProof := congruenceLemma.proof
+    for ((arg, val, proof), kind) in toApply do
+      firstPartOfProof := mkAppN firstPartOfProof #[arg, val]
+      let mut proof := proof
+      if kind == .eq then
+        proof ← mkEqOfHEq proof
+      firstPartOfProof := .app firstPartOfProof proof
+
+    let some (_, _, _, toContinue) := (← inferType firstPartOfProof).heq? | throwError "heq expected"
+    let toContinue := toContinue.headBeta
+    let continuedGoal ← makeGoalFrom toContinue
+    cbvCore context continuedGoal
+    let continuedProof ← instantiateMVars <| .mvar continuedGoal
+    let some (_, _, _, finalValue) := (← inferType continuedProof).heq? | throwError "Heterogenous equality expected"
+    trace[Meta.Tactic] "Final value: {finalValue}"
+    let finalProof ← mkHEqTrans firstPartOfProof continuedProof
+    goal.assign finalProof
+
+
+
+  partial def handleLambda' (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
+    let e ← extractLhsFromGoal goal
     trace[Meta.Tactic] "Evaluating lambda expression: {e} with arguments {e.getAppArgs} and type {← inferType e}"
     let rhs ← extractRhsFromGoal goal
     assert! e.isApp
@@ -275,8 +320,19 @@ partial def handleUnfolding (context : FVarIdMap FVarId) (goal : MVarId) : MetaM
       cbvCore context valGoal
       let valProof ← instantiateMVars <| .mvar valGoal
       let some (_, _, _, value) := (← inferType valProof).heq? | throwError "Heterogenous equality expected"
+      trace[Meta.Tactic] "argument {headArg} evaluates to {value} with proof {valProof}"
       assert! !value.hasMVar
+      let valProof ← mkEqOfHEq valProof
 
+      let newBody ← instantiateLambda (lambdaFn) #[value]
+      trace[Meta.Tactic] "After instantiating: {newBody}"
+      let newBody := (mkAppN newBody remainingArgs)
+      trace[Meta.Tactic] "We need to evalaute {newBody}"
+      let remainingProof ← makeGoalFrom newBody
+      cbvCore context remainingProof
+      let remainingProof ← instantiateMVars <| .mvar remainingProof
+      let some (_, _, _, remainingValue) := (← inferType remainingProof).heq? | throwError "Heterogenous equality expected"
+      trace[Meta.Tactic] "{newBody} evaluates to {remainingValue} with proof {remainingProof}"
       let argType ← inferType headArg
       let newMVarType : Expr ← withLocalDeclD (← mkFreshUserName `x) argType fun argVar => do
         let eqType ← mkHEq argVar value
@@ -442,6 +498,15 @@ partial def handleUnfolding (context : FVarIdMap FVarId) (goal : MVarId) : MetaM
 
 
 end
+
+def tryValue' (e : Expr) : CbvM Result := do
+  if (← isValue e) then
+    pure {value := e, proof := ← mkHEqRefl e, isValue := true}
+  else
+    failure
+
+partial def cbvCore' (e : Expr) : CbvM Result := do
+  tryValue' e <|> throwError "not implemented yet"
 
 def cbv (e : Expr) : MetaM EvalResult := do
   trace[Meta.Tactic] "Trying to evaluate expression {e}"

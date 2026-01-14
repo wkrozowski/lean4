@@ -7,14 +7,16 @@ module
 
 prelude
 public import Lean.Expr
+public import Lean.Meta.Basic
 public section
 
-namespace Lean.Meta.Cbv
+namespace Lean.Meta.Tactic.Cbv
 
 structure Result where
   value : Expr
   proof : Expr
-  isValue : Int
+  isValue : Bool
 
+abbrev CbvM := OptionT $ MetaM
 
-end Lean.Meta.Cbv
+end Lean.Meta.Tactic.Cbv
