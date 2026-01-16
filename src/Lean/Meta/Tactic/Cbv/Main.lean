@@ -6,7 +6,9 @@ public import Lean.Meta.Tactic.Delta
 public import Lean.Meta.Tactic.Unfold
 public import Lean.Meta.Tactic.Simp.Main
 public import Lean.Meta.Tactic.Apply
+public import Lean.Meta.Closure
 import Lean.Meta.Tactic.Assumption
+import Lean.Meta.Tactic.Contradiction
 import Lean.Meta.Tactic.Generalize
 import Lean.Meta.Tactic.Refl
 import Lean.Meta.Basic
@@ -93,7 +95,7 @@ where
   between substituted function application and the result.
 -/
 def genCombinationHEqWithArity (funType : Expr) (arity : Nat) (resultType : Expr) : MetaM (Expr × Array CongrArgKind) := do
-  withLocalDeclD `f funType fun fVar => do
+  let ⟨proof, kinds⟩ ← withLocalDeclD `f funType fun fVar => do
     let hCongrThm ← mkHCongrWithArity fVar arity
     forallTelescope hCongrThm.type fun args _ => do
       let congrProof := mkAppN hCongrThm.proof args
@@ -106,6 +108,23 @@ def genCombinationHEqWithArity (funType : Expr) (arity : Nat) (resultType : Expr
           let res ← mkLambdaFVars args res
           let res ← mkLambdaFVars #[fVar] res
           return (res, hCongrThm.argKinds)
+  let proof ← Lean.Meta.mkAuxTheorem (← inferType proof) proof (cache := true)
+  return ⟨proof, kinds⟩
+
+def getCombinationHEqWithArity (funType : Expr) (arity : Nat) (resultType : Expr) : CbvM (Expr × Array CongrArgKind) := do
+  let key : Key := { functionType := funType, resultType := resultType, arity := arity }
+  let state ← get
+  if let some proof := state.find? key then
+    trace[Meta.Tactic.cbv] m!"{checkEmoji} Retrieving a combination HEq for {funType}"
+    return ⟨proof.proof, proof.argKinds⟩
+  else
+    trace[Meta.Tactic.cbv] m!"{checkEmoji} Generating new combination HEq for {funType} with arity {arity} and result type {resultType}"
+    let (proof, kinds) ← genCombinationHEqWithArity funType arity resultType
+    let type ← inferType proof
+    modify fun s => s.insert key { type := type,
+                                   proof := proof,
+                                   argKinds := kinds }
+    return ⟨proof, kinds⟩
 
 def tryValue' (e : Expr) : CbvM Result := do
   trace[Meta.Tactic.cbv] m!"{checkEmoji} {e} is a value."
@@ -123,7 +142,7 @@ def handleLambda' (lambdaFn : Expr) (args : Array Expr) (callback : Expr → Cbv
   let continuedResult ← callback toContinue
   let continuedResultType ← inferType continuedResult.value
 
-  let (congruenceProof, kinds) ← genCombinationHEqWithArity fnType args.size continuedResultType
+  let (congruenceProof, kinds) ← getCombinationHEqWithArity fnType args.size continuedResultType
   let mut congruenceProof := Expr.app congruenceProof lambdaFn
 
   -- We apply all the arguments to the congruence lemma
@@ -159,6 +178,9 @@ def handleDef' (name : Name) (levels : List Level) (args : Array Expr) (callback
 
   return {value := evaluationResult.value, proof := finalProof, isValue := true }
 
+def genCongrEqnForMatcher (name : Name) (levels : List Level) (matcherInfo : Match.MatcherInfo) : CbvM Result := do
+  throwError "hiya"
+
 def handleMatcher' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) (matcherInfo : Match.MatcherInfo) : CbvM Result := do
   trace[Meta.Tactic.cbv] "Handling matcher application: {name} with levels {levels} and arguments {args}"
   unless matcherInfo.arity == args.size do
@@ -180,10 +202,10 @@ def handleMatcher' (name : Name) (levels : List Level) (args : Array Expr) (call
       proof ← mkEqOfHEq proof
     hCongrThmProof := .app hCongrThmProof proof
 
-  let lastAltPos := matcherInfo.getAltRange.2
-  let alts := args.extract matcherInfo.getFirstAltPos lastAltPos
+  let ⟨firstAltPos, lastAltPos⟩ := matcherInfo.getAltRange
+  let alts := args.extract firstAltPos lastAltPos
   newArgs := newArgs ++ alts
-  let altKinds := hCongrThm.argKinds.extract matcherInfo.getFirstAltPos lastAltPos
+  let altKinds := hCongrThm.argKinds.extract firstAltPos lastAltPos
 
   for (alt, kind) in alts.zip altKinds do
     hCongrThmProof := mkAppN hCongrThmProof #[alt, alt]
@@ -205,6 +227,10 @@ def handleMatcher' (name : Name) (levels : List Level) (args : Array Expr) (call
       let fvars := fvars.map (·.mvarId!)
       for fvar in fvars do
         let fvarType ← fvar.getType
+        if Simp.isEqnThmHypothesis fvarType then
+          let (_, fvar) ← fvar.intros
+          fvar.contradiction
+          guard (←fvar.isAssigned)
         if (fvarType.isEq) then
           fvar.refl
         if (fvarType.isHEq) then
@@ -245,6 +271,32 @@ def handleIrreducibleConst' (name : Name) (levels : List Level) (args : Array Ex
   let some (_, _, _, value) := (← inferType congruenceProof).heq? | throwError "Heterogenous equality expected"
   return { value := value, proof := congruenceProof, isValue := true }
 
+def handleRec (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
+  trace[Meta.Tactic.cbv] "Handling recursor application: {name} with levels {levels} and arguments {args}"
+  let evaluated ← args.mapM callback
+  let newFn := mkConst name levels
+  let newApplication := mkAppN newFn (evaluated.map (·.value))
+  let some newApplication ← reduceRecMatcher? newApplication | throwError "Could not reduce recursor application {newApplication}"
+  let evaluatedResult ← callback newApplication
+  let recursorType ← inferType (mkConst name levels)
+
+  let ⟨congrThm, argKinds⟩ ← getCombinationHEqWithArity recursorType args.size (← inferType evaluatedResult.value)
+
+  let toApply := args.zip evaluated
+  let mut congruenceProof := mkAppN congrThm #[newFn]
+
+  -- We apply all the arguments to the congruence lemma
+  for ((arg, evalResult), kind) in toApply.zip argKinds do
+    congruenceProof := mkAppN congruenceProof #[arg, evalResult.value]
+    let mut proof := evalResult.proof
+    if kind == .eq then
+      proof ← mkEqOfHEq proof
+    congruenceProof := .app congruenceProof proof
+  congruenceProof := mkAppN congruenceProof #[evaluatedResult.value, evaluatedResult.proof]
+
+  return { value := evaluatedResult.value, proof := congruenceProof, isValue := true }
+
+
 def handleConst' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv] "Handling constant application: {name} with levels {levels} and arguments {args}"
   let info ← getConstInfo name
@@ -261,7 +313,7 @@ def handleConst' (name : Name) (levels : List Level) (args : Array Expr) (callba
   | .axiomInfo _ => handleIrreducibleConst' name levels args callback
   | .opaqueInfo _ => handleIrreducibleConst' name levels args callback
   | .thmInfo _ => throwError "Cannot reduce theorems"
-  | .recInfo _ => throwError "Recursors are not implmented yet"
+  | .recInfo _ => handleRec name levels args callback
   | .quotInfo _ => throwError "TODO: not implmented yet"
 
 def handleAppDefault (fn : Expr) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
@@ -332,7 +384,10 @@ partial def cbvCore' (e : Expr) : CbvM Result := do
     | _ => throwError "cbvCore': not implemented for {e}"
 
 def cbv (e : Expr) : MetaM Result := do
-  let ⟨value, proof, isVal⟩ ← cbvCore' e
+  let ⟨⟨value, proof, isVal⟩, compositionThms ⟩ ← (cbvCore' e).run {}
+
+  trace[Meta.Tactic.cbv] "Generated {compositionThms.toList.length} composition theorems during CBV evaluation."
   return { value := value, proof := ← mkEqOfHEq proof, isValue := isVal }
+
 
 end Lean.Meta.Tactic.Cbv

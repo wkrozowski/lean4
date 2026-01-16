@@ -8,6 +8,8 @@ module
 prelude
 public import Lean.Expr
 public import Lean.Meta.Basic
+public import Lean.Data.PersistentHashMap
+public import Lean.Meta.CongrTheorems
 public section
 
 namespace Lean.Meta.Tactic.Cbv
@@ -17,6 +19,15 @@ structure Result where
   proof : Expr
   isValue : Bool
 
-abbrev CbvM := MetaM
+structure Key where
+  functionType : Expr
+  resultType : Expr
+  arity : Nat
+deriving BEq, Hashable
+
+
+abbrev CbvState := PersistentHashMap Key CongrTheorem
+
+abbrev CbvM := StateT CbvState MetaM
 
 end Lean.Meta.Tactic.Cbv

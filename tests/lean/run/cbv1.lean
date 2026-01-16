@@ -40,10 +40,12 @@ namespace test4
     termination_by id n
 
   -- /- We need to be able to normalize this to a `OfNat.ofNat` -/
-  theorem test4 : myFun 170 = 170 := by
+  theorem test4 : myFun 5 = 5 := by
     conv =>
       lhs
       cbv
+
+#print test4
 
 end test4
 
@@ -54,6 +56,8 @@ namespace test5
       cbv
 end test5
 
+#print test4.test4
+
 namespace test6
 
   theorem test6 : (let x := 5; x + 2) = 7 := by
@@ -61,4 +65,21 @@ namespace test6
       lhs
       cbv
 
+#print test6
+
 end test6
+
+namespace test7
+
+  def myFun (l : List Nat) : Nat := match l with
+    | [] => 0
+    | _ => 1
+
+  theorem test7 : myFun [2] = 1 := by
+    conv =>
+      lhs
+      cbv
+
+end test7
+
+theorem simp_add : @HAdd.hAdd _ _ _ _ = Nat.add := by rfl
