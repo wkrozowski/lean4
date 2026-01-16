@@ -17,6 +17,6 @@ structure Result where
   proof : Expr
   isValue : Bool
 
-abbrev CbvM := OptionT $ MetaM
+abbrev CbvM := MetaM
 
 end Lean.Meta.Tactic.Cbv

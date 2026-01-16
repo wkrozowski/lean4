@@ -1,6 +1,9 @@
-set_option trace.Meta.Tactic true
+set_option trace.Meta.Tactic.cbv true
 
-theorem lambdaTest : (fun x y => x) 1 2  = 1 := by
+def myId (n : Nat): Nat := match n with
+  | 0 => 0
+  | n + 1 => myId n + 1
+theorem lambdaTest : (myId 1).succ = 2 := by
   conv =>
     lhs
     cbv
@@ -27,10 +30,8 @@ def myFun (n : Nat) : Nat :=
   termination_by id n
 
 -- /- We need to be able to normalize this to a `OfNat.ofNat` -/
-theorem myFunCbv : myFun 170 = 170 := by
-  conv =>
-    lhs
-    cbv
+theorem myFunCbv : have x := 17; myFun x = 17 := by
+  grind [myFun]
 
 -- /--
 

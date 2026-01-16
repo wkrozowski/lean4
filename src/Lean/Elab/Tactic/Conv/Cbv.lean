@@ -18,7 +18,7 @@ open Meta.Tactic
 @[builtin_tactic Lean.Parser.Tactic.Conv.cbv] def evalCbv : Tactic := fun _ => withMainContext do
   let lhs ← getLhs
   trace[Meta.Tactic] "[conv.cbv]: lhs is {lhs}"
-  let ⟨rhs, heq⟩ ← Cbv.cbv lhs
+  let ⟨rhs, heq, _⟩ ← Cbv.cbv lhs
   updateLhs rhs heq
 
 
