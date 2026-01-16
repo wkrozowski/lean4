@@ -178,15 +178,35 @@ def handleDef' (name : Name) (levels : List Level) (args : Array Expr) (callback
 
   return {value := evaluationResult.value, proof := finalProof, isValue := true }
 
+/-
+  TODO : Take a parameter for a result type to generate a proper chaining lemma.
+-/
 def genCongrEqnForMatcher (name : Name) (levels : List Level) (matcherInfo : Match.MatcherInfo) : CbvM Result := do
-  throwError "hiya"
+  let some hCongrThm ← mkHCongrWithArityForConst? name levels matcherInfo.arity | throwError "Could not genereate congruence theorem for matcher {name}"
+  let congrEqns ← Match.genMatchCongrEqns name
+  let congrEqns := congrEqns.map (mkConst · levels)
+  let congrEqnsTypes ← congrEqns.mapM fun x => do inferType x
+  let res ← forallTelescope hCongrThm.type fun congrArgs congrBody => do
+    let some (_, _, _, rhs) := congrBody.heq? | throwError "Heterogenous equality expected"
+    let appliedCongrThm := mkAppN hCongrThm.proof congrArgs
+
+    let matchCongrEqn := congrEqns[1]!
+    let matchCongrEqn := mkAppN matchCongrEqn (rhs.getAppArgs)
+    forallTelescope (← inferType matchCongrEqn) fun matchArgs matchBody => do
+      let some (_, _, _, value) := matchBody.heq? | throwError "Heterogenous equality expected"
+      let appliedMatchCongrEqn := mkAppN matchCongrEqn matchArgs
+
+      let composedProof ← mkHEqTrans appliedCongrThm appliedMatchCongrEqn
+
+      mkLambdaFVars (congrArgs ++ matchArgs) composedProof
+  throwError "Final res type: {← inferType res}, res: {res}"
 
 def handleMatcher' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) (matcherInfo : Match.MatcherInfo) : CbvM Result := do
   trace[Meta.Tactic.cbv] "Handling matcher application: {name} with levels {levels} and arguments {args}"
   unless matcherInfo.arity == args.size do
     throwError "Matcher arity mismatch: expected {matcherInfo.arity}, got {args.size} - cannot handle that yet"
+  -- let _ ← genCongrEqnForMatcher name levels matcherInfo
   let some hCongrThm ← mkHCongrWithArityForConst? name levels args.size | throwError "Could not genereate congruence theorem for matcher {name}"
-
   let mut hCongrThmProof := hCongrThm.proof
   let mut newArgs : Array Expr := #[]
   let params := args.extract 0 matcherInfo.getFirstAltPos

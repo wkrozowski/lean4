@@ -1,4 +1,4 @@
-set_option trace.Meta.Tactic.cbv true
+-- set_option trace.Meta.Tactic.cbv true
 
 namespace test1
 
@@ -10,6 +10,7 @@ namespace test1
     conv =>
       lhs
       cbv
+
 
 end test1
 
@@ -38,14 +39,12 @@ namespace test4
     | 0 => 0
     | n + 1 => (myFun n) + 1
     termination_by id n
-
+  set_option trace.Meta.Tactic.cbv true
   -- /- We need to be able to normalize this to a `OfNat.ofNat` -/
-  theorem test4 : myFun 5 = 5 := by
+  theorem test4 : myFun 1 = 1 := by
     conv =>
       lhs
       cbv
-
-#print test4
 
 end test4
 
