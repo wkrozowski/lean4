@@ -326,6 +326,9 @@ partial def cbvCore' (e : Expr) : CbvM Result := do
     | .app .. => handleApp' e.getAppFn e.getAppArgs cbvCore'
     | .const .. => return {value := e , proof := ← mkHEqRefl e, isValue := true}
     | .proj typeName idx val => handleProj' typeName idx val cbvCore'
+    | .letE .. =>
+      let reduced ← zetaReduce e
+      cbvCore' reduced
     | _ => throwError "cbvCore': not implemented for {e}"
 
 def cbv (e : Expr) : MetaM Result := do
