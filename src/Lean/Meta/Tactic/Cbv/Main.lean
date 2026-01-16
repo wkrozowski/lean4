@@ -16,19 +16,6 @@ public section
 
 namespace Lean.Meta.Tactic.Cbv
 
-structure EvalResult where
-  value : Expr
-  proof : Expr
-
-def mkReflProof (e : Expr) (heq : Bool) : MetaM Expr := do
-  if heq then
-    mkHEqRefl e
-  else
-    mkEqRefl e
-
-def mkRefl (e : Expr) (heq : Bool) : MetaM EvalResult := do
-  return { value := e, proof := (← mkReflProof e heq) }
-
 /--
   Quotient reduction rules:
   Quot.lift (4 args) and Quot.ind (4 args) reduce if the 4th arg is Quot.mk
@@ -120,352 +107,6 @@ def genCombinationHEqWithArity (funType : Expr) (arity : Nat) (resultType : Expr
           let res ← mkLambdaFVars #[fVar] res
           return (res, hCongrThm.argKinds)
 
-def makeGoalFrom  (e : Expr) : MetaM MVarId := do
-  let rhs ← mkFreshExprMVarWithId (← mkFreshMVarId)
-  let goalType ← mkHEq e rhs
-  return (← mkFreshExprMVar goalType).mvarId!
-
-def extractLhsFromGoal (goal : MVarId) : MetaM Expr := do
-  let type ← goal.getType
-  let some (_, e, _, _) := type.heq? | throwError "Expected HEq"
-  return e
-
-def extractRhsFromGoal (goal : MVarId) : MetaM Expr := do
-  let type ← goal.getType
-  let some (_, _, _, e) := type.heq? | throwError "Expected HEq"
-  return e
-
-/- We expect that goal is a heterogenous equality -/
-def tryValue (goal : MVarId) : MetaM Unit := do
-  let e ← extractLhsFromGoal goal
-  if (← isValue e) then
-    goal.hrefl
-  else
-    throwError "The left hand side {e} of the goal {← goal.getType} is not a value."
-
-def tryFilterMapM(f : α → MetaM β) (arr : Array α) : MetaM (Array β) :=
-  arr.filterMapM fun x => do
-    try
-      let result ← f x
-      return some result
-    catch _ =>
-      return none
-
-def tryClosingGoal (candidates : Array Expr) (goal : MVarId) : MetaM Unit := do
-    candidates.firstM (do let [] ← goal.apply · | throwError "Produces subgoals")
-
-
-mutual
-  partial def tryMatchCongrEqns (congrEqn : Expr) (solvedDiscriminants : Array Expr) : MetaM Expr := do
-    let (hyps, _) ← forallMetaTelescope (← inferType congrEqn)
-    let hyps := hyps.map (·.mvarId!)
-    for hyp in hyps do
-      hyp.withContext do
-        let hypTy ← hyp.getType
-        if (hypTy.isEq) then
-          let heqGoal ← hyp.eqOfHEq
-          tryClosingGoal solvedDiscriminants heqGoal <|> do
-            trace[Meta.Tactic] "I failed in closing goal heq: {heqGoal}"
-            throwError "applying didnt work"
-        if (hypTy.isHEq) then
-          tryClosingGoal solvedDiscriminants hyp <|> do
-            trace[Meta.Tactic] "I failed in closing goal eq: {hyp}"
-            throwError "applying didnt work"
-
-    unless (← hyps.allM (·.isAssigned)) do
-      trace[Meta.Tactic] "found goals: {hyps}"
-      throwError "Not all goals are assigned"
-
-    let hyps := hyps.map Expr.mvar
-    let hyps ← hyps.mapM instantiateMVars
-    let res := mkAppN congrEqn hyps
-    if res.hasMVar then
-      trace[Meta.Tactic] "found unnasigned vars: {res}"
-      throwError "result has unassigned mvars"
-    return mkAppN congrEqn hyps
-
-partial def tryMatcher (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
-  let e ← extractLhsFromGoal goal
-  let f := e.getAppFn
-  let args := e.getAppArgs
-  let ctorName := f.constName
-  let some matcherInfo ← getMatcherInfo? e.getAppFn.constName! | throwError "Not a matcher, skipping"
-
-  assert! matcherInfo.arity = e.getAppNumArgs
-
-  let congrEqns ← Match.genMatchCongrEqns ctorName
-  let congrEqns := congrEqns.map (mkConst · f.constLevels!)
-  let congrEqns := congrEqns.map (mkAppN · args)
-  trace[Meta.Tactic] "congrEqns: {congrEqns}"
-
-  let ⟨discrLower, discrUpper⟩ := matcherInfo.getDiscrRange
-  let discriminants := args.extract discrLower discrUpper
-
-  goal.withContext do
-    -- Evaluate discriminants
-    let discriminantsGoals ← discriminants.mapM (makeGoalFrom ·)
-    discard <| discriminantsGoals.mapM (cbvCore context ·)
-    let solvedDiscriminants ← discriminantsGoals.mapM (instantiateMVars <| .mvar ·)
-
-    -- Try to find a matching congruence equation
-    try
-      let solution ← congrEqns.firstM (tryMatchCongrEqns · solvedDiscriminants)
-      let some (_, _, _, solutionValue) := (← inferType solution).heq? | throwError "Heterogenous equality expected"
-
-      -- Continue evaluation on the matched branch
-      let originalRhs ← extractRhsFromGoal goal
-      let newGoalType ← mkHEq solutionValue originalRhs
-      let continuedGoal ← mkFreshExprMVar newGoalType
-      cbvCore context continuedGoal.mvarId!
-      let continuedProof ← instantiateMVars continuedGoal
-
-      -- Combine proofs
-      let toAssign ← mkHEqTrans solution continuedProof
-      goal.assign toAssign
-    catch e =>
-      throwError "caught: {e.toMessageData}"
-
-  partial def handleCtor (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
-    let e ← extractLhsFromGoal goal
-    let f := e.getAppFn
-    let ctorName := f.constName
-    trace[Meta.Tactic] "ctor {f} is: {ctorName} in expression {e} with args: {e.getAppArgs}"
-    let args := e.getAppArgs
-    let some congrThm ← mkHCongrWithArityForConst? ctorName f.constLevels! e.getAppNumArgs | throwError "Could not genereate congruence theorem for constructor {ctorName}"
-    goal.withContext do
-      let mut congrThmProof := congrThm.proof
-      for (arg, argKind) in args.zip congrThm.argKinds do
-        let proof ← makeGoalFrom arg
-        cbvCore context proof
-        let evalResult ← instantiateMVars (.mvar proof)
-        let evalResultType ← inferType evalResult
-        let some (_, _, _, value) := evalResultType.heq? | throwError "Expected heterogenous equality"
-        congrThmProof := mkAppN congrThmProof #[arg, value]
-        if argKind == .eq then
-          congrThmProof := mkApp congrThmProof (← mkEqOfHEq (evalResult))
-        else
-          congrThmProof := mkApp congrThmProof evalResult
-      goal.assign congrThmProof
-      trace[Meta.Tactic] "ctor goal assigned"
-
-partial def handleUnfolding (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
-  let e ← extractLhsFromGoal goal
-  let goalRhs ← extractRhsFromGoal goal
-  assert! e.isApp
-  let f := e.getAppFn
-  assert! f.isConst
-  let name := f.constName
-  let some unfoldEqName ← getConstUnfoldEqnFor? name | throwError
-                "Could not obtain unfold equation for: {name}"
-  let unfoldEq := mkConst unfoldEqName f.constLevels!
-  let some (_,_,rhs) := (←inferType unfoldEq).eq?
-    | throwError "fatal error : equality expected at {←inferType unfoldEq}"
-  let unfoldedExpr := mkAppN rhs e.getAppArgs
-
-  let newGoalType ← mkHEq unfoldedExpr goalRhs
-  goal.withContext do
-    let unfoldedGoal ← mkFreshExprMVar newGoalType
-    cbvCore context unfoldedGoal.mvarId!
-    let unfoldedGoal ← instantiateMVars unfoldedGoal
-    let some (_, _, _, unfoldedGoalValue) := (← inferType unfoldedGoal).heq? | throwError "Heterogenous equality expected"
-
-    -- Build the congruence proof
-    let fType ← inferType f
-    let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default fType fun var => do
-      let theoremLhs := mkAppN var e.getAppArgs
-      let theoremBody ← mkHEq theoremLhs unfoldedGoalValue
-      mkLambdaFVars #[var] theoremBody
-
-    -- mkCongrArg gives us: (fun x => x args ≍ goalRhs) f = (fun x => x args ≍ goalRhs) rhs
-    -- which beta-reduces to: (f args ≍ goalRhs) = (rhs args ≍ goalRhs)
-    let congrArg ← mkCongrArg congrArgFun unfoldEq
-    let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, unfoldedGoal]
-    goal.assign finalProof
-
-  partial def handleLambda (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
-    let e ← extractLhsFromGoal goal
-    let lambdaFn := e.getAppFn
-    let args := e.getAppArgs
-
-    let congruenceLemma ← mkHCongrWithArity lambdaFn args.size
-    let mut evalResults : Array (Expr × Expr) := #[]
-    for arg in args do
-      let argGoal ← makeGoalFrom arg
-      cbvCore context argGoal
-      let argProof ← instantiateMVars <| .mvar argGoal
-      let some (_, _, _, value) := (← inferType argProof).heq? | throwError "Heq expected"
-      evalResults := evalResults.push (value, argProof)
-
-    let toApply := args.zip evalResults
-    let toApply := toApply.zip (congruenceLemma.argKinds)
-    let mut firstPartOfProof := congruenceLemma.proof
-    for ((arg, val, proof), kind) in toApply do
-      firstPartOfProof := mkAppN firstPartOfProof #[arg, val]
-      let mut proof := proof
-      if kind == .eq then
-        proof ← mkEqOfHEq proof
-      firstPartOfProof := .app firstPartOfProof proof
-
-    let some (_, _, _, toContinue) := (← inferType firstPartOfProof).heq? | throwError "heq expected"
-    let toContinue := toContinue.headBeta
-    let continuedGoal ← makeGoalFrom toContinue
-    cbvCore context continuedGoal
-    let continuedProof ← instantiateMVars <| .mvar continuedGoal
-    let some (_, _, _, finalValue) := (← inferType continuedProof).heq? | throwError "Heterogenous equality expected"
-    trace[Meta.Tactic] "Final value: {finalValue}"
-    let finalProof ← mkHEqTrans firstPartOfProof continuedProof
-    goal.assign finalProof
-
-  partial def handleApplication (e : Expr) (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
-    trace[Meta.Tactic] "{e} is an application with arguments {e.getAppArgs}"
-    if e.getAppFn.isLambda then
-      handleLambda context goal
-    else
-      if (e.getAppFn.isConst) then
-        let info ← getConstInfo e.getAppFn.constName
-        let matcherInfo ← getMatcherInfo? e.getAppFn.constName!
-        if matcherInfo.isSome then
-          let goalLhs ← extractLhsFromGoal goal
-          goal.withContext do
-            let congrGoal ← makeGoalFrom goalLhs
-            handleCtor context congrGoal
-            let congrProof ← instantiateMVars <| .mvar congrGoal
-            let some (_, _, _, congrProofValue) := (← inferType congrProof).heq? | throwError "Heterogenous equality expected"
-            let continuedGoal ← makeGoalFrom congrProofValue
-            tryMatcher context continuedGoal
-            let continuedGoalProof ← instantiateMVars <| .mvar continuedGoal
-            let combinedProof ← mkHEqTrans congrProof continuedGoalProof
-            goal.assign combinedProof
-          -- tryMatcher context goal
-        else
-          match info with
-          | .defnInfo _ => handleUnfolding context goal
-          | .ctorInfo _ => handleCtor context goal
-          | .recInfo recInfo =>
-            let some congrThm ← mkHCongrWithArityForConst? recInfo.name (e.getAppFn.constLevels!) (← getFunInfo (e.getAppFn)).getArity | throwError "Could not get congruence theorems for recursor"
-              goal.withContext do
-              let mut congrThmProof := congrThm.proof
-              for (arg, argKind) in (e.getAppArgs).zip congrThm.argKinds do
-                trace[Meta.Tactic] "recursor: arg: {arg}, arg.isFVar: {arg.isFVar}"
-                let proof ← makeGoalFrom arg
-                cbvCore context proof
-                let evalResult ← instantiateMVars (.mvar proof)
-                let evalResultType ← inferType evalResult
-                let some (_, _, _, value) := evalResultType.heq? | throwError "Expected heterogenous equality"
-                trace[Meta.Tactic] "evalResult: {evalResult}, value: {value}"
-                congrThmProof := mkAppN congrThmProof #[arg, value]
-                if argKind == .eq then
-                  congrThmProof := mkApp congrThmProof (← mkEqOfHEq (evalResult))
-                else
-                  congrThmProof := mkApp congrThmProof evalResult
-
-              let some (_, _, _, congrThmValue) := (← inferType congrThmProof).heq? | throwError "heq expected"
-              let some reduced ← reduceRecMatcher? congrThmValue | throwError "Could not reduce recursor"
-              let continuedGoal ← makeGoalFrom reduced
-              cbvCore context continuedGoal
-              let continuedProof ← instantiateMVars <| .mvar continuedGoal
-              let finalResult ← mkHEqTrans congrThmProof continuedProof
-              goal.assign finalResult
-          | .inductInfo _ => handleCtor context goal
-          | .quotInfo _ => throwError "quotients are not implemented"
-          | .axiomInfo _ => throwError "cannot reduce axioms"
-          | .opaqueInfo _ => throwError "Cannot reduce opaque"
-          | .thmInfo _ => throwError "Cannot reduce theorems"
-      else
-        goal.withContext do
-          -- We evaluate the left hand side to a value
-          let funArg ← makeGoalFrom e.getAppFn
-          cbvCore context funArg
-          let funArgProof ← instantiateMVars <| .mvar <| funArg
-          let funArgProof ← mkEqOfHEq funArgProof
-          let some (_, _, funArgValue) := (← inferType funArgProof).eq? | throwError "equality expected"
-
-          -- We create a new goal
-          let continuedGoal ← makeGoalFrom (mkAppN funArgValue e.getAppArgs)
-          cbvCore context continuedGoal
-          let continuedProof ← instantiateMVars <| .mvar continuedGoal
-          let some (_, _, _, continuedValue) := (← inferType continuedProof).heq? | throwError "Heterogenous equality expected"
-
-          let fType ← inferType e.getAppFn
-          let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default fType fun var => do
-            let theoremLhs := mkAppN var e.getAppArgs
-            let theoremBody ← mkHEq theoremLhs continuedValue
-            mkLambdaFVars #[var] theoremBody
-
-          -- mkCongrArg gives us: (fun x => x args ≍ goalRhs) f = (fun x => x args ≍ goalRhs) rhs
-          -- which beta-reduces to: (f args ≍ goalRhs) = (rhs args ≍ goalRhs)
-          let congrArg ← mkCongrArg congrArgFun funArgProof
-          let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedProof]
-          goal.assign finalProof
-
-  partial def handleProjection (typeName : Name) (idx : Nat) (e : Expr) (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
-    trace[Meta.Tactic] "Handling projection expression of the type {typeName}, index {idx} and inner expression {e}"
-    goal.withContext do
-      let innerGoal ← makeGoalFrom e
-      cbvCore context innerGoal
-      let innerGoalProof ← instantiateMVars <| .mvar <| innerGoal
-      let some (_, _, _, innerGoalValue) := (← inferType innerGoalProof).heq? | throwError "Expected heterogenous equality at {e}"
-
-      -- We solve the projection
-      let newGoalLhs := Expr.proj typeName idx innerGoalValue
-      let some newGoalLhs ← reduceProj? newGoalLhs | throwError "Could not reduce projection {newGoalLhs}"
-
-      -- We continue evaluation
-      let continuedGoal ← makeGoalFrom newGoalLhs
-      cbvCore context continuedGoal
-      let continuedProof ← instantiateMVars <| .mvar continuedGoal
-      let some (_, _, _, continuedValue) := (← inferType continuedProof).heq? | throwError "Expected heq"
-      assert! !continuedValue.hasMVar
-      -- We force innerGoalProof to be an equality, so we can use it in congrArg
-      let innerGoalProof ← mkEqOfHEq innerGoalProof
-
-      -- we build the congruence proof
-      let eType ← inferType e
-      let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default eType fun var => do
-        let theoremLhs := Expr.proj typeName idx var
-        let theoremBody ← mkHEq theoremLhs continuedValue
-        mkLambdaFVars #[var] theoremBody
-
-      let congrArg ← mkCongrArg congrArgFun innerGoalProof
-
-      let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedProof]
-      goal.assign finalProof
-
-
-  partial def cbvCore (context : FVarIdMap FVarId) (goal : MVarId) : MetaM Unit := do
-    let e ← extractLhsFromGoal goal
-    trace[Meta.Tactic] "The expression is: {e}"
-    tryValue goal <|> do
-      match e with
-      | .fvar id =>
-        let result := context.get? id
-        if result.isSome then
-          let proof := Expr.fvar result.get!
-          let proof ← instantiateMVars proof
-          let [] ← goal.apply proof | throwError "Could not unify"
-        else
-          goal.hrefl
-      | .proj typeName idx val =>
-        handleProjection typeName idx val context goal
-      | .mvar _ => throwError "Cannot evaluate metavariables"
-      | .bvar _ => throwError "Cannot evaluate bound variable"
-      | .mdata _ e => throwError "mdata: not implemented yet"
-      | .letE .. => throwError "let: not implemented yet"
-      | .lit _ | .lam .. | .sort .. | .forallE .. => goal.hrefl
-      | .app .. => handleApplication e context goal
-      | .const name levels =>
-          let unfoldEq ← getConstUnfoldEqnFor? name
-          if unfoldEq.isSome then
-            let unfoldEq := unfoldEq.get!
-            let unfoldEq := mkConst unfoldEq levels
-            let newGoal ← goal.heqOfEq
-            let [] ← newGoal.apply unfoldEq | throwError "Failed when applying the unrolling theorem"
-          else
-            goal.hrefl
-
-
-end
-
 def tryValue' (e : Expr) : CbvM Result := do
   trace[Meta.Tactic.cbv] m!"{checkEmoji} {e} is a value."
   pure <| {value := e, proof := ← mkHEqRefl e, isValue := true}
@@ -518,6 +159,72 @@ def handleDef' (name : Name) (levels : List Level) (args : Array Expr) (callback
 
   return {value := evaluationResult.value, proof := finalProof, isValue := true }
 
+def handleMatcher' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) (matcherInfo : Match.MatcherInfo) : CbvM Result := do
+  trace[Meta.Tactic.cbv] "Handling matcher application: {name} with levels {levels} and arguments {args}"
+  unless matcherInfo.arity == args.size do
+    throwError "Matcher arity mismatch: expected {matcherInfo.arity}, got {args.size} - cannot handle that yet"
+  let some hCongrThm ← mkHCongrWithArityForConst? name levels args.size | throwError "Could not genereate congruence theorem for matcher {name}"
+
+  let mut hCongrThmProof := hCongrThm.proof
+  let mut newArgs : Array Expr := #[]
+  let params := args.extract 0 matcherInfo.getFirstAltPos
+  let paramsKinds := hCongrThm.argKinds.extract 0 matcherInfo.getFirstAltPos
+  let evaluatedParams ← params.mapM callback
+  let toApply := params.zip evaluatedParams
+  newArgs := newArgs ++ evaluatedParams.map (·.value)
+
+  for ((param, evalResult), kind) in toApply.zip paramsKinds do
+    hCongrThmProof := mkAppN hCongrThmProof #[param, evalResult.value]
+    let mut proof := evalResult.proof
+    if kind == .eq then
+      proof ← mkEqOfHEq proof
+    hCongrThmProof := .app hCongrThmProof proof
+
+  let lastAltPos := matcherInfo.getAltRange.2
+  let alts := args.extract matcherInfo.getFirstAltPos lastAltPos
+  newArgs := newArgs ++ alts
+  let altKinds := hCongrThm.argKinds.extract matcherInfo.getFirstAltPos lastAltPos
+
+  for (alt, kind) in alts.zip altKinds do
+    hCongrThmProof := mkAppN hCongrThmProof #[alt, alt]
+    match kind with
+    | .eq => hCongrThmProof := mkApp hCongrThmProof (← mkEqRefl alt)
+    | .heq => hCongrThmProof := mkApp hCongrThmProof (← mkHEqRefl alt)
+    | _ => throwError "Unexpected congruence kind in matcher alternatives"
+
+  let congrEqns ← Match.genMatchCongrEqns name
+  let congrEqns := congrEqns.map (mkConst · levels)
+  let congrEqns := congrEqns.map (mkAppN · newArgs)
+
+  let mut candidate : Option Expr := .none
+
+  for congrEqn in congrEqns do
+    try
+      trace[Meta.Tactic.cbv] "Trying congrEqn: {congrEqn}"
+      let (fvars, _) ← forallMetaTelescope (← inferType congrEqn)
+      let fvars := fvars.map (·.mvarId!)
+      for fvar in fvars do
+        let fvarType ← fvar.getType
+        if (fvarType.isEq) then
+          fvar.refl
+        if (fvarType.isHEq) then
+          fvar.hrefl
+      guard (← fvars.allM (·.isAssigned))
+      let fvars := fvars.map Expr.mvar
+      let fvars ← fvars.mapM instantiateMVars
+      candidate := (mkAppN congrEqn fvars)
+    catch _ =>
+      trace[Meta.Tactic.cbv] "Failed to apply congrEqn: {congrEqn}"
+      continue
+
+  let some resolvedCandidate := candidate | throwError "Could not find a matching congruence equation for matcher {name}"
+  let some (_, _, _, value) := (← inferType resolvedCandidate).heq? | throwError "Heterogenous equality expected"
+  let continuedEvaluationResult ← callback value
+
+  let composedProof ← mkHEqTrans hCongrThmProof resolvedCandidate
+  let composedProof ← mkHEqTrans composedProof continuedEvaluationResult.proof
+  return { value := continuedEvaluationResult.value, proof := composedProof, isValue := true }
+
 def handleIrreducibleConst' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv] "Handling application to an irreducible const: {name} with levels {levels} and arguments {args}"
   let some congrThm ← mkHCongrWithArityForConst? name levels args.size | throwError "Could not genereate congruence theorem for constructor {name}"
@@ -546,7 +253,7 @@ def handleConst' (name : Name) (levels : List Level) (args : Array Expr) (callba
     let matcherInfo ← getMatcherInfo? name
     -- Probably here I should also apply function congruence lemmas
     if matcherInfo.isSome then
-      throwError "Cannot reduce matchers yet"
+      handleMatcher' name levels args callback matcherInfo.get!
     else
       handleDef' name levels args callback
   | .ctorInfo _ => handleIrreducibleConst' name levels args callback
@@ -555,14 +262,60 @@ def handleConst' (name : Name) (levels : List Level) (args : Array Expr) (callba
   | .opaqueInfo _ => handleIrreducibleConst' name levels args callback
   | .thmInfo _ => throwError "Cannot reduce theorems"
   | .recInfo _ => throwError "Recursors are not implmented yet"
-  | .quotInfo _ => throwError "Quotients are not implemented"
+  | .quotInfo _ => throwError "TODO: not implmented yet"
+
+def handleAppDefault (fn : Expr) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
+  trace[Meta.Tactic.cbv] "Handling the general case of an application: function {fn}, type: {← inferType fn}, arguments: {args}"
+  guard !(← isValue fn)
+
+  -- We evaluate the left hand side to a value
+  let funArgResult ← callback fn
+  let funArgValue := funArgResult.value
+
+  -- We create a new expression to evaluate
+  let continuedExpr := mkAppN funArgValue args
+  let continuedResult ← callback continuedExpr
+
+  let fnType ← inferType fn
+  let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default fnType fun var => do
+    let theoremLhs := mkAppN var args
+    let theoremBody ← mkHEq theoremLhs continuedResult.value
+    mkLambdaFVars #[var] theoremBody
+
+  let congrArg ← mkCongrArg congrArgFun (← mkEqOfHEq funArgResult.proof)
+  let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedResult.proof]
+
+  return { value := continuedResult.value, proof := finalProof, isValue := true }
 
 def handleApp' (fn : Expr) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv] "Evaluating an application: function {fn}, type: {← inferType fn}, arguments: {args}"
   match fn with
   | .lam .. => handleLambda' fn args callback
   | .const name levels => handleConst' name levels args callback
-  | _ => throwError "not implemented yet"
+  | _ => handleAppDefault fn args callback
+
+def handleProj' (typeName : Name) (idx : Nat) (val : Expr) (callback : Expr → CbvM Result) : CbvM Result := do
+  trace[Meta.Tactic.cbv] "Handling projection expression of the type {typeName}, index {idx} and inner expression {val}"
+  let innerResult ← callback val
+  let innerValue := innerResult.value
+
+  -- We solve the projection
+  let newExpr := Expr.proj typeName idx innerValue
+  let some reduced ← reduceProj? newExpr | throwError "Could not reduce projection {newExpr}"
+
+  -- We continue evaluation
+  let continuedResult ← callback reduced
+
+  let fType ← inferType val
+  let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default fType fun var => do
+    let theoremLhs := Expr.proj typeName idx var
+    let theoremBody ← mkHEq theoremLhs continuedResult.value
+    mkLambdaFVars #[var] theoremBody
+
+  let congrArg ← mkCongrArg congrArgFun (← mkEqOfHEq innerResult.proof)
+
+  let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedResult.proof]
+  return { value := continuedResult.value, proof := finalProof, isValue := true }
 
 partial def cbvCore' (e : Expr) : CbvM Result := do
   trace[Meta.Tactic.cbv] "cbvCore' called on {e}"
@@ -571,9 +324,12 @@ partial def cbvCore' (e : Expr) : CbvM Result := do
   else
     match e with
     | .app .. => handleApp' e.getAppFn e.getAppArgs cbvCore'
+    | .const .. => return {value := e , proof := ← mkHEqRefl e, isValue := true}
+    | .proj typeName idx val => handleProj' typeName idx val cbvCore'
     | _ => throwError "cbvCore': not implemented for {e}"
 
 def cbv (e : Expr) : MetaM Result := do
   let ⟨value, proof, isVal⟩ ← cbvCore' e
   return { value := value, proof := ← mkEqOfHEq proof, isValue := isVal }
+
 end Lean.Meta.Tactic.Cbv
