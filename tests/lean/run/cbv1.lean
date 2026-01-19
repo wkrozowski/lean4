@@ -11,6 +11,7 @@ namespace test1
       lhs
       cbv
 
+  #print test1
 
 end test1
 
@@ -81,4 +82,88 @@ namespace test7
 
 end test7
 
-theorem simp_add : @HAdd.hAdd _ _ _ _ = Nat.add := by rfl
+
+-- Overapplied matcher
+namespace test8
+
+def myFun (n : Nat) : Nat → Nat :=
+  match n with
+  | 0 => fun m => m + 1
+  | n + 1 => fun m => myFun n (m + 2)
+
+theorem test8 : myFun 1 3 = 6 := by
+  conv =>
+    lhs
+    cbv
+
+end test8
+
+section test9
+
+def allEqual : Nat → Nat → Prop := fun _ _ => True
+
+theorem allEqual.refl : ∀ a, allEqual a a := fun _ => trivial
+theorem allEqual.symm : ∀ a b, allEqual a b → allEqual b a := fun _ _ _ => trivial
+theorem allEqual.trans : ∀ a b c, allEqual a b → allEqual b c → allEqual a c :=
+  fun _ _ _ _ _ => trivial
+
+def Unit' := Quot allEqual
+
+example : Quot.mk allEqual 5 = Quot.mk allEqual 5 := by
+  conv =>
+    lhs
+    cbv
+
+def fromUnit' : Unit' → Nat :=
+  Quot.lift (fun _ => 42) (fun _ _ _ => rfl)
+
+example : fromUnit' (Quot.mk allEqual 10) = 42 := by
+  conv =>
+    lhs
+    cbv
+
+end test9
+
+section test10
+
+-- Can survive def-eq casts
+example : Vector.cast (Nat.add_comm 1 2) (Vector.singleton 42 |>.push 7 |>.push 9) =
+          Vector.cast rfl (Vector.singleton 42 |>.push 7 |>.push 9) := by
+  conv =>
+    lhs
+    cbv
+  conv =>
+    rhs
+    cbv
+
+def myAdd (n m : Nat) : Nat := match n with
+| .zero => m
+| .succ n => (myAdd n m).succ
+  termination_by n
+
+def makeVec3 : Vector Nat 3 :=
+  Vector.singleton 1 |>.push 2 |>.push 3
+
+-- This fails as we force the recult to be homogenous equal at the end
+set_option trace.Meta.Tactic.cbv true
+theorem example1 (h : 3 = myAdd 2 1) : Vector.cast h makeVec3 = Vector.cast h makeVec3 := by
+  conv =>
+    lhs
+    cbv
+  conv =>
+    rhs
+    cbv
+
+theorem example2 : Vector.cast rfl (Vector.singleton 42) = Vector.singleton 42 := by
+  conv =>
+    lhs
+    cbv
+  conv =>
+    rhs
+    cbv
+
+#print example2
+
+
+
+end test10

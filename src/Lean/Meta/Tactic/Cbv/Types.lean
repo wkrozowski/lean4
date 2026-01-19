@@ -21,7 +21,6 @@ structure Result where
 
 structure Key where
   functionType : Expr
-  resultType : Expr
   arity : Nat
 deriving BEq, Hashable
 
