@@ -68,9 +68,9 @@ def isQuotRedex (info : QuotVal) (args : Array Expr) : MetaM Bool := do
 partial def isValue (e : Expr) : MetaM Bool := do
   trace[Meta.Tactic] "checking if {e} is a value"
 
-  -- Not sure if this should be treated as value or not
-  if ((← inferType e).isProp) then
-    return true
+  -- -- Not sure if this should be treated as value or not
+  -- if ((← inferType e).isProp) then
+  --   return true
 
   -- Proof terms are values
   if (← isProof e) then
@@ -197,7 +197,6 @@ def normNat (e : Expr) (callback : Expr → CbvM Result) : CbvM (Option Result) 
   else
     return none
 
-
 def handleLambda' (lambdaFn : Expr) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   guard lambdaFn.isLambda
   let fnType ← inferType lambdaFn
@@ -250,11 +249,11 @@ def handleDef' (name : Name) (levels : List Level) (args : Array Expr) (callback
 /-
   TODO : Take a parameter for a result type to generate a proper chaining lemma.
 -/
-def genCongrEqnForMatcher (name : Name) (levels : List Level) (matcherInfo : Match.MatcherInfo) : CbvM Result := do
+def genCongrEqnForMatcher (name : Name) (levels : List Level) (matcherInfo : Match.MatcherInfo) : MetaM (Array Expr × Array CongrArgKind) := do
   let some hCongrThm ← mkHCongrWithArityForConst? name levels matcherInfo.arity | throwError "Could not genereate congruence theorem for matcher {name}"
   let congrEqns ← Match.genMatchCongrEqns name
   let congrEqns := congrEqns.map (mkConst · levels)
-  let congrEqns ← congrEqns.mapM fun matchCongrEqn => do
+  let res ← congrEqns.mapM fun matchCongrEqn => do
     forallTelescope hCongrThm.type fun congrArgs congrBody => do
       let some (_, _, _, rhs) := congrBody.heq? | throwError "Heterogenous equality expected"
       let appliedCongrThm := mkAppN hCongrThm.proof congrArgs
@@ -265,99 +264,14 @@ def genCongrEqnForMatcher (name : Name) (levels : List Level) (matcherInfo : Mat
         let composedProof ← mkHEqTrans appliedCongrThm appliedMatchCongrEqn
         let level ← getLevel resultValue
         let resultType := mkSort level
-        withLocalDeclD `g resultType fun gVar => do
-          let heqType ← mkHEq value gVar
-          withLocalDeclD `heq heqType fun heqVar => do
-            let finalProof ← mkHEqTrans composedProof heqVar
-            mkLambdaFVars (congrArgs ++ matchArgs ++ #[gVar, heqVar]) finalProof
-  throwError "congrEqns: {congrEqns}"
-
-def handleMatcher' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) (matcherInfo : Match.MatcherInfo) : CbvM Result := do
-  trace[Meta.Tactic.cbv] "Handling matcher application: {name} with levels {levels} and arguments {args}"
-  -- unless matcherInfo.arity == args.size do
-  --   throwError "Matcher arity mismatch: expected {matcherInfo.arity}, got {args.size} - cannot handle that yet"
-  let some hCongrThm ← mkHCongrWithArityForConst? name levels matcherInfo.arity | throwError "Could not genereate congruence theorem for matcher {name}"
-  let mut hCongrThmProof := hCongrThm.proof
-  let mut newArgs : Array Expr := #[]
-  let params := args.extract 0 matcherInfo.getFirstAltPos
-  let paramsKinds := hCongrThm.argKinds.extract 0 matcherInfo.getFirstAltPos
-  let evaluatedParams ← params.mapM callback
-  let toApply := params.zip evaluatedParams
-  newArgs := newArgs ++ evaluatedParams.map (·.value)
-
-  for ((param, evalResult), kind) in toApply.zip paramsKinds do
-    hCongrThmProof := mkAppN hCongrThmProof #[param, evalResult.value]
-    let mut proof := evalResult.proof
-    if kind == .eq then
-      proof ← mkEqOfHEq proof
-    hCongrThmProof := .app hCongrThmProof proof
-
-  let ⟨firstAltPos, lastAltPos⟩ := matcherInfo.getAltRange
-  let alts := args.extract firstAltPos lastAltPos
-  newArgs := newArgs ++ alts
-  let altKinds := hCongrThm.argKinds.extract firstAltPos lastAltPos
-
-  for (alt, kind) in alts.zip altKinds do
-    hCongrThmProof := mkAppN hCongrThmProof #[alt, alt]
-    match kind with
-    | .eq => hCongrThmProof := mkApp hCongrThmProof (← mkEqRefl alt)
-    | .heq => hCongrThmProof := mkApp hCongrThmProof (← mkHEqRefl alt)
-    | _ => throwError "Unexpected congruence kind in matcher alternatives"
-
-  let congrEqns ← Match.genMatchCongrEqns name
-  let congrEqns := congrEqns.map (mkConst · levels)
-  let congrEqns := congrEqns.map (mkAppN · newArgs)
-
-  let mut candidate : Option Expr := .none
-
-  for congrEqn in congrEqns do
-    try
-      trace[Meta.Tactic.cbv] "Trying congrEqn: {congrEqn}"
-      let (fvars, _) ← forallMetaTelescope (← inferType congrEqn)
-      let fvars := fvars.map (·.mvarId!)
-      for fvar in fvars do
-        let fvarType ← fvar.getType
-        if Simp.isEqnThmHypothesis fvarType then
-          let (_, fvar) ← fvar.intros
-          fvar.contradiction
-          guard (←fvar.isAssigned)
-        if (fvarType.isEq) then
-          fvar.refl
-        if (fvarType.isHEq) then
-          fvar.hrefl
-      guard (← fvars.allM (·.isAssigned))
-      let fvars := fvars.map Expr.mvar
-      let fvars ← fvars.mapM instantiateMVars
-      candidate := (mkAppN congrEqn fvars)
-    catch _ =>
-      trace[Meta.Tactic.cbv] "Failed to apply congrEqn: {congrEqn}"
-      continue
-
-  let some resolvedCandidate := candidate | throwError "Could not find a matching congruence equation for matcher {name}"
-  let some (_, _, _, value) := (← inferType resolvedCandidate).heq? | throwError "Heterogenous equality expected"
-
-  -- Overapplied matcher case
-  if matcherInfo.arity < args.size then
-    let remainingArgs := args.extract matcherInfo.arity args.size
-    let toEvaluate := mkAppN value remainingArgs
-    let continuedResult ← callback toEvaluate
-    let resolvedCandidate ← mkEqOfHEq resolvedCandidate
-    let some (type, _, _) := (← inferType resolvedCandidate).eq? | throwError "Equality expected"
-    let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default type fun var => do
-      let theoremLhs := mkAppN var remainingArgs
-      let theoremBody ← mkHEq theoremLhs continuedResult.value
-      mkLambdaFVars #[var] theoremBody
-
-    let congrArg ← mkCongrArg congrArgFun resolvedCandidate
-    let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedResult.proof]
-    return { value := continuedResult.value, proof := finalProof, isValue := true }
-
-  else
-    let continuedEvaluationResult ← callback value
-    let composedProof ← mkHEqTrans hCongrThmProof resolvedCandidate
-    let composedProof ← mkHEqTrans composedProof continuedEvaluationResult.proof
-
-    return { value := continuedEvaluationResult.value, proof := composedProof, isValue := true }
+        withLocalDeclD `gType resultType fun gType => do
+          withLocalDeclD `g gType fun gVar => do
+            let heqType ← mkHEq value gVar
+            withLocalDeclD `heq heqType fun heqVar => do
+              let finalProof ← mkHEqTrans composedProof heqVar
+              let finalProof ← mkLambdaFVars (congrArgs ++ matchArgs ++ #[gType, gVar, heqVar]) finalProof
+              mkAuxTheorem (← inferType finalProof) finalProof (cache := true)
+  return (res, hCongrThm.argKinds)
 
 def handleIrreducibleConst' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv] "Handling application to an irreducible const: {name} with levels {levels} and arguments {args}"
@@ -378,6 +292,74 @@ def handleIrreducibleConst' (name : Name) (levels : List Level) (args : Array Ex
 
   let some (_, _, _, value) := (← inferType congruenceProof).heq? | throwError "Heterogenous equality expected"
   return { value := value, proof := congruenceProof, isValue := true }
+
+def handleMatcher' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) (matcherInfo : Match.MatcherInfo) : CbvM Result := do
+  trace[Meta.Tactic.cbv] "Handling matcher application: {name} with levels {levels} and arguments {args}"
+  -- In the underapplied case, we don't perform any unfolding.
+  if args.size < matcherInfo.arity then
+    handleIrreducibleConst' name levels args callback
+  else
+  -- Otherwise we handle all the arguments passed to a matcher and unfold it
+  let (eqns, kinds) ← genCongrEqnForMatcher name levels matcherInfo
+  let matcherArgs := args.extract (stop := matcherInfo.arity)
+  let evaluatedArgs ← matcherArgs.mapM callback
+  let toApply := matcherArgs.zip evaluatedArgs
+  let eqns : Array Expr ← eqns.mapM fun eqn => do
+    let mut eqn : Expr := eqn
+    for ((arg, evalResult), kind) in toApply.zip kinds do
+      eqn := mkAppN eqn #[arg, evalResult.value]
+      let mut proof := evalResult.proof
+      if (kind == .eq) then
+        proof ← mkEqOfHEq proof
+      eqn := Expr.app eqn proof
+    return eqn
+  let numPremises ← eqns.mapM (fun e => do return (← inferType e).getNumHeadForalls)
+
+  let mut result : Option Expr := .none
+  for (eqn, numPremises) in eqns.zip numPremises do
+    guard (numPremises >= 3)
+    try
+      let (fvars, _) ← forallMetaBoundedTelescope (← inferType eqn) (numPremises - 3)
+      let fvars := fvars.map (·.mvarId!)
+      for fvar in fvars do
+        let fvarType ← fvar.getType
+        if Simp.isEqnThmHypothesis fvarType then
+          let (_, fvar) ← fvar.intros
+          fvar.contradiction
+          guard (← fvar.isAssigned)
+        if (fvarType.isEq) then
+          fvar.refl
+        if (fvarType.isHEq) then
+          fvar.hrefl
+      guard (← fvars.allM (·.isAssigned))
+      let fvars := fvars.map Expr.mvar
+      let fvars ← fvars.mapM instantiateMVars
+      result := (mkAppN eqn fvars)
+    catch _ =>
+      trace[Meta.Tactic.cbv] "Failed to apply equation: {eqn}"
+      continue
+
+  let some resolvedCandidate := result | throwError "Could not find a matching congruence equation for matcher {name}"
+  let toContinue ← forallTelescope (← inferType resolvedCandidate) fun args _ => do
+    let some (_, lhs, _, _) := (← inferType args[2]!).heq? | throwError "Heterogenous equality expected"
+    return lhs
+
+  let continuedResult ← callback toContinue
+  let resolvedCandidate ← mkAppOptM' resolvedCandidate #[.none, continuedResult.value, continuedResult.proof]
+  if matcherInfo.arity < args.size then
+    let fnType ← inferType continuedResult.value
+    let remainingArgs := args.extract matcherInfo.arity
+    let congrThm ← getLeftCongruence fnType remainingArgs.size
+    let resolvedCandidate ← mkEqOfHEq resolvedCandidate
+    let some (_, lhs, rhs) := (← inferType resolvedCandidate).eq? | throwError "equality expected"
+    let resolvedCandidate := mkAppN congrThm #[lhs, rhs, resolvedCandidate]
+    let resolvedCandidate := mkAppN resolvedCandidate remainingArgs
+    let toEvaluate := mkAppN rhs remainingArgs
+    let evalResult ← callback toEvaluate
+    let resolvedCandidate := mkAppN resolvedCandidate #[← inferType evalResult.value, evalResult.value, evalResult.proof]
+    return { value := evalResult.value, proof := resolvedCandidate, isValue := true }
+  else
+    return { value := continuedResult.value, proof := resolvedCandidate, isValue := true }
 
 def handleRec (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv] "Handling recursor application: {name} with levels {levels} and arguments {args}"

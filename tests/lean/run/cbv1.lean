@@ -79,6 +79,8 @@ namespace test7
       lhs
       cbv
 
+  #check test7._proof_1_6
+
 end test7
 
 -- Overapplied matcher
@@ -89,6 +91,7 @@ def myFun (n : Nat) : Nat → Nat :=
   | 0 => fun m => m + 1
   | n + 1 => fun m => myFun n (m + 2)
 
+-- Overapplied matcher
 theorem test8 : myFun 1 3 = 6 := by
   conv =>
     lhs
@@ -203,13 +206,4 @@ theorem test12b : (fun x y => x + y) 250 250 = 500 := by
 
 #print test12b
 
-
-
-theorem test13 : "a".length = 1 := by
-  conv =>
-    lhs
-
-
 end test12
-
-example : "hi".toList = ['h', 'i'] := by rfl

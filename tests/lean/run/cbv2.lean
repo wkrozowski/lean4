@@ -224,11 +224,28 @@ theorem cbv_test1 : aeval (λ _ => 2) (.PLUS (.VAR 0) (.MINUS (.VAR 0) (.CONST 1
     cbv
   rfl
 
-
+/--
+error: unsolved goals
+⊢ (some fun y =>
+      if (1 == y) = true then Int.ofNat 1
+      else
+        (fun y =>
+            if (0 == y) = true then Int.ofNat 0
+            else
+              (fun y =>
+                  if (1 == y) = true then 0
+                  else
+                    (fun y =>
+                        if (0 == y) = true then 10
+                        else (fun x => if (x == 0) = true then 8 else if (x == 1) = true then 9 else 10) y)
+                      y)
+                y)
+          y) =
+    sorry
+-/
+#guard_msgs in
 theorem cbv_test2 : cexec_bounded 4 (fun x => if x == 0 then 8 else if x == 1 then 9 else 10) Euclidean_division = sorry
  := by
   conv =>
     lhs
     cbv
-
-#check cbv_test2._proof_1_42
