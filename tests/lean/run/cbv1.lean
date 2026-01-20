@@ -185,6 +185,28 @@ example : (id Nat.succ) 4 = 5 := by
     lhs
     cbv
 
+example : ((id Nat.succ),5).1 4 = 5 := by
+  conv =>
+    lhs
+    cbv
+
+def matchFun (n : Nat) : Nat → Nat → Nat :=
+  match id n with
+  | 0 => Nat.add
+  | _ => fun _ => id
+
+-- Should unfold matchFun
+example : (fun _ => matchFun) 4 = sorry := by
+  conv =>
+    lhs
+    cbv
+  sorry
+
+example : (fun x y => (id (matchFun x, matchFun y).1)) 3 4 = sorry := by
+  conv =>
+    lhs
+    cbv
+  sorry
 
 end test11
 
@@ -209,3 +231,31 @@ theorem test12b : (fun x y => x + y) 250 250 = 500 := by
 #print test12b
 
 end test12
+
+-- Some overapplication tests that can break my code
+section test13
+
+def myId {α : Type} (x : α) : α := x
+
+-- This should reduce to: (fun _ => myId) 0 1 ~~> myId 1 ~~> 1
+example : ((fun (_ : Nat) => myId) 0) 1 = 1 := by conv =>
+  lhs
+  cbv
+
+-- A function that returns a function
+def addCurried (x : Nat) : Nat → Nat := fun y => x + y
+
+-- Triple nested lambda with overapplication
+example : ((fun (_ : Nat) => fun (_ : Nat) => addCurried) 0 1) 2 3 = 5 := by
+  conv =>
+    lhs
+    cbv
+
+def constNat : Nat → Nat := fun x => 42
+
+example : ((fun (_ : Nat) => constNat) 0) 1 = 42 := by
+  conv =>
+    lhs
+    cbv
+
+end test13
