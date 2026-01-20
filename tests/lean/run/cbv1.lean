@@ -1,5 +1,3 @@
--- set_option trace.Meta.Tactic.cbv true
-
 namespace test1
 
   def myFun (l : List α) : Nat := match l with
@@ -30,6 +28,7 @@ namespace test3
     conv =>
       lhs
       cbv
+
 
 end test3
 
@@ -81,7 +80,6 @@ namespace test7
       cbv
 
 end test7
-
 
 -- Overapplied matcher
 namespace test8
@@ -144,7 +142,7 @@ def myAdd (n m : Nat) : Nat := match n with
 def makeVec3 : Vector Nat 3 :=
   Vector.singleton 1 |>.push 2 |>.push 3
 
--- This fails as we force the recult to be homogenous equal at the end
+-- This fails as we force the result to be homogenous equal at the end, essentialy accounts to a diamond property
 set_option trace.Meta.Tactic.cbv true
 theorem example1 (h : 3 = myAdd 2 1) : Vector.cast h makeVec3 = Vector.cast h makeVec3 := by
   conv =>
@@ -167,3 +165,51 @@ theorem example2 : Vector.cast rfl (Vector.singleton 42) = Vector.singleton 42 :
 
 
 end test10
+
+section test11
+
+-- works
+example : ((fun (_ : Unit) =>  Nat.succ) ()) 4 = 5 := by
+  conv =>
+    lhs
+    cbv
+
+set_option trace.Meta.Tactic.cbv true
+-- Overapplied lambda issue
+example : (id Nat.succ) 4 = 4 := by
+  conv =>
+    lhs
+    cbv
+
+
+end test11
+
+namespace test12
+
+theorem test12 : 142 + 157 = 157 + 142 := by
+  conv =>
+    lhs
+    cbv
+
+def myFun (n : Nat) : Nat := match n with
+  | .zero => 0
+  | .succ n => (myFun n) + 1
+termination_by n
+
+theorem test12b : (fun x y => x + y) 250 250 = 500 := by
+  conv =>
+    lhs
+    cbv
+
+#print test12b
+
+
+
+theorem test13 : "a".length = 1 := by
+  conv =>
+    lhs
+
+
+end test12
+
+example : "hi".toList = ['h', 'i'] := by rfl

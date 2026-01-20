@@ -24,8 +24,9 @@ structure Key where
   arity : Nat
 deriving BEq, Hashable
 
-
-abbrev CbvState := PersistentHashMap Key CongrTheorem
+structure CbvState where
+  compositionThms : PersistentHashMap Key CongrTheorem
+  leftCongruenceThms : PersistentHashMap Key Expr
 
 abbrev CbvM := StateT CbvState MetaM
 

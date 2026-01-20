@@ -224,8 +224,11 @@ theorem cbv_test1 : aeval (λ _ => 2) (.PLUS (.VAR 0) (.MINUS (.VAR 0) (.CONST 1
     cbv
   rfl
 
+
 theorem cbv_test2 : cexec_bounded 4 (fun x => if x == 0 then 8 else if x == 1 then 9 else 10) Euclidean_division = sorry
  := by
   conv =>
     lhs
     cbv
+
+#check cbv_test2._proof_1_42

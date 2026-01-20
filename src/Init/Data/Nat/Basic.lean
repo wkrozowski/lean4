@@ -1226,4 +1226,9 @@ theorem not_gt_eq (a b : Nat) : (¬ (a > b)) = (a ≤ b) :=
     | succ m, n => by rw [repeatTR.loop, succ_add]; exact go m (succ n)
   (go n 0).symm
 
+theorem natAdditionCast (a1 a2 v1 v2 : Nat) (h1 : a1 ≍ v1) (h2 : a2 ≍ v2) : (@HAdd.hAdd Nat Nat Nat _ a1 a2) ≍ Nat.add v1 v2 := by
+  replace h1 := eq_of_heq h1
+  replace h2 := eq_of_heq h2
+  simp [h1, h2]
+
 end Nat
