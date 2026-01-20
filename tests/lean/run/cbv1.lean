@@ -30,6 +30,7 @@ namespace test3
       cbv
 
 
+#print test3
 end test3
 
 namespace test4
@@ -146,7 +147,14 @@ def makeVec3 : Vector Nat 3 :=
   Vector.singleton 1 |>.push 2 |>.push 3
 
 -- This fails as we force the result to be homogenous equal at the end, essentialy accounts to a diamond property
-set_option trace.Meta.Tactic.cbv true
+
+/--
+error: AppBuilder for `eq_of_heq`, heterogeneous equality types are not definitionally equal
+  Vector Nat (myAdd 2 1)
+is not definitionally equal to
+  Vector Nat 3
+-/
+#guard_msgs in
 theorem example1 (h : 3 = myAdd 2 1) : Vector.cast h makeVec3 = Vector.cast h makeVec3 := by
   conv =>
     lhs
@@ -171,15 +179,8 @@ end test10
 
 section test11
 
--- works
-example : ((fun (_ : Unit) =>  Nat.succ) ()) 4 = 5 := by
-  conv =>
-    lhs
-    cbv
-
-set_option trace.Meta.Tactic.cbv true
--- Overapplied lambda issue
-example : (id Nat.succ) 4 = 4 := by
+/- Overapplied lambda -/
+example : (id Nat.succ) 4 = 5 := by
   conv =>
     lhs
     cbv
@@ -189,6 +190,7 @@ end test11
 
 namespace test12
 
+/- Nat normalisation -/
 theorem test12 : 142 + 157 = 157 + 142 := by
   conv =>
     lhs

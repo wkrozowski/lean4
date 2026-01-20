@@ -14,15 +14,6 @@ public section
 namespace Lean
 
 builtin_initialize registerTraceClass `Meta.Tactic.cbv
--- builtin_initialize registerTraceClass `Meta.Tactic.simp.congr (inherited := true)
--- builtin_initialize registerTraceClass `Meta.Tactic.simp.discharge (inherited := true)
--- builtin_initialize registerTraceClass `Meta.Tactic.simp.rewrite (inherited := true)
--- builtin_initialize registerTraceClass `Meta.Tactic.simp.unify (inherited := true)
--- builtin_initialize registerTraceClass `Meta.Tactic.simp.ground (inherited := true)
--- builtin_initialize registerTraceClass `Meta.Tactic.simp.loopProtection (inherited := true)
--- builtin_initialize registerTraceClass `Meta.Tactic.simp.numSteps
--- builtin_initialize registerTraceClass `Meta.Tactic.simp.heads
 builtin_initialize registerTraceClass `Debug.Meta.Tactic.cbv
--- builtin_initialize registerTraceClass `Debug.Meta.Tactic.simp.congr (inherited := true)
 
 end Lean

@@ -200,8 +200,11 @@ def normNat (e : Expr) (callback : Expr → CbvM Result) : CbvM (Option Result) 
 def handleLambda' (lambdaFn : Expr) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   guard lambdaFn.isLambda
   let fnType ← inferType lambdaFn
-  let evaluated ← args.mapM callback
-  let toApply := args.zip evaluated
+  let lambdaArity := lambdaFn.getNumHeadLambdas
+  let lambdaArgs := args.extract (stop := lambdaArity)
+
+  let evaluated ← lambdaArgs.mapM callback
+  let toApply := lambdaArgs.zip evaluated
 
   -- We continue evaluation on the substituted function application
   let toContinue := mkAppN lambdaFn <| evaluated.map (·.value)
@@ -210,7 +213,7 @@ def handleLambda' (lambdaFn : Expr) (args : Array Expr) (callback : Expr → Cbv
   let continuedResultType ← inferType continuedResult.value
 
   trace[Meta.Tactic.cbv] "Arguments are: {args}, fnType: {fnType}, lambdaFn: {lambdaFn}"
-  let (congruenceProof, kinds) ← getCombinationHEqWithArity fnType args.size
+  let (congruenceProof, kinds) ← getCombinationHEqWithArity fnType lambdaArgs.size
   let mut congruenceProof := Expr.app congruenceProof lambdaFn
 
   -- We apply all the arguments to the congruence lemma
@@ -222,7 +225,20 @@ def handleLambda' (lambdaFn : Expr) (args : Array Expr) (callback : Expr → Cbv
     congruenceProof := .app congruenceProof proof
 
   congruenceProof := mkAppN congruenceProof #[continuedResultType, continuedResult.value, continuedResult.proof]
-  return { value := continuedResult.value, proof := congruenceProof, isValue := false }
+  if (lambdaArity < args.size) then
+    congruenceProof ← mkEqOfHEq congruenceProof
+    let resultType ← inferType continuedResult.value
+    let remainingArgs := args.extract (start := lambdaArity)
+    let leftCongruenceTheorem ← getLeftCongruence resultType remainingArgs.size
+    let some (_, lhs, rhs) := (← inferType congruenceProof).eq? | throwError "equality expected"
+    let leftCongruenceTheorem := mkAppN leftCongruenceTheorem #[lhs, rhs, congruenceProof]
+    let leftCongruenceTheorem := mkAppN leftCongruenceTheorem remainingArgs
+    let toApply := mkAppN continuedResult.value remainingArgs
+    let evalResult ← callback toApply
+    let leftCongruenceTheorem := mkAppN leftCongruenceTheorem #[← (inferType evalResult.value), evalResult.value, evalResult.proof]
+    return { value := evalResult.value, proof := leftCongruenceTheorem, isValue := true}
+  else
+    return { value := continuedResult.value, proof := congruenceProof, isValue := false }
 
 def handleDef' (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv] "Handling definition application: {name} with levels {levels} and arguments {args}"
@@ -236,6 +252,14 @@ def handleDef' (name : Name) (levels : List Level) (args : Array Expr) (callback
   let evaluationResult ← callback unfoldedApplication
 
   let fType ← inferType rhs
+
+  -- let leftCongruenceTheorem ← mkLeftCongruence fType args.size
+  -- let leftCongruenceTheorem ← mkAppOptM' leftCongruenceTheorem #[none, none, unfoldEq]
+  -- let leftCongruenceTheorem := mkAppN leftCongruenceTheorem args
+  -- let leftCongruenceTheorem ← mkAppOptM' leftCongruenceTheorem #[none, none, evaluationResult.proof]
+
+
+
   let congrArgFun ← withLocalDecl (← mkFreshUserName `x) BinderInfo.default fType fun var => do
     let theoremLhs := mkAppN var args
     let theoremBody ← mkHEq theoremLhs evaluationResult.value
