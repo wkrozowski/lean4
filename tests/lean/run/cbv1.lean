@@ -1,3 +1,9 @@
+import Lean.Meta.Tactic.Cbv.Types
+import Lean.Meta.Tactic.Cbv.CbvProc
+
+open Lean.Meta.Tactic.Cbv
+
+
 namespace test1
 
   def myFun (l : List α) : Nat := match l with
@@ -196,7 +202,7 @@ def matchFun (n : Nat) : Nat → Nat → Nat :=
   | _ => fun _ => id
 
 -- Should unfold matchFun
-example : (fun _ => matchFun) 4 = sorry := by
+example : matchFun 4 = sorry := by
   conv =>
     lhs
     cbv
@@ -207,6 +213,24 @@ example : (fun x y => (id (matchFun x, matchFun y).1)) 3 4 = sorry := by
     lhs
     cbv
   sorry
+
+def matchFun2 (α : Type) (l : List α) : Nat := match l with
+| [] => 0
+| _ => 1
+
+example : List.length [1,2,3] = sorry := by
+  conv =>
+    lhs
+    cbv
+  sorry
+
+
+theorem constantEvaluation : (fun _ => (HAdd.hAdd : Nat → Nat → Nat)) () 1 2 = 3 := by
+  conv =>
+    lhs
+    cbv
+
+#print constantEvaluation
 
 end test11
 
@@ -259,3 +283,108 @@ example : ((fun (_ : Nat) => constNat) 0) 1 = 42 := by
     cbv
 
 end test13
+
+section test14
+
+example : Nat.zero = 0 := by
+  conv =>
+    lhs
+    cbv
+
+-- @[cbv_proc Nat.zero] def helloWorld : CbvExt := {
+--   eval e callback := do throwError "Hello there: called with {e}"
+-- }
+
+example : Nat.zero = 0 := by
+  conv =>
+    lhs
+    cbv
+
+end test14
+
+section test15
+
+  def myId2 (n : Nat) := match n with
+  | 0 => 0
+  | n + 1 => (myId2 n) + 1
+    termination_by n
+
+  example : myId2 1000 = 1000 := by
+    conv =>
+      lhs
+      cbv
+
+end test15
+
+section test16
+
+def fn (n : Nat) (v : Vector Nat n) : Nat := (v.size + 1)
+
+def propEqFn (n : Nat) : Nat := match n with
+  | 0 => 0
+  | (n + 1) => propEqFn n + 1
+  termination_by n
+
+  axiom k : Vector Nat (propEqFn 1)
+
+  set_option trace.Debug.Meta.Tactic.cbv true
+
+ theorem test16 : fn (propEqFn 1) k = fn 1 #v[1] := by
+  conv =>
+    lhs
+    cbv
+  conv =>
+    rhs
+    cbv
+
+  #print axioms test16
+
+end test16
+
+namespace test16b
+
+def fn (n : Nat) (v : Vector Nat n) : Nat := (v.size + 1)
+
+def propEqFn (n : Nat) : Nat := match n with
+  | 0 => 0
+  | (n + 1) => propEqFn n + 1
+
+  axiom k : Vector Nat (propEqFn 1)
+
+  set_option trace.Debug.Meta.Tactic.cbv true
+
+ theorem test16 : fn (propEqFn 1) k = fn 1 #v[1] := by
+  conv =>
+    lhs
+    cbv
+  conv =>
+    rhs
+    cbv
+
+  #print axioms test16
+
+end test16b
+
+namespace test16c
+
+def fn (n : Nat) (v : Vector Nat n) (m : Nat) : Nat := v.size + 1 + m
+
+def propEqFn (n : Nat) : Nat := match n with
+  | 0 => 0
+  | (n + 1) => propEqFn n + 1
+
+  axiom k : Vector Nat (propEqFn 1)
+
+  set_option trace.Debug.Meta.Tactic.cbv true
+
+ theorem test16 : fn (1 + 0) k (5) = fn (propEqFn 1) k 5 := by
+  conv =>
+    lhs
+    cbv
+  conv =>
+    rhs
+    cbv
+
+  #print axioms test16
+
+end test16c

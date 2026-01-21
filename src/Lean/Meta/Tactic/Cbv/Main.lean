@@ -2,6 +2,7 @@ module
 
 prelude
 public import Lean.Meta.Tactic.Cbv.Types
+public import Lean.Meta.Tactic.Cbv.CbvProc
 public import Lean.Meta.Tactic.Delta
 public import Lean.Meta.Tactic.Unfold
 public import Lean.Meta.Tactic.Simp.Main
@@ -44,7 +45,7 @@ def mkLeftCongruence (fnType : Expr) (numArgs : Nat) : MetaM Expr := do
 def getLeftCongruence (funType : Expr) (arity : Nat) : CbvM Expr := do
   let key : Key := { functionType := funType, arity := arity }
   let state ← get
-  if let some proof := state.leftCongruenceThms.find? key then
+  if let some proof := state.leftCongruenceThms.get? key then
     trace[Meta.Tactic.cbv.congr] m!"{checkEmoji} retrieved cached left congruence lemma for {funType}"
     return proof
   else
@@ -65,8 +66,11 @@ def isQuotRedex (info : QuotVal) (args : Array Expr) : MetaM Bool := do
     return majorArg.getAppFn.isConstOf ``Quot.mk
   | .ctor | .type => return false
 
-partial def isValue (e : Expr) : MetaM Bool := do
+partial def isValue (e : Expr) : CbvM Bool := do
   trace[Debug.Meta.Tactic.cbv] "checking if {e} is a value"
+  if (← get)|>.fullyEvaluated.contains e then
+    trace[Debug.Meta.Tactic.cbv] "{e} is a value that we have seen before"
+    return true
 
   -- Proof terms are values
   if (← isProof e) then
@@ -150,7 +154,7 @@ def genCombinationHEqWithArity (funType : Expr) (arity : Nat) : MetaM (Expr × A
 def getCombinationHEqWithArity (funType : Expr) (arity : Nat) : CbvM (Expr × Array CongrArgKind) := do
   let key : Key := { functionType := funType, arity := arity }
   let state ← get
-  if let some proof := state.compositionThms.find? key then
+  if let some proof := state.compositionThms.get? key then
     trace[Meta.Tactic.cbv.congr] m!"{checkEmoji} retrieved cached combination HEq for {funType}"
     return ⟨proof.proof, proof.argKinds⟩
   else
@@ -192,11 +196,49 @@ def normNat (e : Expr) (callback : Expr → CbvM Result) : CbvM (Option Result) 
   else
     return none
 
+partial def congrThmTelescopeWithMask (c : CongrTheorem) (mask : Array Bool) (k : Array Expr → Array CbvCongrArgKind → Expr → MetaM α) : MetaM α := do
+  guard (c.argKinds.size == mask.size)
+  go #[] c.type 0 c.proof #[]
+where
+  go (soFar : Array Expr) (e : Expr) (n : Nat) (acc : Expr) (kinds : Array CbvCongrArgKind) := do
+    if n == mask.size then
+      k soFar kinds acc
+    else
+      forallBoundedTelescope e (.some 3) fun args body => do
+        let argTy0 ← inferType args[0]!
+        let argTy1 ← inferType args[1]!
+        let areDefEq ← isDefEq argTy0 argTy1
+        if (mask[n]! && areDefEq) then
+          let rflProof ← if c.argKinds[n]! == .eq then (mkEqRefl args[0]!) else (mkHEqRefl args[0]!)
+          let newAcc := mkApp3 acc args[0]! args[0]! rflProof
+          let newBody ← inferType newAcc
+          go (soFar.push args[0]!) newBody (n + 1) newAcc (kinds.push .value)
+        else
+          let kind : CbvCongrArgKind := if mask[n]! then .refl else .eval
+          let newKinds := kinds.push kind
+          if c.argKinds[n]! == .eq then
+            let newHypType ← mkHEq args[0]! args[1]!
+
+            withLocalDeclD `h newHypType fun newHyp => do
+              let eqProof ← mkEqOfHEq newHyp
+              let newBody := (mkApp3 acc args[0]! args[1]! eqProof)
+              go (soFar ++ #[args[0]!, args[1]!, newHyp]) (← inferType newBody) (n + 1) newBody newKinds
+          else
+            go (soFar ++ args) body (n + 1) (mkAppN acc args) newKinds
+
+
+def mkHCongrWithMask (fn : Expr) (mask : Array Bool) : MetaM (Expr × Array CbvCongrArgKind) := do
+  let hCongrThm ← mkHCongrWithArity fn mask.size
+  let (res, kinds) ← congrThmTelescopeWithMask hCongrThm mask fun args kinds body => do
+    pure (← mkLambdaFVars args body, kinds)
+  pure (←mkAuxTheorem (← inferType res) res (cache := true), kinds)
+
 def handleLambdaApp (lambdaFn : Expr) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   guard lambdaFn.isLambda
   let fnType ← inferType lambdaFn
   let lambdaArity := lambdaFn.getNumHeadLambdas
   let lambdaArgs := args.extract (stop := lambdaArity)
+  let mask ← lambdaArgs.mapM isValue
 
   if lambdaArity < args.size then
     trace[Meta.Tactic.cbv.app] "handling over-applied lambda with {args.size} arguments (arity: {lambdaArity})"
@@ -213,6 +255,11 @@ def handleLambdaApp (lambdaFn : Expr) (args : Array Expr) (callback : Expr → C
   let continuedResultType ← inferType continuedResult.value
 
   trace[Debug.Meta.Tactic.cbv] "Arguments are: {args}, fnType: {fnType}, lambdaFn: {lambdaFn}"
+  try
+    let myCongThm ← mkHCongrWithMask lambdaFn mask
+    trace[Debug.Meta.Tactic.cbv] "myCongThm: {myCongThm}, mask: {mask}"
+  catch e =>
+     trace[Debug.Meta.Tactic.cbv] "Failed with {e.toMessageData}, mask: {mask}, args: {args}"
   let (congruenceProof, kinds) ← getCombinationHEqWithArity fnType lambdaArgs.size
   let mut congruenceProof := Expr.app congruenceProof lambdaFn
 
@@ -242,6 +289,7 @@ def handleLambdaApp (lambdaFn : Expr) (args : Array Expr) (callback : Expr → C
 
 def handleDef (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv.unfold] "unfolding definition {name} with {args.size} arguments"
+
   let some unfoldEqName ← getConstUnfoldEqnFor? name | throwError
                 "Could not obtain unfold equation for: {name}"
   let unfoldEq := mkConst unfoldEqName levels
@@ -321,6 +369,8 @@ def handleMatcher (name : Name) (levels : List Level) (args : Array Expr) (callb
     -- Otherwise we handle all the arguments passed to a matcher and unfold it
     let (eqns, kinds) ← genCongrEqnForMatcher name levels matcherInfo
     let matcherArgs := args.extract (stop := matcherInfo.arity)
+    -- let valueInfo ← matcherArgs.mapM isValue
+    -- let _ ← genCongrEqnForMatcherWithMask name levels matcherInfo valueInfo
     let evaluatedArgs ← matcherArgs.mapM callback
     let toApply := matcherArgs.zip evaluatedArgs
     let eqns : Array Expr ← eqns.mapM fun eqn => do
@@ -483,27 +533,35 @@ def handleProj (typeName : Name) (idx : Nat) (val : Expr) (callback : Expr → C
   let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedResult.proof]
   return { value := continuedResult.value, proof := finalProof, isValue := true }
 
+def withCache (k : CbvM Result) : CbvM Result := do
+  let res ← k
+  if res.isValue then
+    modify (fun state =>
+      {state with fullyEvaluated := state.fullyEvaluated.insert res.value})
+  return res
+
 partial def cbvCore (e : Expr) : CbvM Result := do
   withTraceNode `Meta.Tactic.cbv (fun
     | .ok result => return m!"{e} => {result.value}"
     | .error err => return m!"{e} => {err.toMessageData}") do
-  let res ← normNat e cbvCore
-  if h : res.isSome then
-    return res.get h
-  if (← isValue e) then
-    tryValue e
-  else
-    match e with
-    | .app .. => handleApp e.getAppFn e.getAppArgs cbvCore
-    | .const .. => return {value := e , proof := ← mkHEqRefl e, isValue := true}
-    | .proj typeName idx val => handleProj typeName idx val cbvCore
-    | .letE .. =>
-      let e ← letToHave e
-      throwError "Upon transforming: {e}"
-    | _ => throwError "cbvCore': not implemented for {e}"
+  withCache do
+    let res ← normNat e cbvCore
+    if h : res.isSome then
+      return res.get h
+    if (← isValue e) then
+      tryValue e
+    else
+      match e with
+      | .app .. => handleApp e.getAppFn e.getAppArgs cbvCore
+      | .const .. => return {value := e , proof := ← mkHEqRefl e, isValue := true}
+      | .proj typeName idx val => handleProj typeName idx val cbvCore
+      | .letE .. =>
+        let e ← zetaReduce e
+        cbvCore e
+      | _ => throwError "cbvCore': not implemented for {e}"
 
 def cbv (e : Expr) : MetaM Result := do
-    let ⟨⟨value, proof, isVal⟩, _⟩ ← (cbvCore e).run {compositionThms := {}, leftCongruenceThms := {}}
+    let ⟨⟨value, proof, isVal⟩, _⟩ ← (cbvCore e).run {compositionThms := {}, leftCongruenceThms := {}, fullyEvaluated := {}}
     return { value := value, proof := ← mkEqOfHEq proof, isValue := isVal }
 
 
