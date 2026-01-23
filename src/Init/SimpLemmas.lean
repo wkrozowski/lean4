@@ -181,6 +181,19 @@ section SimprocHelperLemmas
 set_option simprocs false
 theorem ite_cond_eq_true {α : Sort u} {c : Prop} {_ : Decidable c} (a b : α) (h : c = True) : (if c then a else b) = a := by simp [h]
 theorem ite_cond_eq_false {α : Sort u} {c : Prop} {_ : Decidable c} (a b : α) (h : c = False) : (if c then a else b) = b := by simp [h]
+
+theorem ite_cond_eq_true_cbv {α : Sort u} {c : Prop} {_ : Decidable c} (a b : α) (h : decide c = true) (β : Sort u) (v : β) (cont : a ≍ v) : (if c then a else b) ≍ v := by
+  have := eq_true_of_decide h
+  have : ite c a b = a := ite_cond_eq_true a b this
+  rw [this]
+  exact cont
+
+theorem ite_cond_eq_false_cbv {α : Sort u} {c : Prop} {_ : Decidable c} (a b : α) (h : decide c = false) (β : Sort u) (v : β) (cont : b ≍ v) : (if c then a else b) ≍ v := by
+  have := eq_false_of_decide h
+  have : ite c a b = b := ite_cond_eq_false a b this
+  rw [this]
+  exact cont
+
 theorem dite_cond_eq_true {α : Sort u} {c : Prop} {_ : Decidable c} {t : c → α} {e : ¬ c → α} (h : c = True) : (dite c t e) = t (of_eq_true h) := by simp [h]
 theorem dite_cond_eq_false {α : Sort u} {c : Prop} {_ : Decidable c} {t : c → α} {e : ¬ c → α} (h : c = False) : (dite c t e) = e (of_eq_false h) := by simp [h]
 end SimprocHelperLemmas

@@ -249,3 +249,23 @@ theorem cbv_test2 : cexec_bounded 4 (fun x => if x == 0 then 8 else if x == 1 th
   conv =>
     lhs
     cbv
+
+def cbv_test_instance (n : Nat): com := match n with
+  | 0 => .SKIP
+  | n + 1 => .SEQ (.SEQ (.ASSIGN 1 (.PLUS (.VAR 1) (.CONST 2))) (.ASSIGN 1 (.MINUS (.VAR 1) (.CONST 1))))  (cbv_test_instance n)
+
+def cbv_test (n : Nat) := cexec_bounded (n + n + 1) (fun _ => 0) (cbv_test_instance n)
+def problem_instance (n : Nat) := (cbv_test n).getD (fun _ => 0) 1 = n
+
+theorem bench_simp : (cbv_test 120).getD (fun _ => 0) 1 = 130 := by
+  simp [cbv_test]
+  simp! [cexec_bounded, Option.getD, update]
+
+set_option trace.Meta.Tactic.cbv true
+set_option trace.Debug.Meta.Tactic.cbv.bench true
+theorem bench_cbv : (cbv_test 70).getD (fun _ => 0) 1 = 1 := by
+  conv =>
+    lhs
+    cbv
+
+#print bench_cbv

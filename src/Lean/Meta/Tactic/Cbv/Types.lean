@@ -20,15 +20,43 @@ structure Result where
   proof : Expr
   isValue : Bool
 
+inductive CbvCongrArgKind where
+  -- Requires the proof that it evaluates to a value
+  | eval
+  -- It is a value, no need to pass the proof
+  | value
+  -- Needs to be finished off with refl
+  | refl
+  deriving Inhabited, Repr, BEq
+
+instance : ToMessageData CbvCongrArgKind where
+  toMessageData := fun a => match a with
+  | .eval => "eval"
+  | .refl => "refl"
+  | .value => "value"
+
 structure Key where
   functionType : Expr
   arity : Nat
 deriving BEq, Hashable
 
+structure KeyWithMask where
+  functionType : Expr
+  mask : Array Bool
+deriving BEq, Hashable
+
+structure CbvCongrTheorem where
+  proof : Expr
+  type : Expr
+  kinds : Array CbvCongrArgKind
+
 structure CbvState where
   compositionThms : Std.HashMap Key CongrTheorem
+  compositionThmsWithMask : Std.HashMap KeyWithMask CbvCongrTheorem
   leftCongruenceThms : Std.HashMap Key Expr
   fullyEvaluated : Std.HashSet Expr
+  cached : Std.HashMap Expr Result
+  timeSpentGeneratingMatchers : Float
 
 abbrev CbvM := StateT CbvState MetaM
 
@@ -49,21 +77,6 @@ structure CbvExtState where
   /-- The tree of `cbv` extensions. -/
   tree : DiscrTree CbvExt := {}
   deriving Inhabited
-
-inductive CbvCongrArgKind where
-  -- Requires the proof that it evaluates to a value
-  | eval
-  -- It is a value, no need to pass the proof
-  | value
-  -- Needs to be finished off with refl
-  | refl
-  deriving Inhabited, Repr, BEq
-
-instance : ToMessageData CbvCongrArgKind where
-  toMessageData := fun a => match a with
-  | .eval => "eval"
-  | .refl => "refl"
-  | .value => "value"
 
 abbrev Entry := Array (Array DiscrTree.Key) × Name
 

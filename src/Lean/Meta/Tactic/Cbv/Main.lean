@@ -39,7 +39,7 @@ def mkLeftCongruence (fnType : Expr) (numArgs : Nat) : MetaM Expr := do
                 let res ← mkAppOptM ``Eq.mpr #[none, none, res]
                 let res ← mkLambdaFVars #[resultType, value] res
                 let res ← mkLambdaFVars args res
-                mkLambdaFVars #[f,g, heq] res
+                mkLambdaFVars #[f, g, heq] res
   mkAuxTheorem (← inferType proof) proof (cache := true)
 
 def getLeftCongruence (funType : Expr) (arity : Nat) : CbvM Expr := do
@@ -151,6 +151,127 @@ def genCombinationHEqWithArity (funType : Expr) (arity : Nat) : MetaM (Expr × A
   let proof ← Lean.Meta.mkAuxTheorem (← inferType proof) proof (cache := true)
   return ⟨proof, kinds⟩
 
+partial def congrThmTelescopeWithMask (c : CongrTheorem) (mask : Array Bool) (k : Array Expr → Array CbvCongrArgKind → Expr → MetaM α) : MetaM α := do
+  guard (c.argKinds.size == mask.size)
+  go #[] c.type 0 c.proof #[]
+where
+  go (soFar : Array Expr) (e : Expr) (n : Nat) (acc : Expr) (kinds : Array CbvCongrArgKind) := do
+    if n == mask.size then
+      k soFar kinds acc
+    else
+      forallBoundedTelescope e (.some 3) fun args body => do
+        let argTy0 ← inferType args[0]!
+        let argTy1 ← inferType args[1]!
+
+        let areDefEq ← isDefEq argTy0 argTy1
+        if (mask[n]! && areDefEq) then
+          let rflProof ← if c.argKinds[n]! == .eq then (mkEqRefl args[0]!) else (mkHEqRefl args[0]!)
+          let newAcc := mkApp3 acc args[0]! args[0]! rflProof
+          let newBody ← inferType newAcc
+          go (soFar.push args[0]!) newBody (n + 1) newAcc (kinds.push .value)
+        else
+          let kind : CbvCongrArgKind := if mask[n]! then .refl else .eval
+          let newKinds := kinds.push kind
+          if c.argKinds[n]! == .eq then
+            let newHypType ← mkHEq args[0]! args[1]!
+
+            withLocalDeclD `h newHypType fun newHyp => do
+              let eqProof ← mkEqOfHEq newHyp
+              let newBody := (mkApp3 acc args[0]! args[1]! eqProof)
+              go (soFar ++ #[args[0]!, args[1]!, newHyp]) (← inferType newBody) (n + 1) newBody newKinds
+          else
+            go (soFar ++ args) body (n + 1) (mkAppN acc args) newKinds
+
+def mkHCongrWithMask (fn : Expr) (mask : Array Bool) : MetaM (Expr × Array CbvCongrArgKind) := do
+  let hCongrThm ← mkHCongrWithArity fn mask.size
+  let (res, kinds) ← congrThmTelescopeWithMask hCongrThm mask fun args kinds body => do
+    pure (← mkLambdaFVars args body, kinds)
+  pure (←mkAuxTheorem (← inferType res) res (cache := true), kinds)
+
+def genCombinationHEqWithArityWithMask (funType : Expr) (mask : Array Bool) : MetaM CbvCongrTheorem := do
+  withLocalDeclD `f funType fun fVar => do
+    trace[Meta.Tactic.cbv] "Generating combination HEq, funType: {funType}, arity: {mask.size}, fVar: {fVar}"
+    let (hCongrThm, kinds) ← mkHCongrWithMask fVar mask
+    let hCongrThmType ← inferType hCongrThm
+    forallTelescope hCongrThmType fun args _ => do
+      let congrProof := mkAppN hCongrThm args
+      let some (_, _, type, value) := (← inferType congrProof).heq? | throwError "Heterogenous equality expected"
+      let level ← (getLevel type)
+      let type := mkSort level
+      withLocalDeclD `gType type fun resultType => do
+      withLocalDeclD `g resultType fun gVar => do
+          let remainingHEqType ← mkHEq value gVar
+          withLocalDeclD `heq remainingHEqType fun remainingHEq => do
+            let res ← mkHEqTrans congrProof remainingHEq
+            let res ← mkLambdaFVars #[resultType, gVar, remainingHEq] res
+            let res ← mkLambdaFVars args res
+            let res ← mkLambdaFVars #[fVar] res
+            let resType ← inferType res
+            let res ← mkAuxTheorem resType res (cache := true)
+            return { proof := res
+                     type := resType
+                     kinds := kinds }
+
+def getCombinationHEqWithArityWithMask (funType : Expr) (mask : Array Bool) : CbvM CbvCongrTheorem := do
+  let key : KeyWithMask := { functionType := funType, mask := mask }
+  let state ← get
+  if let some proof := state.compositionThmsWithMask.get? key then
+    trace[Meta.Tactic.cbv.congr] m!"{checkEmoji} retrieved cached combination HEq for {funType}"
+    return proof
+  else
+    trace[Meta.Tactic.cbv.congr] m!"generating new combination HEq for {funType} with mask {mask}"
+    let res ← genCombinationHEqWithArityWithMask funType mask
+    modify fun s => {s with compositionThmsWithMask := s.compositionThmsWithMask.insert key res}
+    return res
+
+partial def congrThmTelescope (c : CongrTheorem) (toApply : Array Expr) (k : Array Expr  → Expr → MetaM α) : MetaM α := do
+  go 0 #[] c.type c.proof
+  where
+    go (n : Nat) (soFar : Array Expr) (e : Expr) (acc : Expr) : MetaM α :=
+      if (n == c.argKinds.size) then
+        k soFar acc
+      else
+        forallBoundedTelescope e (.some 1) fun arg _ => do
+          let acc := mkApp2 acc arg[0]! toApply[n]!
+          let soFar := soFar.push arg[0]!
+
+          forallBoundedTelescope (← inferType acc) (.some 1) fun arg body => do
+            let acc := Expr.app acc arg[0]!
+            let soFar := soFar.push arg[0]!
+            go (n + 1) soFar body acc
+
+def genFunCongrEqn (eqnName : Name) (levels : List Level) : MetaM Expr := do
+  trace[Meta.Tactic.cbv.fun_congr] "Processing equation: {eqnName}"
+  let eqn := mkConst eqnName levels
+  let eqnType ← inferType eqn
+  trace[Meta.Tactic.cbv.fun_congr] "eqn: {eqn}, type: {eqnType}"
+  forallTelescope eqnType fun args eqnBody => do
+    let some (_, lhs, _) := eqnBody.eq? | throwError "expected an equality"
+    let funArgs := lhs.getAppArgs
+    let some hCongr ← mkHCongrWithArityForConst? lhs.getAppFn.constName! levels funArgs.size | throwError "failed to generate a heterogenous congruence proof"
+    congrThmTelescope hCongr funArgs fun hCongrFVars hCongrBody => do
+      trace[Meta.Tactic.cbv.fun_congr] "args: {args}, eqnBody: {eqnBody}, hcongr: {hCongr.type}, hCongrFVars: {hCongrFVars}, hCongrBody: {hCongrBody}"
+      let eqn := mkAppN eqn args
+      let newEqn ← mkHEqTrans hCongrBody (← mkHEqOfEq eqn)
+      let newEqnType ← inferType newEqn
+      let some (_, _, rhsType, rhs) := newEqnType.heq? | throwError "heterogenous equality expected"
+      let typeLevel ← getLevel rhsType
+      withLocalDeclD `gType (.sort typeLevel) fun gType => do
+        withLocalDeclD `g gType fun g => do
+          let continuedHeqType ← mkHEq rhs g
+          withLocalDeclD `heq (continuedHeqType) fun heq => do
+            let newEqn ← mkHEqTrans newEqn heq
+            let newEqn ← mkLambdaFVars #[gType, g, heq] newEqn
+            let newEqn ← mkLambdaFVars hCongrFVars newEqn
+            let newEqn ← mkLambdaFVars args newEqn
+            mkAuxTheorem (← inferType newEqn) newEqn (cache := true)
+
+def mkDefCongr (name : Name) (levels : List Level) : MetaM <| Array Expr := do
+  let some eqns ← getEqnsFor? name | throwError "Could not get equations"
+  let res ← eqns.mapM (genFunCongrEqn · levels)
+  trace[Meta.Tactic.cbv.fun_congr] "fun congr eqns: {res}"
+  return res
+
 def getCombinationHEqWithArity (funType : Expr) (arity : Nat) : CbvM (Expr × Array CongrArgKind) := do
   let key : Key := { functionType := funType, arity := arity }
   let state ← get
@@ -196,42 +317,23 @@ def normNat (e : Expr) (callback : Expr → CbvM Result) : CbvM (Option Result) 
   else
     return none
 
-partial def congrThmTelescopeWithMask (c : CongrTheorem) (mask : Array Bool) (k : Array Expr → Array CbvCongrArgKind → Expr → MetaM α) : MetaM α := do
-  guard (c.argKinds.size == mask.size)
-  go #[] c.type 0 c.proof #[]
-where
-  go (soFar : Array Expr) (e : Expr) (n : Nat) (acc : Expr) (kinds : Array CbvCongrArgKind) := do
-    if n == mask.size then
-      k soFar kinds acc
-    else
-      forallBoundedTelescope e (.some 3) fun args body => do
-        let argTy0 ← inferType args[0]!
-        let argTy1 ← inferType args[1]!
-        let areDefEq ← isDefEq argTy0 argTy1
-        if (mask[n]! && areDefEq) then
-          let rflProof ← if c.argKinds[n]! == .eq then (mkEqRefl args[0]!) else (mkHEqRefl args[0]!)
-          let newAcc := mkApp3 acc args[0]! args[0]! rflProof
-          let newBody ← inferType newAcc
-          go (soFar.push args[0]!) newBody (n + 1) newAcc (kinds.push .value)
+def reduceIte (e : Expr) (callback :  Expr → CbvM Result) : CbvM (Option Result) := do
+    if (e.isAppOf ``ite) then
+      let_expr f@ite α c i tb eb ← e | throwError "not matched"
+        let toDecide ← mkAppOptM ``Decidable.decide #[c,i]
+        let res ← callback toDecide
+        if res.value.cleanupAnnotations.isConstOf ``Bool.true then
+          let continuedResult ← callback tb
+          let finalProof ← mkAppOptM ``ite_cond_eq_true_cbv #[α, c, i, tb, eb, (← mkEqOfHEq res.proof), (← inferType continuedResult.value), continuedResult.value, continuedResult.proof ]
+          return some {value := continuedResult.value, proof := finalProof, isValue := true}
+        else if res.value.cleanupAnnotations.isConstOf ``Bool.false then
+          let continuedResult ← callback eb
+          let finalProof ← mkAppOptM ``ite_cond_eq_false_cbv #[α, c, i, tb, eb, (← mkEqOfHEq res.proof), (← inferType continuedResult.value), continuedResult.value, continuedResult.proof ]
+          return some {value := continuedResult.value, proof := finalProof, isValue := true}
         else
-          let kind : CbvCongrArgKind := if mask[n]! then .refl else .eval
-          let newKinds := kinds.push kind
-          if c.argKinds[n]! == .eq then
-            let newHypType ← mkHEq args[0]! args[1]!
-
-            withLocalDeclD `h newHypType fun newHyp => do
-              let eqProof ← mkEqOfHEq newHyp
-              let newBody := (mkApp3 acc args[0]! args[1]! eqProof)
-              go (soFar ++ #[args[0]!, args[1]!, newHyp]) (← inferType newBody) (n + 1) newBody newKinds
-          else
-            go (soFar ++ args) body (n + 1) (mkAppN acc args) newKinds
-
-
-def mkHCongrWithMask (fn : Expr) (mask : Array Bool) : MetaM (Expr × Array CbvCongrArgKind) := do
-  let hCongrThm ← mkHCongrWithArity fn mask.size
-  let (res, kinds) ← congrThmTelescopeWithMask hCongrThm mask fun args kinds body => do
-    pure (← mkLambdaFVars args body, kinds)
-  pure (←mkAuxTheorem (← inferType res) res (cache := true), kinds)
+          return none
+    else
+      return none
 
 def handleLambdaApp (lambdaFn : Expr) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   guard lambdaFn.isLambda
@@ -254,24 +356,19 @@ def handleLambdaApp (lambdaFn : Expr) (args : Array Expr) (callback : Expr → C
   let continuedResult ← callback toContinue
   let continuedResultType ← inferType continuedResult.value
 
-  trace[Debug.Meta.Tactic.cbv] "Arguments are: {args}, fnType: {fnType}, lambdaFn: {lambdaFn}"
-  try
-    let myCongThm ← mkHCongrWithMask lambdaFn mask
-    trace[Debug.Meta.Tactic.cbv] "myCongThm: {myCongThm}, mask: {mask}"
-  catch e =>
-     trace[Debug.Meta.Tactic.cbv] "Failed with {e.toMessageData}, mask: {mask}, args: {args}"
-  let (congruenceProof, kinds) ← getCombinationHEqWithArity fnType lambdaArgs.size
+  let ⟨congruenceProof, _, myCongThmKinds⟩ ← getCombinationHEqWithArityWithMask fnType mask
   let mut congruenceProof := Expr.app congruenceProof lambdaFn
 
-  -- We apply all the arguments to the congruence lemma
-  for ((arg, evalResult), kind) in toApply.zip kinds do
-    congruenceProof := mkAppN congruenceProof #[arg, evalResult.value]
-    let mut proof := evalResult.proof
-    if kind == .eq then
-      proof ← mkEqOfHEq proof
-    congruenceProof := .app congruenceProof proof
-
+  for ((arg, evalResult), kind) in toApply.zip myCongThmKinds do
+    congruenceProof := Expr.app congruenceProof arg
+    match kind with
+    | .value => continue
+    | .eval =>
+      congruenceProof := mkApp2 congruenceProof evalResult.value evalResult.proof
+    | .refl =>
+      congruenceProof := mkApp2 congruenceProof arg <| ← mkHEqRefl arg
   congruenceProof := mkAppN congruenceProof #[continuedResultType, continuedResult.value, continuedResult.proof]
+  congruenceProof := congruenceProof
   if (lambdaArity < args.size) then
     congruenceProof ← mkEqOfHEq congruenceProof
     let resultType ← inferType continuedResult.value
@@ -289,7 +386,7 @@ def handleLambdaApp (lambdaFn : Expr) (args : Array Expr) (callback : Expr → C
 
 def handleDef (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv.unfold] "unfolding definition {name} with {args.size} arguments"
-
+  let _ ← mkDefCongr name levels
   let some unfoldEqName ← getConstUnfoldEqnFor? name | throwError
                 "Could not obtain unfold equation for: {name}"
   let unfoldEq := mkConst unfoldEqName levels
@@ -312,7 +409,8 @@ def handleDef (name : Name) (levels : List Level) (args : Array Expr) (callback 
 
   return {value := evaluationResult.value, proof := finalProof, isValue := true }
 
-def genCongrEqnForMatcher (name : Name) (levels : List Level) (matcherInfo : Match.MatcherInfo) : MetaM (Array Expr × Array CongrArgKind) := do
+def genCongrEqnForMatcher (name : Name) (levels : List Level) (matcherInfo : Match.MatcherInfo) : MetaM (Array Expr × Array CongrArgKind × Float) := do
+  let startTime ← IO.monoNanosNow
   let some hCongrThm ← mkHCongrWithArityForConst? name levels matcherInfo.arity | throwError "Could not genereate congruence theorem for matcher {name}"
   let congrEqns ← Match.genMatchCongrEqns name
   let congrEqns := congrEqns.map (mkConst · levels)
@@ -334,7 +432,9 @@ def genCongrEqnForMatcher (name : Name) (levels : List Level) (matcherInfo : Mat
               let finalProof ← mkHEqTrans composedProof heqVar
               let finalProof ← mkLambdaFVars (congrArgs ++ matchArgs ++ #[gType, gVar, heqVar]) finalProof
               mkAuxTheorem (← inferType finalProof) finalProof (cache := true)
-  return (res, hCongrThm.argKinds)
+  let endTime ← IO.monoNanosNow
+  let matcherMs := (endTime - startTime).toFloat / 1000000.0
+  return (res, hCongrThm.argKinds, matcherMs)
 
 def handleIrreducibleConst (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv.irreducible] "handling irreducible constant {name} with {args.size} arguments"
@@ -367,7 +467,9 @@ def handleMatcher (name : Name) (levels : List Level) (args : Array Expr) (callb
       handleIrreducibleConst name levels args callback
     else
     -- Otherwise we handle all the arguments passed to a matcher and unfold it
-    let (eqns, kinds) ← genCongrEqnForMatcher name levels matcherInfo
+    let (eqns, kinds, time) ← genCongrEqnForMatcher name levels matcherInfo
+    let state ← get
+    modify fun state => {state with timeSpentGeneratingMatchers := state.timeSpentGeneratingMatchers + time}
     let matcherArgs := args.extract (stop := matcherInfo.arity)
     -- let valueInfo ← matcherArgs.mapM isValue
     -- let _ ← genCongrEqnForMatcherWithMask name levels matcherInfo valueInfo
@@ -415,21 +517,24 @@ def handleMatcher (name : Name) (levels : List Level) (args : Array Expr) (callb
       return lhs
 
     let continuedResult ← callback toContinue
-    let resolvedCandidate ← mkAppOptM' resolvedCandidate #[.none, continuedResult.value, continuedResult.proof]
-    if matcherInfo.arity < args.size then
-      let fnType ← inferType continuedResult.value
-      let remainingArgs := args.extract matcherInfo.arity
-      let congrThm ← getLeftCongruence fnType remainingArgs.size
-      let resolvedCandidate ← mkEqOfHEq resolvedCandidate
-      let some (_, lhs, rhs) := (← inferType resolvedCandidate).eq? | throwError "equality expected"
-      let resolvedCandidate := mkAppN congrThm #[lhs, rhs, resolvedCandidate]
-      let resolvedCandidate := mkAppN resolvedCandidate remainingArgs
-      let toEvaluate := mkAppN rhs remainingArgs
-      let evalResult ← callback toEvaluate
-      let resolvedCandidate := mkAppN resolvedCandidate #[← inferType evalResult.value, evalResult.value, evalResult.proof]
-      return { value := evalResult.value, proof := resolvedCandidate, isValue := true }
-    else
-      return { value := continuedResult.value, proof := resolvedCandidate, isValue := true }
+    try
+      let resolvedCandidate ← mkAppOptM' resolvedCandidate #[.none, continuedResult.value, continuedResult.proof]
+      if matcherInfo.arity < args.size then
+        let fnType ← inferType continuedResult.value
+        let remainingArgs := args.extract matcherInfo.arity
+        let congrThm ← getLeftCongruence fnType remainingArgs.size
+        let resolvedCandidate ← mkEqOfHEq resolvedCandidate
+        let some (_, lhs, rhs) := (← inferType resolvedCandidate).eq? | throwError "equality expected"
+        let resolvedCandidate := mkAppN congrThm #[lhs, rhs, resolvedCandidate]
+        let resolvedCandidate := mkAppN resolvedCandidate remainingArgs
+        let toEvaluate := mkAppN rhs remainingArgs
+        let evalResult ← callback toEvaluate
+        let resolvedCandidate := mkAppN resolvedCandidate #[← inferType evalResult.value, evalResult.value, evalResult.proof]
+        return { value := evalResult.value, proof := resolvedCandidate, isValue := true }
+      else
+        return { value := continuedResult.value, proof := resolvedCandidate, isValue := true }
+    catch _ =>
+      throwError "triggered an error here"
 
 def handleRec (name : Name) (levels : List Level) (args : Array Expr) (callback : Expr → CbvM Result) : CbvM Result := do
   trace[Meta.Tactic.cbv.recursor] "handling recursor {name} with {args.size} arguments"
@@ -533,36 +638,57 @@ def handleProj (typeName : Name) (idx : Nat) (val : Expr) (callback : Expr → C
   let finalProof ← mkAppOptM ``Eq.mpr #[none, none, congrArg, continuedResult.proof]
   return { value := continuedResult.value, proof := finalProof, isValue := true }
 
-def withCache (k : CbvM Result) : CbvM Result := do
+def withCache (e : Expr) (k : CbvM Result) : CbvM Result := do
   let res ← k
   if res.isValue then
     modify (fun state =>
-      {state with fullyEvaluated := state.fullyEvaluated.insert res.value})
+      {state with
+        fullyEvaluated := state.fullyEvaluated.insert res.value
+        cached := state.cached.insert e res})
   return res
 
 partial def cbvCore (e : Expr) : CbvM Result := do
   withTraceNode `Meta.Tactic.cbv (fun
     | .ok result => return m!"{e} => {result.value}"
     | .error err => return m!"{e} => {err.toMessageData}") do
-  withCache do
-    let res ← normNat e cbvCore
-    if h : res.isSome then
-      return res.get h
-    if (← isValue e) then
-      tryValue e
+  withCache e do
+    let state ← get
+    if let some res := state.cached.get? e then
+      return res
     else
-      match e with
-      | .app .. => handleApp e.getAppFn e.getAppArgs cbvCore
-      | .const .. => return {value := e , proof := ← mkHEqRefl e, isValue := true}
-      | .proj typeName idx val => handleProj typeName idx val cbvCore
-      | .letE .. =>
-        let e ← zetaReduce e
-        cbvCore e
-      | _ => throwError "cbvCore': not implemented for {e}"
+      let res ← normNat e cbvCore
+      if h : res.isSome then
+        return res.get h
+      let res ← reduceIte e cbvCore
+      if h : res.isSome then
+        return res.get h
+      if (← isValue e) then
+        tryValue e
+      else
+        match e with
+        | .app .. => handleApp e.getAppFn e.getAppArgs cbvCore
+        | .const .. => return {value := e , proof := ← mkHEqRefl e, isValue := true}
+        | .proj typeName idx val => handleProj typeName idx val cbvCore
+        | .letE .. =>
+          -- TODO: Use `letToHave`
+          let e ← zetaReduce e
+          cbvCore e
+        | _ => throwError "cbvCore': not implemented for {e}"
 
 def cbv (e : Expr) : MetaM Result := do
-    let ⟨⟨value, proof, isVal⟩, _⟩ ← (cbvCore e).run {compositionThms := {}, leftCongruenceThms := {}, fullyEvaluated := {}}
+    let startTime ← IO.monoNanosNow
+    let ⟨⟨value, proof, isVal⟩, state⟩ ← (cbvCore e).run {compositionThms := {}, leftCongruenceThms := {}, fullyEvaluated := {}, compositionThmsWithMask := {}, cached := {}, timeSpentGeneratingMatchers := 0}
+    trace[Debug.Meta.Tactic.cbv.bench] "generated: {state.compositionThmsWithMask.size} many smart composition theorems, {state.compositionThms.size} dumb ones, {state.leftCongruenceThms.size} left ones, cached {state.fullyEvaluated.size} values and {state.cached.size} results"
+    let endTime ← IO.monoNanosNow
+    let ms := (endTime - startTime).toFloat / 1000000.0
+    let startTime ← IO.monoNanosNow
+    checkWithKernel (proof)
+    let endTime ← IO.monoNanosNow
+    let kernelMs := (endTime - startTime).toFloat / 1000000.0
+
+    trace[Debug.Meta.Tactic.cbv.bench] "ms: {ms}, kernel: {kernelMs}, timeSpentGeneratingMatchers: {state.timeSpentGeneratingMatchers}"
     return { value := value, proof := ← mkEqOfHEq proof, isValue := isVal }
+
 
 
 end Lean.Meta.Tactic.Cbv

@@ -8,8 +8,11 @@ namespace test1
 
   def myFun (l : List α) : Nat := match l with
     | [] => 0
-    | (_ :: _) => 1
+    | hd :: tl => 1
 
+
+
+  set_option trace.Meta.Tactic.cbv.fun_congr true
   theorem test1 : (myFun ([] : List Nat) ).succ = 1 := by
     conv =>
       lhs
@@ -46,9 +49,9 @@ namespace test4
     | 0 => 0
     | n + 1 => (myFun n) + 1
     termination_by id n
-  set_option trace.Meta.Tactic.cbv true
+  set_option trace.Debug.Meta.Tactic.cbv true
   -- /- We need to be able to normalize this to a `OfNat.ofNat` -/
-  theorem test4 : myFun 1 = 1 := by
+  theorem test4 : myFun 100 = 100 := by
     conv =>
       lhs
       cbv
@@ -348,43 +351,34 @@ def fn (n : Nat) (v : Vector Nat n) : Nat := (v.size + 1)
 def propEqFn (n : Nat) : Nat := match n with
   | 0 => 0
   | (n + 1) => propEqFn n + 1
+  termination_by n
 
   axiom k : Vector Nat (propEqFn 1)
 
   set_option trace.Debug.Meta.Tactic.cbv true
 
- theorem test16 : fn (propEqFn 1) k = fn 1 #v[1] := by
+ theorem test16 : fn (propEqFn 1) k = 2 := by
   conv =>
     lhs
     cbv
-  conv =>
-    rhs
-    cbv
 
-  #print axioms test16
+
+  #print test16
+  #check test16._proof_1_15
 
 end test16b
 
-namespace test16c
 
-def fn (n : Nat) (v : Vector Nat n) (m : Nat) : Nat := v.size + 1 + m
+theorem ite_reduce (p : Prop) [Decidable p] (h : decide p = true) : p = True := by
+  grind
 
-def propEqFn (n : Nat) : Nat := match n with
-  | 0 => 0
-  | (n + 1) => propEqFn n + 1
+set_option trace.Meta.Tactic.cbv true
+section test17
+  theorem test17 : (if (2 < 5) then 7 else 42 : Nat) = (7 : Nat) := by
+    conv =>
+      lhs
+      cbv
 
-  axiom k : Vector Nat (propEqFn 1)
+#print test17
 
-  set_option trace.Debug.Meta.Tactic.cbv true
-
- theorem test16 : fn (1 + 0) k (5) = fn (propEqFn 1) k 5 := by
-  conv =>
-    lhs
-    cbv
-  conv =>
-    rhs
-    cbv
-
-  #print axioms test16
-
-end test16c
+end test17

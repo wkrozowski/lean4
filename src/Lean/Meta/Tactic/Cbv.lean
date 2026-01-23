@@ -15,6 +15,7 @@ public section
 namespace Lean
 
 builtin_initialize registerTraceClass `Meta.Tactic.cbv
+builtin_initialize registerTraceClass `Meta.Tactic.cbv.fun_congr (inherited := true)
 builtin_initialize registerTraceClass `Meta.Tactic.cbv.congr (inherited := true)
 builtin_initialize registerTraceClass `Meta.Tactic.cbv.value (inherited := true)
 builtin_initialize registerTraceClass `Meta.Tactic.cbv.unfold (inherited := true)
@@ -24,6 +25,7 @@ builtin_initialize registerTraceClass `Meta.Tactic.cbv.projection (inherited := 
 builtin_initialize registerTraceClass `Meta.Tactic.cbv.app (inherited := true)
 builtin_initialize registerTraceClass `Meta.Tactic.cbv.irreducible (inherited := true)
 builtin_initialize registerTraceClass `Debug.Meta.Tactic.cbv
+builtin_initialize registerTraceClass `Debug.Meta.Tactic.cbv.bench
 builtin_initialize registerTraceClass `Debug.Meta.Tactic.cbv.congr (inherited := true)
 
 end Lean
