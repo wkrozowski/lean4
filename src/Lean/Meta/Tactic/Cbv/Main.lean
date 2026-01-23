@@ -678,7 +678,6 @@ partial def cbvCore (e : Expr) : CbvM Result := do
 def cbv (e : Expr) : MetaM Result := do
     let startTime ← IO.monoNanosNow
     let ⟨⟨value, proof, isVal⟩, state⟩ ← (cbvCore e).run {compositionThms := {}, leftCongruenceThms := {}, fullyEvaluated := {}, compositionThmsWithMask := {}, cached := {}, timeSpentGeneratingMatchers := 0}
-    trace[Debug.Meta.Tactic.cbv.bench] "generated: {state.compositionThmsWithMask.size} many smart composition theorems, {state.compositionThms.size} dumb ones, {state.leftCongruenceThms.size} left ones, cached {state.fullyEvaluated.size} values and {state.cached.size} results"
     let endTime ← IO.monoNanosNow
     let ms := (endTime - startTime).toFloat / 1000000.0
     let startTime ← IO.monoNanosNow
@@ -686,7 +685,7 @@ def cbv (e : Expr) : MetaM Result := do
     let endTime ← IO.monoNanosNow
     let kernelMs := (endTime - startTime).toFloat / 1000000.0
 
-    trace[Debug.Meta.Tactic.cbv.bench] "ms: {ms}, kernel: {kernelMs}, timeSpentGeneratingMatchers: {state.timeSpentGeneratingMatchers}"
+    trace[Debug.Meta.Tactic.cbv.bench] "{ms}, {kernelMs}"
     return { value := value, proof := ← mkEqOfHEq proof, isValue := isVal }
 
 
