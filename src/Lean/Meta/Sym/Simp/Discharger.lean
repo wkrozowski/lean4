@@ -104,6 +104,17 @@ public def dischargeSimpSelf : Discharger := fun e => do
   withTheReader Context (fun ctx => { ctx with dischargeDepth := ctx.dischargeDepth + 1 }) do
     return resultToOptionProof e (← simp e)
 
+public def dischargeSimpCbv : Discharger := fun e => do
+  if (← readThe Context).dischargeDepth > (← getConfig).maxDischargeDepth then
+    return none
+  withoutModifyingCache do
+  withTheReader Context (fun ctx => { ctx with dischargeDepth := ctx.dischargeDepth + 1 }) do
+    let some (_, lhs, _) := e.eq? | return none
+    let res ← simp lhs
+    match res with
+    | .rfl done => mkEqRefl lhs
+    | .step e' proof done => return proof
+
 /--
 A discharger that fails to prove any side condition.
 

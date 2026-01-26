@@ -35,6 +35,32 @@ public def isValue : Simproc := fun e => do
   else
     return .rfl
 
+public def constUnfold : Simproc := fun e => do
+  if e.isConst then
+    let info ← getConstInfo e.constName!
+    unless info.isDefinition do
+      return .rfl
+    let some thm ← mkTheoremsFromEquations e.constName! | return .rfl
+    let mut thms : Theorems := {}
+    thms := thms.insert thm
+    thms.rewrite dischargeNone e
+  else
+    return .rfl
+
+public def eqnsSimproc : Simproc := fun e => do
+  let fn := e.getAppFn
+  if fn.isConst then
+    let fnName := fn.constName!
+    let funInfo ← getFunInfo fn
+    let arity := funInfo.getArity
+    unless e.getAppArgs.size == arity do
+      return .rfl
+    let matcherInfo ← mkTheoremsFromEquations' fnName
+    let some theorems := matcherInfo | return .rfl
+    theorems.rewrite dischargeNone e
+  else
+    return .rfl
+
 public def unfoldSimproc : Simproc := fun e => do
   let fn := e.getAppFn
   if fn.isConst then
@@ -54,8 +80,20 @@ def skipBinders : Simproc := fun e =>
   if e.isForall then return .rfl (done := true)
   else return .rfl
 
-def cbvPre : Simproc := skipBinders >> simpControl >> evalGround
-def cbvPost : Simproc := evalGround >> isValue >> unfoldSimproc
+def rewriteLHS : Simproc := fun e => do
+  let res ← simp e.getAppFn
+  match res with
+  | .rfl .. => return res
+  | .step e' proof _ =>
+    let eTy ← inferType e'
+    let congrArgFun ← withLocalDeclD `x eTy fun x =>
+      mkLambdaFVars #[x] <| mkAppN x e.getAppArgs
+    let congrArg ← mkCongrArg congrArgFun proof
+    let newVal := mkAppN e' e.getAppArgs
+    return .step newVal congrArg
+
+def cbvPre : Simproc := isValue >> skipBinders >> simpControl >> evalGround
+def cbvPost : Simproc := evalGround >> constUnfold >> (eqnsSimproc <|> unfoldSimproc <|> rewriteLHS)
 
 public def mkCbvMethods : MetaM Methods := do
   return {pre := cbvPre, post := cbvPost}

@@ -12,8 +12,12 @@ import Lean.Meta.Sym.InferType
 import Lean.Meta.Sym.Simp.App
 import Lean.Meta.SynthInstance
 import Lean.Meta.WHNF
+import Lean.Meta.Match.MatchEqsExt
 import Lean.Meta.AppBuilder
 import Init.Sym.Lemmas
+import Lean.Meta.Sym.Simp.Theorems
+import Lean.Meta.Sym.Simp.Rewrite
+import Lean.Meta.Sym.Simp.Discharger
 namespace Lean.Meta.Sym.Simp
 open Internal
 
@@ -127,6 +131,34 @@ def simpMatch (declName : Name) : Simproc := fun e => do
   | .step .. => return r
   | _ => return .rfl (done := true)
 
+def getMatchTheorems (declName : Name) : SimpM (Array Theorem) := do
+  let state ← get
+  if state.matcherCache.contains declName then
+    return state.matcherCache.find! declName
+  else
+    let congrEqns ← Match.genMatchCongrEqns declName
+    let theorems : Array Theorem ← congrEqns.mapM (do mkHEqTheoremFromDecl ·)
+    modify (fun oldState => {oldState with matcherCache := oldState.matcherCache.insert declName theorems})
+    return theorems
+
+def simpMatch' (declName : Name) : Simproc := fun e => do
+  unless ← isMatcherApp e do
+    return .rfl
+  -- **Note**: Simplify only the discriminants
+
+  let theorems : Array Theorem ← getMatchTheorems declName
+  for thm in theorems do
+    let res ← Theorem.rewriteMatchCongrThm thm e (d := dischargeSimpCbv) (heq := true)
+    match res with
+    | .step e' proof _ =>
+      trace[Meta.Tactic] "Obtained: {e'} with proof: {proof}"
+      return res
+    | .rfl done =>
+      if !done then
+        continue
+      else
+        return .rfl (done := true)
+  return .rfl
 /--
 Simplifies control-flow expressions such as `if-then-else` and `match` expressions.
 It visits only the conditions and discriminants.

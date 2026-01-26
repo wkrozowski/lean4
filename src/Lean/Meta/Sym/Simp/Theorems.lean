@@ -8,26 +8,11 @@ prelude
 public import Lean.Meta.Sym.Pattern
 public import Lean.Meta.DiscrTree
 public import Lean.Meta.Eqns
+public import Lean.Meta.Sym.Simp.SimpM
 import Lean.Meta.Sym.Simp.DiscrTree
 public section
 namespace Lean.Meta.Sym.Simp
 
-/--
-A simplification theorem for the structural simplifier.
-
-Contains both the theorem expression and a precomputed pattern for efficient unification
-during rewriting.
--/
-structure Theorem where
-  /-- The theorem expression, typically `Expr.const declName` for a named theorem. -/
-  expr    : Expr
-  /-- Precomputed pattern extracted from the theorem's type for efficient matching. -/
-  pattern : Pattern
-  /-- Right-hand side of the equation. -/
-  rhs     : Expr
-
-instance : BEq Theorem where
-  beq thm₁ thm₂ := thm₁.expr == thm₂.expr
 
 /-- Collection of simplification theorems available to the simplifier. -/
 structure Theorems where
@@ -46,8 +31,20 @@ def mkTheoremFromDecl (declName : Name) : MetaM Theorem := do
   let (pattern, rhs) ← mkEqPatternFromDecl declName
   return { expr := mkConst declName, pattern, rhs }
 
+def mkHEqTheoremFromDecl (declName : Name) : MetaM Theorem := do
+  let (pattern, rhs) ← mkHEqPatternFromDecl declName
+  return { expr := mkConst declName, pattern, rhs }
+
 def mkTheoremsFromEquations (declName : Name) : MetaM <| Option Theorem := do
   let some eqn ← getUnfoldEqnFor? declName (nonRec := true) | return .none
   mkTheoremFromDecl eqn
+
+def mkTheoremsFromEquations' (declName : Name) : MetaM <| Option Theorems := do
+  let some eqns ← getEqnsFor? declName | return .none
+  let mut thms : Theorems := {}
+  for eqn in eqns do
+    let thm ← mkTheoremFromDecl eqn
+    thms := thms.insert thm
+  return thms
 
 end Lean.Meta.Sym.Simp

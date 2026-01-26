@@ -2,19 +2,58 @@ import Lean
 
 def myFun (n : Nat) : Nat := match n with
 | .zero => .zero
-| .succ n => (myFun n).succ
-termination_by n
+| n + 1 => (myFun n) + 1
+termination_by (n,0)
 
-set_option maxRecDepth 2000000
-set_option trace.Meta.Tactic true
-theorem test1 : myFun 3 = 3 := by
+
+theorem myFun_test : myFun 7 = 7 := by
+  conv =>
+    lhs
+    cbv
+
+#print myFun_test
+
+
+
+theorem instanceUnfold : (@instHAdd Nat instAddNat).1 1 1 =  2 := by
   conv =>
     lhs
     cbv
 
 
 
-#print test1
+
+
+def f : Unit → (Nat × Nat) := fun _ => (21,37)
+
+/- Cannot reduce left-hand sides -/
+theorem test2: ((f, f).1 ()).1 = 21 := by
+  conv =>
+    lhs
+    cbv
+
+
+theorem test2_5 : ((f ()).1, 21).1 = 21 := by
+  conv =>
+    lhs
+    cbv
+
+/- Cannot reduce lambdas -/
+theorem test3 : (fun x : Nat => x) 7 = 7 := by
+  conv =>
+    lhs
+    cbv
+
+def g : Unit × Unit := ((),())
+
+theorem test4 : g.1 = () := by
+  conv =>
+    lhs
+    cbv
+
+#print test4
+
+#print myFun_test
 
 abbrev ident := Nat
 
@@ -214,6 +253,8 @@ theorem cexec_infinite_loop (s : store) : ¬ ∃ s', cexec s (.WHILE .TRUE .SKIP
       else
         .some s
 
+#check cexec_bounded.eq_1
+
 def cbv_test_instance (n : Nat): com := match n with
   | 0 => .SKIP
   | n + 1 => .SEQ (.SEQ (.ASSIGN 1 (.PLUS (.VAR 1) (.CONST 2))) (.ASSIGN 1 (.MINUS (.VAR 1) (.CONST 1))))  (cbv_test_instance n)
@@ -221,10 +262,10 @@ def cbv_test_instance (n : Nat): com := match n with
 def cbv_test (n : Nat) := cexec_bounded (n + n + 1) (fun _ => 0) (cbv_test_instance n)
 def problem_instance (n : Nat) := (cbv_test n).getD (fun _ => 0) 1 = n
 
-set_option trace.Meta.Tactic true
+#check myFun.match_1.eq_1
 
 
-theorem leroy_test : problem_instance 10 := by
+theorem leroy_test : problem_instance 100 := by
   unfold problem_instance
   unfold cbv_test
   simp only [cbv_test_instance]
@@ -232,3 +273,9 @@ theorem leroy_test : problem_instance 10 := by
     lhs
     cbv
   rfl
+
+
+theorem treemap_example : (((Std.TreeMap.empty : Std.TreeMap Nat Nat).insert 1 2).insert 2 3).size = 2 := by
+  conv =>
+    lhs
+    cbv

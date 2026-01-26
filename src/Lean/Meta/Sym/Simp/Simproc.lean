@@ -16,7 +16,16 @@ public abbrev Simproc.andThen (f g : Simproc) : Simproc := fun e₁ => do
   | .rfl false => g e₁
   | .step e₂ h₁ false => mkEqTransResult e₁ e₂ h₁ (← g e₂)
 
+public abbrev Simproc.orElse (f g : Simproc) : Simproc := fun e₁ => do
+  let r ← f e₁
+  match r with
+  | .step _ _ _ | .rfl true  => return r
+  | .rfl false => g e₁
+
 public instance : AndThen Simproc where
   andThen f g := Simproc.andThen f (g ())
+
+public instance : OrElse Simproc where
+  orElse f g := Simproc.orElse f (g ())
 
 end Lean.Meta.Sym.Simp

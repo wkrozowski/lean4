@@ -171,6 +171,17 @@ structure Context where
 /-- Cache mapping expressions (by pointer equality) to their simplified results. -/
 abbrev Cache := PHashMap ExprPtr Result
 
+structure Theorem where
+  /-- The theorem expression, typically `Expr.const declName` for a named theorem. -/
+  expr    : Expr
+  /-- Precomputed pattern extracted from the theorem's type for efficient matching. -/
+  pattern : Pattern
+  /-- Right-hand side of the equation. -/
+  rhs     : Expr
+
+instance : BEq Theorem where
+  beq thm₁ thm₂ := thm₁.expr == thm₂.expr
+
 /-- Mutable state for the simplifier. -/
 structure State where
   /-- Number of steps performed so far. -/
@@ -182,6 +193,8 @@ structure State where
   cache : Cache := {}
   /-- Cache for generated funext theorems -/
   funext : PHashMap ExprPtr Expr := {}
+
+  matcherCache : PHashMap Name (Array Theorem) := {}
 
 /-- Monad for the structural simplifier, layered on top of `SymM`. -/
 abbrev SimpM := ReaderT MethodsRef $ ReaderT Context StateRefT State SymM

@@ -212,6 +212,17 @@ public def mkEqPatternFromDecl (declName : Name) : MetaM (Pattern × Expr) := do
       return (pattern, rhs)
   go type #[]
 
+public def mkHEqPatternFromDecl (declName : Name) : MetaM (Pattern × Expr) := do
+  let (levelParams, type) ← preprocessPattern declName
+  let rec go (pattern : Expr) (varTypes : Array Expr) : MetaM (Pattern × Expr) := do
+    if let .forallE _ d b _ := pattern then
+      return (← go b (varTypes.push d))
+    else
+      let_expr HEq _ lhs _ rhs := pattern | throwError "resulting type for `{.ofConstName declName}` is not a heterogenous equality"
+      let pattern ← mkPatternCore type levelParams varTypes lhs
+      return (pattern, rhs)
+  go type #[]
+
 structure UnifyM.Context where
   pattern   : Pattern
   unify     : Bool := true
