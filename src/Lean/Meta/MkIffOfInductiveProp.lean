@@ -267,16 +267,19 @@ Example:
 listBoolMerge [false, true, false, true] [0, 1, 2, 3, 4] = [none, (some 0), none, (some 1)]
 ```
 -/
-private def listBoolMerge : List Bool → List α → List (Option α)
+private def mergeArgs (bs : List Bool) (witnesses : List Expr) : List (Option Expr) :=
+  go bs witnesses
+where go
   | [], _ => []
-  | false :: xs, ys => none :: listBoolMerge xs ys
-  | true :: xs, y :: ys => some y :: listBoolMerge xs ys
-  | true :: _, [] => []
+  | true :: bs', w :: witnesses' =>
+    some w :: go bs' witnesses'
+  | false :: bs', witnesses =>
+    none :: go bs' witnesses
+  | _, _ => []
 
 /-- Proves the right to left direction of a generated iff theorem.
 -/
-private def toInductive (mvar : MVarId) (cs : List Name)
-    (gs : List Expr) (s : List Shape) (h : FVarId) :
+private def toInductive (mvar : MVarId) (cs : List Name) (numParams : Nat) (s : List Shape) (h : FVarId) :
     MetaM Unit := do
   match s.length with
   | 0       => do let _ ← mvar.cases h
@@ -285,15 +288,18 @@ private def toInductive (mvar : MVarId) (cs : List Name)
       let subgoals ← nCasesSum n mvar h
       let _ ← (cs.zip (subgoals.zip s)).mapM fun ⟨constr_name, ⟨h, mv⟩, bs, e⟩ ↦ do
         let n := (bs.filter id).length
-        let (mvar', _fvars, numHEqs) ← match e with
+        let (mvar', witnessVars, numHEqs) ← match e with
         | none =>
-            let (id, fvarIds) ← nCasesProd (n-1) mv h
-            pure ⟨id, fvarIds, 0⟩
-        | some 0 => do let ⟨mvar', fvars⟩ ← nCasesProd n mv h
-                          let mvar'' ← mvar'.tryClear fvars.getLast!
-                          pure ⟨mvar'', fvars, 0⟩
+            let (id, fvars) ← nCasesProd (n-1) mv h
+            pure ⟨id, fvars, 0⟩
+        | some 0 => do
+            let ⟨mvar', fvars⟩ ← nCasesProd n mv h
+            let eqFvar := fvars.getLast!
+            let #[subgoal] ← mvar'.cases eqFvar | throwError "expected one subgoal from equality"
+            pure ⟨subgoal.mvarId, fvars.dropLast, 0⟩
         | some (e + 1) => do
           let (mv', fvars) ← nCasesProd n mv h
+          let witnesses := fvars.dropLast
           let lastfv := fvars.getLast!
           let (mv2, fvars') ← nCasesProd e mv' lastfv
           let numHEqs ← mv2.withContext do
@@ -302,32 +308,53 @@ private def toInductive (mvar : MVarId) (cs : List Name)
             let res := res.filter id
             pure res.length
 
-          /- `fvars'.foldlM subst mv2` fails when we have dependent equalities (`HEq`).
-          `subst` will change the dependent hypotheses, so that the `uniq` local names
-          are wrong afterwards. Instead we revert them and pull them out one-by-one. -/
           let (_, mv3) ← mv2.revert fvars'.toArray
           let mv4 ← fvars'.foldlM (fun mv _ ↦ do
             let ⟨fv, mv'⟩ ← mv.intro1
             let #[res] ← mv'.cases fv | throwError "expected one case subgoal"
             return res.mvarId) mv3
-          pure (mv4, fvars, numHEqs)
+          pure (mv4, witnesses, numHEqs)
         mvar'.withContext do
-          let fvarIds := (← getLCtx).getFVarIds.toList
-          let gs := fvarIds.take gs.length
-          let hs := fvarIds.extract (fvarIds.length - (n + numHEqs)) (fvarIds.length - numHEqs)
-          let m := gs.map some ++ listBoolMerge bs hs
-          let args ← m.mapM fun a ↦
-            match a with
-            | some v => pure (mkFVar v)
-            | none => mkFreshExprMVar none
-          let c ← mkConstWithLevelParams constr_name
-          let e := mkAppN c args.toArray
-          let t ← inferType e
-          let mt ← mvar'.getType
-          let _ ← isDefEq t mt -- infer values for those mvars we just made
-          mvar'.assign e
+          let allFVars := (← getLCtx).getFVarIds.toList
+          let params := (allFVars.take numParams).map mkFVar
+          let witnesses := witnessVars.map mkFVar
 
-/--
+          let argOptions := params.map some ++ mergeArgs bs witnesses
+
+          -- Apply params to get remaining type
+          let c ← mkConstWithLevelParams constr_name
+          let partialApp := mkAppN c params.toArray
+          let remainingType ← inferType partialApp
+
+          -- Create metavariables for remaining args in current context
+          let (remainingMVars, _) ← forallMetaTelescope remainingType
+
+          -- Build final args by combining params with either witnesses or mvars
+          let remainingOptions := argOptions.drop numParams
+
+          let mut finalArgs := params.toArray
+          for h : i in [:remainingOptions.length] do
+            match remainingOptions[i] with
+            | some v => finalArgs := finalArgs.push v
+            | none =>
+              if hi : i < remainingMVars.size then
+                finalArgs := finalArgs.push remainingMVars[i]
+              else
+                throwError "mismatched argument count"
+
+          let e := mkAppN c finalArgs
+          let e ← instantiateMVars e
+          if e.hasMVar then
+            -- Try unification with goal to solve remaining metavariables
+            let t ← inferType e
+            let mt ← mvar'.getType
+            unless (← isDefEq t mt) do
+              throwError "failed to unify constructor type with goal"
+            let e ← instantiateMVars e
+            if e.hasMVar then
+              throwError "failed to infer all constructor arguments for {constr_name}"
+          mvar'.assign e
+/-
   Generates existential form of a prop-valued inductive type and proves the equivalence.
 -/
 private def mkIffOfInductivePropImpl (inductVal : InductiveVal) (rel : Name) : MetaM Unit := do
@@ -360,7 +387,8 @@ private def mkIffOfInductivePropImpl (inductVal : InductiveVal) (rel : Name) : M
 
   toCases mp shape
   let ⟨mprFvar, mpr'⟩ ← mpr.intro1
-  toInductive mpr' constrs ((fvars.toList.take params).map .fvar) shape mprFvar
+  --toInductive mpr' constrs ((fvars.toList.take params).map .fvar) shape mprFvar
+  toInductive mpr' constrs inductVal.numParams shape mprFvar
 
   let proof ← instantiateMVars mvar
   addDecl <| (←mkThmOrUnsafeDef {

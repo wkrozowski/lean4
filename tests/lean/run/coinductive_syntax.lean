@@ -9,6 +9,9 @@ docstring
 coinductive infSeq (r : α → α → Prop) : α → Prop where
   | step : r a b → infSeq r b → infSeq r a
 
+
+
+
 /--
 info: infSeq.step (α : Type) (r : α → α → Prop) {a b : α} : r a b → infSeq α r b → infSeq α r a
 -/
