@@ -64,6 +64,12 @@ Operations dispatch on the type expression directly. It assumes non-standard ins
 **TODO**: additional bit-vector operations, `Char`, `String` support
 -/
 
+
+def evalStringByteArray (e : Expr) : SimpM Result := do
+  let some e := getStringValue? e | return .rfl
+  let res := e.toByteArray
+  return .rfl
+
 def skipIfUnchanged (e : Expr) (result : Result) : Result :=
   match result with
   | .step e' _ _ => if isSameExpr e e' then .rfl else result

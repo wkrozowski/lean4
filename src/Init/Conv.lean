@@ -51,6 +51,11 @@ scoped syntax (name := withAnnotateState)
 /-- `skip` does nothing. -/
 syntax (name := skip) "skip" : conv
 
+/-- `cbv` simulates call-by-value normalization, producing a proof that a program is
+equal to its evaluated version.
+-/
+syntax (name := cbv) "cbv" : conv
+
 /--
 Traverses into the left subterm of a binary operator.
 

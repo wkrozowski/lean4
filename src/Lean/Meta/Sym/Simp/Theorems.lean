@@ -35,6 +35,9 @@ structure Theorems where
 def Theorems.insert (thms : Theorems) (thm : Theorem) : Theorems :=
   { thms with thms := insertPattern thms.thms thm.pattern thm }
 
+def Theorems.insertMany (thms : Theorems) (toInsert : Array Theorem) : Theorems :=
+  Array.foldl Theorems.insert thms toInsert
+
 def Theorems.getMatch (thms : Theorems) (e : Expr) : Array Theorem :=
   Sym.getMatch thms.thms e
 

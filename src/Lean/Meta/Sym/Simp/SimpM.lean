@@ -191,8 +191,13 @@ instance : Inhabited (SimpM α) where
 
 abbrev Simproc := Expr → SimpM Result
 
+
+@[extern "lean_sym_simp_step"] -- Forward declaration
+opaque defaultStep : Simproc
+
 structure Methods where
   pre        : Simproc  := fun _ => return .rfl
+  step       : Simproc  := defaultStep
   post       : Simproc  := fun _ => return .rfl
   /--
   `wellBehavedMethods` must **not** be set to `true` IF their behavior
@@ -239,6 +244,9 @@ abbrev getCache : SimpM Cache :=
 
 abbrev pre : Simproc := fun e => do
   (← getMethods).pre e
+
+abbrev step : Simproc := fun e => do
+  (← getMethods).step e
 
 abbrev post : Simproc := fun e => do
   (← getMethods).post e

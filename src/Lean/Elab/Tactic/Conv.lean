@@ -7,6 +7,7 @@ module
 
 prelude
 public import Lean.Elab.Tactic.Conv.Basic
+public import Lean.Elab.Tactic.Conv.Cbv
 public import Lean.Elab.Tactic.Conv.Congr
 public import Lean.Elab.Tactic.Conv.Rewrite
 public import Lean.Elab.Tactic.Conv.Change

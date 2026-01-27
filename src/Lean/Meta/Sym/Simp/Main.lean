@@ -16,16 +16,19 @@ import Lean.Meta.Sym.Simp.Forall
 namespace Lean.Meta.Sym.Simp
 open Internal
 
+public def simpMData (m : MData) (b : Expr) : SimpM Result := do
+  let r ← simp b
+  match r with
+  | .rfl _ => return .rfl
+  | .step b' h _ => return .step (← mkMDataS m b') h
+
+@[export lean_sym_simp_step]
 def simpStep : Simproc := fun e => do
   match e with
   | .lit _ | .sort _ | .bvar _ | .const .. | .fvar _  | .mvar _ => return .rfl
   | .proj .. =>
     throwError "unexpected kernel projection term during simplification{indentExpr e}\npre-process and fold them as projection applications"
-  | .mdata m b =>
-    let r ← simp b
-    match r with
-    | .rfl _ => return .rfl
-    | .step b' h _ => return .step (← mkMDataS m b') h
+  | .mdata m b => simpMData m b
   | .lam .. => simpLambda e
   | .forallE .. => simpForall e
   | .letE .. => simpLet e
@@ -51,7 +54,7 @@ def simpImpl (e₁ : Expr) : SimpM Result := withIncRecDepth do
   | .rfl true | .step _ _ true => cacheResult e₁ r₁
   | .step e₂ h₁ false => cacheResult e₁ (← mkEqTransResult e₁ e₂ h₁ (← simp e₂))
   | .rfl false =>
-  let r₂ ← (simpStep >> post) e₁
+  let r₂ ← (step >> post) e₁
   match r₂ with
   | .rfl _ | .step _ _ true => cacheResult e₁ r₂
   | .step e₂ h₁ false => cacheResult e₁ (← mkEqTransResult e₁ e₂ h₁ (← simp e₂))
