@@ -125,6 +125,7 @@ def handleProj (typeName : Name) (idx : Nat) (struct : Expr) : SimpM Result := d
     let congrArgFun ← withLocalDeclD `x type fun x => do
       mkLambdaFVars #[x] <| Expr.proj typeName idx x
     let newProof ← mkCongrArg congrArgFun proof
+    -- TODO: check if I should use: Sym.mkProjS
     return .step (mkProj typeName idx e') newProof
 
 def cbvStep : Simproc := fun e => do
