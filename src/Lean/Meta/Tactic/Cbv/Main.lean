@@ -16,6 +16,7 @@ import Lean.Meta.Match.MatchEqsExt
 open Lean.Meta.Sym.Simp
 namespace Lean.Meta.Tactic.Cbv
 
+
 def isValueOf (toValue? : Expr → Option α) : Simproc := fun e =>
   return .rfl (toValue? e).isSome
 
@@ -89,7 +90,9 @@ def cbvApp : Simproc := fun e => do
   unless e.isApp do return .rfl
   let fn := e.getAppFn
   if fn.isLambda then
-    (simpAppArgs >> betaReduce) e
+    simpAppArgs >>
+      betaReduce
+        <| e
   else
     if (fn.isConst) then
       tryMatcher
