@@ -267,19 +267,16 @@ Example:
 listBoolMerge [false, true, false, true] [0, 1, 2, 3, 4] = [none, (some 0), none, (some 1)]
 ```
 -/
-private def mergeArgs (bs : List Bool) (witnesses : List Expr) : List (Option Expr) :=
-  go bs witnesses
-where go
+private def listBoolMerge : List Bool → List α → List (Option α)
   | [], _ => []
-  | true :: bs', w :: witnesses' =>
-    some w :: go bs' witnesses'
-  | false :: bs', witnesses =>
-    none :: go bs' witnesses
-  | _, _ => []
+  | false :: xs, ys => none :: listBoolMerge xs ys
+  | true :: xs, y :: ys => some y :: listBoolMerge xs ys
+  | true :: _, [] => []
 
 /-- Proves the right to left direction of a generated iff theorem.
 -/
-private def toInductive (mvar : MVarId) (cs : List Name) (numParams : Nat) (s : List Shape) (h : FVarId) :
+private def toInductive (mvar : MVarId) (cs : List Name)
+    (numParams : Nat) (s : List Shape) (h : FVarId) :
     MetaM Unit := do
   match s.length with
   | 0       => do let _ ← mvar.cases h
@@ -318,20 +315,14 @@ private def toInductive (mvar : MVarId) (cs : List Name) (numParams : Nat) (s : 
           let allFVars := (← getLCtx).getFVarIds.toList
           let params := (allFVars.take numParams).map mkFVar
           let witnesses := witnessVars.map mkFVar
+          let argOptions := params.map some ++ listBoolMerge bs witnesses
 
-          let argOptions := params.map some ++ mergeArgs bs witnesses
-
-          -- Apply params to get remaining type
           let c ← mkConstWithLevelParams constr_name
           let partialApp := mkAppN c params.toArray
           let remainingType ← inferType partialApp
-
-          -- Create metavariables for remaining args in current context
           let (remainingMVars, _) ← forallMetaTelescope remainingType
 
-          -- Build final args by combining params with either witnesses or mvars
           let remainingOptions := argOptions.drop numParams
-
           let mut finalArgs := params.toArray
           for h : i in [:remainingOptions.length] do
             match remainingOptions[i] with
@@ -345,7 +336,6 @@ private def toInductive (mvar : MVarId) (cs : List Name) (numParams : Nat) (s : 
           let e := mkAppN c finalArgs
           let e ← instantiateMVars e
           if e.hasMVar then
-            -- Try unification with goal to solve remaining metavariables
             let t ← inferType e
             let mt ← mvar'.getType
             unless (← isDefEq t mt) do
@@ -354,6 +344,7 @@ private def toInductive (mvar : MVarId) (cs : List Name) (numParams : Nat) (s : 
             if e.hasMVar then
               throwError "failed to infer all constructor arguments for {constr_name}"
           mvar'.assign e
+
 /-
   Generates existential form of a prop-valued inductive type and proves the equivalence.
 -/
@@ -387,7 +378,6 @@ private def mkIffOfInductivePropImpl (inductVal : InductiveVal) (rel : Name) : M
 
   toCases mp shape
   let ⟨mprFvar, mpr'⟩ ← mpr.intro1
-  --toInductive mpr' constrs ((fvars.toList.take params).map .fvar) shape mprFvar
   toInductive mpr' constrs inductVal.numParams shape mprFvar
 
   let proof ← instantiateMVars mvar
