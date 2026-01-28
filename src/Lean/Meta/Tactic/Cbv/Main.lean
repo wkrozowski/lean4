@@ -13,6 +13,7 @@ import Lean.Meta.Eqns
 import Lean.Meta.AppBuilder
 import Lean.Meta.Sym.LitValues
 import Lean.Meta.Match.MatchEqsExt
+import Lean.Meta.Tactic.Cbv.TheoremsCache
 open Lean.Meta.Sym.Simp
 namespace Lean.Meta.Tactic.Cbv
 
@@ -39,8 +40,7 @@ def betaReduce : Simproc := fun e => do
 -/
 def tryEquations : Simproc := fun e => do
   let some appFn := e.getAppFn.constName? | return .rfl
-  let some eqnNames ← getEqnsFor? appFn | return .rfl
-  let thms := Theorems.insertMany {} <| ← eqnNames.mapM (do mkTheoremFromDecl ·)
+  let thms ← getEqnTheorems appFn
   thms.rewrite (d := dischargeNone) e
 
 /-
@@ -48,17 +48,14 @@ def tryEquations : Simproc := fun e => do
 -/
 def tryUnfold : Simproc := fun e => do
   let some appFn := e.getAppFn.constName? | return .rfl
-  let some unfoldEqn ← getUnfoldEqnFor? appFn (nonRec := true) | return .rfl
-  let thm ← mkTheoremFromDecl unfoldEqn
+  let some thm ← getUnfoldTheorem appFn | return .rfl
   Theorem.rewrite thm e
 
 /-
   Precondition: We are dealing with an application to a matcher, discriminators are evaluated
 -/
 def tryMatchEquations (appFn : Name) : Simproc := fun e => do
-  let eqnNames ← Match.getEquationsFor appFn
-  let eqnNames := eqnNames.eqnNames
-  let thms := Theorems.insertMany {} <| ← eqnNames.mapM (do mkTheoremFromDecl ·)
+  let thms ← getMatchTheorems appFn
   thms.rewrite (d := dischargeNone) e
 
 /-
