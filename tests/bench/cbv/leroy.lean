@@ -273,9 +273,9 @@ set_option maxHeartbeats 400000
 def runTests : MetaM Unit := do
   IO.println "=== Call-By-Value Tactic Tests ==="
   IO.println ""
-  for n in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000] do
+  for n in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500] do
     runSingleTest n
-    --runSingleNativeDecideTest n
+    runSingleNativeDecideTest n
 
 
 

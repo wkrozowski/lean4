@@ -30,6 +30,14 @@ abbrev isIntValue : Simproc := isValueOf Sym.getIntValue?
 def isBuiltinValue : Simproc :=
   isNatValue <|> isIntValue
 
+def isProof : Simproc := fun e => do
+  let val ← Lean.Meta.isProof e
+  return .rfl val
+
+def logWarningAndFail (msg : MessageData) : Simproc := fun _ => do
+  logWarning msg
+  return .rfl (done := true)
+
 def betaReduce : Simproc := fun e => do
   -- TODO: Check if we can do term sharing here?
   let new := e.headBeta
@@ -82,6 +90,12 @@ def tryMatcher : Simproc := fun e => do
       <|> reduceRecMatcher
         <| e
 
+def constructorApplication : Simproc := fun e => do
+  let fn := e.getAppFn
+  let some fnName := fn.constName? | return .rfl
+  let constInfo ← getConstInfo fnName
+  return .rfl constInfo.isCtor
+
 /-
   Handles an application
 -/
@@ -94,15 +108,15 @@ def cbvApp : Simproc := fun e => do
         <| e
   else
     if (fn.isConst) then
-      tryMatcher
+      tryMatcher <|> simpControl'
         <|> simpAppArgs
             >> evalGround
               <|> tryEquations
               <|> tryUnfold -- possibly check if it is under applied
               <|> reduceRecMatcher
-                <| e
+              <|> constructorApplication
+                 <| e
     else
-      --let t := simpBetaApp
       let res ← simp fn
       match res with
       | .rfl _ => return .rfl
@@ -134,6 +148,12 @@ def foldLit : Simproc := fun e => do
  let some n := e.rawNatLit? | return .rfl
  return .step (mkNatLit n) (← Sym.mkEqRefl e)
 
+def zetaReduce : Simproc := fun e => do
+  let .letE _ _ value body _ := e | return .rfl
+  let new := expandLet body #[value]
+  let new ← Sym.share new
+  return .step new (← Sym.mkEqRefl new)
+
 def cbvStep : Simproc := fun e => do
   trace[Meta.Tactic] "Called with {e}"
   match e with
@@ -143,7 +163,7 @@ def cbvStep : Simproc := fun e => do
   | .mdata m b => simpMData m b
   | .letE .. =>
     -- Does not seem to work properly yet
-    simpLet e
+    (simpLet >> zetaReduce) e
   | .app .. => cbvApp e
 
 def foldZero : Simproc := fun e => do
@@ -157,6 +177,6 @@ public def cbvEntry (e : Expr) : MetaM Result := do
   let e ← Sym.unfoldReducible e
   Sym.SymM.run do
     let e ← Sym.shareCommon e
-    Sym.Simp.SimpM.run' (simp e) (methods := {pre := isBuiltinValue, step := cbvStep, post := foldZero })
+    Sym.Simp.SimpM.run' (simp e) (methods := {pre := isProof >> isBuiltinValue, step := cbvStep, post := foldZero })
 
 end Lean.Meta.Tactic.Cbv

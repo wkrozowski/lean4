@@ -143,4 +143,16 @@ public def simpControl : Simproc := fun e => do
   else
     simpMatch declName e
 
+public def simpControl' : Simproc := fun e => do
+  if !e.isApp then return .rfl
+  let .const declName _ := e.getAppFn | return .rfl
+  if declName == ``ite then
+    simpIte e
+  else if declName == ``cond then
+    simpCond e
+  else if declName == ``dite then
+    simpDIte e
+  else
+    return .rfl
+
 end Lean.Meta.Sym.Simp

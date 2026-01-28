@@ -64,9 +64,6 @@ example : (Std.TreeMap.empty.insert "a" "b" : Std.TreeMap String String).toList 
     lhs
     cbv
 
-#check Std.HashMap.ofList
-
-
 theorem test (v : Vector α n) : v.size = v.toArray.size := by
   grind
 
@@ -90,13 +87,15 @@ example : testFun [1,2,3,4,5] = 5 := by
     lhs
     cbv
 
-set_option trace.Meta.Tactic.cbv true
-
-example : "a" ++ "a" = "aa" := by
+example : "a" ++ "a" = "aa" ++ "" := by
   conv =>
     lhs
     cbv
-  rfl
+  conv =>
+    rhs
+    cbv
+
+
 
 #check String.utf8EncodeChar.eq_1
 
@@ -128,14 +127,6 @@ theorem std_test2 : (((Std.TreeMap.empty : Std.TreeMap Nat Nat).insert 2 4).toLi
 
 #print std_test2
 
-example : "wojtek".1 = "wojtek".1 := by
-  conv =>
-    lhs
-    cbv
-  conv =>
-    right
-    cbv
-
 def h := ()
 
 example : h = () := by
@@ -145,15 +136,7 @@ example : h = () := by
     cbv
 
 
-/--
-warning: The `cbv` tactic is experimental and still under development. Avoid using it in production projects
----
-error: maximum recursion depth has been reached
-use `set_option maxRecDepth <num>` to increase limit
-use `set_option diagnostics true` to get diagnostic information
--/
-#guard_msgs in
-example : ((Std.HashMap.emptyWithCapacity : Std.HashMap Nat Nat).insert 4 3).contains 4 = sorry := by
+example : ((Std.HashMap.emptyWithCapacity : Std.HashMap Nat Nat).insert 4 3) = sorry := by
   conv =>
     lhs
     cbv
@@ -258,12 +241,7 @@ theorem test3 : Nat.brazilianFactorial 7 = 125411328000 := by
     lhs
     cbv
 
-
-
-
 theorem test4 : decide (2 * Nat.brazilianFactorial 10 < Nat.brazilianFactorial 15) = True := by
   conv =>
     lhs
     cbv
-
-#print test4
