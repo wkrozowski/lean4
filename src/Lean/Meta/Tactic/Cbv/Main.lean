@@ -14,6 +14,7 @@ import Lean.Meta.AppBuilder
 import Lean.Meta.Sym.LitValues
 import Lean.Meta.Match.MatchEqsExt
 import Lean.Meta.Tactic.Cbv.TheoremsCache
+import Lean.Meta.Sym.Util
 open Lean.Meta.Sym.Simp
 namespace Lean.Meta.Tactic.Cbv
 
@@ -32,6 +33,7 @@ def isBuiltinValue : Simproc :=
 def betaReduce : Simproc := fun e => do
   -- TODO: Check if we can do term sharing here?
   let new := e.headBeta
+  let new ← Sym.share new
   return .step new (← Sym.mkEqRefl new)
 
 /--
@@ -100,6 +102,7 @@ def cbvApp : Simproc := fun e => do
               <|> reduceRecMatcher
                 <| e
     else
+      --let t := simpBetaApp
       let res ← simp fn
       match res with
       | .rfl _ => return .rfl
@@ -117,6 +120,7 @@ def handleProj (typeName : Name) (idx : Nat) (struct : Expr) : SimpM Result := d
   | .rfl _ =>
     let some reduced ← reduceProj? <| Expr.proj typeName idx struct | do
       return .rfl
+    let reduced ← Sym.share reduced
     return .step reduced (← Sym.mkEqRefl reduced)
   | .step e' proof _ =>
     let type ← Sym.inferType e'
@@ -131,6 +135,7 @@ def foldLit : Simproc := fun e => do
  return .step (mkNatLit n) (← Sym.mkEqRefl e)
 
 def cbvStep : Simproc := fun e => do
+  trace[Meta.Tactic] "Called with {e}"
   match e with
   | .lit _ => foldLit e
   | .sort _ | .bvar _ | .const .. | .fvar _  | .mvar _ | .lam .. | .forallE .. => return .rfl
@@ -144,14 +149,14 @@ def cbvStep : Simproc := fun e => do
 def foldZero : Simproc := fun e => do
   if e.isConstOf ``Nat.zero then
     -- replace it with symbolic zero
-    return .step (mkNatLit 0) (← Sym.mkEqRefl e) (done := true)
+    return .step (← Sym.getNatZeroExpr) (← Sym.mkEqRefl e) (done := true)
   else
     return .rfl
 
-def cbvMain : Simproc := isBuiltinValue >> cbvStep
-
 public def cbvEntry (e : Expr) : MetaM Result := do
-  -- TODO: add preprocessing
-  Sym.SymM.run <| Sym.Simp.SimpM.run' (simp e) (methods := { step := cbvMain, post := foldZero })
+  let e ← Sym.unfoldReducible e
+  Sym.SymM.run do
+    let e ← Sym.shareCommon e
+    Sym.Simp.SimpM.run' (simp e) (methods := {pre := isBuiltinValue, step := cbvStep, post := foldZero })
 
 end Lean.Meta.Tactic.Cbv

@@ -258,7 +258,12 @@ theorem test3 : Nat.brazilianFactorial 7 = 125411328000 := by
     lhs
     cbv
 
-theorem test4 : Nat.brazilianFactorial 1 = 1 := by
+
+
+
+theorem test4 : decide (2 * Nat.brazilianFactorial 10 < Nat.brazilianFactorial 15) = True := by
   conv =>
     lhs
     cbv
+
+#print test4

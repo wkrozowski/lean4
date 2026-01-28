@@ -40,7 +40,6 @@ abbrev cacheResult (e : Expr) (r : Result) : SimpM Result := do
 
 @[export lean_sym_simp]
 def simpImpl (e₁ : Expr) : SimpM Result := withIncRecDepth do
-  trace[Meta.Tactic] "Called with {e₁}"
   let numSteps := (← get).numSteps
   if numSteps >= (← getConfig).maxSteps then
     throwError "`simp` failed: maximum number of steps exceeded"
