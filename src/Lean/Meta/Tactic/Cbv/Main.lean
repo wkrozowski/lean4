@@ -118,7 +118,8 @@ def handleProj (typeName : Name) (idx : Nat) (struct : Expr) : SimpM Result := d
   let res ← simp struct
   match res with
   | .rfl _ =>
-    let some reduced ← reduceProj? <| Expr.proj typeName idx struct | return .rfl
+    let some reduced ← reduceProj? <| Expr.proj typeName idx struct | do
+      return .rfl
     return .step reduced (← Sym.mkEqRefl reduced)
   | .step e' proof _ =>
     let type ← Sym.inferType e'
@@ -128,9 +129,14 @@ def handleProj (typeName : Name) (idx : Nat) (struct : Expr) : SimpM Result := d
     -- TODO: check if I should use: Sym.mkProjS
     return .step (mkProj typeName idx e') newProof
 
+def foldLit : Simproc := fun e => do
+ let some n := e.rawNatLit? | return .rfl
+ return .step (mkNatLit n) (← Sym.mkEqRefl e)
+
 def cbvStep : Simproc := fun e => do
   match e with
-  | .lit _ | .sort _ | .bvar _ | .const .. | .fvar _  | .mvar _ | .lam .. | .forallE .. => return .rfl
+  | .lit _ => foldLit e
+  | .sort _ | .bvar _ | .const .. | .fvar _  | .mvar _ | .lam .. | .forallE .. => return .rfl
   | .proj typeName idx struct => handleProj typeName idx struct
   | .mdata m b => simpMData m b
   | .letE .. =>
@@ -138,10 +144,17 @@ def cbvStep : Simproc := fun e => do
     simpLet e
   | .app .. => cbvApp e
 
+def foldZero : Simproc := fun e => do
+  if e.isConstOf ``Nat.zero then
+    -- replace it with symbolic zero
+    return .step (mkNatLit 0) (← Sym.mkEqRefl e) (done := true)
+  else
+    return .rfl
+
 def cbvMain : Simproc := isBuiltinValue >> cbvStep
 
 public def cbvEntry (e : Expr) : MetaM Result := do
   -- TODO: add preprocessing
-  Sym.SymM.run <| Sym.Simp.SimpM.run' (simp e) (methods := { step := cbvMain })
+  Sym.SymM.run <| Sym.Simp.SimpM.run' (simp e) (methods := { step := cbvMain, post := foldZero })
 
 end Lean.Meta.Tactic.Cbv
