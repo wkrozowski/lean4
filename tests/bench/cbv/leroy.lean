@@ -230,8 +230,16 @@ def emptyStore : store := fun _ => 0
 
 def createInstance (n : Nat) : MetaM Expr := do
   let res := mkApp3 (mkConst ``cexec_bounded) (mkNatLit (3 * n)) (mkConst ``emptyStore) (← buildProblemInstance n)
-  trace[Meta.Tactic] "res: {res}"
+  let res ←  Meta.mkAppOptM ``Option.getD #[.none, res,  (mkConst ``emptyStore)]
+  let res := mkApp res (mkStrLit "x")
   return res
+
+def createNativeDecideInstance (n : Nat) : MetaM Expr := do
+  let lhs ← createInstance n
+  let rhs := mkIntLit n
+  let res := mkIntEq lhs rhs
+  trace[Meta.Tactic] "res: {res}"
+  return mkIntEq lhs rhs
 
 def runSingleTest (n : Nat) : MetaM Unit := do
   let toFeed ← createInstance n
@@ -246,14 +254,31 @@ def runSingleTest (n : Nat) : MetaM Unit := do
     Meta.checkWithKernel proof
     let endTime ← IO.monoNanosNow
     let kernelMs := (endTime - startTime).toFloat / 1000000.0
-    IO.println s!"goal_{n}: {ms} ms, kernel: {kernelMs} ms"
+    IO.println s!"cbv: goal_{n}: {ms} ms, kernel: {kernelMs} ms"
+
+def runSingleNativeDecideTest (n : Nat) : MetaM Unit := do
+  let toFeed ← createNativeDecideInstance n
+  let startTime ← IO.monoNanosNow
+  let res ← Lean.Meta.mkDecideProof toFeed
+  let endTime ← IO.monoNanosNow
+  let ms := (endTime - startTime).toFloat / 1000000.0
+  let startTime ← IO.monoNanosNow
+  Meta.checkWithKernel res
+  let endTime ← IO.monoNanosNow
+  let kernelMs := (endTime - startTime).toFloat / 1000000.0
+  IO.println s!"native_decide: goal_{n}: {ms} ms, kernel: {kernelMs} ms"
 
 set_option maxRecDepth 400000
 set_option maxHeartbeats 400000
 def runTests : MetaM Unit := do
   IO.println "=== Call-By-Value Tactic Tests ==="
   IO.println ""
-  for n in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500] do
+  for n in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700] do
     runSingleTest n
+    runSingleNativeDecideTest n
+
 
 #eval runTests
+
+set_option trace.Meta.Tactic.native_decide true
+#eval runSingleNativeDecideTest 100

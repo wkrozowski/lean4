@@ -108,8 +108,6 @@ theorem concat_test : "ab".length + "ab".length = ("ab" ++ "ab").length := by
     rhs
     cbv
 
-
-
 structure myStruct where
   a : HDiv Nat Nat Nat
 
@@ -130,9 +128,12 @@ theorem std_test2 : (((Std.TreeMap.empty : Std.TreeMap Nat Nat).insert 2 4).toLi
 
 #print std_test2
 
-example : "wojtek".1 = sorry := by
+example : "wojtek".1 = "wojtek".1 := by
   conv =>
     lhs
+    cbv
+  conv =>
+    right
     cbv
 
 def h := ()
@@ -144,6 +145,14 @@ example : h = () := by
     cbv
 
 
+/--
+warning: The `cbv` tactic is experimental and still under development. Avoid using it in production projects
+---
+error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+-/
+#guard_msgs in
 example : ((Std.HashMap.emptyWithCapacity : Std.HashMap Nat Nat).insert 4 3).contains 4 = sorry := by
   conv =>
     lhs
@@ -200,3 +209,56 @@ example : removeVowels "zbcd" = "zbcd" := by
     lhs
     cbv
   rfl
+
+def Nat.factorial : Nat → Nat
+  | 0 => 1
+  | .succ n => Nat.succ n * factorial n
+
+notation:10000 n "!" => Nat.factorial n
+
+@[simp] theorem Nat.factorial_zero : 0! = 1 :=
+  rfl
+
+theorem Nat.factorial_succ (n : Nat) : (n + 1)! = (n + 1) * n ! :=
+  rfl
+
+def Nat.brazilianFactorial : Nat → Nat
+  | .zero => 1
+  | .succ n => (Nat.succ n)! * brazilianFactorial n
+
+@[simp] theorem Nat.brazilianFactorial_zero : brazilianFactorial 0 = 1 :=
+  rfl
+
+theorem Nat.brazilianFactorial_succ (n : Nat) : brazilianFactorial (n + 1) = (n + 1)! * (brazilianFactorial n) :=
+  rfl
+
+def special_factorial (n : Nat) : Nat :=
+  special_factorial.go n 1 1 0
+where
+  go (n fact brazilFact curr : Nat) : Nat :=
+    if _h: curr >= n
+    then brazilFact
+    else
+      let fact' := (curr + 1) * fact
+      let brazilFact' := fact' * brazilFact
+      special_factorial.go n fact' brazilFact' (Nat.succ curr)
+  termination_by n - curr
+
+theorem test1 : Nat.brazilianFactorial 4 = 288 := by
+  conv =>
+    lhs
+    cbv
+
+theorem test2 : Nat.brazilianFactorial 5 = 34560 := by conv =>
+  lhs
+  cbv
+
+theorem test3 : Nat.brazilianFactorial 7 = 125411328000 := by
+  conv =>
+    lhs
+    cbv
+
+theorem test4 : Nat.brazilianFactorial 1 = 1 := by
+  conv =>
+    lhs
+    cbv
