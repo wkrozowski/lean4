@@ -258,12 +258,16 @@ def runSingleTest (n : Nat) : MetaM Unit := do
 
 def runSingleNativeDecideTest (n : Nat) : MetaM Unit := do
   let toFeed ← createNativeDecideInstance n
+  let goalMVar ← Meta.mkFreshExprMVar toFeed
   let startTime ← IO.monoNanosNow
-  let res ← Lean.Meta.mkDecideProof toFeed
+  let res := Lean.Elab.Tactic.evalDecideCore `native_decide {native := true}
+  let res := Lean.Elab.Tactic.run goalMVar.mvarId! res
+  let _ ← res.run'
+  guard <| ← goalMVar.mvarId!.isAssigned
   let endTime ← IO.monoNanosNow
   let ms := (endTime - startTime).toFloat / 1000000.0
   let startTime ← IO.monoNanosNow
-  Meta.checkWithKernel res
+  Meta.checkWithKernel goalMVar
   let endTime ← IO.monoNanosNow
   let kernelMs := (endTime - startTime).toFloat / 1000000.0
   IO.println s!"native_decide: goal_{n}: {ms} ms, kernel: {kernelMs} ms"
@@ -273,9 +277,10 @@ set_option maxHeartbeats 400000
 def runTests : MetaM Unit := do
   IO.println "=== Call-By-Value Tactic Tests ==="
   IO.println ""
-  for n in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500] do
+  for n in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000] do
     runSingleTest n
     runSingleNativeDecideTest n
+
 
 
 

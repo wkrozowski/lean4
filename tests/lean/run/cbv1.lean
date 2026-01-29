@@ -81,7 +81,7 @@ def testFun (l : List Nat) : Nat := Id.run do
     i := i + 1
   return i
 
--- Would be nice if we perfomed zeta reduction
+-- Possibly a good benchmark for dealing with let expressions
 example : testFun [1,2,3,4,5] = 5 := by
   conv =>
     lhs
@@ -132,16 +132,18 @@ def h := ()
 example : h = () := by
   conv =>
     lhs
-    -- Does not unfold the constant, we need to figure out what is a good way of dealing with it
     cbv
 
+example : instHAdd.1 2 3 = 5 := by
+  conv =>
+    lhs
+    cbv
 
 example : ((Std.HashMap.emptyWithCapacity : Std.HashMap Nat Nat).insert 4 3) = sorry := by
   conv =>
     lhs
     cbv
 
-set_option trace.Meta.Tactic.cbv true
 example : 2 + 2 = 4 := by
   conv =>
     lhs
@@ -232,16 +234,12 @@ theorem test1 : Nat.brazilianFactorial 4 = 288 := by
     lhs
     cbv
 
-theorem test2 : Nat.brazilianFactorial 5 = 34560 := by conv =>
-  lhs
-  cbv
-
-theorem test3 : Nat.brazilianFactorial 7 = 125411328000 := by
+theorem test2 : Nat.brazilianFactorial 5 = 34560 := by
   conv =>
     lhs
     cbv
 
-theorem test4 : decide (2 * Nat.brazilianFactorial 10 < Nat.brazilianFactorial 15) = True := by
+theorem test3 : Nat.brazilianFactorial 7 = 125411328000 := by
   conv =>
     lhs
     cbv

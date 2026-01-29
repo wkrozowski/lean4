@@ -11,6 +11,7 @@ prelude
 public import Lean.Meta.Sym.Simp
 import Lean.Meta.Eqns
 import Lean.Meta.AppBuilder
+import Lean.Meta.Sym.AlphaShareBuilder
 import Lean.Meta.Sym.LitValues
 import Lean.Meta.Match.MatchEqsExt
 import Lean.Meta.Tactic.Cbv.TheoremsCache
@@ -26,9 +27,12 @@ def isValueOf (toValue? : Expr → Option α) : Simproc := fun e =>
 abbrev isNatValue : Simproc := isValueOf Sym.getNatValue?
 abbrev isStringValue : Simproc := isValueOf Sym.getStringValue?
 abbrev isIntValue : Simproc := isValueOf Sym.getIntValue?
+abbrev isBitVecValue : Simproc := isValueOf Sym.getBitVecValue?
+abbrev isFinValue : Simproc := isValueOf Sym.getFinValue?
+abbrev isCharValue : Simproc := isValueOf Sym.getCharValue?
 
 def isBuiltinValue : Simproc :=
-  isNatValue <|> isIntValue
+  isNatValue <|> isIntValue <|> isBitVecValue <|> isStringValue <|> isFinValue <|> isCharValue
 
 def isProof : Simproc := fun e => do
   let val ← Lean.Meta.isProof e
@@ -39,7 +43,7 @@ def logWarningAndFail (msg : MessageData) : Simproc := fun _ => do
   return .rfl (done := true)
 
 def betaReduce : Simproc := fun e => do
-  -- TODO: Check if we can do term sharing here?
+  -- TODO: Check if we are doing term sharing correctly here.
   let new := e.headBeta
   let new ← Sym.share new
   return .step new (← Sym.mkEqRefl new)
@@ -77,6 +81,13 @@ def reduceRecMatcher : Simproc := fun e => do
   else
     return .rfl
 
+def matcherWarning (info : MatcherInfo) : Simproc := fun e => do
+  if (info.arity <= e.getAppArgs.size) then
+    logWarning m!"Cannot reduce matcher application {e}"
+    return .rfl true
+  else
+    return .rfl false
+
 /-
   Precondition: We are dealing with an application to a constant
 -/
@@ -88,8 +99,11 @@ def tryMatcher : Simproc := fun e => do
   (simpAppArgRange · start stop)
     >> tryMatchEquations appFn
       <|> reduceRecMatcher
+      -- This one is for debugging purposes
+      <|> matcherWarning info
         <| e
 
+-- Possibly no need for this
 def constructorApplication : Simproc := fun e => do
   let fn := e.getAppFn
   let some fnName := fn.constName? | return .rfl
@@ -111,10 +125,10 @@ def cbvApp : Simproc := fun e => do
       tryMatcher <|> simpControl'
         <|> simpAppArgs
             >> evalGround
+              -- Possibly check here if it is underapplied
               <|> tryEquations
-              <|> tryUnfold -- possibly check if it is under applied
+              <|> tryUnfold
               <|> reduceRecMatcher
-              <|> constructorApplication
                  <| e
     else
       let res ← simp fn
@@ -132,20 +146,22 @@ def handleProj (typeName : Name) (idx : Nat) (struct : Expr) : SimpM Result := d
   let res ← simp struct
   match res with
   | .rfl _ =>
-    let some reduced ← reduceProj? <| Expr.proj typeName idx struct | do
+    let some reduced ← reduceProj? <| .proj typeName idx struct | do
       return .rfl
     let reduced ← Sym.share reduced
     return .step reduced (← Sym.mkEqRefl reduced)
   | .step e' proof _ =>
     let type ← Sym.inferType e'
     let congrArgFun ← withLocalDeclD `x type fun x => do
-      mkLambdaFVars #[x] <| Expr.proj typeName idx x
+      mkLambdaFVars #[x] <| .proj typeName idx x
     let newProof ← mkCongrArg congrArgFun proof
     -- TODO: check if I should use: Sym.mkProjS
-    return .step (mkProj typeName idx e') newProof
+    -- TODO: figure out why sharing makes things slower here
+    return .step (.proj typeName idx e') newProof
 
 def foldLit : Simproc := fun e => do
  let some n := e.rawNatLit? | return .rfl
+ -- Do we need sharing here?
  return .step (mkNatLit n) (← Sym.mkEqRefl e)
 
 def zetaReduce : Simproc := fun e => do
@@ -154,15 +170,29 @@ def zetaReduce : Simproc := fun e => do
   let new ← Sym.share new
   return .step new (← Sym.mkEqRefl new)
 
+def handleConst (n : Name) : Simproc := fun e => do
+  let info ← getConstInfo n
+  if n.isInternalDetail then return .rfl
+  if ← Meta.isInstance n then return .rfl
+  unless info.isDefinition do
+    return .rfl
+  let fnInfo ← getFunInfo e
+  unless fnInfo.getArity == 0 do
+    return .rfl
+  let some thm ← getUnfoldTheorem n | return .rfl
+  Theorem.rewrite thm e
+
 def cbvStep : Simproc := fun e => do
-  trace[Meta.Tactic] "Called with {e}"
   match e with
-  | .lit _ => foldLit e
-  | .sort _ | .bvar _ | .const .. | .fvar _  | .mvar _ | .lam .. | .forallE .. => return .rfl
+  | .lit _ =>
+    -- TODO: other cases than `Nat`
+    foldLit e
+  | .const n _ => handleConst n e
+  | .sort _ | .bvar _ | .fvar _  | .mvar _ | .lam .. | .forallE .. => return .rfl
   | .proj typeName idx struct => handleProj typeName idx struct
   | .mdata m b => simpMData m b
   | .letE .. =>
-    -- Does not seem to work properly yet
+    -- This might be inefficient
     (simpLet >> zetaReduce) e
   | .app .. => cbvApp e
 
