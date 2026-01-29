@@ -64,9 +64,6 @@ example : (Std.TreeMap.empty.insert "a" "b" : Std.TreeMap String String).toList 
     lhs
     cbv
 
-theorem test (v : Vector α n) : v.size = v.toArray.size := by
-  grind
-
 theorem array_test : (List.replicate 200 5 : List Nat).reverse = List.replicate 200 5 := by
   conv =>
     lhs
