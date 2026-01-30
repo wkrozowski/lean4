@@ -189,4 +189,7 @@ def mkAppS₄ (f a₁ a₂ a₃ a₄ : Expr) : m Expr := do
 def mkAppS₅ (f a₁ a₂ a₃ a₄ a₅ : Expr) : m Expr := do
   mkAppS (← mkAppS₄ f a₁ a₂ a₃ a₄) a₅
 
+def mkAppSN (f : Expr) (args : Array Expr) : m Expr := do
+  args.foldlM mkAppS f
+
 end Lean.Meta.Sym.Internal

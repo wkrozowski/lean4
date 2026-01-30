@@ -32,6 +32,10 @@ public structure CbvTheoremsCache where
   unfoldTheorems : PHashMap Name Theorem := {}
   /-- Cache for match equations (from Match.getEquationsFor) -/
   matchTheorems : PHashMap Name Theorems := {}
+  /-- Holds names of functions that shouldnt be unfolded -/
+  doNotUnfold : PHashSet Name := {}
+  /-- Holds theorems registered by the user -/
+  userTheorems : Theorems := {}
   deriving Inhabited
 
 /--
@@ -97,5 +101,26 @@ public def getMatchTheorems (matcherName : Name) : MetaM Theorems := do
       cbvTheoremsCacheExt.modifyState env fun cache =>
         { cache with matchTheorems := cache.matchTheorems.insert matcherName thms }
     return thms
+
+public def addDoNotUnfold (name : Name) : MetaM Unit := do
+  modifyEnv fun env =>
+      cbvTheoremsCacheExt.modifyState env fun cache =>
+        { cache with doNotUnfold := cache.doNotUnfold.insert name }
+
+public def getUserTheorems : MetaM Theorems := do
+  let env ← getEnv
+  let cache := cbvTheoremsCacheExt.getState env
+  return cache.userTheorems
+
+public def addUserTheoremFromDecl (name : Name) : MetaM Unit := do
+  let thm ← mkTheoremFromDecl name
+  modifyEnv fun env =>
+      cbvTheoremsCacheExt.modifyState env fun cache =>
+        { cache with userTheorems := cache.userTheorems.insert thm }
+
+public def isForbidden (name : Name) : MetaM Bool := do
+  let env ← getEnv
+  let cache := cbvTheoremsCacheExt.getState env
+  return cache.doNotUnfold.contains name
 
 end Lean.Meta.Tactic.Cbv

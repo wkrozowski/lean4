@@ -265,7 +265,7 @@ def toHave (e : Expr) (varDeps : Array (Array Nat)) : SymM Expr :=
   go f #[] 0
 
 /-- Result of extracting universe levels from a non-dependent function type. -/
-structure GetUnivsResult where
+public structure GetUnivsResult where
   /-- Universe level of each argument type. -/
   argUnivs : Array Level
   /-- Universe level of each partial application's result type. -/
@@ -281,7 +281,7 @@ For `α₁ → α₂ → ... → αₙ → β`:
 These are needed because `congr`, `congrArg`, and `congrFun'` are universe-polymorphic,
 and we want to avoid a quadratic overhead.
 -/
-def getUnivs (fType : Expr) : SymM GetUnivsResult := do
+public def getUnivs (fType : Expr) : SymM GetUnivsResult := do
   go fType #[]
 where
   go (type : Expr) (argUnivs : Array Level) : SymM GetUnivsResult := do
@@ -316,7 +316,7 @@ For each application `f a`:
 - If only `a` changed: use `congrArg : a = a' → f a = f a'`
 - If neither changed: return `.rfl`
 -/
-def simpBetaApp (e : Expr) (fType : Expr) (fnUnivs argUnivs : Array Level)
+public def simpBetaApp (e : Expr) (fType : Expr) (fnUnivs argUnivs : Array Level)
     (simpBody : Simproc) : SimpM Result := do
   return (← go e 0).1
 where

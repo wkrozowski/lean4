@@ -260,7 +260,7 @@ def runSingleNativeDecideTest (n : Nat) : MetaM Unit := do
   let toFeed ← createNativeDecideInstance n
   let goalMVar ← Meta.mkFreshExprMVar toFeed
   let startTime ← IO.monoNanosNow
-  let res := Lean.Elab.Tactic.evalDecideCore `native_decide {native := true}
+  let res := Lean.Elab.Tactic.evalDecideCore `native_decide {native := false}
   let res := Lean.Elab.Tactic.run goalMVar.mvarId! res
   let _ ← res.run'
   guard <| ← goalMVar.mvarId!.isAssigned
@@ -279,9 +279,5 @@ def runTests : MetaM Unit := do
   IO.println ""
   for n in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000] do
     runSingleTest n
-    runSingleNativeDecideTest n
-
-
-
 
 #eval runTests

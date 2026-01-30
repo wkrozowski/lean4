@@ -31,6 +31,7 @@ instance : BEq Theorem where
 /-- Collection of simplification theorems available to the simplifier. -/
 structure Theorems where
   thms : DiscrTree Theorem := {}
+deriving Inhabited
 
 def Theorems.insert (thms : Theorems) (thm : Theorem) : Theorems :=
   { thms with thms := insertPattern thms.thms thm.pattern thm }

@@ -9,11 +9,13 @@ module
 prelude
 
 public import Lean.Meta.Sym.Simp
+public import Std.Data.DHashMap.Lemmas
 import Lean.Meta.Eqns
 import Lean.Meta.AppBuilder
 import Lean.Meta.Sym.AlphaShareBuilder
 import Lean.Meta.Sym.LitValues
 import Lean.Meta.Match.MatchEqsExt
+import Lean.Meta.Sym.Simp.Have
 import Lean.Meta.Tactic.Cbv.TheoremsCache
 import Lean.Meta.Sym.Util
 open Lean.Meta.Sym.Simp
@@ -32,10 +34,42 @@ abbrev isFinValue : Simproc := isValueOf Sym.getFinValue?
 abbrev isCharValue : Simproc := isValueOf Sym.getCharValue?
 
 def isBuiltinValue : Simproc :=
-  isNatValue <|> isIntValue <|> isBitVecValue <|> isStringValue <|> isFinValue <|> isCharValue
+      isNatValue
+  <|> isIntValue
+  <|> isBitVecValue
+  <|> isStringValue
+  <|> isFinValue
+  <|> isCharValue
 
-def isProof : Simproc := fun e => do
-  let val ← Lean.Meta.isProof e
+/- Possibly make this public? -/
+private def isAlwaysZero : Level → Bool
+  | .zero ..    => true
+  | .mvar ..    => false
+  | .param ..   => false
+  | .succ ..    => false
+  | .max u v    => isAlwaysZero u && isAlwaysZero v
+  | .imax _ u   => isAlwaysZero u
+
+/- Modified for the SymM usage -/
+def isProp (e : Expr) : Sym.SymM Bool := do
+  match (← isPropQuick e) with
+  | .true  => return true
+  | .false => return false
+  | .undef =>
+    let type ← Sym.inferType e
+    let type ← whnfD type
+    match type with
+    | Expr.sort u => return isAlwaysZero (← instantiateLevelMVars u)
+    | _           => return false
+
+def isProof (e : Expr) : Sym.SymM Bool := do
+  match (← isProofQuick e) with
+  | .true  => return true
+  | .false => return false
+  | .undef => isProp (← Sym.inferType e)
+
+def doneIfProof : Simproc := fun e => do
+  let val ← isProof e
   return .rfl val
 
 def logWarningAndFail (msg : MessageData) : Simproc := fun _ => do
@@ -55,6 +89,10 @@ def betaReduce : Simproc := fun e => do
 def tryEquations : Simproc := fun e => do
   let some appFn := e.getAppFn.constName? | return .rfl
   let thms ← getEqnTheorems appFn
+  thms.rewrite (d := dischargeNone) e
+
+def tryUserTheorems : Simproc := fun e => do
+  let thms ← getUserTheorems
   thms.rewrite (d := dischargeNone) e
 
 /-
@@ -110,6 +148,20 @@ def constructorApplication : Simproc := fun e => do
   let constInfo ← getConstInfo fnName
   return .rfl constInfo.isCtor
 
+def mkCongrArgS (f : Expr) (h : Expr) : Sym.SymM Expr := do
+  let fType ← Sym.inferType f
+  let hType ← Sym.inferType h
+  match fType.arrow?, hType.eq? with
+  | some (α, β), some (_, a, b) =>
+      let u ← Sym.getLevel α
+      let v ← Sym.getLevel β
+      return mkApp6 (mkConst ``congrArg [u, v]) α β a b f h
+  | _, _ => throwError "Failed constructing a `congrArg` proof"
+
+def checkIfForbidden : Simproc := fun e => do
+  let isForbidden ← isForbidden e.getAppFn.constName!
+  return .rfl <| isForbidden
+
 /-
   Handles an application
 -/
@@ -124,7 +176,9 @@ def cbvApp : Simproc := fun e => do
     if (fn.isConst) then
       tryMatcher <|> simpControl'
         <|> simpAppArgs
-            >> evalGround
+              <|> tryUserTheorems
+            >>    checkIfForbidden
+              <|> evalGround
               -- Possibly check here if it is underapplied
               <|> tryEquations
               <|> tryUnfold
@@ -133,31 +187,29 @@ def cbvApp : Simproc := fun e => do
     else
       let res ← simp fn
       match res with
-      | .rfl _ => return .rfl
+      | .rfl _ => return res
       | .step e' proof _ =>
         let newType ← Sym.inferType e'
-        let congrArgFun ← withLocalDeclD `x newType fun x =>
-          mkLambdaFVars #[x] <| mkAppN x e.getAppArgs
-        let newValue := mkAppN e' e.getAppArgs
+        let congrArgFun := Lean.mkLambda `x .default newType (mkAppN (.bvar 0) e.getAppArgs)
+        let newValue ← Sym.Internal.mkAppSN e' e.getAppArgs
         let newProof ← mkCongrArg congrArgFun proof
         return .step newValue newProof
 
-def handleProj (typeName : Name) (idx : Nat) (struct : Expr) : SimpM Result := do
+def handleProj (typeName : Name) (idx : Nat) (struct : Expr) (e : Expr) : SimpM Result := do
   let res ← simp struct
   match res with
   | .rfl _ =>
     let some reduced ← reduceProj? <| .proj typeName idx struct | do
       return .rfl
+
     let reduced ← Sym.share reduced
     return .step reduced (← Sym.mkEqRefl reduced)
   | .step e' proof _ =>
     let type ← Sym.inferType e'
-    let congrArgFun ← withLocalDeclD `x type fun x => do
-      mkLambdaFVars #[x] <| .proj typeName idx x
+    let congrArgFun := Lean.mkLambda `x .default type <| .proj typeName idx <| .bvar 0
+
     let newProof ← mkCongrArg congrArgFun proof
-    -- TODO: check if I should use: Sym.mkProjS
-    -- TODO: figure out why sharing makes things slower here
-    return .step (.proj typeName idx e') newProof
+    return .step (← Lean.Expr.updateProjS! e e') newProof
 
 def foldLit : Simproc := fun e => do
  let some n := e.rawNatLit? | return .rfl
@@ -167,17 +219,18 @@ def foldLit : Simproc := fun e => do
 def zetaReduce : Simproc := fun e => do
   let .letE _ _ value body _ := e | return .rfl
   let new := expandLet body #[value]
+  -- Re-establishing the invariant might be pricy
   let new ← Sym.share new
   return .step new (← Sym.mkEqRefl new)
 
 def handleConst (n : Name) : Simproc := fun e => do
   let info ← getConstInfo n
-  if n.isInternalDetail then return .rfl
-  if ← Meta.isInstance n then return .rfl
+  -- if ← Meta.isInstance n then return .rfl
   unless info.isDefinition do
     return .rfl
-  let fnInfo ← getFunInfo e
-  unless fnInfo.getArity == 0 do
+  let eType ← Sym.inferType e
+  let eType ← whnfD eType
+  unless eType matches .forallE .. do
     return .rfl
   let some thm ← getUnfoldTheorem n | return .rfl
   Theorem.rewrite thm e
@@ -185,11 +238,10 @@ def handleConst (n : Name) : Simproc := fun e => do
 def cbvStep : Simproc := fun e => do
   match e with
   | .lit _ =>
-    -- TODO: other cases than `Nat`
     foldLit e
-  | .const n _ => handleConst n e
+  | .const n _ => handleConst n <| e
   | .sort _ | .bvar _ | .fvar _  | .mvar _ | .lam .. | .forallE .. => return .rfl
-  | .proj typeName idx struct => handleProj typeName idx struct
+  | .proj typeName idx struct => handleProj typeName idx struct e
   | .mdata m b => simpMData m b
   | .letE .. =>
     -- This might be inefficient
@@ -204,9 +256,21 @@ def foldZero : Simproc := fun e => do
     return .rfl
 
 public def cbvEntry (e : Expr) : MetaM Result := do
+  addDoNotUnfold ``Std.DHashMap.emptyWithCapacity
+  addDoNotUnfold ``Std.DHashMap.contains
+  addDoNotUnfold ``Std.DHashMap.insert
+  addDoNotUnfold ``Std.DHashMap.insertIfNew
+  addDoNotUnfold ``WellFounded.extrinsicFix₂
+  addDoNotUnfold ``List.iter
+  addUserTheoremFromDecl ``Std.DHashMap.contains_insert
+  addUserTheoremFromDecl ``Std.DHashMap.contains_insertIfNew
+  addUserTheoremFromDecl ``Std.DHashMap.contains_emptyWithCapacity
+  addUserTheoremFromDecl ``Bool.false_eq_true
+  addUserTheoremFromDecl ``List.toArray_iter
+
   let e ← Sym.unfoldReducible e
   Sym.SymM.run do
     let e ← Sym.shareCommon e
-    Sym.Simp.SimpM.run' (simp e) (methods := {pre := isProof >> isBuiltinValue, step := cbvStep, post := foldZero })
+    Sym.Simp.SimpM.run' (simp e) (methods := {pre := doneIfProof >> isBuiltinValue, step := cbvStep, post := foldZero })
 
 end Lean.Meta.Tactic.Cbv

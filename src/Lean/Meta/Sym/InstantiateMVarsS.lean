@@ -18,4 +18,11 @@ public def instantiateMVarsS (e : Expr) : SymM Expr := do
   else
     return e
 
+public def instantiateLvlMVarsS (e : Expr) : SymM Expr := do
+  if e.hasLevelMVar then
+    -- **Note**: If this is a bottleneck, write a new function that combines both steps.
+    shareCommon (← instantiateMVars e)
+  else
+    return e
+
 end Lean.Meta.Sym
