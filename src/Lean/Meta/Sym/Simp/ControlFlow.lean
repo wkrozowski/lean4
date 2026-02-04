@@ -32,7 +32,7 @@ def simpIte : Simproc := fun e => do
       else if (← isFalseExpr  c) then
         return .step b <| mkApp3 (mkConst ``ite_false f.constLevels!) α a b
       else
-        return .rfl (done := true)
+        return .rfl (done := false)
     | .step c' h _ =>
       if (← isTrueExpr c') then
         return .step a <| mkApp (e.replaceFn ``ite_cond_eq_true) h
@@ -63,7 +63,7 @@ def simpDIte : Simproc := fun e => do
         let b' ← share <| b.betaRev #[mkConst ``not_false]
         return .step b' <| mkApp3 (mkConst ``dite_false f.constLevels!) α a b
       else
-        return .rfl (done := true)
+        return .rfl (done := false)
     | .step c' h _ =>
       if (← isTrueExpr c') then
         let h' ← shareCommon <| mkOfEqTrueCore c h
@@ -99,7 +99,7 @@ def simpCond : Simproc := fun e => do
       else if isSameExpr c (← getBoolFalseExpr) then
         return .step b <| mkApp3 (mkConst ``cond_false f.constLevels!) α a b
       else
-        return .rfl (done := true)
+        return .rfl (done := false)
     | .step c' h _ =>
       if isSameExpr c' (← getBoolTrueExpr) then
         return .step a <| mkApp (e.replaceFn ``Sym.cond_cond_eq_true) h

@@ -280,6 +280,11 @@ end Cedar.Spec.Ext
 
 open Cedar.Spec.Ext.IPAddr
 
+attribute [cbv_opaque] String.extract
+attribute [cbv_opaque] String.splitOn
+attribute [cbv_opaque] String.all
+attribute [cbv_opaque] String.splitToList
+
 theorem test1 : toString ((parse "192.168.0.1/32").get!) = "192.168.0.1/32" := by
   conv =>
     lhs
@@ -293,3 +298,14 @@ theorem test5 : toString ((parse "1:22:333:4444:a:bb:ccc:dddd/128").get!) = "000
 theorem test6 : toString ((parse "7:70:700:7000::a00/128").get!) = "0007:0070:0700:7000:0000:0000:0000:0a00/128" := by native_decide
 theorem test7 : toString ((parse "::ffff/128").get!) = "0000:0000:0000:0000:0000:0000:0000:ffff/128" := by native_decide
 theorem test8 : toString ((parse "ffff::/4").get!) = "ffff:0000:0000:0000:0000:0000:0000:0000/4" := by native_decide
+
+
+example : ((if false = true then 5 else 7) : Nat) = 7 := by
+  conv =>
+    lhs
+    cbv
+
+example : ((if h : false = true then 5 else 7) : Nat) = 7 := by
+  conv =>
+    lhs
+    cbv
