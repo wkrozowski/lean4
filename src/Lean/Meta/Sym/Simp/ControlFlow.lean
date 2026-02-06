@@ -37,20 +37,23 @@ def simpIte : Simproc := fun e => do
         let toEval ← mkAppS₂ (mkConst ``Decidable.decide) c inst'
         let evalRes ← simp toEval
         match evalRes with
-        | .rfl _ => return .rfl (done := true)
+        | .rfl _ =>
+          return .rfl (done := true)
         | .step v hv _ =>
           if (isSameExpr v (← getBoolTrueExpr)) then
             let h' := mkApp3 (mkConst ``eq_true_of_decide) c inst' hv
             let inst' := mkConst ``instDecidableTrue
-            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) (← getTrueExpr) inst' h'
+            let c' ← getTrueExpr
+            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h'
             let ha := mkApp3 (mkConst ``ite_true f.constLevels!) α a b
             -- TODO: use the symbolic version
             let ha ← mkEqTrans h' ha
-            return .step b ha (done := false)
+            return .step a ha (done := false)
           else if (isSameExpr v (← getBoolFalseExpr)) then
             let h' := mkApp3 (mkConst ``eq_false_of_decide) c inst' hv
             let inst' := mkConst ``instDecidableFalse
-            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) (← getFalseExpr) inst' h'
+            let c' ← getFalseExpr
+            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h'
             let hb := mkApp3 (mkConst ``ite_false f.constLevels!) α a b
             --TODO: use the symbolic version
             let hb ← mkEqTrans h' hb
@@ -87,7 +90,40 @@ def simpDIte : Simproc := fun e => do
         let b' ← share <| b.betaRev #[mkConst ``not_false]
         return .step b' <| mkApp3 (mkConst ``dite_false f.constLevels!) α a b
       else
-        return .rfl (done := true)
+        let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) c) | return .rfl
+        let inst' ← shareCommon inst'
+        let toEval ← mkAppS₂ (mkConst ``Decidable.decide) c inst'
+        let evalRes ← simp toEval
+        match evalRes with
+        | .rfl _ => return .rfl (done := true)
+        | .step v hv _ =>
+          if (isSameExpr v (← getBoolTrueExpr)) then
+            let h' := mkApp3 (mkConst ``eq_true_of_decide) c inst' hv
+            let inst' := mkConst ``instDecidableTrue
+            let h ← shareCommon h'
+            let c' ← getTrueExpr
+            let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
+            let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
+            let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
+            let a' ← share <| a.betaRev #[mkConst ``True.intro]
+            let ha := mkApp3 (mkConst ``dite_true f.constLevels!) α a b
+            let ha ← mkEqTrans h' ha
+            return .step a' ha
+          else if (isSameExpr v (← getBoolFalseExpr)) then
+            let h' := mkApp3 (mkConst ``eq_false_of_decide) c inst' hv
+            let inst' := mkConst ``instDecidableFalse
+            let h ← shareCommon h'
+            let c' ← getFalseExpr
+            let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
+            let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
+            let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
+            let b' ← share <| b.betaRev #[mkConst ``not_false]
+            let hb := mkApp3 (mkConst ``dite_false f.constLevels!) α a b
+            -- TODO: Use symbolic transitivity
+            let hb ← mkEqTrans h' hb
+            return .step b' hb
+          else
+            return .rfl (done := true)
     | .step c' h _ =>
       if (← isTrueExpr c') then
         let h' ← shareCommon <| mkOfEqTrueCore c h
@@ -138,7 +174,7 @@ def simpCond : Simproc := fun e => do
 /--
 Simplifies a `match`-expression.
 -/
-def simpMatch (declName : Name) : Simproc := fun e => do
+public def simpMatch (declName : Name) : Simproc := fun e => do
   if let some e' ← reduceRecMatcher? e then
     return .step e' (← mkEqRefl e')
   let some info ← getMatcherInfo? declName
@@ -159,10 +195,12 @@ public def simpControl : Simproc := fun e => do
   if !e.isApp then return .rfl
   let .const declName _ := e.getAppFn | return .rfl
   if declName == ``ite then
+    trace[Meta.Tactic] "Gonna do simpIte"
     simpIte e
   else if declName == ``cond then
     simpCond e
   else if declName == ``dite then
+  trace[Meta.Tactic] "Gonna do simpDIte"
     simpDIte e
   else
     simpMatch declName e
