@@ -146,11 +146,18 @@ def handleConst : Simproc := fun e => do
   let some thm ← getUnfoldTheorem n | return .rfl
   Theorem.rewrite thm e
 
+def handleLet : Simproc := fun e => do
+  unless e.isLet do return .rfl
+  zetaReduce e
+  -- unless e.letNondep! do return .rfl
+  -- let res ← toBetaApp e
+  -- return .step res.e res.h
+
 def cbvPre : Simproc :=
       isBuiltinValue <|> isProofTerm <|> skipBinders
   >>  isOpaqueApp
   >>  (tryMatcher >> simpControl)
-    <|> ((isOpaqueConst >> handleConst) <|> simplifyAppFn <|> handleProj)
+    <|> ((isOpaqueConst >> handleConst) <|> simplifyAppFn <|> handleProj) <|> handleLet
 
 def cbvPost : Simproc :=
       evalGround
