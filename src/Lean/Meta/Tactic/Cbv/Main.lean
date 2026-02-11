@@ -124,16 +124,15 @@ def handleProj : Simproc := fun e => do
   | .rfl _ =>
     let some reduced ← reduceProj? <| .proj typeName idx struct | do
       return .rfl (done := true)
-
-    -- TODO: Figure if we can share this term incrementally
     let reduced ← Sym.share reduced
     return .step reduced (← Sym.mkEqRefl reduced)
   | .step e' proof _ =>
-    let type ← Sym.inferType e'
-    let congrArgFun := Lean.mkLambda `x .default type <| .proj typeName idx <| .bvar 0
-
-    -- TODO: Create an efficient symbolic version of `mkCongrArg`
-    let newProof ← mkCongrArg congrArgFun proof
+    let α ← Sym.inferType e'
+    let u ← getLevel α
+    let congrArgFun := Lean.mkLambda `x .default α <| .proj typeName idx <| .bvar 0
+    let β ← Sym.inferType e
+    let v ← getLevel β
+    let newProof := mkApp6 (mkConst ``congrArg [u,v]) α β struct e' congrArgFun proof
     return .step (← Lean.Expr.updateProjS! e e') newProof
 
 def simplifyAppFn : Simproc := fun e => do
@@ -144,10 +143,13 @@ def simplifyAppFn : Simproc := fun e => do
       match res with
       | .rfl _ => return res
       | .step e' proof _ =>
-        let newType ← Sym.inferType e'
-        let congrArgFun := Lean.mkLambda `x .default newType (mkAppN (.bvar 0) e.getAppArgs)
+        let α ← Sym.inferType e'
+        let u ← getLevel α
+        let β ← Sym.inferType e
+        let v ← getLevel β
+        let congrArgFun := Lean.mkLambda `x .default α (mkAppN (.bvar 0) e.getAppArgs)
         let newValue ← mkAppNS e' e.getAppArgs
-        let newProof ← mkCongrArg congrArgFun proof
+        let newProof := mkApp6 (mkConst ``congrArg [u,v]) α β fn e' congrArgFun proof
         return .step newValue newProof
     return .rfl
 

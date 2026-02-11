@@ -1,6 +1,6 @@
 import Std
 set_option cbv.warning false
-
+set_option trace.Meta.Tactic true
 def function (n : Nat) : Nat := match n with
   | 0 => 0 + 1
   | Nat.succ n => function n + 1
