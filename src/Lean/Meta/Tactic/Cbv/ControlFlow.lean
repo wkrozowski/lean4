@@ -199,8 +199,9 @@ def simpDecideCbvUnfolding : Simproc := fun e => do
 def simpDecideSimproc : Simproc := fun e => do
   let thm ← mkTheoremFromDecl ``Bool.decide_and
   let thm2 ← mkTheoremFromDecl ``Bool.decide_or
+  let thm3 ← mkTheoremFromDecl ``decide_not
   let thms : Theorems := {}
-  let thms := (thms.insert thm).insert thm2
+  let thms := ((thms.insert thm).insert thm2).insert thm3
   thms.rewrite (d := dischargeNone) e
 
 def simpDecideCbv : Simproc := fun e => do
@@ -213,11 +214,13 @@ def simpDecideCbv : Simproc := fun e => do
     match res with
     | .rfl .. =>
       if (← Sym.isTrueExpr p) then
-        return .step (← Sym.getBoolTrueExpr) (mkConst ``decide_true)
+        let inst := mkConst ``instDecidableTrue
+        return .step (← Sym.getBoolTrueExpr) (mkApp (mkConst ``decide_true) inst)
       else if (← Sym.isFalseExpr p) then
-        return .step (← Sym.getBoolFalseExpr) (mkConst ``decide_false)
+        let inst := mkConst ``instDecidableFalse
+        return .step (← Sym.getBoolFalseExpr) (mkApp (mkConst ``decide_false) inst)
       else
-        return .rfl
+        reduceRecMatcher e
     | .step e' h' _ =>
       if (← Sym.isTrueExpr e') then
         let proof := mkApp3 (mkConst ``Sym.decide_eq_true) p h h'
@@ -226,13 +229,12 @@ def simpDecideCbv : Simproc := fun e => do
         let proof := mkApp3 (mkConst ``Sym.decide_eq_false) p h h'
         return .step (← Sym.getBoolFalseExpr) proof
       else
-        return .rfl
-        -- let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) e') | return .rfl
-        -- let inst' ← Sym.shareCommon inst'
-        -- let newProof := mkApp5 (mkConst ``Sym.decide_cond_congr) p h e' inst' h'
-        -- let newRes ← Sym.share <| mkConst ``Decidable.decide
-        -- let newRes ← Sym.Internal.mkAppS₂ newRes e' h'
-        -- return .step newRes newProof
+        let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) e') | return .rfl
+        let inst' ← Sym.shareCommon inst'
+        let newProof := mkApp5 (mkConst ``Sym.decide_cond_congr) p h e' inst' h'
+        let newRes ← Sym.share <| mkConst ``Decidable.decide
+        let newRes ← Sym.Internal.mkAppS₂ newRes e' h'
+        return .step newRes newProof
 /-
   Precondition: `e` is an application
 -/

@@ -34,6 +34,10 @@ def Nat.log (b n : Nat) : Nat :=
 
 theorem proof0 : ¬∃ k, k ≤ Nat.log 2 125555555555555 ∧ 0 < k ∧ 125555555555555 = Nat.minFac 12555555555555 ^ k := by decide_cbv
 
+example : (!decide (∃ k, k ≤ Nat.log 2 125555555555555 ∧ 0 < k ∧ 125555555555555 = Nat.minFac 12555555555555 ^ k)) = true := by cbv
+
+example : decide (∃ k, k ≤ Nat.log 2 125555555555555 ∧ 0 < k ∧ 125555555555555 = Nat.minFac 12555555555555 ^ k) = false := by cbv
+
 abbrev Nat.Prime (p : Nat) : Prop :=
   2 ≤ p ∧ ∀ (m : Nat), m < p → 2 ≤ m → ¬m ∣ p
 
@@ -41,12 +45,12 @@ abbrev IsPrimePow (n : Nat) : Prop :=
   ∃ p ≤ n, ∃ k ≤ n, Nat.Prime p ∧ 0 < k ∧ p ^ k = n
 
 set_option exponentiation.threshold 500
-set_option diagnostics true
+
 set_option trace.Meta.Tactic true
 
 theorem test0 : @LT.lt Nat instLTNat 0 1 := by decide_cbv
 #print test0
-
-theorem test : ¬ IsPrimePow 6 := by decide_cbv
-
-theorem test3 : 1 < 3 ∧ 1 < 4 := by decide_cbv
+set_option diagnostics true
+theorem test : ¬ IsPrimePow 38 := by
+  apply of_decide_eq_true
+  conv => lhs; cbv; cbv
