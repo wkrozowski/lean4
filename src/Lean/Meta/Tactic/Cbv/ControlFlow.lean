@@ -8,6 +8,7 @@ prelude
 public import Lean.Meta.Sym.Simp.SimpM
 import Lean.Meta.Sym.Simp.Result
 import Lean.Meta.Sym.Simp.Rewrite
+import Lean.Meta.Sym.Simp.Theorems
 import Lean.Meta.Sym.Simp.ControlFlow
 import Lean.Meta.Sym.AlphaShareBuilder
 import Lean.Meta.Sym.InstantiateS
@@ -174,6 +175,64 @@ def tryMatcher : Simproc := fun e => do
       <|> reduceRecMatcher
         <| e
 
+
+def simpDecideCbvUnfolding : Simproc := fun e => do
+  let numArgs := e.getAppNumArgs
+  if numArgs < 2 then return .rfl (done := true)
+  propagateOverApplied e (numArgs - 2) fun e => do
+    let_expr Decidable.decide p h := e | return .rfl
+    let res ← simp h
+    match res with
+    | .rfl .. =>
+      return .rfl
+    | .step e' _ _ =>
+      let args := e'.getAppArgs
+      if e'.isAppOf ``isTrue then
+        let proof := mkApp3 (mkConst ``decide_eq_true) p h args[1]!
+        return .step (← Sym.getBoolTrueExpr) proof
+      else if e'.isAppOf ``isFalse then
+        let proof := mkApp3 (mkConst ``decide_eq_false) p h args[1]!
+        return .step (← Sym.getBoolFalseExpr) proof
+      else
+        return .rfl
+
+def simpDecideSimproc : Simproc := fun e => do
+  let thm ← mkTheoremFromDecl ``Bool.decide_and
+  let thm2 ← mkTheoremFromDecl ``Bool.decide_or
+  let thms : Theorems := {}
+  let thms := (thms.insert thm).insert thm2
+  thms.rewrite (d := dischargeNone) e
+
+def simpDecideCbv : Simproc := fun e => do
+  trace[Meta.Tactic] "After cutting: {e}"
+  let numArgs := e.getAppNumArgs
+  if numArgs < 2 then return .rfl (done := true)
+  propagateOverApplied e (numArgs - 2) fun e => do
+    let_expr Decidable.decide p h := e | return .rfl
+    let res ← simp p
+    match res with
+    | .rfl .. =>
+      if (← Sym.isTrueExpr p) then
+        return .step (← Sym.getBoolTrueExpr) (mkConst ``decide_true)
+      else if (← Sym.isFalseExpr p) then
+        return .step (← Sym.getBoolFalseExpr) (mkConst ``decide_false)
+      else
+        return .rfl
+    | .step e' h' _ =>
+      if (← Sym.isTrueExpr e') then
+        let proof := mkApp3 (mkConst ``Sym.decide_eq_true) p h h'
+        return .step (← Sym.getBoolTrueExpr) proof
+      else if (← Sym.isFalseExpr e') then
+        let proof := mkApp3 (mkConst ``Sym.decide_eq_false) p h h'
+        return .step (← Sym.getBoolFalseExpr) proof
+      else
+        return .rfl
+        -- let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) e') | return .rfl
+        -- let inst' ← Sym.shareCommon inst'
+        -- let newProof := mkApp5 (mkConst ``Sym.decide_cond_congr) p h e' inst' h'
+        -- let newRes ← Sym.share <| mkConst ``Decidable.decide
+        -- let newRes ← Sym.Internal.mkAppS₂ newRes e' h'
+        -- return .step newRes newProof
 /-
   Precondition: `e` is an application
 -/
@@ -185,9 +244,11 @@ public def simpControlCbv : Simproc := fun e => do
     simpCond e
   else if declName == ``dite then
     simpDIteCbv e
+  else if declName == ``Decidable.decide then
+    (simpDecideSimproc >> simpDecideCbv >> simpDecideCbvUnfolding) <| e
   else if declName == ``Decidable.rec then
     -- We force the rewrite in the last argument, so that we can unfold the `Decidable` instance.
-    (simpInterlaced · #[false,false,true,true,true]) >> reduceRecMatcher <| e
+    (simpInterlaced · #[false,false,false,false,true]) >> reduceRecMatcher <| e
   else
     tryMatcher e
 

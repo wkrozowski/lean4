@@ -2,7 +2,9 @@ import Std
 
 example : 1 ∈ [1,2,3] := by decide_cbv
 
-example : 123482349 < 293849023490238490 := by decide_cbv
+theorem le_test : 1 < 2 := by decide_cbv
+
+#print le_test
 
 example : 3 ∈ (Std.TreeSet.empty.insertMany [1,2,3,4,5] : Std.TreeSet Nat) := by decide_cbv
 
@@ -14,7 +16,7 @@ def minFacAux (n : Nat) : Nat → Nat
       else
         have : k ≤ n := by have := Nat.le_mul_self k; omega
         minFacAux n (k + 2)
-termination_by k => n + 2 - k
+termination_by k => (n + 2 - k)
 
 def Nat.minFac (n : Nat) : Nat :=
   if 2 ∣ n then 2 else minFacAux n 3
@@ -30,4 +32,21 @@ def Nat.log (b n : Nat) : Nat :=
       let (q, e) := go (b * b) fuel
       if q < b then (q, 2 * e) else (q / b, 2 * e + 1)
 
-example : ¬∃ k, k ≤ Nat.log 2 15 ∧ 0 < k ∧ 15 = Nat.minFac 15 ^ k := by decide_cbv
+theorem proof0 : ¬∃ k, k ≤ Nat.log 2 125555555555555 ∧ 0 < k ∧ 125555555555555 = Nat.minFac 12555555555555 ^ k := by decide_cbv
+
+abbrev Nat.Prime (p : Nat) : Prop :=
+  2 ≤ p ∧ ∀ (m : Nat), m < p → 2 ≤ m → ¬m ∣ p
+
+abbrev IsPrimePow (n : Nat) : Prop :=
+  ∃ p ≤ n, ∃ k ≤ n, Nat.Prime p ∧ 0 < k ∧ p ^ k = n
+
+set_option exponentiation.threshold 500
+set_option diagnostics true
+set_option trace.Meta.Tactic true
+
+theorem test0 : @LT.lt Nat instLTNat 0 1 := by decide_cbv
+#print test0
+
+theorem test : ¬ IsPrimePow 6 := by decide_cbv
+
+theorem test3 : 1 < 3 ∧ 1 < 4 := by decide_cbv

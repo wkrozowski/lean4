@@ -24,6 +24,13 @@ theorem ite_cond_congr {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α)
     (c' : Prop) {inst' : Decidable c'} (h : c = c') : @ite α c inst a b = @ite α c' inst' a b := by
   simp [*]
 
+theorem decide_cond_congr (c : Prop) {inst : Decidable c}
+    (c' : Prop) {inst' : Decidable c'} (h : c = c') : decide c = decide c' := by
+  simp [*]
+
+theorem decide_eq_true {p : Prop} {_ : Decidable p} : p = True → decide p = true := by simp
+theorem decide_eq_false {p : Prop} {_ : Decidable p} : p = False → decide p = false := by simp
+
 theorem dite_cond_congr {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α)
     (c' : Prop) {inst' : Decidable c'} (h : c = c')
     : @dite α c inst a b = @dite α c' inst' (fun h' => a (h.mpr_prop h')) (fun h' => b (h.mpr_not h')) := by

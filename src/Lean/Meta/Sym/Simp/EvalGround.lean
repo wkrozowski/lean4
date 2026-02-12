@@ -554,6 +554,7 @@ public def evalGround (config : EvalStepConfig := {}) : Simproc := fun e =>
   | Int.fmod a b => evalBinInt Int.fmod a b
   | Int.bmod a b => evalIntBMod a b
   | LE.le α _ a b => evalLE α a b
+  | Nat.le a b => evalBinPred getNatValue? (mkConst ``Nat.le_eq_true) (mkConst ``Nat.le_eq_false) (. ≤ .) a b
   | LT.lt α _ a b => evalLT α a b
   | Dvd.dvd α _ a b => evalDvd α a b
   | Eq α a b => evalEq α a b
