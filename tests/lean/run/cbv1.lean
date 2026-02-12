@@ -223,3 +223,6 @@ Eq.mpr
 -/
 #guard_msgs in
 #print slow_path
+
+set_option trace.Meta.Tactic true
+example : Nat.add (Nat.zero) 7 = sorry := by conv => lhs; cbv

@@ -11,6 +11,7 @@ public import Lean.Meta.Sym.Simp.SimpM
 public import Lean.Meta.Tactic.Cbv.Opaque
 public import Lean.Meta.Tactic.Cbv.ControlFlow
 import Lean.Meta.Tactic.Cbv.Util
+import Lean.Meta.Sym.Simp.DiscrTree
 import Lean.Meta.Tactic.Cbv.TheoremsLookup
 import Lean.Meta.Tactic.Cbv.CbvEvalExt
 import Lean.Meta.Sym
@@ -151,6 +152,7 @@ def handleConst : Simproc := fun e => do
     return .rfl
   -- TODO: Check if we need to look if we applied all the levels correctly
   let some thm ← getUnfoldTheorem n | return .rfl
+  trace[Meta.Tactic] "We got: {thm.declName}"
   Theorem.rewrite thm e
 
 def cbvPreStep : Simproc := fun e => do
@@ -168,7 +170,19 @@ def cbvPreStep : Simproc := fun e => do
   | .forallE .. | .lam .. | .fvar .. | .mvar .. | .bvar .. | .sort .. => return .rfl (done := true)
   | _ => return .rfl
 
-def cbvPre : Simproc := isBuiltinValue <|> isProofTerm <|> cbvPreStep
+def makeKeyAndTry : Simproc := fun e => do
+  --let testExpr := mkApp (mkConst ``Nat.succ) (← mkFreshExprMVar (mkConst ``Nat))
+  let testExpr := mkApp2 (mkConst ``Nat.add) (← mkFreshExprMVar <| mkConst ``Nat) (← mkFreshExprMVar <| mkConst ``Nat)
+  let abstr ← abstractMVars testExpr
+  let toMake ← mkFreshExprMVar abstr.expr
+  let pattern ← Sym.mkPatternFromExpr toMake
+  let dTree : DiscrTree Bool := Sym.insertPattern (DiscrTree.empty) pattern true
+  let res := Sym.getMatchWithExtra dTree e
+
+  trace[Meta.Tactic] "trying: {e}, testExpr is: {abstr.expr}, res: {res}"
+  return .rfl (done := true)
+
+def cbvPre : Simproc := makeKeyAndTry >> isBuiltinValue <|> isProofTerm <|> cbvPreStep
 
 def cbvPost : Simproc := evalGround <|> handleApp
 

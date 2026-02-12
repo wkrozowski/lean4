@@ -347,7 +347,7 @@ def insertIfSpecific [BEq α] (d : DiscrTree α) (e : Expr) (v : α) (noIndexAtA
   else
     return d.insertKeyValue keys v
 
-private def getKeyArgs (e : Expr) (isMatch root : Bool) : MetaM (Key × Array Expr) := do
+public def getKeyArgs (e : Expr) (isMatch root : Bool) : MetaM (Key × Array Expr) := do
   let e ← reduceDT e root
   unless root do
     -- See pushArgs
@@ -420,7 +420,7 @@ private def getKeyArgs (e : Expr) (isMatch root : Bool) : MetaM (Key × Array Ex
   | .forallE _ d _ _ => return (.arrow, #[d])
   | _ => return (.other, #[])
 
-private abbrev getMatchKeyArgs (e : Expr) (root : Bool) : MetaM (Key × Array Expr) :=
+public abbrev getMatchKeyArgs (e : Expr) (root : Bool) : MetaM (Key × Array Expr) :=
   getKeyArgs e (isMatch := true) (root := root)
 
 private abbrev getUnifyKeyArgs (e : Expr) (root : Bool) : MetaM (Key × Array Expr) :=
