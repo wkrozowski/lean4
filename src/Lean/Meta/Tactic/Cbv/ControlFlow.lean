@@ -185,6 +185,11 @@ public def simpControlCbv : Simproc := fun e => do
     simpCond e
   else if declName == ``dite then
     simpDIteCbv e
+  else if declName == ``Decidable.decide then
+    let thms := #[``decide_true, ``decide_false, ``Bool.decide_or, ``Bool.decide_and]
+    let thms ← thms.mapM (do mkTheoremFromDecl · )
+    let thms : Theorems := Sym.Simp.Theorems.insertMany {} thms
+    thms.rewrite (d := dischargeNone) e
   else if declName == ``Decidable.rec then
     -- We force the rewrite in the last argument, so that we can unfold the `Decidable` instance.
     (simpInterlaced · #[false,false,true,true,true]) >> reduceRecMatcher <| e
