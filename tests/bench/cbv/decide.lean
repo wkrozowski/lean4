@@ -56,4 +56,5 @@ def runCbvTests : MetaM Unit := do
   for n in [6,10,12,14,15,18,20] do
     runSingleTest n
 
+set_option maxRecDepth 40000
 #eval runCbvTests

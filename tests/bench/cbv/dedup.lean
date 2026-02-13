@@ -14,3 +14,5 @@ example : dedup [1,2] = [1,2] := by conv => lhs; cbv
 example : dedup [1,1] = [1] := by conv => lhs; cbv
 
 example : dedup [1,2,2] = [1,2] := by conv => lhs; cbv
+
+example : dedup [1,2,2,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2] = [1,2] := by conv => lhs; cbv

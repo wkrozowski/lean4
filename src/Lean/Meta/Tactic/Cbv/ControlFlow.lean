@@ -180,32 +180,32 @@ def breakDecide : Simproc := fun e => do
   let thms : Theorems := Sym.Simp.Theorems.insertMany {} thms
   thms.rewrite (d := dischargeNone) e
 
--- def simpDecideProp : Simproc := fun e => do
---   let numArgs := e.getAppNumArgs
---   if numArgs < 2 then return .rfl (done := true)
---   propagateOverApplied e (numArgs - 2) fun e => do
---     let_expr Decidable.decide p h := e | return .rfl
---     match (← simp p) with
---     | .rfl _ => return .rfl
---     | .step e' h' _ =>
---       -- if (← Sym.isTrueExpr e') then
---       --   trace[Meta.Tactic] "Easy case: {p}"
---       --   let proof := mkApp3 (mkConst ``Sym.decide_eq_true) p h h'
---       --   return .step (← Sym.getBoolTrueExpr) proof (done := true)
---       -- else if (← Sym.isFalseExpr e') then
---       --   trace[Meta.Tactic] "Easy case: {p}"
---       --   let proof := mkApp3 (mkConst ``Sym.decide_eq_false) p h h'
---       --   return .step (← Sym.getBoolFalseExpr) proof (done := true)
---       -- else
---       --    trace[Meta.Tactic] "Hard case: {p}"
---         let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) e') | return .rfl
---         let inst' ← Sym.shareCommon inst'
---         let newProof := mkApp5 (mkConst ``Decidable.decide.congr_simp) p e' h' h inst'
---         let newExpr ← Sym.Internal.mkAppS₂ (mkConst ``Decidable.decide) e' inst'
---         let res ← simp inst'
---         match res with
---         | .rfl _ => return .rfl
---         | .step newInst' _ _ => (simpInterlaced · #[false,false,true,true,true]) >> reduceRecMatcher <| e
+public def whnfSimproc : Simproc := fun e => do
+  let r ← withAtLeastTransparency .default <| whnf e
+  let r ← Sym.share r
+  return .step r (← Sym.mkEqRefl r)
+
+def simpDecideProp : Simproc := fun e => do
+  let numArgs := e.getAppNumArgs
+  if numArgs < 2 then return .rfl (done := true)
+  propagateOverApplied e (numArgs - 2) fun e => do
+    let_expr Decidable.decide p h := e | return .rfl
+    match (← (whnfSimproc >> simp) h) with
+    | .rfl _ => return .rfl
+    | .step e' _ _ =>
+      let args := e'.getAppArgs
+      if (e'.isAppOf ``isTrue) then
+        let hp := args[1]!
+        let proof := mkApp3 (mkConst ``decide_eq_true) p h hp
+        return .step (← Sym.getBoolTrueExpr) proof
+      else if (e'.isAppOf ``isTrue) then
+        let hnp := args[1]!
+        let proof := mkApp3 (mkConst ``decide_eq_false) p h hnp
+        return .step (← Sym.getBoolFalseExpr) proof
+      else
+        trace[Meta.Tactic] "Cannot go any further"
+        return .rfl
+
 
 public def debugSimproc : Simproc := fun e => do
   trace[Meta.Tactic] "got to {e}"
@@ -222,8 +222,8 @@ public def simpControlCbv : Simproc := fun e => do
     simpCond e
   else if declName == ``dite then
     simpDIteCbv e
-  -- else if declName == ``Decidable.decide then
-  --   simpDecideProp <| e
+  else if declName == ``Decidable.decide then
+    simpDecideProp <| e
   else if declName == ``Decidable.rec then
     -- We force the rewrite in the last argument, so that we can unfold the `Decidable` instance.
     (simpInterlaced · #[false,false,true,true,true]) >> reduceRecMatcher <| e
