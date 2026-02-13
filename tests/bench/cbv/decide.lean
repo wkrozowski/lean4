@@ -7,14 +7,23 @@ abbrev Nat.Prime (p : Nat) : Prop :=
 abbrev IsPrimePow (n : Nat) : Prop :=
   ∃ p ≤ n, ∃ k ≤ n, Nat.Prime p ∧ 0 < k ∧ p ^ k = n
 
-set_option trace.Meta.Tactic true
+example : ¬ IsPrimePow 6 := by
+  apply of_decide_eq_true
+  conv => lhs; cbv
+
 section
 set_option diagnostics true
+set_option trace.Meta.Tactic true
+set_option pp.rawOnError true
 theorem test : ¬ IsPrimePow 6 := by
   apply of_decide_eq_true
   conv => lhs; cbv
 
-#print test
+
+
+theorem test2 : (2 < 4 ∧ ¬ 3 < 2) := by decide_cbv
+
+#print test2
 end
 def mkProblemInst (n : Nat) : Expr :=
   let n := mkNatLit n
