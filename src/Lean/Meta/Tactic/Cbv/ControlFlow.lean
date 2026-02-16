@@ -18,6 +18,7 @@ import Lean.Meta.WHNF
 import Lean.Meta.AppBuilder
 import Init.Sym.Lemmas
 import Lean.Meta.Tactic.Cbv.TheoremsLookup
+import Lean.Meta.Tactic.Cbv.Opaque
 namespace Lean.Meta.Sym.Simp
 open Internal
 
@@ -174,9 +175,31 @@ def tryMatcher : Simproc := fun e => do
       <|> reduceRecMatcher
         <| e
 
+/-- Copied from `Lean.Meta.canUnfoldDefault` (private in `GetUnfoldableConst.lean`),
+extended to also block `cbv_opaque` names. -/
+private def canUnfoldRespectingCbvOpaque
+    (opaqueNames : Std.HashSet Name) (cfg : Meta.Config) (info : ConstantInfo) : CoreM Bool := do
+  if opaqueNames.contains info.name then return false
+  match cfg.transparency with
+  | .none => return false
+  | .all  => return true
+  | .default => return !(← isIrreducible info.name)
+  | m =>
+    let status ← getReducibilityStatus info.name
+    if status == .reducible then
+      return true
+    else if m == .instances && status == .instanceReducible then
+      return true
+    else
+      return false
+
 def whnfSimproc : Simproc := fun e => do
-  let r ← withAtLeastTransparency .default <| whnf e
+  trace[Meta.Tactic] "called whnf simproc"
+  let opaqueNames ← cbvOpaque
+  let r ← withCanUnfoldPred (canUnfoldRespectingCbvOpaque opaqueNames) do
+    withAtLeastTransparency .default <| whnf e
   let r ← Sym.share r
+  trace[Meta.Tactic] "trying to whnf {e}, we got {r}"
   return .step r (← Sym.mkEqRefl r)
 
 def simpDecideProp : Simproc := fun e => do
@@ -212,6 +235,7 @@ public def simpControlCbv : Simproc := fun e => do
   else if declName == ``dite then
     simpDIteCbv e
   else if declName == ``Decidable.decide then
+    trace[Meta.Tactic] "simpDecideProp called on {e}"
     simpDecideProp <| e
   else if declName == ``Decidable.rec then
     -- We force the rewrite in the last argument, so that we can unfold the `Decidable` instance.
