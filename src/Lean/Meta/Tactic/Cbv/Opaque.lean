@@ -8,6 +8,14 @@ module
 prelude
 public import Lean.ScopedEnvExtension
 
+/-!
+# `@[cbv_opaque]` Attribute
+
+Prevents `cbv` from unfolding a definition. Typically used together with `@[cbv_eval]` to
+replace a definition's reduction behavior with user-provided rewrite lemmas. Supports the
+`scoped` modifier and can be erased.
+-/
+
 public section
 
 namespace Lean.Meta.Tactic.Cbv

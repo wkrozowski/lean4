@@ -18,9 +18,29 @@ import Lean.Meta.WHNF
 import Lean.Meta.AppBuilder
 import Init.Sym.Lemmas
 import Lean.Meta.Tactic.Cbv.TheoremsLookup
+/-!
+# Control Flow Reduction for `cbv`
+
+Handles `ite`, `dite`, `cond`, `Decidable.rec`, and matcher applications.
+
+The strategy for `ite`/`dite` is non-contextual: only the condition is simplified, and if it
+reduces to `True`/`False`, the appropriate branch is taken. When the condition doesn't reduce
+directly but its `Decidable` instance evaluates to a boolean, we go through `eq_true_of_decide`
+/ `eq_false_of_decide` to recover a propositional proof. If the condition remains symbolic,
+we rebuild the `ite`/`dite` with the simplified condition and a fresh `Decidable` instance.
+
+This avoids the standard `ite_congr` approach which adds hypotheses to each branch,
+invalidating the cache and causing exponential behavior on nested conditionals.
+-/
+
 namespace Lean.Meta.Sym.Simp
 open Internal
 
+/--
+Simplify `ite c a b`. Only the condition `c` is simplified; branches are not entered unless
+the condition resolves. Handles over-applied `ite` (extra arguments beyond the standard 5)
+via `propagateOverApplied`.
+-/
 public def simpIteCbv : Simproc := fun e => do
   let numArgs := e.getAppNumArgs
   if numArgs < 5 then return .rfl (done := true)
@@ -76,6 +96,11 @@ public def simpIteCbv : Simproc := fun e => do
         let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
         return .step e' h'
 
+/--
+Simplify `dite c a b`. Same strategy as `simpIteCbv`, but branches receive a proof of the
+condition (`h : c` or `h : ¬c`), so when the condition is rewritten we must transport the
+proof via `Eq.mpr_prop` / `Eq.mpr_not`.
+-/
 public def simpDIteCbv : Simproc := fun e => do
   let numArgs := e.getAppNumArgs
   if numArgs < 5 then return .rfl (done := true)
@@ -156,6 +181,7 @@ def tryMatchEquations (appFn : Name) : Simproc := fun e => do
   let thms ← getMatchTheorems appFn
   thms.rewrite (d := dischargeNone) e
 
+/-- Reduce recursor, matcher, and quotient applications via the kernel reducer. -/
 public def reduceRecMatcher : Simproc := fun e => do
   if let some e' ← reduceRecMatcher? e then
     return .step e' (← Sym.mkEqRefl e')
@@ -174,8 +200,11 @@ def tryMatcher : Simproc := fun e => do
       <|> reduceRecMatcher
         <| e
 
-/-
-  Precondition: `e` is an application
+/--
+Dispatch control flow constructs. Precondition: `e` is an application.
+Routes `ite`, `cond`, `dite` to their specialized handlers. For `Decidable.rec`, forces
+simplification of the last arguments (the instance and discriminant) before reducing via
+`reduceRecMatcher`. All other applications are routed to `tryMatcher`.
 -/
 public def simpControlCbv : Simproc := fun e => do
   let .const declName _ := e.getAppFn | return .rfl

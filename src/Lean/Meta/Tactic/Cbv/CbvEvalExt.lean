@@ -12,6 +12,15 @@ public import Lean.Meta.Sym.Simp.Theorems
 import Lean.Meta.Tactic.AuxLemma
 import Lean.Meta.AppBuilder
 
+/-!
+# `@[cbv_eval]` Attribute
+
+Allows users to register rewrite lemmas that `cbv` applies instead of unfolding a definition.
+This is useful when a definition is too expensive to unfold step-by-step but has a known
+closed-form or precomputed result. Theorems are indexed by the head constant of the match side
+(LHS by default, RHS with `←`). Supports the `scoped` modifier.
+-/
+
 public section
 namespace Lean.Meta.Sym.Simp
 
@@ -31,6 +40,12 @@ structure CbvEvalEntry where
   thm  : Theorem
   deriving BEq, Inhabited
 
+/--
+Build a `CbvEvalEntry` from a theorem declaration. The theorem must be an equality whose
+match side (LHS, or RHS when `inv = true`) is headed by a constant — that constant becomes
+the lookup key. When `inv = true`, an auxiliary lemma with the equality reversed is created
+so that `cbv` can rewrite in the opposite direction (used by `@[cbv_eval ←]`).
+-/
 def mkCbvTheoremFromConst (declName : Name) (inv : Bool := false) : MetaM CbvEvalEntry := do
   let cinfo ← getConstVal declName
   let us := cinfo.levelParams.map mkLevelParam

@@ -22,10 +22,16 @@ end Lean.Meta.Sym.Simp
 namespace Lean.Meta.Tactic.Cbv
 open Lean.Meta.Sym.Simp
 
-/--
-Get or create cached Theorems for function equations.
-Retrieves equations via `getEqnsFor?` and caches the resulting Theorems object.
+/-!
+# Theorem Lookup Cache for `cbv`
+
+Caches `Sym.Simp.Theorem` objects for equation lemmas, unfold equations, and match equations.
+Without caching, each call to `getEqnsFor?` or `Match.getEquationsFor` would reconstruct
+the theorem objects from scratch. The cache is stored in an `EnvExtension` and lives for
+the duration of a single environment.
 -/
+
+/-- Per-environment cache of precomputed `Theorem` objects, keyed by function/matcher name. -/
 public structure CbvTheoremsLookupState where
   eqnTheorems : PHashMap Name Theorems := {}
   unfoldTheorems : PHashMap Name Theorem := {}

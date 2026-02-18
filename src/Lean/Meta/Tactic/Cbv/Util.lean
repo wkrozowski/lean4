@@ -12,10 +12,17 @@ import Lean.Meta.Sym.InferType
 import Lean.Meta.Sym.AlphaShareBuilder
 import Lean.Meta.Sym.LitValues
 
+/-!
+# Utility Functions for `cbv`
+
+Value predicates for builtin types, proof detection, and simproc helpers.
+-/
+
 namespace Lean.Meta.Tactic.Cbv
 
 open Lean.Meta.Sym.Simp
 
+/-- Build `f a₁ ... aₙ` with maximal sharing at each application step. -/
 public def mkAppNS (f : Expr) (args : Array Expr) : Sym.SymM Expr := do
   args.foldlM Sym.Internal.mkAppS f
 
@@ -53,8 +60,10 @@ public def isVal (e : Expr) : Bool :=
     isInt64Value
   ].any (· e)
 
+/-- Mark builtin literal values as `done` so `cbv` does not attempt to reduce them further. -/
 public def isBuiltinValue : Simproc := fun e => return .rfl (isVal e)
 
+/-- Run simproc `s` only if predicate `p` holds on the input expression. -/
 public def guardSimproc (p : Expr → Bool) (s : Simproc) : Simproc := fun e => do
   if p e then s e else return .rfl
 
@@ -67,7 +76,7 @@ def isAlwaysZero : Level → Bool
   | .max u v    => isAlwaysZero u && isAlwaysZero v
   | .imax _ u   => isAlwaysZero u
 
-/- Modified for the `SymM` usage -/
+/-- Check if `e` is a proposition. Uses `Sym.inferType` (cached) instead of `Meta.inferType`. -/
 def isProp (e : Expr) : Sym.SymM Bool := do
   match (← isPropQuick e) with
   | .true  => return true
@@ -79,13 +88,14 @@ def isProp (e : Expr) : Sym.SymM Bool := do
     | Expr.sort u => return isAlwaysZero (← instantiateLevelMVars u)
     | _           => return false
 
-/- Modified for the `SymM` usage -/
+/-- Check if `e` is a proof. Uses `Sym.inferType` (cached) instead of `Meta.inferType`. -/
 def isProof (e : Expr) : Sym.SymM Bool := do
   match (← isProofQuick e) with
   | .true  => return true
   | .false => return false
   | .undef => isProp (← Sym.inferType e)
 
+/-- Mark proof terms as `done` so `cbv` does not attempt to reduce them. -/
 public def isProofTerm : Simproc := fun e => do
   return .rfl (← isProof e)
 
