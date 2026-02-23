@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Init.Data.String.PosRaw
-// Imports: public import Init.Data.ByteArray.Basic import Init.Data.Nat.Simproc
+// Imports: public import Init.Data.ByteArray.Basic import Init.Data.Nat.Simproc import Init.Omega
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -217,7 +217,7 @@ lean_dec(x_1);
 return x_3;
 }
 }
-static lean_object* _init_l_String_instLERaw() {
+static lean_object* _init_l_String_instLERaw(void) {
 _start:
 {
 lean_object* x_1; 
@@ -225,7 +225,7 @@ x_1 = lean_box(0);
 return x_1;
 }
 }
-static lean_object* _init_l_String_instLTRaw() {
+static lean_object* _init_l_String_instLTRaw(void) {
 _start:
 {
 lean_object* x_1; 
@@ -516,6 +516,7 @@ return x_1;
 }
 lean_object* initialize_Init_Data_ByteArray_Basic(uint8_t builtin);
 lean_object* initialize_Init_Data_Nat_Simproc(uint8_t builtin);
+lean_object* initialize_Init_Omega(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Init_Data_String_PosRaw(uint8_t builtin) {
 lean_object * res;
@@ -525,6 +526,9 @@ res = initialize_Init_Data_ByteArray_Basic(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Init_Data_Nat_Simproc(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_Omega(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 l_String_instLERaw = _init_l_String_instLERaw();

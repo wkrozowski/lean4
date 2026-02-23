@@ -23,6 +23,9 @@ public import Lean.Compiler.LCNF.ToImpure
 public import Lean.Compiler.LCNF.PushProj
 public import Lean.Compiler.LCNF.ResetReuse
 public import Lean.Compiler.LCNF.SimpCase
+public import Lean.Compiler.LCNF.InferBorrow
+public import Lean.Compiler.LCNF.ExplicitBoxing
+public import Lean.Compiler.LCNF.ExplicitRC
 
 public section
 
@@ -147,6 +150,9 @@ def builtinPassManager : PassManager := {
     insertResetReuse,
     elimDeadVars (phase := .impure) (occurrence := 0),
     simpCase,
+    inferBorrow,
+    explicitBoxing,
+    explicitRc,
     inferVisibility (phase := .impure),
     saveImpure, -- End of impure phase
   ]

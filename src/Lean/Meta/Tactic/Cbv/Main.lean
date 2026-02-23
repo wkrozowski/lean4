@@ -24,35 +24,19 @@ public register_builtin_option cbv.warning : Bool := {
   descr    := "disable `cbv` usage warning"
 }
 
-def tryMatchEquations (appFn : Name) : Simproc := fun e => do
-  let thms ← getMatchTheorems appFn
-  thms.rewrite (d := dischargeNone) e
-
 def tryEquations : Simproc := fun e => do
   unless e.isApp do
     return .rfl
   let some appFn := e.getAppFn.constName? | return .rfl
   let thms ← getEqnTheorems appFn
-  thms.rewrite (d := dischargeNone) e
+  Simproc.tryCatch (thms.rewrite (d := dischargeNone)) e
 
 def tryUnfold : Simproc := fun e => do
   unless e.isApp do
     return .rfl
   let some appFn := e.getAppFn.constName? | return .rfl
   let some thm ← getUnfoldTheorem appFn | return .rfl
-  Theorem.rewrite thm e
-
-def tryMatcher : Simproc := fun e => do
-  unless e.isApp do
-    return .rfl
-  let some appFn := e.getAppFn.constName? | return .rfl
-  let some info ← getMatcherInfo? appFn | return .rfl
-  let start := info.numParams + 1
-  let stop  := start + info.numDiscrs
-  (simpAppArgRange · start stop)
-    >> tryMatchEquations appFn
-      <|> reduceRecMatcher
-        <| e
+  Simproc.tryCatch (fun e => Theorem.rewrite thm e) e
 
 def handleConstApp : Simproc := fun e => do
   if (← isCbvOpaque e.getAppFn.constName!) then
@@ -69,7 +53,7 @@ def betaReduce : Simproc := fun e => do
 def tryCbvTheorems : Simproc := fun e => do
   let some fnName := e.getAppFn.constName? | return .rfl
   let some evalLemmas ← getCbvEvalLemmas fnName | return .rfl
-  Theorems.rewrite evalLemmas (d := dischargeNone) e
+  Simproc.tryCatch (Theorems.rewrite evalLemmas (d := dischargeNone)) e
 
 def handleApp : Simproc := fun e => do
   unless e.isApp do return .rfl
@@ -111,7 +95,7 @@ def handleProj : Simproc := fun e => do
   let res ← simp struct
   match res with
   | .rfl _ =>
-    let some reduced ← reduceProj? <| .proj typeName idx struct | do
+    let some reduced ← withCbvOpaqueGuard <| reduceProj? <| .proj typeName idx struct | do
       return .rfl (done := true)
 
     -- TODO: Figure if we can share this term incrementally
@@ -120,10 +104,29 @@ def handleProj : Simproc := fun e => do
   | .step e' proof _ =>
     let type ← Sym.inferType e'
     let congrArgFun := Lean.mkLambda `x .default type <| .proj typeName idx <| .bvar 0
-
-    -- TODO: Create an efficient symbolic version of `mkCongrArg`
-    let newProof ← mkCongrArg congrArgFun proof
-    return .step (← Lean.Expr.updateProjS! e e') newProof
+    let congrArgFunType ← inferType congrArgFun
+    -- If the type of a projection function is non-dependent, we can safely prove `e.i = e'.i` from `e = e'`
+    if (congrArgFunType.isArrow) then
+      let newProof ← mkCongrArg congrArgFun proof
+      return .step (← Lean.Expr.updateProjS! e e') newProof
+    else
+      -- If the type of the projection function is dependent, we first try to reduce the projection
+      let reduced ← withCbvOpaqueGuard <| reduceProj? e
+      match reduced with
+      | .some reduced =>
+        let reduced ← Sym.share reduced
+        return .step reduced (← Sym.mkEqRefl reduced)
+      | .none =>
+       -- If we failed to reduce it, we turn to a last resort; we try use heterogenous congruence lemma that we then try to turn into an equality.
+        unless (← isDefEq struct e') do
+          -- If we rewrote the projection body using something that holds up to propositional equality, then there is nothing we can do.
+          -- TODO: Check if there is a need to report this to a user, or shall we fail silently.
+          return .rfl (done := true)
+        let hcongr ← mkHCongr congrArgFun
+        let newProof := mkApp3 (hcongr.proof) struct e' proof
+        -- We have already checked if `struct` and `e'` are defEq, so we can skip the check.
+        let newProof ← mkEqOfHEq newProof (check := false)
+        return .step (← Lean.Expr.updateProjS! e e') newProof
 
 def simplifyAppFn : Simproc := fun e => do
     unless e.isApp do return .rfl
@@ -132,7 +135,7 @@ def simplifyAppFn : Simproc := fun e => do
       return .rfl
     else
     let res ← simp fn
-    match (← simp fn) with
+    match res with
     | .rfl _ => return res
     | .step e' proof _ =>
       let newType ← Sym.inferType e'
@@ -151,7 +154,7 @@ def handleConst : Simproc := fun e => do
     return .rfl
   -- TODO: Check if we need to look if we applied all the levels correctly
   let some thm ← getUnfoldTheorem n | return .rfl
-  Theorem.rewrite thm e
+  Simproc.tryCatch (fun e => Theorem.rewrite thm e) e
 
 def cbvPreStep : Simproc := fun e => do
   match e with
@@ -218,6 +221,32 @@ public def cbvGoal (m : MVarId) : MetaM (Option MVarId) := do
   match (← cbvGoalCore m (inv := false)) with
   | .none => return .none
   | .some m' => cbvGoalCore m' (inv := true)
+
+/--
+Attempt to close a goal of the form `decide P = true` by reducing only the LHS using `cbv`.
+
+- If the LHS reduces to `Bool.true`, the goal is closed successfully.
+- If the LHS reduces to `Bool.false`, throws a user-friendly error indicating the proposition is false.
+- Otherwise, throws a user-friendly error showing where the reduction got stuck.
+-/
+public def cbvDecideGoal (m : MVarId) : MetaM Unit := do
+  Sym.SymM.run do
+    let methods := {pre := cbvPre, post := cbvPost}
+    let m ← Sym.preprocessMVar m
+    let mType ← m.getType
+    let some (_, lhs, _) := mType.eq? |
+      throwError "`decide_cbv`: expected goal of the form `decide _ = true`, got: {indentExpr mType}"
+    let result ← SimpM.run' (simp lhs) (methods := methods)
+    let checkResult (e : Expr) (onTrue : Sym.SymM Unit) : Sym.SymM Unit := do
+      if (← Sym.isBoolTrueExpr e) then
+        onTrue
+      else if (← Sym.isBoolFalseExpr e) then
+        throwError "`decide_cbv` failed: the proposition evaluates to `false`"
+      else
+        throwError "`decide_cbv` failed: could not reduce the expression to a boolean value; got stuck at: {indentExpr e}"
+    match result with
+    | .rfl _ => checkResult lhs (m.refl)
+    | .step e' proof _ => checkResult e' (m.assign proof)
 
 
 end Lean.Meta.Tactic.Cbv

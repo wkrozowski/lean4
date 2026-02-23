@@ -182,11 +182,12 @@ theorem IterM.step_filterMap [Monad m] [LawfulMonad m] {f : β → Option β'} :
       pure <| .deflate <| .skip (it'.filterMap f) (.skip h)
     | .done h =>
       pure <| .deflate <| .done (.done h)) := by
-  simp only [IterM.filterMap, step_filterMapWithPostcondition, pure]
+  simp only [IterM.filterMap]
+  simp only [step_filterMapWithPostcondition, PostconditionT.operation_pure]
   apply bind_congr
   intro step
   split
-  · simp only [PostconditionT.pure, PlausibleIterStep.skip, PlausibleIterStep.yield, pure_bind]
+  · simp only [PlausibleIterStep.skip, PlausibleIterStep.yield, pure_bind]
     split <;> split <;> simp_all
   · simp
   · simp
@@ -361,8 +362,8 @@ theorem IterM.toList_map_eq_toList_mapM {α β γ : Type w}
       bind_map_left]
     conv => rhs; rhs; ext a; rw [← pure_bind (x := a.val) (f := fun _ => _ <$> _)]
     simp only [← bind_assoc, bind_pure_comp, WeaklyLawfulMonadAttach.map_attach]
-    simp [ihy ‹_›]
-  · simp [ihs ‹_›]
+    simpa using ihy ‹_›
+  · simpa using ihs ‹_›
   · simp
 
 theorem IterM.toList_map_eq_toList_filterMapM {α β γ : Type w} {m : Type w → Type w'}
@@ -373,6 +374,7 @@ theorem IterM.toList_map_eq_toList_filterMapM {α β γ : Type w} {m : Type w �
   simp [toList_map_eq_toList_mapM, toList_mapM_eq_toList_filterMapM]
   congr <;> simp
 
+set_option backward.whnf.reducibleClassField false in
 /--
 Variant of `toList_filterMapWithPostcondition_filterMapWithPostcondition` that is intended to be
 used with the `apply` tactic. Because neither the LHS nor the RHS determine all implicit parameters,
@@ -600,6 +602,7 @@ theorem IterM.toList_map_mapM {α β γ δ : Type w}
     toList_filterMapM_mapM]
   congr <;> simp
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem IterM.toList_filterMapWithPostcondition {α β γ : Type w} {m : Type w → Type w'}
     [Monad m] [LawfulMonad m]
@@ -623,6 +626,7 @@ theorem IterM.toList_filterMapWithPostcondition {α β γ : Type w} {m : Type w 
   · simp [ihs ‹_›, heq]
   · simp [heq]
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem IterM.toList_mapWithPostcondition {α β γ : Type w} {m : Type w → Type w'}
     [Monad m] [LawfulMonad m] [Iterator α Id β] [Finite α Id]
@@ -643,6 +647,7 @@ theorem IterM.toList_mapWithPostcondition {α β γ : Type w} {m : Type w → Ty
   · simp [ihs ‹_›, heq]
   · simp [heq]
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem IterM.toList_filterMapM {α β γ : Type w} {m : Type w → Type w'}
     [Monad m] [MonadAttach m] [LawfulMonad m] [WeaklyLawfulMonadAttach m]
@@ -652,6 +657,7 @@ theorem IterM.toList_filterMapM {α β γ : Type w} {m : Type w → Type w'}
   simp [toList_filterMapM_eq_toList_filterMapWithPostcondition, toList_filterMapWithPostcondition,
     PostconditionT.attachLift, PostconditionT.run_eq_map, WeaklyLawfulMonadAttach.map_attach]
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem IterM.toList_mapM {α β γ : Type w} {m : Type w → Type w'}
     [Monad m] [MonadAttach m] [LawfulMonad m] [WeaklyLawfulMonadAttach m]
@@ -1297,6 +1303,7 @@ theorem IterM.forIn_filterMap
   rw [filterMap, forIn_filterMapWithPostcondition]
   simp [PostconditionT.run_eq_map]
 
+set_option backward.isDefEq.respectTransparency false in
 theorem IterM.forIn_mapWithPostcondition
     [Monad m] [LawfulMonad m] [Monad n] [LawfulMonad n] [Monad o] [LawfulMonad o]
     [MonadLiftT m n] [LawfulMonadLiftT m n] [MonadLiftT n o] [LawfulMonadLiftT n o]

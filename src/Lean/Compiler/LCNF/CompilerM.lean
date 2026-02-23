@@ -149,7 +149,7 @@ def eraseCodeDecl (decl : CodeDecl pu) : CompilerM Unit := do
   match decl with
   | .let decl => eraseLetDecl decl
   | .jp decl | .fun decl _ => eraseFunDecl decl
-  | .sset .. | .uset .. => return ()
+  | .sset .. | .uset .. | .inc .. | .dec .. => return ()
 
 /--
 Erase all free variables occurring in `decls` from the local context.
@@ -292,6 +292,14 @@ private partial def normLetValueImp (s : FVarSubst pu) (e : LetValue pu) (transl
     match normFVarImp s fvarId translator with
     | .fvar fvarId' => e.updateReuse! fvarId' info updateHeader (normArgsImp s args translator)
     | .erased => .erased
+  | .box ty fvarId _ =>
+    match normFVarImp s fvarId translator with
+    | .fvar fvarId' => e.updateBox! ty fvarId'
+    | .erased => .erased
+  | .unbox fvarId _ =>
+    match normFVarImp s fvarId translator with
+    | .fvar fvarId' => e.updateUnbox! fvarId'
+    | .erased => .erased
 
 /--
 Interface for monads that have a free substitutions.
@@ -401,6 +409,16 @@ private unsafe def updateParamImp (p : Param pu) (type : Expr) : CompilerM (Para
 
 @[implemented_by updateParamImp] opaque Param.update (p : Param pu) (type : Expr) : CompilerM (Param pu)
 
+private unsafe def updateParamBorrowImp (p : Param pu) (borrow : Bool) : CompilerM (Param pu) := do
+  if borrow = p.borrow then
+    return p
+  else
+    let p := { p with borrow }
+    modifyLCtx fun lctx => lctx.addParam p
+    return p
+
+@[implemented_by updateParamBorrowImp] opaque Param.updateBorrow (p : Param pu) (borrow : Bool) : CompilerM (Param pu)
+
 private unsafe def updateLetDeclImp (decl : LetDecl pu) (type : Expr) (value : LetValue pu) : CompilerM (LetDecl pu) := do
   if ptrEq type decl.type && ptrEq value decl.value then
     return decl
@@ -483,6 +501,12 @@ mutual
       withNormFVarResult (← normFVar fvarId) fun fvarId => do
       withNormFVarResult (← normFVar y) fun y => do
         return code.updateUset! fvarId offset y (← normCodeImp k)
+    | .inc fvarId n check persistent k _ =>
+      withNormFVarResult (← normFVar fvarId) fun fvarId => do
+        return code.updateInc! fvarId n check persistent (← normCodeImp k)
+    | .dec fvarId n check persistent k _ =>
+      withNormFVarResult (← normFVar fvarId) fun fvarId => do
+        return code.updateDec! fvarId n check persistent (← normCodeImp k)
 end
 
 @[inline] def normFunDecl [MonadLiftT CompilerM m] [Monad m] [MonadFVarSubst m pu t] (decl : FunDecl pu) : m (FunDecl pu) := do

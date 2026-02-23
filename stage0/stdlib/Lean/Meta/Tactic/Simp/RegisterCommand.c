@@ -28,6 +28,7 @@ static const lean_object* l_Lean_Parser_Command_registerSimpAttr___closed__5 = (
 static const lean_string_object l_Lean_Parser_Command_registerSimpAttr___closed__6_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 17, .m_capacity = 17, .m_length = 16, .m_data = "registerSimpAttr"};
 static const lean_object* l_Lean_Parser_Command_registerSimpAttr___closed__6 = (const lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__6_value;
 lean_object* l_Lean_Name_mkStr8(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+static lean_once_cell_t l_Lean_Parser_Command_registerSimpAttr___closed__7_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Parser_Command_registerSimpAttr___closed__7;
 static const lean_string_object l_Lean_Parser_Command_registerSimpAttr___closed__8_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 8, .m_capacity = 8, .m_length = 7, .m_data = "andthen"};
 static const lean_object* l_Lean_Parser_Command_registerSimpAttr___closed__8 = (const lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__8_value;
@@ -60,6 +61,7 @@ static const lean_ctor_object l_Lean_Parser_Command_registerSimpAttr___closed__2
 static const lean_object* l_Lean_Parser_Command_registerSimpAttr___closed__21 = (const lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__21_value;
 static const lean_ctor_object l_Lean_Parser_Command_registerSimpAttr___closed__22_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*3 + 0, .m_other = 3, .m_tag = 2}, .m_objs = {((lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__9_value),((lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__18_value),((lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__21_value)}};
 static const lean_object* l_Lean_Parser_Command_registerSimpAttr___closed__22 = (const lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__22_value;
+static lean_once_cell_t l_Lean_Parser_Command_registerSimpAttr___closed__23_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Parser_Command_registerSimpAttr___closed__23;
 LEAN_EXPORT lean_object* l_Lean_Parser_Command_registerSimpAttr;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 7, .m_capacity = 7, .m_length = 6, .m_data = "public"};
@@ -87,6 +89,7 @@ static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__Regi
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__6_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 4, .m_capacity = 4, .m_length = 3, .m_data = "ext"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__6 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__6_value;
 lean_object* l_String_toRawSubstring_x27(lean_object*);
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__8_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__6_value),LEAN_SCALAR_PTR_LITERAL(241, 12, 90, 240, 78, 252, 149, 89)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__8 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__8_value;
@@ -103,6 +106,7 @@ static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__12 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__12_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__13_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 14, .m_capacity = 14, .m_length = 13, .m_data = "SimpExtension"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__13 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__13_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__15_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__13_value),LEAN_SCALAR_PTR_LITERAL(97, 27, 52, 253, 143, 150, 102, 25)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__15 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__15_value;
@@ -149,6 +153,7 @@ static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__29_value_aux_2 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__29_value_aux_1),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__9_value),LEAN_SCALAR_PTR_LITERAL(75, 170, 162, 138, 136, 204, 251, 229)}};
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__29_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__29_value_aux_2),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__28_value),LEAN_SCALAR_PTR_LITERAL(69, 118, 10, 41, 220, 156, 243, 179)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__29 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__29_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__31_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__6_value),LEAN_SCALAR_PTR_LITERAL(71, 112, 199, 159, 165, 140, 183, 115)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__31 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__31_value;
@@ -222,6 +227,7 @@ static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__55 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__55_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__56_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 22, .m_capacity = 22, .m_length = 21, .m_data = "Parser.Tactic.simpPre"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__56 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__56_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__58_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 7, .m_capacity = 7, .m_length = 6, .m_data = "Tactic"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__58 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__58_value;
@@ -244,6 +250,7 @@ static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__64 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__64_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__65_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 23, .m_capacity = 23, .m_length = 22, .m_data = "Parser.Tactic.simpPost"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__65 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__65_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__67_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 9, .m_capacity = 9, .m_length = 8, .m_data = "simpPost"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__67 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__67_value;
@@ -271,6 +278,7 @@ static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__74 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__74_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__75_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 14, .m_capacity = 14, .m_length = 13, .m_data = "patternIgnore"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__75 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__75_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__77_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__75_value),LEAN_SCALAR_PTR_LITERAL(195, 83, 213, 191, 208, 4, 123, 240)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__77 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__77_value;
@@ -284,15 +292,18 @@ static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__81 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__81_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__82_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 5, .m_capacity = 5, .m_length = 4, .m_data = "prio"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__82 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__82_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__84_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__82_value),LEAN_SCALAR_PTR_LITERAL(122, 247, 65, 238, 243, 154, 137, 247)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__84 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__84_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__85_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 5, .m_capacity = 5, .m_length = 4, .m_data = "attr"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__85 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__85_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__87_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__85_value),LEAN_SCALAR_PTR_LITERAL(69, 57, 207, 35, 177, 108, 73, 87)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__87 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__87_value;
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__89_value_aux_0 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__0_value),LEAN_SCALAR_PTR_LITERAL(70, 193, 83, 126, 233, 67, 208, 165)}};
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__89_value_aux_1 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__89_value_aux_0),((lean_object*)&l_Lean_Parser_Command_registerSimpAttr___closed__4_value),LEAN_SCALAR_PTR_LITERAL(103, 136, 125, 166, 167, 98, 71, 111)}};
@@ -305,11 +316,13 @@ static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__91 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__91_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__92_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 8, .m_capacity = 8, .m_length = 7, .m_data = "extProc"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__92 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__92_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__94_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__92_value),LEAN_SCALAR_PTR_LITERAL(153, 229, 121, 159, 4, 151, 74, 120)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__94 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__94_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__95_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 17, .m_capacity = 17, .m_length = 16, .m_data = "SimprocExtension"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__95 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__95_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__97_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__95_value),LEAN_SCALAR_PTR_LITERAL(48, 218, 30, 199, 10, 134, 135, 45)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__97 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__97_value;
@@ -328,6 +341,7 @@ static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__102 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__102_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__103_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 20, .m_capacity = 20, .m_length = 19, .m_data = "registerSimprocAttr"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__103 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__103_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__105_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__103_value),LEAN_SCALAR_PTR_LITERAL(153, 150, 186, 46, 228, 1, 156, 51)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__105 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__105_value;
@@ -342,6 +356,7 @@ static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__108 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__108_value;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__109_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 5, .m_capacity = 5, .m_length = 4, .m_data = "none"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__109 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__109_value;
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110;
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__111_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__109_value),LEAN_SCALAR_PTR_LITERAL(73, 239, 30, 105, 8, 60, 178, 241)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__111 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__111_value;
@@ -376,8 +391,10 @@ static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__
 static const lean_ctor_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__122_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__122_value_aux_2),((lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__121_value),LEAN_SCALAR_PTR_LITERAL(0, 165, 146, 53, 36, 89, 7, 202)}};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__122 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__122_value;
 lean_object* l_Array_mkArray0(lean_object*);
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123;
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
+static lean_once_cell_t l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124;
 static const lean_string_object l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__125_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 5, .m_capacity = 5, .m_length = 4, .m_data = "Attr"};
 static const lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__125 = (const lean_object*)&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__125_value;
@@ -411,7 +428,7 @@ lean_object* l_Array_mkArray1___redArg(lean_object*);
 lean_object* l_Lean_TSyntax_getDocString(lean_object*);
 lean_object* l_Lean_Syntax_getOptional_x3f(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1(lean_object*, lean_object*, lean_object*);
-static lean_object* _init_l_Lean_Parser_Command_registerSimpAttr___closed__7() {
+static lean_object* _init_l_Lean_Parser_Command_registerSimpAttr___closed__7(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; lean_object* x_8; 
@@ -426,13 +443,13 @@ x_8 = l_Lean_Name_mkStr8(x_7, x_6, x_5, x_4, x_7, x_3, x_2, x_1);
 return x_8;
 }
 }
-static lean_object* _init_l_Lean_Parser_Command_registerSimpAttr___closed__23() {
+static lean_object* _init_l_Lean_Parser_Command_registerSimpAttr___closed__23(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; lean_object* x_3; lean_object* x_4; 
 x_1 = ((lean_object*)(l_Lean_Parser_Command_registerSimpAttr___closed__22));
 x_2 = lean_unsigned_to_nat(1022u);
-x_3 = l_Lean_Parser_Command_registerSimpAttr___closed__7;
+x_3 = lean_obj_once(&l_Lean_Parser_Command_registerSimpAttr___closed__7, &l_Lean_Parser_Command_registerSimpAttr___closed__7_once, _init_l_Lean_Parser_Command_registerSimpAttr___closed__7);
 x_4 = lean_alloc_ctor(3, 3, 0);
 lean_ctor_set(x_4, 0, x_3);
 lean_ctor_set(x_4, 1, x_2);
@@ -440,15 +457,15 @@ lean_ctor_set(x_4, 2, x_1);
 return x_4;
 }
 }
-static lean_object* _init_l_Lean_Parser_Command_registerSimpAttr() {
+static lean_object* _init_l_Lean_Parser_Command_registerSimpAttr(void) {
 _start:
 {
 lean_object* x_1; 
-x_1 = l_Lean_Parser_Command_registerSimpAttr___closed__23;
+x_1 = lean_obj_once(&l_Lean_Parser_Command_registerSimpAttr___closed__23, &l_Lean_Parser_Command_registerSimpAttr___closed__23_once, _init_l_Lean_Parser_Command_registerSimpAttr___closed__23);
 return x_1;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -457,7 +474,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -466,7 +483,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -475,7 +492,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -484,7 +501,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -493,7 +510,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -502,7 +519,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -511,7 +528,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -520,7 +537,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -529,7 +546,7 @@ x_2 = lean_mk_empty_array_with_capacity(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -538,7 +555,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -547,7 +564,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -556,7 +573,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -565,7 +582,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123(void) {
 _start:
 {
 lean_object* x_1; 
@@ -573,7 +590,7 @@ x_1 = l_Array_mkArray0(lean_box(0));
 return x_1;
 }
 }
-static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124() {
+static lean_object* _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -586,7 +603,7 @@ LEAN_EXPORT lean_object* l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__Regis
 _start:
 {
 lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_215; uint8_t x_216; 
-x_215 = l_Lean_Parser_Command_registerSimpAttr___closed__7;
+x_215 = lean_obj_once(&l_Lean_Parser_Command_registerSimpAttr___closed__7, &l_Lean_Parser_Command_registerSimpAttr___closed__7_once, _init_l_Lean_Parser_Command_registerSimpAttr___closed__7);
 lean_inc(x_1);
 x_216 = l_Lean_Syntax_isOfKind(x_1, x_215);
 if (x_216 == 0)
@@ -651,15 +668,15 @@ lean_dec_ref(x_2);
 x_233 = l_String_removeLeadingSpaces(x_229);
 x_234 = lean_box(2);
 x_235 = l_Lean_Syntax_mkStrLit(x_233, x_234);
-lean_inc(x_226);
-x_236 = l_Lean_Meta_Simp_simpAttrNameToSimprocAttrName(x_226);
+lean_inc(x_223);
+x_236 = l_Lean_Meta_Simp_simpAttrNameToSimprocAttrName(x_223);
 x_237 = l_Lean_mkIdentFrom(x_222, x_236, x_228);
 lean_dec(x_222);
 x_238 = l_Lean_TSyntax_getId(x_237);
 lean_inc(x_238);
 x_239 = l_Lean_Name_toString(x_238, x_216);
 lean_inc(x_238);
-x_240 = l_Lean_Name_append(x_225, x_238);
+x_240 = l_Lean_Name_append(x_224, x_238);
 x_241 = l_Lean_mkIdentFrom(x_237, x_240, x_228);
 lean_dec(x_237);
 x_242 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__116));
@@ -671,56 +688,56 @@ x_246 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__Regist
 x_247 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__119));
 x_248 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__120));
 x_249 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__122));
-x_250 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123;
-if (lean_obj_tag(x_227) == 1)
+x_250 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123);
+if (lean_obj_tag(x_226) == 1)
 {
 lean_object* x_251; lean_object* x_252; 
-x_251 = lean_ctor_get(x_227, 0);
+x_251 = lean_ctor_get(x_226, 0);
 lean_inc(x_251);
-lean_dec_ref(x_227);
+lean_dec_ref(x_226);
 x_252 = l_Array_mkArray1___redArg(x_251);
-x_4 = x_249;
-x_5 = x_223;
-x_6 = x_224;
-x_7 = x_244;
-x_8 = x_245;
-x_9 = x_226;
-x_10 = x_231;
-x_11 = x_230;
-x_12 = x_235;
-x_13 = x_250;
-x_14 = x_238;
-x_15 = x_246;
-x_16 = x_234;
-x_17 = x_239;
-x_18 = x_241;
-x_19 = x_247;
-x_20 = x_248;
+x_4 = x_223;
+x_5 = x_245;
+x_6 = x_231;
+x_7 = x_225;
+x_8 = x_234;
+x_9 = x_249;
+x_10 = x_250;
+x_11 = x_239;
+x_12 = x_230;
+x_13 = x_247;
+x_14 = x_246;
+x_15 = x_248;
+x_16 = x_235;
+x_17 = x_241;
+x_18 = x_227;
+x_19 = x_238;
+x_20 = x_244;
 x_21 = x_252;
 goto block_214;
 }
 else
 {
 lean_object* x_253; 
-lean_dec(x_227);
-x_253 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124;
-x_4 = x_249;
-x_5 = x_223;
-x_6 = x_224;
-x_7 = x_244;
-x_8 = x_245;
-x_9 = x_226;
-x_10 = x_231;
-x_11 = x_230;
-x_12 = x_235;
-x_13 = x_250;
-x_14 = x_238;
-x_15 = x_246;
-x_16 = x_234;
-x_17 = x_239;
-x_18 = x_241;
-x_19 = x_247;
-x_20 = x_248;
+lean_dec(x_226);
+x_253 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124);
+x_4 = x_223;
+x_5 = x_245;
+x_6 = x_231;
+x_7 = x_225;
+x_8 = x_234;
+x_9 = x_249;
+x_10 = x_250;
+x_11 = x_239;
+x_12 = x_230;
+x_13 = x_247;
+x_14 = x_246;
+x_15 = x_248;
+x_16 = x_235;
+x_17 = x_241;
+x_18 = x_227;
+x_19 = x_238;
+x_20 = x_244;
 x_21 = x_253;
 goto block_214;
 }
@@ -741,11 +758,11 @@ if (lean_obj_tag(x_255) == 0)
 lean_object* x_262; lean_object* x_263; 
 x_262 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__127));
 x_263 = lean_string_append(x_262, x_257);
-x_223 = x_257;
-x_224 = x_261;
-x_225 = x_258;
-x_226 = x_256;
-x_227 = x_255;
+x_223 = x_256;
+x_224 = x_258;
+x_225 = x_257;
+x_226 = x_255;
+x_227 = x_261;
 x_228 = x_260;
 x_229 = x_263;
 goto block_254;
@@ -755,11 +772,11 @@ else
 lean_object* x_264; lean_object* x_265; 
 x_264 = lean_ctor_get(x_255, 0);
 x_265 = l_Lean_TSyntax_getDocString(x_264);
-x_223 = x_257;
-x_224 = x_261;
-x_225 = x_258;
-x_226 = x_256;
-x_227 = x_255;
+x_223 = x_256;
+x_224 = x_258;
+x_225 = x_257;
+x_226 = x_255;
+x_227 = x_261;
 x_228 = x_260;
 x_229 = x_265;
 goto block_254;
@@ -769,319 +786,319 @@ goto block_254;
 block_214:
 {
 lean_object* x_22; lean_object* x_23; lean_object* x_24; lean_object* x_25; lean_object* x_26; lean_object* x_27; lean_object* x_28; lean_object* x_29; lean_object* x_30; lean_object* x_31; lean_object* x_32; lean_object* x_33; lean_object* x_34; lean_object* x_35; lean_object* x_36; lean_object* x_37; lean_object* x_38; lean_object* x_39; lean_object* x_40; lean_object* x_41; lean_object* x_42; lean_object* x_43; lean_object* x_44; lean_object* x_45; lean_object* x_46; lean_object* x_47; lean_object* x_48; lean_object* x_49; lean_object* x_50; lean_object* x_51; lean_object* x_52; lean_object* x_53; lean_object* x_54; lean_object* x_55; lean_object* x_56; lean_object* x_57; lean_object* x_58; lean_object* x_59; lean_object* x_60; lean_object* x_61; lean_object* x_62; lean_object* x_63; lean_object* x_64; lean_object* x_65; lean_object* x_66; lean_object* x_67; lean_object* x_68; lean_object* x_69; lean_object* x_70; lean_object* x_71; lean_object* x_72; lean_object* x_73; lean_object* x_74; lean_object* x_75; lean_object* x_76; lean_object* x_77; lean_object* x_78; lean_object* x_79; lean_object* x_80; lean_object* x_81; lean_object* x_82; lean_object* x_83; lean_object* x_84; lean_object* x_85; lean_object* x_86; lean_object* x_87; lean_object* x_88; lean_object* x_89; lean_object* x_90; lean_object* x_91; lean_object* x_92; lean_object* x_93; lean_object* x_94; lean_object* x_95; lean_object* x_96; lean_object* x_97; lean_object* x_98; lean_object* x_99; lean_object* x_100; lean_object* x_101; lean_object* x_102; lean_object* x_103; lean_object* x_104; lean_object* x_105; lean_object* x_106; lean_object* x_107; lean_object* x_108; lean_object* x_109; lean_object* x_110; lean_object* x_111; lean_object* x_112; lean_object* x_113; lean_object* x_114; lean_object* x_115; lean_object* x_116; lean_object* x_117; lean_object* x_118; lean_object* x_119; lean_object* x_120; lean_object* x_121; lean_object* x_122; lean_object* x_123; lean_object* x_124; lean_object* x_125; lean_object* x_126; lean_object* x_127; lean_object* x_128; lean_object* x_129; lean_object* x_130; lean_object* x_131; lean_object* x_132; lean_object* x_133; lean_object* x_134; lean_object* x_135; lean_object* x_136; lean_object* x_137; lean_object* x_138; lean_object* x_139; lean_object* x_140; lean_object* x_141; lean_object* x_142; lean_object* x_143; lean_object* x_144; lean_object* x_145; lean_object* x_146; lean_object* x_147; lean_object* x_148; lean_object* x_149; lean_object* x_150; lean_object* x_151; lean_object* x_152; lean_object* x_153; lean_object* x_154; lean_object* x_155; lean_object* x_156; lean_object* x_157; lean_object* x_158; lean_object* x_159; lean_object* x_160; lean_object* x_161; lean_object* x_162; lean_object* x_163; lean_object* x_164; lean_object* x_165; lean_object* x_166; lean_object* x_167; lean_object* x_168; lean_object* x_169; lean_object* x_170; lean_object* x_171; lean_object* x_172; lean_object* x_173; lean_object* x_174; lean_object* x_175; lean_object* x_176; lean_object* x_177; lean_object* x_178; lean_object* x_179; lean_object* x_180; lean_object* x_181; lean_object* x_182; lean_object* x_183; lean_object* x_184; lean_object* x_185; lean_object* x_186; lean_object* x_187; lean_object* x_188; lean_object* x_189; lean_object* x_190; lean_object* x_191; lean_object* x_192; lean_object* x_193; lean_object* x_194; lean_object* x_195; lean_object* x_196; lean_object* x_197; lean_object* x_198; lean_object* x_199; lean_object* x_200; lean_object* x_201; lean_object* x_202; lean_object* x_203; lean_object* x_204; lean_object* x_205; lean_object* x_206; lean_object* x_207; lean_object* x_208; lean_object* x_209; lean_object* x_210; lean_object* x_211; lean_object* x_212; lean_object* x_213; 
-lean_inc_ref(x_13);
-x_22 = l_Array_append___redArg(x_13, x_21);
+lean_inc_ref(x_10);
+x_22 = l_Array_append___redArg(x_10, x_21);
 lean_dec_ref(x_21);
-lean_inc(x_15);
-lean_inc(x_8);
+lean_inc(x_14);
+lean_inc(x_5);
 x_23 = lean_alloc_ctor(1, 3, 0);
-lean_ctor_set(x_23, 0, x_8);
-lean_ctor_set(x_23, 1, x_15);
+lean_ctor_set(x_23, 0, x_5);
+lean_ctor_set(x_23, 1, x_14);
 lean_ctor_set(x_23, 2, x_22);
-lean_inc(x_15);
-lean_inc(x_8);
+lean_inc(x_14);
+lean_inc(x_5);
 x_24 = lean_alloc_ctor(1, 3, 0);
-lean_ctor_set(x_24, 0, x_8);
-lean_ctor_set(x_24, 1, x_15);
-lean_ctor_set(x_24, 2, x_13);
+lean_ctor_set(x_24, 0, x_5);
+lean_ctor_set(x_24, 1, x_14);
+lean_ctor_set(x_24, 2, x_10);
 x_25 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__0));
 x_26 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__1));
-lean_inc(x_8);
+lean_inc(x_5);
 x_27 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_27, 0, x_8);
+lean_ctor_set(x_27, 0, x_5);
 lean_ctor_set(x_27, 1, x_25);
-lean_inc(x_8);
-x_28 = l_Lean_Syntax_node1(x_8, x_26, x_27);
-lean_inc(x_15);
-lean_inc(x_8);
-x_29 = l_Lean_Syntax_node1(x_8, x_15, x_28);
+lean_inc(x_5);
+x_28 = l_Lean_Syntax_node1(x_5, x_26, x_27);
+lean_inc(x_14);
+lean_inc(x_5);
+x_29 = l_Lean_Syntax_node1(x_5, x_14, x_28);
 x_30 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__2));
 x_31 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__3));
-lean_inc(x_8);
+lean_inc(x_5);
 x_32 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_32, 0, x_8);
+lean_ctor_set(x_32, 0, x_5);
 lean_ctor_set(x_32, 1, x_30);
-lean_inc(x_8);
-x_33 = l_Lean_Syntax_node1(x_8, x_31, x_32);
-lean_inc(x_15);
-lean_inc(x_8);
-x_34 = l_Lean_Syntax_node1(x_8, x_15, x_33);
+lean_inc(x_5);
+x_33 = l_Lean_Syntax_node1(x_5, x_31, x_32);
+lean_inc(x_14);
+lean_inc(x_5);
+x_34 = l_Lean_Syntax_node1(x_5, x_14, x_33);
 lean_inc(x_34);
 lean_inc(x_29);
 lean_inc_ref_n(x_24, 4);
 lean_inc_ref(x_23);
-lean_inc(x_4);
-lean_inc(x_8);
-x_35 = l_Lean_Syntax_node7(x_8, x_4, x_23, x_24, x_29, x_24, x_34, x_24, x_24);
+lean_inc(x_9);
+lean_inc(x_5);
+x_35 = l_Lean_Syntax_node7(x_5, x_9, x_23, x_24, x_29, x_24, x_34, x_24, x_24);
 x_36 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__5));
-lean_inc(x_8);
+lean_inc(x_5);
 x_37 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_37, 0, x_8);
-lean_ctor_set(x_37, 1, x_19);
-lean_inc(x_8);
-x_38 = l_Lean_Syntax_node1(x_8, x_36, x_37);
-x_39 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7;
+lean_ctor_set(x_37, 0, x_5);
+lean_ctor_set(x_37, 1, x_13);
+lean_inc(x_5);
+x_38 = l_Lean_Syntax_node1(x_5, x_36, x_37);
+x_39 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7);
 x_40 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__8));
-lean_inc(x_10);
-lean_inc(x_11);
-x_41 = l_Lean_addMacroScope(x_11, x_40, x_10);
+lean_inc(x_6);
+lean_inc(x_12);
+x_41 = l_Lean_addMacroScope(x_12, x_40, x_6);
 x_42 = lean_box(0);
-lean_inc(x_8);
+lean_inc(x_5);
 x_43 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_43, 0, x_8);
+lean_ctor_set(x_43, 0, x_5);
 lean_ctor_set(x_43, 1, x_39);
 lean_ctor_set(x_43, 2, x_41);
 lean_ctor_set(x_43, 3, x_42);
 x_44 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__11));
 x_45 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__12));
-lean_inc(x_8);
+lean_inc(x_5);
 x_46 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_46, 0, x_8);
+lean_ctor_set(x_46, 0, x_5);
 lean_ctor_set(x_46, 1, x_45);
-x_47 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14;
+x_47 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14);
 x_48 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__15));
-lean_inc(x_10);
-lean_inc(x_11);
-x_49 = l_Lean_addMacroScope(x_11, x_48, x_10);
+lean_inc(x_6);
+lean_inc(x_12);
+x_49 = l_Lean_addMacroScope(x_12, x_48, x_6);
 x_50 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__20));
-lean_inc(x_8);
+lean_inc(x_5);
 x_51 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_51, 0, x_8);
+lean_ctor_set(x_51, 0, x_5);
 lean_ctor_set(x_51, 1, x_47);
 lean_ctor_set(x_51, 2, x_49);
 lean_ctor_set(x_51, 3, x_50);
 lean_inc_ref(x_46);
-lean_inc(x_8);
-x_52 = l_Lean_Syntax_node2(x_8, x_44, x_46, x_51);
+lean_inc(x_5);
+x_52 = l_Lean_Syntax_node2(x_5, x_44, x_46, x_51);
 x_53 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__21));
-lean_inc(x_8);
+lean_inc(x_5);
 x_54 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_54, 0, x_8);
+lean_ctor_set(x_54, 0, x_5);
 lean_ctor_set(x_54, 1, x_53);
 lean_inc_ref(x_54);
-lean_inc(x_15);
-lean_inc(x_8);
-x_55 = l_Lean_Syntax_node3(x_8, x_15, x_43, x_52, x_54);
+lean_inc(x_14);
+lean_inc(x_5);
+x_55 = l_Lean_Syntax_node3(x_5, x_14, x_43, x_52, x_54);
 x_56 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__23));
 x_57 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__25));
 x_58 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__27));
 x_59 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__29));
-x_60 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30;
+x_60 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30);
 x_61 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__31));
-lean_inc(x_10);
-lean_inc(x_11);
-x_62 = l_Lean_addMacroScope(x_11, x_61, x_10);
+lean_inc(x_6);
+lean_inc(x_12);
+x_62 = l_Lean_addMacroScope(x_12, x_61, x_6);
 x_63 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__34));
-lean_inc(x_8);
+lean_inc(x_5);
 x_64 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_64, 0, x_8);
+lean_ctor_set(x_64, 0, x_5);
 lean_ctor_set(x_64, 1, x_60);
 lean_ctor_set(x_64, 2, x_62);
 lean_ctor_set(x_64, 3, x_63);
-x_65 = l_Lean_instQuoteNameMkStr1___private__1(x_9);
-lean_inc(x_15);
-lean_inc(x_8);
-x_66 = l_Lean_Syntax_node2(x_8, x_15, x_65, x_12);
-lean_inc(x_8);
-x_67 = l_Lean_Syntax_node2(x_8, x_59, x_64, x_66);
-lean_inc(x_8);
-x_68 = l_Lean_Syntax_node1(x_8, x_58, x_67);
+x_65 = l_Lean_instQuoteNameMkStr1___private__1(x_4);
+lean_inc(x_14);
+lean_inc(x_5);
+x_66 = l_Lean_Syntax_node2(x_5, x_14, x_65, x_16);
+lean_inc(x_5);
+x_67 = l_Lean_Syntax_node2(x_5, x_59, x_64, x_66);
+lean_inc(x_5);
+x_68 = l_Lean_Syntax_node1(x_5, x_58, x_67);
 lean_inc_ref(x_24);
-lean_inc(x_8);
-x_69 = l_Lean_Syntax_node2(x_8, x_57, x_68, x_24);
-lean_inc(x_15);
-lean_inc(x_8);
-x_70 = l_Lean_Syntax_node1(x_8, x_15, x_69);
-lean_inc(x_8);
-x_71 = l_Lean_Syntax_node1(x_8, x_56, x_70);
+lean_inc(x_5);
+x_69 = l_Lean_Syntax_node2(x_5, x_57, x_68, x_24);
+lean_inc(x_14);
+lean_inc(x_5);
+x_70 = l_Lean_Syntax_node1(x_5, x_14, x_69);
+lean_inc(x_5);
+x_71 = l_Lean_Syntax_node1(x_5, x_56, x_70);
 lean_inc(x_38);
-lean_inc(x_20);
-lean_inc(x_8);
-x_72 = l_Lean_Syntax_node4(x_8, x_20, x_35, x_38, x_55, x_71);
+lean_inc(x_15);
+lean_inc(x_5);
+x_72 = l_Lean_Syntax_node4(x_5, x_15, x_35, x_38, x_55, x_71);
 x_73 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__35));
 x_74 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__36));
 x_75 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__38));
 lean_inc_ref(x_24);
-lean_inc(x_8);
-x_76 = l_Lean_Syntax_node1(x_8, x_75, x_24);
-lean_inc(x_8);
+lean_inc(x_5);
+x_76 = l_Lean_Syntax_node1(x_5, x_75, x_24);
+lean_inc(x_5);
 x_77 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_77, 0, x_8);
+lean_ctor_set(x_77, 0, x_5);
 lean_ctor_set(x_77, 1, x_73);
 x_78 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__40));
 x_79 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__41));
-lean_inc(x_8);
+lean_inc(x_5);
 x_80 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_80, 0, x_8);
+lean_ctor_set(x_80, 0, x_5);
 lean_ctor_set(x_80, 1, x_79);
 x_81 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__42));
-lean_inc(x_8);
+lean_inc(x_5);
 x_82 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_82, 0, x_8);
+lean_ctor_set(x_82, 0, x_5);
 lean_ctor_set(x_82, 1, x_81);
 x_83 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__43));
-lean_inc(x_8);
+lean_inc(x_5);
 x_84 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_84, 0, x_8);
+lean_ctor_set(x_84, 0, x_5);
 lean_ctor_set(x_84, 1, x_83);
 x_85 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__44));
-lean_inc(x_8);
+lean_inc(x_5);
 x_86 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_86, 0, x_8);
+lean_ctor_set(x_86, 0, x_5);
 lean_ctor_set(x_86, 1, x_85);
 lean_inc_ref(x_86);
 lean_inc_ref(x_84);
 lean_inc_ref(x_82);
 lean_inc_ref(x_80);
-lean_inc(x_8);
-x_87 = l_Lean_Syntax_node5(x_8, x_78, x_80, x_82, x_84, x_6, x_86);
-lean_inc(x_15);
-lean_inc(x_8);
-x_88 = l_Lean_Syntax_node1(x_8, x_15, x_87);
+lean_inc(x_5);
+x_87 = l_Lean_Syntax_node5(x_5, x_78, x_80, x_82, x_84, x_18, x_86);
+lean_inc(x_14);
+lean_inc(x_5);
+x_88 = l_Lean_Syntax_node1(x_5, x_14, x_87);
 x_89 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__47));
-lean_inc(x_16);
-x_90 = l_Lean_Syntax_mkStrLit(x_5, x_16);
 lean_inc(x_8);
-x_91 = l_Lean_Syntax_node1(x_8, x_89, x_90);
+x_90 = l_Lean_Syntax_mkStrLit(x_7, x_8);
+lean_inc(x_5);
+x_91 = l_Lean_Syntax_node1(x_5, x_89, x_90);
 x_92 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__49));
 x_93 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__51));
 x_94 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__53));
 x_95 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__55));
-x_96 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57;
+x_96 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57);
 x_97 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__60));
-lean_inc(x_10);
-lean_inc(x_11);
-x_98 = l_Lean_addMacroScope(x_11, x_97, x_10);
+lean_inc(x_6);
+lean_inc(x_12);
+x_98 = l_Lean_addMacroScope(x_12, x_97, x_6);
 x_99 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__63));
-lean_inc(x_8);
+lean_inc(x_5);
 x_100 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_100, 0, x_8);
+lean_ctor_set(x_100, 0, x_5);
 lean_ctor_set(x_100, 1, x_96);
 lean_ctor_set(x_100, 2, x_98);
 lean_ctor_set(x_100, 3, x_99);
 lean_inc_ref(x_24);
-lean_inc(x_8);
-x_101 = l_Lean_Syntax_node2(x_8, x_95, x_100, x_24);
+lean_inc(x_5);
+x_101 = l_Lean_Syntax_node2(x_5, x_95, x_100, x_24);
 x_102 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__64));
-lean_inc(x_8);
+lean_inc(x_5);
 x_103 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_103, 0, x_8);
+lean_ctor_set(x_103, 0, x_5);
 lean_ctor_set(x_103, 1, x_102);
-x_104 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66;
+x_104 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66);
 x_105 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__68));
-lean_inc(x_10);
-lean_inc(x_11);
-x_106 = l_Lean_addMacroScope(x_11, x_105, x_10);
+lean_inc(x_6);
+lean_inc(x_12);
+x_106 = l_Lean_addMacroScope(x_12, x_105, x_6);
 x_107 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__71));
-lean_inc(x_8);
+lean_inc(x_5);
 x_108 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_108, 0, x_8);
+lean_ctor_set(x_108, 0, x_5);
 lean_ctor_set(x_108, 1, x_104);
 lean_ctor_set(x_108, 2, x_106);
 lean_ctor_set(x_108, 3, x_107);
 lean_inc_ref(x_24);
-lean_inc(x_8);
-x_109 = l_Lean_Syntax_node2(x_8, x_95, x_108, x_24);
+lean_inc(x_5);
+x_109 = l_Lean_Syntax_node2(x_5, x_95, x_108, x_24);
 lean_inc_ref(x_103);
-lean_inc(x_8);
-x_110 = l_Lean_Syntax_node3(x_8, x_94, x_101, x_103, x_109);
-lean_inc(x_15);
-lean_inc(x_8);
-x_111 = l_Lean_Syntax_node1(x_8, x_15, x_110);
+lean_inc(x_5);
+x_110 = l_Lean_Syntax_node3(x_5, x_94, x_101, x_103, x_109);
+lean_inc(x_14);
+lean_inc(x_5);
+x_111 = l_Lean_Syntax_node1(x_5, x_14, x_110);
 lean_inc_ref(x_86);
 lean_inc_ref(x_80);
-lean_inc(x_8);
-x_112 = l_Lean_Syntax_node3(x_8, x_93, x_80, x_111, x_86);
+lean_inc(x_5);
+x_112 = l_Lean_Syntax_node3(x_5, x_93, x_80, x_111, x_86);
 x_113 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__72));
-lean_inc(x_8);
+lean_inc(x_5);
 x_114 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_114, 0, x_8);
+lean_ctor_set(x_114, 0, x_5);
 lean_ctor_set(x_114, 1, x_113);
 lean_inc_ref(x_114);
-lean_inc(x_8);
-x_115 = l_Lean_Syntax_node2(x_8, x_92, x_112, x_114);
+lean_inc(x_5);
+x_115 = l_Lean_Syntax_node2(x_5, x_92, x_112, x_114);
 x_116 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__74));
-x_117 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76;
+x_117 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76);
 x_118 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__77));
-lean_inc(x_10);
-lean_inc(x_11);
-x_119 = l_Lean_addMacroScope(x_11, x_118, x_10);
-lean_inc(x_8);
+lean_inc(x_6);
+lean_inc(x_12);
+x_119 = l_Lean_addMacroScope(x_12, x_118, x_6);
+lean_inc(x_5);
 x_120 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_120, 0, x_8);
+lean_ctor_set(x_120, 0, x_5);
 lean_ctor_set(x_120, 1, x_117);
 lean_ctor_set(x_120, 2, x_119);
 lean_ctor_set(x_120, 3, x_42);
 x_121 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__79));
 x_122 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__80));
-lean_inc(x_8);
+lean_inc(x_5);
 x_123 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_123, 0, x_8);
+lean_ctor_set(x_123, 0, x_5);
 lean_ctor_set(x_123, 1, x_122);
-lean_inc(x_8);
-x_124 = l_Lean_Syntax_node1(x_8, x_121, x_123);
-lean_inc(x_8);
-x_125 = l_Lean_Syntax_node1(x_8, x_89, x_124);
+lean_inc(x_5);
+x_124 = l_Lean_Syntax_node1(x_5, x_121, x_123);
+lean_inc(x_5);
+x_125 = l_Lean_Syntax_node1(x_5, x_89, x_124);
 x_126 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__81));
-lean_inc(x_8);
+lean_inc(x_5);
 x_127 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_127, 0, x_8);
+lean_ctor_set(x_127, 0, x_5);
 lean_ctor_set(x_127, 1, x_126);
-lean_inc(x_8);
-x_128 = l_Lean_Syntax_node1(x_8, x_121, x_127);
-lean_inc(x_8);
-x_129 = l_Lean_Syntax_node1(x_8, x_89, x_128);
-lean_inc(x_8);
-x_130 = l_Lean_Syntax_node3(x_8, x_94, x_125, x_103, x_129);
-lean_inc(x_15);
-lean_inc(x_8);
-x_131 = l_Lean_Syntax_node1(x_8, x_15, x_130);
+lean_inc(x_5);
+x_128 = l_Lean_Syntax_node1(x_5, x_121, x_127);
+lean_inc(x_5);
+x_129 = l_Lean_Syntax_node1(x_5, x_89, x_128);
+lean_inc(x_5);
+x_130 = l_Lean_Syntax_node3(x_5, x_94, x_125, x_103, x_129);
+lean_inc(x_14);
+lean_inc(x_5);
+x_131 = l_Lean_Syntax_node1(x_5, x_14, x_130);
 lean_inc_ref(x_86);
 lean_inc_ref(x_80);
-lean_inc(x_8);
-x_132 = l_Lean_Syntax_node4(x_8, x_116, x_120, x_80, x_131, x_86);
+lean_inc(x_5);
+x_132 = l_Lean_Syntax_node4(x_5, x_116, x_120, x_80, x_131, x_86);
 lean_inc_ref(x_114);
-lean_inc(x_8);
-x_133 = l_Lean_Syntax_node2(x_8, x_92, x_132, x_114);
-x_134 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83;
+lean_inc(x_5);
+x_133 = l_Lean_Syntax_node2(x_5, x_92, x_132, x_114);
+x_134 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83);
 x_135 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__84));
-lean_inc(x_10);
-lean_inc(x_11);
-x_136 = l_Lean_addMacroScope(x_11, x_135, x_10);
-lean_inc(x_8);
+lean_inc(x_6);
+lean_inc(x_12);
+x_136 = l_Lean_addMacroScope(x_12, x_135, x_6);
+lean_inc(x_5);
 x_137 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_137, 0, x_8);
+lean_ctor_set(x_137, 0, x_5);
 lean_ctor_set(x_137, 1, x_134);
 lean_ctor_set(x_137, 2, x_136);
 lean_ctor_set(x_137, 3, x_42);
 lean_inc_ref(x_24);
-lean_inc(x_8);
-x_138 = l_Lean_Syntax_node2(x_8, x_95, x_137, x_24);
-lean_inc(x_15);
-lean_inc(x_8);
-x_139 = l_Lean_Syntax_node1(x_8, x_15, x_138);
+lean_inc(x_5);
+x_138 = l_Lean_Syntax_node2(x_5, x_95, x_137, x_24);
+lean_inc(x_14);
+lean_inc(x_5);
+x_139 = l_Lean_Syntax_node1(x_5, x_14, x_138);
 lean_inc_ref(x_86);
 lean_inc_ref(x_80);
-lean_inc(x_8);
-x_140 = l_Lean_Syntax_node3(x_8, x_93, x_80, x_139, x_86);
-lean_inc(x_8);
-x_141 = l_Lean_Syntax_node2(x_8, x_92, x_140, x_114);
+lean_inc(x_5);
+x_140 = l_Lean_Syntax_node3(x_5, x_93, x_80, x_139, x_86);
+lean_inc(x_5);
+x_141 = l_Lean_Syntax_node2(x_5, x_92, x_140, x_114);
 lean_inc(x_115);
-lean_inc(x_15);
-lean_inc(x_8);
-x_142 = l_Lean_Syntax_node4(x_8, x_15, x_91, x_115, x_133, x_141);
-x_143 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86;
+lean_inc(x_14);
+lean_inc(x_5);
+x_142 = l_Lean_Syntax_node4(x_5, x_14, x_91, x_115, x_133, x_141);
+x_143 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86);
 x_144 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__87));
-lean_inc(x_10);
-lean_inc(x_11);
-x_145 = l_Lean_addMacroScope(x_11, x_144, x_10);
-lean_inc(x_8);
+lean_inc(x_6);
+lean_inc(x_12);
+x_145 = l_Lean_addMacroScope(x_12, x_144, x_6);
+lean_inc(x_5);
 x_146 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_146, 0, x_8);
+lean_ctor_set(x_146, 0, x_5);
 lean_ctor_set(x_146, 1, x_143);
 lean_ctor_set(x_146, 2, x_145);
 lean_ctor_set(x_146, 3, x_42);
-x_147 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88;
+x_147 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88);
 x_148 = lean_array_push(x_147, x_23);
 lean_inc_ref(x_24);
 x_149 = lean_array_push(x_148, x_24);
@@ -1099,111 +1116,111 @@ lean_inc_ref(x_46);
 x_156 = lean_array_push(x_155, x_46);
 lean_inc_ref(x_146);
 x_157 = lean_array_push(x_156, x_146);
-lean_inc(x_8);
+lean_inc(x_5);
 x_158 = lean_alloc_ctor(1, 3, 0);
-lean_ctor_set(x_158, 0, x_8);
+lean_ctor_set(x_158, 0, x_5);
 lean_ctor_set(x_158, 1, x_74);
 lean_ctor_set(x_158, 2, x_157);
 x_159 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__89));
 x_160 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__90));
-lean_inc(x_8);
+lean_inc(x_5);
 x_161 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_161, 0, x_8);
+lean_ctor_set(x_161, 0, x_5);
 lean_ctor_set(x_161, 1, x_160);
 x_162 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__91));
-lean_inc(x_8);
+lean_inc(x_5);
 x_163 = lean_alloc_ctor(2, 2, 0);
-lean_ctor_set(x_163, 0, x_8);
+lean_ctor_set(x_163, 0, x_5);
 lean_ctor_set(x_163, 1, x_162);
-lean_inc(x_8);
-x_164 = l_Lean_Syntax_node2(x_8, x_159, x_161, x_163);
-lean_inc(x_15);
-lean_inc(x_8);
-x_165 = l_Lean_Syntax_node1(x_8, x_15, x_164);
+lean_inc(x_5);
+x_164 = l_Lean_Syntax_node2(x_5, x_159, x_161, x_163);
+lean_inc(x_14);
+lean_inc(x_5);
+x_165 = l_Lean_Syntax_node1(x_5, x_14, x_164);
 lean_inc_ref_n(x_24, 4);
 lean_inc(x_165);
-lean_inc(x_8);
-x_166 = l_Lean_Syntax_node7(x_8, x_4, x_165, x_24, x_29, x_24, x_34, x_24, x_24);
-x_167 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93;
+lean_inc(x_5);
+x_166 = l_Lean_Syntax_node7(x_5, x_9, x_165, x_24, x_29, x_24, x_34, x_24, x_24);
+x_167 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93);
 x_168 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__94));
-lean_inc(x_10);
-lean_inc(x_11);
-x_169 = l_Lean_addMacroScope(x_11, x_168, x_10);
-lean_inc(x_8);
+lean_inc(x_6);
+lean_inc(x_12);
+x_169 = l_Lean_addMacroScope(x_12, x_168, x_6);
+lean_inc(x_5);
 x_170 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_170, 0, x_8);
+lean_ctor_set(x_170, 0, x_5);
 lean_ctor_set(x_170, 1, x_167);
 lean_ctor_set(x_170, 2, x_169);
 lean_ctor_set(x_170, 3, x_42);
-x_171 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96;
+x_171 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96);
 x_172 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__97));
-lean_inc(x_10);
-lean_inc(x_11);
-x_173 = l_Lean_addMacroScope(x_11, x_172, x_10);
+lean_inc(x_6);
+lean_inc(x_12);
+x_173 = l_Lean_addMacroScope(x_12, x_172, x_6);
 x_174 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__102));
-lean_inc(x_8);
+lean_inc(x_5);
 x_175 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_175, 0, x_8);
+lean_ctor_set(x_175, 0, x_5);
 lean_ctor_set(x_175, 1, x_171);
 lean_ctor_set(x_175, 2, x_173);
 lean_ctor_set(x_175, 3, x_174);
 lean_inc_ref(x_46);
-lean_inc(x_8);
-x_176 = l_Lean_Syntax_node2(x_8, x_44, x_46, x_175);
-lean_inc(x_15);
-lean_inc(x_8);
-x_177 = l_Lean_Syntax_node3(x_8, x_15, x_170, x_176, x_54);
-x_178 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104;
+lean_inc(x_5);
+x_176 = l_Lean_Syntax_node2(x_5, x_44, x_46, x_175);
+lean_inc(x_14);
+lean_inc(x_5);
+x_177 = l_Lean_Syntax_node3(x_5, x_14, x_170, x_176, x_54);
+x_178 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104);
 x_179 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__105));
-lean_inc(x_10);
-lean_inc(x_11);
-x_180 = l_Lean_addMacroScope(x_11, x_179, x_10);
+lean_inc(x_6);
+lean_inc(x_12);
+x_180 = l_Lean_addMacroScope(x_12, x_179, x_6);
 x_181 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__108));
-lean_inc(x_8);
+lean_inc(x_5);
 x_182 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_182, 0, x_8);
+lean_ctor_set(x_182, 0, x_5);
 lean_ctor_set(x_182, 1, x_178);
 lean_ctor_set(x_182, 2, x_180);
 lean_ctor_set(x_182, 3, x_181);
-x_183 = l_Lean_instQuoteNameMkStr1___private__1(x_14);
-x_184 = l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110;
+x_183 = l_Lean_instQuoteNameMkStr1___private__1(x_19);
+x_184 = lean_obj_once(&l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110, &l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110_once, _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110);
 x_185 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__111));
-x_186 = l_Lean_addMacroScope(x_11, x_185, x_10);
+x_186 = l_Lean_addMacroScope(x_12, x_185, x_6);
 x_187 = ((lean_object*)(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__115));
-lean_inc(x_8);
+lean_inc(x_5);
 x_188 = lean_alloc_ctor(3, 4, 0);
-lean_ctor_set(x_188, 0, x_8);
+lean_ctor_set(x_188, 0, x_5);
 lean_ctor_set(x_188, 1, x_184);
 lean_ctor_set(x_188, 2, x_186);
 lean_ctor_set(x_188, 3, x_187);
-lean_inc(x_15);
-lean_inc(x_8);
-x_189 = l_Lean_Syntax_node3(x_8, x_15, x_183, x_7, x_188);
-lean_inc(x_8);
-x_190 = l_Lean_Syntax_node2(x_8, x_59, x_182, x_189);
-lean_inc(x_8);
-x_191 = l_Lean_Syntax_node1(x_8, x_58, x_190);
+lean_inc(x_14);
+lean_inc(x_5);
+x_189 = l_Lean_Syntax_node3(x_5, x_14, x_183, x_20, x_188);
+lean_inc(x_5);
+x_190 = l_Lean_Syntax_node2(x_5, x_59, x_182, x_189);
+lean_inc(x_5);
+x_191 = l_Lean_Syntax_node1(x_5, x_58, x_190);
 lean_inc_ref(x_24);
-lean_inc(x_8);
-x_192 = l_Lean_Syntax_node2(x_8, x_57, x_191, x_24);
-lean_inc(x_15);
-lean_inc(x_8);
-x_193 = l_Lean_Syntax_node1(x_8, x_15, x_192);
-lean_inc(x_8);
-x_194 = l_Lean_Syntax_node1(x_8, x_56, x_193);
-lean_inc(x_8);
-x_195 = l_Lean_Syntax_node4(x_8, x_20, x_166, x_38, x_177, x_194);
-lean_inc(x_8);
-x_196 = l_Lean_Syntax_node5(x_8, x_78, x_80, x_82, x_84, x_18, x_86);
-lean_inc(x_15);
-lean_inc(x_8);
-x_197 = l_Lean_Syntax_node1(x_8, x_15, x_196);
-x_198 = l_Lean_Syntax_mkStrLit(x_17, x_16);
-lean_inc(x_8);
-x_199 = l_Lean_Syntax_node1(x_8, x_89, x_198);
-lean_inc(x_15);
-lean_inc(x_8);
-x_200 = l_Lean_Syntax_node2(x_8, x_15, x_199, x_115);
+lean_inc(x_5);
+x_192 = l_Lean_Syntax_node2(x_5, x_57, x_191, x_24);
+lean_inc(x_14);
+lean_inc(x_5);
+x_193 = l_Lean_Syntax_node1(x_5, x_14, x_192);
+lean_inc(x_5);
+x_194 = l_Lean_Syntax_node1(x_5, x_56, x_193);
+lean_inc(x_5);
+x_195 = l_Lean_Syntax_node4(x_5, x_15, x_166, x_38, x_177, x_194);
+lean_inc(x_5);
+x_196 = l_Lean_Syntax_node5(x_5, x_78, x_80, x_82, x_84, x_17, x_86);
+lean_inc(x_14);
+lean_inc(x_5);
+x_197 = l_Lean_Syntax_node1(x_5, x_14, x_196);
+x_198 = l_Lean_Syntax_mkStrLit(x_11, x_8);
+lean_inc(x_5);
+x_199 = l_Lean_Syntax_node1(x_5, x_89, x_198);
+lean_inc(x_14);
+lean_inc(x_5);
+x_200 = l_Lean_Syntax_node2(x_5, x_14, x_199, x_115);
 x_201 = lean_array_push(x_147, x_165);
 lean_inc_ref(x_24);
 x_202 = lean_array_push(x_201, x_24);
@@ -1216,12 +1233,12 @@ x_207 = lean_array_push(x_206, x_24);
 x_208 = lean_array_push(x_207, x_200);
 x_209 = lean_array_push(x_208, x_46);
 x_210 = lean_array_push(x_209, x_146);
-lean_inc(x_8);
+lean_inc(x_5);
 x_211 = lean_alloc_ctor(1, 3, 0);
-lean_ctor_set(x_211, 0, x_8);
+lean_ctor_set(x_211, 0, x_5);
 lean_ctor_set(x_211, 1, x_74);
 lean_ctor_set(x_211, 2, x_210);
-x_212 = l_Lean_Syntax_node4(x_8, x_15, x_72, x_158, x_195, x_211);
+x_212 = l_Lean_Syntax_node4(x_5, x_14, x_72, x_158, x_195, x_211);
 x_213 = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(x_213, 0, x_212);
 lean_ctor_set(x_213, 1, x_3);
@@ -1242,42 +1259,8 @@ lean_dec_ref(res);
 res = initialize_Lean_Meta_Tactic_Simp_Simproc(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-l_Lean_Parser_Command_registerSimpAttr___closed__7 = _init_l_Lean_Parser_Command_registerSimpAttr___closed__7();
-lean_mark_persistent(l_Lean_Parser_Command_registerSimpAttr___closed__7);
-l_Lean_Parser_Command_registerSimpAttr___closed__23 = _init_l_Lean_Parser_Command_registerSimpAttr___closed__23();
-lean_mark_persistent(l_Lean_Parser_Command_registerSimpAttr___closed__23);
 l_Lean_Parser_Command_registerSimpAttr = _init_l_Lean_Parser_Command_registerSimpAttr();
 lean_mark_persistent(l_Lean_Parser_Command_registerSimpAttr);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__7);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__14);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__30);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__57);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__66);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__76);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__83);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__86);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__88);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__93);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__96);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__104);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__110);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__123);
-l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124 = _init_l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124();
-lean_mark_persistent(l_Lean_Meta_Simp___aux__Lean__Meta__Tactic__Simp__RegisterCommand______macroRules__Lean__Meta__Simp____root____Lean__Parser__Command__registerSimpAttr__1___closed__124);
 return lean_io_result_mk_ok(lean_box(0));
 }
 #ifdef __cplusplus
