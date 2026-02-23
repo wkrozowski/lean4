@@ -2,8 +2,7 @@ import Lean
 
 /-! # cbv_simproc for Nat.fib using fast doubling
 
-This test demonstrates a cbv_simproc that evaluates `Nat.fib` in O(log n) time
-using the fast doubling method, ported from Mathlib's `norm_num` extension.
+This test demonstrates a cbv_simproc  ported from Mathlib's `norm_num` extension that evaluates `Nat.fib.
 -/
 
 open Lean Meta Sym.Simp
@@ -18,7 +17,6 @@ theorem Nat.fib_zero : Nat.fib 0 = 0 := rfl
 theorem Nat.fib_one : Nat.fib 1 = 1 := rfl
 theorem Nat.fib_two : Nat.fib 2 = 1 := rfl
 
--- Auxiliary predicate packaging fib(n) = a ∧ fib(n+1) = b
 def IsFibAux (n a b : Nat) := Nat.fib n = a ∧ Nat.fib (n + 1) = b
 
 theorem isFibAux_zero : IsFibAux 0 0 1 :=
@@ -77,8 +75,7 @@ theorem isFibAux_two_mul_add_one_done {n a b n' a' : Nat} (H : IsFibAux n a b)
 
 namespace FibSimproc
 
-/-- Recursively compute (fib n, fib (n+1)) with proof term for IsFibAux. -/
-partial def proveNatFibAux (n : Nat) : Nat × Nat × Expr := -- returns (a, b, proof : IsFibAux n a b)
+partial def proveNatFibAux (n : Nat) : Nat × Nat × Expr :=
   match n with
   | 0 => ⟨0, 1, mkConst ``isFibAux_zero⟩
   | 1 => ⟨1, 1, mkConst ``isFibAux_one⟩
@@ -94,10 +91,6 @@ partial def proveNatFibAux (n : Nat) : Nat × Nat × Expr := -- returns (a, b, p
       let en' := mkNatLit n
       let ea' := mkNatLit a'
       let eb' := mkNatLit b'
-      -- isFibAux_two_mul H hn h1 h2
-      -- hn : 2 * half = n  (Eq.refl n)
-      -- h1 : a * (2 * b - a) = a'  (Eq.refl a')
-      -- h2 : a * a + b * b = b'  (Eq.refl b')
       let hn := mkApp2 (mkConst ``Eq.refl [1]) (mkConst ``Nat) en'
       let h1 := mkApp2 (mkConst ``Eq.refl [1]) (mkConst ``Nat) ea'
       let h2 := mkApp2 (mkConst ``Eq.refl [1]) (mkConst ``Nat) eb'
@@ -115,8 +108,7 @@ partial def proveNatFibAux (n : Nat) : Nat × Nat × Expr := -- returns (a, b, p
       let proof := mkAppN (mkConst ``isFibAux_two_mul_add_one) #[en, ea, eb, en', ea', eb', H, hn, h1, h2]
       ⟨a', b', proof⟩
 
-/-- Compute fib(n) with a proof that Nat.fib n = result. -/
-def proveNatFib (n : Nat) : Nat × Expr := -- returns (result, proof : Nat.fib n = result)
+def proveNatFib (n : Nat) : Nat × Expr :=
   match n with
   | 0 => ⟨0, mkConst ``Nat.fib_zero⟩
   | 1 => ⟨1, mkConst ``Nat.fib_one⟩
@@ -146,7 +138,6 @@ def proveNatFib (n : Nat) : Nat × Expr := -- returns (result, proof : Nat.fib n
 
 end FibSimproc
 
--- The cbv_simproc
 section
 cbv_simproc cbv_eval evalFib (Nat.fib _) := fun e => do
   let_expr Nat.fib arg := e | return .rfl
@@ -155,7 +146,6 @@ cbv_simproc cbv_eval evalFib (Nat.fib _) := fun e => do
   let resultExpr ← Sym.share (mkNatLit result)
   return .step resultExpr proof (done := true)
 
--- Basic tests
 theorem fib_0 : Nat.fib 0 = 0 := by cbv
 theorem fib_1 : Nat.fib 1 = 1 := by cbv
 theorem fib_2 : Nat.fib 2 = 1 := by cbv
