@@ -514,6 +514,36 @@ def evalNot (a : Expr) : SimpM Result :=
   | False => return .step (← getTrueExpr) (mkConst ``Sym.not_false_eq) (done := true)
   | _ => return .rfl
 
+def evalPropAnd (a b : Expr) : SimpM Result :=
+  match_expr a with
+  | True => match_expr b with
+    | True => return .step (← getTrueExpr) (mkConst ``Sym.true_and_true) (done := true)
+    | False => return .step (← getFalseExpr) (mkConst ``Sym.true_and_false) (done := true)
+    | _ => return .step b (mkApp (mkConst ``true_and) b)
+  | False => match_expr b with
+    | True => return .step (← getFalseExpr) (mkConst ``Sym.false_and_true) (done := true)
+    | False => return .step (← getFalseExpr) (mkConst ``Sym.false_and_false) (done := true)
+    | _ => return .step (← getFalseExpr) (mkApp (mkConst ``false_and) b) (done := true)
+  | _ => match_expr b with
+    | True => return .step a (mkApp (mkConst ``and_true) a)
+    | False => return .step (← getFalseExpr) (mkApp (mkConst ``and_false) a) (done := true)
+    | _ => return .rfl
+
+def evalPropOr (a b : Expr) : SimpM Result :=
+  match_expr a with
+  | True => match_expr b with
+    | True => return .step (← getTrueExpr) (mkConst ``Sym.true_or_true) (done := true)
+    | False => return .step (← getTrueExpr) (mkConst ``Sym.true_or_false) (done := true)
+    | _ => return .step (← getTrueExpr) (mkApp (mkConst ``true_or) b) (done := true)
+  | False => match_expr b with
+    | True => return .step (← getTrueExpr) (mkConst ``Sym.false_or_true) (done := true)
+    | False => return .step (← getFalseExpr) (mkConst ``Sym.false_or_false) (done := true)
+    | _ => return .step b (mkApp (mkConst ``false_or) b)
+  | _ => match_expr b with
+    | True => return .step (← getTrueExpr) (mkApp (mkConst ``or_true) a) (done := true)
+    | False => return .step a (mkApp (mkConst ``or_false) a)
+    | _ => return .rfl
+
 public structure EvalStepConfig where
   maxExponent := 255
 
@@ -560,6 +590,8 @@ public def evalGround (config : EvalStepConfig := {}) : Simproc := fun e =>
   | BEq.beq α _ a b => evalBEq α a b
   | bne α _ a b => evalBNe α a b
   | Not a => evalNot a
+  | And a b => evalPropAnd a b
+  | Or a b => evalPropOr a b
   | _  => return .rfl
 
 end Lean.Meta.Sym.Simp

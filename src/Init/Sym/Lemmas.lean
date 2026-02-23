@@ -20,6 +20,16 @@ theorem ne_self (a : α) : (a ≠ a) = False := by simp
 theorem not_true_eq : (¬ True) = False := by simp
 theorem not_false_eq : (¬ False) = True := by simp
 
+theorem true_and_true : (True ∧ True) = True := by simp
+theorem true_and_false : (True ∧ False) = False := by simp
+theorem false_and_true : (False ∧ True) = False := by simp
+theorem false_and_false : (False ∧ False) = False := by simp
+
+theorem true_or_true : (True ∨ True) = True := by simp
+theorem true_or_false : (True ∨ False) = True := by simp
+theorem false_or_true : (False ∨ True) = True := by simp
+theorem false_or_false : (False ∨ False) = False := by simp
+
 theorem ite_cond_congr {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α)
     (c' : Prop) {inst' : Decidable c'} (h : c = c') : @ite α c inst a b = @ite α c' inst' a b := by
   simp [*]
