@@ -266,11 +266,11 @@ def cbvPreStep : Simproc := fun e => do
   | .forallE .. | .lam .. | .fvar .. | .mvar .. | .bvar .. | .sort .. => return .rfl (done := true)
   | _ => return .rfl
 
-/-- Pre-pass: skip builtin values and proofs, then dispatch structurally. -/
+/-- Pre-pass: skip builtin values and proofs, run pre simprocs, then dispatch structurally. -/
 def cbvPre (simprocs : CbvSimprocs) : Simproc :=
   isBuiltinValue <|> isProofTerm <|> cbvSimprocDispatch simprocs.pre simprocs.erased <|> cbvPreStep
 
-/-- Post-pass: evaluate ground arithmetic, then try unfolding/beta-reducing applications. -/
+/-- Post-pass: evaluate ground arithmetic, then try eval simprocs, then try unfolding/beta-reducing applications and finally run post simprocs -/
 def cbvPost (simprocs : CbvSimprocs) : Simproc :=
   evalGround <|> cbvSimprocDispatch simprocs.eval simprocs.erased <|> handleApp <|> cbvSimprocDispatch simprocs.post simprocs.erased
 

@@ -2,7 +2,7 @@ import Lean
 
 /-! # cbv_simproc for Nat.fib using fast doubling
 
-This test demonstrates a cbv_simproc  ported from Mathlib's `norm_num` extension that evaluates `Nat.fib.
+This test demonstrates a cbv_simproc ported from Mathlib's `norm_num` extension that evaluates `Nat.fib.
 -/
 
 open Lean Meta Sym.Simp
