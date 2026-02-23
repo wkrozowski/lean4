@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Paul Reichert
 -/
 module
+
 prelude
+
 public import Init.Data.Range.Polymorphic.Instances
 public import Init.Data.SInt
 import all Init.Data.SInt.Basic
