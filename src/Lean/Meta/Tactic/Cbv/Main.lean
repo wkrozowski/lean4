@@ -145,15 +145,16 @@ def simplifyAppFn : Simproc := fun e => do
       return .step newValue newProof
 
 def handleConst : Simproc := fun e => do
-  let .const n _ := e | return .rfl
+  let .const n lvls := e | return .rfl
   let info ← getConstInfo n
   unless info.isDefinition do return .rfl
   let eType ← Sym.inferType e
   let eType ← whnfD eType
   if eType matches .forallE .. then return .rfl
-  -- TODO: Check if we need to look if we applied all the levels correctly
-  let some thm ← getUnfoldTheorem n | return .rfl
-  Simproc.tryCatch (fun e => Theorem.rewrite thm e) e
+  unless info.hasValue && info.levelParams.length == lvls.length do return .rfl
+  let fBody ← instantiateValueLevelParams info lvls
+  let eNew ← Sym.share fBody
+  return .step eNew (← Sym.mkEqRefl eNew)
 
 def cbvPreStep : Simproc := fun e => do
   match e with
