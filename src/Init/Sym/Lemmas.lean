@@ -30,13 +30,45 @@ theorem true_or_false : (True ∨ False) = True := by simp
 theorem false_or_true : (False ∨ True) = True := by simp
 theorem false_or_false : (False ∨ False) = False := by simp
 
+theorem ite_decide_true {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α)
+    {proof : c} : @ite α c inst a b = a := by simp [*]
+
+theorem ite_decide_false {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α)
+    {proof : ¬c} : @ite α c inst a b = b := by simp [*]
+
 theorem ite_cond_congr {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α)
     (c' : Prop) {inst' : Decidable c'} (h : c = c') : @ite α c inst a b = @ite α c' inst' a b := by
   simp [*]
 
+theorem ite_cond_congr_true {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α)
+    (c' : Prop) (h₁ : c = c') {proof : c'} : @ite α c inst a b = a := by
+  simp [*]
+
+theorem ite_cond_congr_true_congr {α : Sort u} (c : Prop) {inst : Decidable c} (a b a' : α)
+    (c' : Prop) (h₁ : c = c') {proof : c'} : @ite α c inst a b = a := by
+  simp [*]
+
+theorem ite_cond_congr_false {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α)
+    (c' : Prop) (h₁ : c = c') {proof : ¬c'} : @ite α c inst a b = b := by
+  simp [*]
+
+theorem dite_decide_true {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α)
+    {proof : c} : @dite α c inst a b = a proof := by simp [*]
+
+theorem dite_decide_false {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α)
+    {proof : ¬c} : @dite α c inst a b = b proof := by simp [*]
+
 theorem dite_cond_congr {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α)
     (c' : Prop) {inst' : Decidable c'} (h : c = c')
     : @dite α c inst a b = @dite α c' inst' (fun h' => a (h.mpr_prop h')) (fun h' => b (h.mpr_not h')) := by
+  simp [*]
+
+theorem dite_cond_congr_true {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α)
+    (c' : Prop) (h : c = c') {proof : c'} : @dite α c inst a b = a (h.mpr_prop proof) := by
+  simp [*]
+
+theorem dite_cond_congr_false {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α)
+    (c' : Prop) (h : c = c') {proof : ¬c'} : @dite α c inst a b = b (h.mpr_not proof) := by
   simp [*]
 
 theorem cond_cond_eq_true {α : Sort u} (c : Bool) (a b : α) (h : c = true) : cond c a b = a := by

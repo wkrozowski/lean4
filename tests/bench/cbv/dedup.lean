@@ -7,7 +7,11 @@ def dedup (l : List Nat) : List Nat := Id.run do
     S := S.insert i
   return S.toList
 
-example : dedup [1] = [1] := by conv => lhs; cbv
+set_option trace.Meta.Tactic true
+
+theorem test : dedup [1] = [1] := by conv => lhs; cbv
+
+#print test
 
 example : dedup [1,2] = [1,2] := by conv => lhs; cbv
 

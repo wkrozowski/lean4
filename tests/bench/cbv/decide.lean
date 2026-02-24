@@ -12,6 +12,16 @@ def mkProblemInst (n : Nat) : Expr :=
   let f := mkApp (mkConst ``IsPrimePow) n
   mkApp (mkConst ``Not) f
 
+section
+
+set_option trace.Meta.Tactic true
+
+theorem test : ¬ IsPrimePow 6 := by decide_cbv
+
+#print test
+
+end
+
 def runSingleTest (n : Nat) : MetaM Unit := do
   let toFeed := mkProblemInst n
   let startTime ← IO.monoNanosNow
