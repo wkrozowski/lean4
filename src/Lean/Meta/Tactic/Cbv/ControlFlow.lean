@@ -35,6 +35,21 @@ corresponding branch.
 namespace Lean.Meta.Sym.Simp
 open Internal
 
+/-- Reduce `ite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
+def simpIteDecidable (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst with
+  | Decidable.isTrue _ hp =>
+    return .step a <| mkApp6 (mkConst ``Sym.ite_true f.constLevels!) α c inst a b hp
+  | Decidable.isFalse _ hnp =>
+    return .step b <| mkApp6 (mkConst ``Sym.ite_false f.constLevels!) α c inst a b hnp
+  | _ => fallback
+
+/-- Simplify the `Decidable` instance, then try `simpIteDecidable`. -/
+def simpIteDecidableWithFallback (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst) with
+  | .rfl _ => simpIteDecidable f α c inst a b fallback
+  | .step inst' _ _ => simpIteDecidable f α c inst' a b fallback
+
 /-- Like `simpIte` but also evaluates `Decidable.decide` when the condition does not
 reduce to `True`/`False` directly. -/
 public def simpIteCbv : Simproc := fun e => do
@@ -46,48 +61,39 @@ public def simpIteCbv : Simproc := fun e => do
     | .rfl _ =>
       if (← isTrueExpr c) then
         return .step a <| mkApp3 (mkConst ``ite_true f.constLevels!) α a b
-      else if (← isFalseExpr  c) then
+      else if (← isFalseExpr c) then
         return .step b <| mkApp3 (mkConst ``ite_false f.constLevels!) α a b
       else
-        let toEval ← mkAppS₂ (mkConst ``Decidable.decide) c inst
-        let evalRes ← simp toEval
-        match evalRes with
-        | .rfl _ =>
-          return .rfl (done := true)
-        | .step v hv _ =>
-          if (← isBoolTrueExpr v) then
-            let h' := mkApp3 (mkConst ``eq_true_of_decide) c inst hv
-            let inst' := mkConst ``instDecidableTrue
-            let c' ← getTrueExpr
-            let e' := e.getBoundedAppFn 4
-            let e' ← mkAppS₄ e' c' inst' a b
-            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h'
-            let ha := mkApp3 (mkConst ``ite_true f.constLevels!) α a b
-            let ha ← mkEqTrans e e' h' a ha
-            return .step a ha (done := false)
-          else if  (← isBoolFalseExpr v)  then
-            let h' := mkApp3 (mkConst ``eq_false_of_decide) c inst hv
-            let inst' := mkConst ``instDecidableFalse
-            let c' ← getFalseExpr
-            let e' := e.getBoundedAppFn 4
-            let e' ← mkAppS₄ e' c' inst' a b
-            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h'
-            let hb := mkApp3 (mkConst ``ite_false f.constLevels!) α a b
-            let hb ← mkEqTrans e e' h' b hb
-            return .step b hb (done := false)
-          else
-            return .rfl (done := true)
+        simpIteDecidableWithFallback f α c inst a b <| return .rfl (done := true)
     | .step c' h _ =>
       if (← isTrueExpr c') then
         return .step a <| mkApp (e.replaceFn ``ite_cond_eq_true) h
       else if (← isFalseExpr c') then
         return .step b <| mkApp (e.replaceFn ``ite_cond_eq_false) h
       else
-        let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
-        let e' := e.getBoundedAppFn 4
-        let e' ← mkAppS₄ e' c' inst' a b
-        let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
-        return .step e' h'
+        simpIteDecidableWithFallback f α c inst a b <| do
+          let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
+          let e' := e.getBoundedAppFn 4
+          let e' ← mkAppS₄ e' c' inst' a b
+          let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
+          return .step e' h' (done := true)
+
+/-- Reduce `dite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
+def simpDIteDecidable (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst with
+  | Decidable.isTrue _ hp =>
+    let a' ← share <| a.betaRev #[hp]
+    return .step a' <| mkApp6 (mkConst ``Sym.dite_true f.constLevels!) α c inst a b hp
+  | Decidable.isFalse _ hnp =>
+    let b' ← share <| b.betaRev #[hnp]
+    return .step b' <| mkApp6 (mkConst ``Sym.dite_false f.constLevels!) α c inst a b hnp
+  | _ => fallback
+
+/-- Simplify the `Decidable` instance, then try `simpDIteDecidable`. -/
+def simpDIteDecidableWithFallback (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst) with
+  | .rfl _ => simpDIteDecidable f α c inst a b fallback
+  | .step inst' _ _ => simpDIteDecidable f α c inst' a b fallback
 
 /-- Like `simpDIte` but also evaluates `Decidable.decide` when the condition does not
 reduce to `True`/`False` directly. -/
@@ -105,41 +111,7 @@ public def simpDIteCbv : Simproc := fun e => do
         let b' ← share <| b.betaRev #[mkConst ``not_false]
         return .step b' <| mkApp3 (mkConst ``dite_false f.constLevels!) α a b
       else
-        let toEval ← mkAppS₂ (mkConst ``Decidable.decide) c inst
-        let evalRes ← simp toEval
-        match evalRes with
-        | .rfl _ => return .rfl (done := true)
-        | .step v hv _ =>
-          if  (← isBoolTrueExpr v) then
-            let h' := mkApp3 (mkConst ``eq_true_of_decide) c inst hv
-            let inst' := mkConst ``instDecidableTrue
-            let e' := e.getBoundedAppFn 4
-            let h ← shareCommon h'
-            let c' ← getTrueExpr
-            let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
-            let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
-            let e' ← mkAppS₄ e' c' inst' a b
-            let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
-            let a' ← share <| a.betaRev #[mkConst ``True.intro]
-            let ha := mkApp3 (mkConst ``dite_true f.constLevels!) α a b
-            let ha ← mkEqTrans e e' h' a' ha
-            return .step a' ha
-          else if  (← isBoolFalseExpr v)  then
-            let h' := mkApp3 (mkConst ``eq_false_of_decide) c inst hv
-            let inst' := mkConst ``instDecidableFalse
-            let e' := e.getBoundedAppFn 4
-            let h ← shareCommon h'
-            let c' ← getFalseExpr
-            let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
-            let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
-            let e' ← mkAppS₄ e' c' inst' a b
-            let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
-            let b' ← share <| b.betaRev #[mkConst ``not_false]
-            let hb := mkApp3 (mkConst ``dite_false f.constLevels!) α a b
-            let hb ← mkEqTrans e e' h' b' hb
-            return .step b' hb
-          else
-            return .rfl (done := true)
+        simpDIteDecidableWithFallback f α c inst a b <| return .rfl (done := true)
     | .step c' h _ =>
       if (← isTrueExpr c') then
         let h' ← shareCommon <| mkOfEqTrueCore c h
@@ -150,14 +122,15 @@ public def simpDIteCbv : Simproc := fun e => do
         let b ← share <| b.betaRev #[h']
         return .step b <| mkApp (e.replaceFn ``dite_cond_eq_false) h
       else
-        let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
-        let e' := e.getBoundedAppFn 4
-        let h ← shareCommon h
-        let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
-        let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
-        let e' ← mkAppS₄ e' c' inst' a b
-        let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
-        return .step e' h'
+        simpDIteDecidableWithFallback f α c inst a b <| do
+          let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
+          let e' := e.getBoundedAppFn 4
+          let h ← shareCommon h
+          let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
+          let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
+          let e' ← mkAppS₄ e' c' inst' a b
+          let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
+          return .step e' h' (done := true)
 
 end Lean.Meta.Sym.Simp
 
