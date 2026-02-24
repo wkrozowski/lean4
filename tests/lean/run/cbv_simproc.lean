@@ -1,5 +1,7 @@
 import Lean
 
+set_option cbv.warning false
+
 open Lean Meta Sym.Simp
 
 cbv_simproc_decl myDeclProc (Nat.succ _) := fun _ => do

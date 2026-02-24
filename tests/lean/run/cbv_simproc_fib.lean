@@ -1,5 +1,7 @@
 import Lean
 
+set_option cbv.warning false
+
 /-! # cbv_simproc for Nat.fib using fast doubling
 
 This test demonstrates a cbv_simproc ported from Mathlib's `norm_num` extension that evaluates `Nat.fib.
