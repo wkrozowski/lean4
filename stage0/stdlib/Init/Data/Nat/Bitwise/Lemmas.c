@@ -230,6 +230,80 @@ x_1 = lean_obj_once(&l_Nat_bitwise__div__two__pow___auto__9___closed__21, &l_Nat
 return x_1;
 }
 }
+lean_object* runtime_initialize_Init_Data_Nat_Bitwise_Basic(uint8_t builtin);
+lean_object* runtime_initialize_Init_BinderPredicates(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Bool(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Nat_Log2(uint8_t builtin);
+lean_object* runtime_initialize_Init_ByCases(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Int_Pow(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Nat_Lemmas(uint8_t builtin);
+lean_object* runtime_initialize_Init_Omega(uint8_t builtin);
+lean_object* runtime_initialize_Init_RCases(uint8_t builtin);
+lean_object* runtime_initialize_Init_TacticsExtra(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Init_Data_Nat_Bitwise_Lemmas(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Init_Data_Nat_Bitwise_Basic(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_BinderPredicates(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Bool(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Nat_Log2(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_ByCases(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Int_Pow(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Nat_Lemmas(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Omega(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_RCases(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_TacticsExtra(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Init_Data_Nat_Bitwise_Lemmas(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+l_Nat_bitwise__div__two__pow___auto__9 = _init_l_Nat_bitwise__div__two__pow___auto__9();
+lean_mark_persistent(l_Nat_bitwise__div__two__pow___auto__9);
+l_Nat_bitwise__mod__two__pow___auto__9 = _init_l_Nat_bitwise__mod__two__pow___auto__9();
+lean_mark_persistent(l_Nat_bitwise__mod__two__pow___auto__9);
+l_Nat_bitwise__mul__two__pow___auto__9 = _init_l_Nat_bitwise__mul__two__pow___auto__9();
+lean_mark_persistent(l_Nat_bitwise__mul__two__pow___auto__9);
+l_Nat_shiftLeft__bitwise__distrib___auto__5 = _init_l_Nat_shiftLeft__bitwise__distrib___auto__5();
+lean_mark_persistent(l_Nat_shiftLeft__bitwise__distrib___auto__5);
+l_Nat_shiftRight__bitwise__distrib___auto__5 = _init_l_Nat_shiftRight__bitwise__distrib___auto__5();
+lean_mark_persistent(l_Nat_shiftRight__bitwise__distrib___auto__5);
+return lean_io_result_mk_ok(lean_box(0));
+}
 lean_object* initialize_Init_Data_Nat_Bitwise_Basic(uint8_t builtin);
 lean_object* initialize_Init_BinderPredicates(uint8_t builtin);
 lean_object* initialize_Init_Data_Bool(uint8_t builtin);
@@ -245,47 +319,55 @@ LEAN_EXPORT lean_object* initialize_Init_Data_Nat_Bitwise_Lemmas(uint8_t builtin
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Init_Data_Nat_Bitwise_Basic(builtin);
+res = initialize_Init_Data_Nat_Bitwise_Basic(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_BinderPredicates(builtin);
+res = initialize_Init_BinderPredicates(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Bool(builtin);
+res = initialize_Init_Data_Bool(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Nat_Log2(builtin);
+res = initialize_Init_Data_Nat_Log2(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_ByCases(builtin);
+res = initialize_Init_ByCases(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Int_Pow(builtin);
+res = initialize_Init_Data_Int_Pow(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Nat_Lemmas(builtin);
+res = initialize_Init_Data_Nat_Lemmas(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Omega(builtin);
+res = initialize_Init_Omega(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_RCases(builtin);
+res = initialize_Init_RCases(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_TacticsExtra(builtin);
+res = initialize_Init_TacticsExtra(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-l_Nat_bitwise__div__two__pow___auto__9 = _init_l_Nat_bitwise__div__two__pow___auto__9();
-lean_mark_persistent(l_Nat_bitwise__div__two__pow___auto__9);
-l_Nat_bitwise__mod__two__pow___auto__9 = _init_l_Nat_bitwise__mod__two__pow___auto__9();
-lean_mark_persistent(l_Nat_bitwise__mod__two__pow___auto__9);
-l_Nat_bitwise__mul__two__pow___auto__9 = _init_l_Nat_bitwise__mul__two__pow___auto__9();
-lean_mark_persistent(l_Nat_bitwise__mul__two__pow___auto__9);
-l_Nat_shiftLeft__bitwise__distrib___auto__5 = _init_l_Nat_shiftLeft__bitwise__distrib___auto__5();
-lean_mark_persistent(l_Nat_shiftLeft__bitwise__distrib___auto__5);
-l_Nat_shiftRight__bitwise__distrib___auto__5 = _init_l_Nat_shiftRight__bitwise__distrib___auto__5();
-lean_mark_persistent(l_Nat_shiftRight__bitwise__distrib___auto__5);
-return lean_io_result_mk_ok(lean_box(0));
+res = runtime_initialize_Init_Data_Nat_Bitwise_Lemmas(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Init_Data_Nat_Bitwise_Lemmas(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Init_Data_Nat_Bitwise_Lemmas(builtin);
 }
 #ifdef __cplusplus
 }

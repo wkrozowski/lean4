@@ -1024,19 +1024,28 @@ x_1 = lean_obj_once(&l_Std_IsPreorder_of__le___auto__1___closed__26, &l_Std_IsPr
 return x_1;
 }
 }
-lean_object* initialize_Init_Data_Order_Classes(uint8_t builtin);
-lean_object* initialize_Init_Classical(uint8_t builtin);
-static bool _G_initialized = false;
-LEAN_EXPORT lean_object* initialize_Init_Data_Order_Factories(uint8_t builtin) {
+lean_object* runtime_initialize_Init_Data_Order_Classes(uint8_t builtin);
+lean_object* runtime_initialize_Init_Classical(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Init_Data_Order_Factories(uint8_t builtin) {
 lean_object * res;
-if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
-_G_initialized = true;
-res = initialize_Init_Data_Order_Classes(builtin);
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Init_Data_Order_Classes(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Classical(builtin);
+res = runtime_initialize_Init_Classical(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Init_Data_Order_Factories(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
 l_Std_IsPreorder_of__le___auto__1 = _init_l_Std_IsPreorder_of__le___auto__1();
 lean_mark_persistent(l_Std_IsPreorder_of__le___auto__1);
 l_Std_IsPreorder_of__le___auto__3 = _init_l_Std_IsPreorder_of__le___auto__3();
@@ -1080,6 +1089,31 @@ lean_mark_persistent(l_Std_IsLinearOrder_of__lt___auto__3);
 l_Std_IsLinearOrder_of__lt___auto__5 = _init_l_Std_IsLinearOrder_of__lt___auto__5();
 lean_mark_persistent(l_Std_IsLinearOrder_of__lt___auto__5);
 return lean_io_result_mk_ok(lean_box(0));
+}
+lean_object* initialize_Init_Data_Order_Classes(uint8_t builtin);
+lean_object* initialize_Init_Classical(uint8_t builtin);
+static bool _G_initialized = false;
+LEAN_EXPORT lean_object* initialize_Init_Data_Order_Factories(uint8_t builtin) {
+lean_object * res;
+if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_initialized = true;
+res = initialize_Init_Data_Order_Classes(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_Classical(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Order_Factories(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Init_Data_Order_Factories(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Init_Data_Order_Factories(builtin);
 }
 #ifdef __cplusplus
 }

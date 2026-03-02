@@ -2261,6 +2261,83 @@ x_3 = l_Lake_Package_clean(x_1);
 return x_3;
 }
 }
+lean_object* runtime_initialize_Lake_Config_Cache(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Config_Script(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Config_ConfigDecl(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Config_Dependency(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Config_PackageConfig(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Util_FilePath(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Util_OrdHashSet(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Util_Name(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Util_OpaqueType(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Util_IO(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Lake_Config_Package(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Lake_Config_Cache(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Config_Script(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Config_ConfigDecl(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Config_Dependency(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Config_PackageConfig(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Util_FilePath(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Util_OrdHashSet(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Util_Name(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Util_OpaqueType(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Util_IO(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+l_Lake_instInhabitedPackage_default = _init_l_Lake_instInhabitedPackage_default();
+lean_mark_persistent(l_Lake_instInhabitedPackage_default);
+l_Lake_instInhabitedPackage = _init_l_Lake_instInhabitedPackage();
+lean_mark_persistent(l_Lake_instInhabitedPackage);
+l_Lake_PackageSet_empty = _init_l_Lake_PackageSet_empty();
+lean_mark_persistent(l_Lake_PackageSet_empty);
+l_Lake_OrdPackageSet_empty = _init_l_Lake_OrdPackageSet_empty();
+lean_mark_persistent(l_Lake_OrdPackageSet_empty);
+return lean_io_result_mk_ok(lean_box(0));
+}
+lean_object* runtime_initialize_Lake_Util_OpaqueType(uint8_t builtin);
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Lake_Config_Package(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+res = runtime_initialize_Lake_Util_OpaqueType(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
 lean_object* initialize_Lake_Config_Cache(uint8_t builtin);
 lean_object* initialize_Lake_Config_Script(uint8_t builtin);
 lean_object* initialize_Lake_Config_ConfigDecl(uint8_t builtin);
@@ -2277,48 +2354,59 @@ LEAN_EXPORT lean_object* initialize_Lake_Config_Package(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Lake_Config_Cache(builtin);
+res = initialize_Lake_Config_Cache(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Config_Script(builtin);
+res = initialize_Lake_Config_Script(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Config_ConfigDecl(builtin);
+res = initialize_Lake_Config_ConfigDecl(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Config_Dependency(builtin);
+res = initialize_Lake_Config_Dependency(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Config_PackageConfig(builtin);
+res = initialize_Lake_Config_PackageConfig(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Util_FilePath(builtin);
+res = initialize_Lake_Util_FilePath(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Util_OrdHashSet(builtin);
+res = initialize_Lake_Util_OrdHashSet(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Util_Name(builtin);
+res = initialize_Lake_Util_Name(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Util_OpaqueType(builtin);
+res = initialize_Lake_Util_OpaqueType(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Util_OpaqueType(builtin);
+res = initialize_Lake_Util_OpaqueType(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lake_Util_IO(builtin);
+res = initialize_Lake_Util_IO(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-l_Lake_instInhabitedPackage_default = _init_l_Lake_instInhabitedPackage_default();
-lean_mark_persistent(l_Lake_instInhabitedPackage_default);
-l_Lake_instInhabitedPackage = _init_l_Lake_instInhabitedPackage();
-lean_mark_persistent(l_Lake_instInhabitedPackage);
-l_Lake_PackageSet_empty = _init_l_Lake_PackageSet_empty();
-lean_mark_persistent(l_Lake_PackageSet_empty);
-l_Lake_OrdPackageSet_empty = _init_l_Lake_OrdPackageSet_empty();
-lean_mark_persistent(l_Lake_OrdPackageSet_empty);
-return lean_io_result_mk_ok(lean_box(0));
+res = runtime_initialize_Lake_Config_Package(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Lake_Config_Package(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Lake_Config_Package(builtin);
 }
 #ifdef __cplusplus
 }

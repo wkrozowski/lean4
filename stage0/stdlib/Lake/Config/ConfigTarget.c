@@ -303,76 +303,70 @@ return x_5;
 }
 else
 {
-uint8_t x_6; 
-x_6 = !lean_is_exclusive(x_4);
-if (x_6 == 0)
+lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_19; 
+x_6 = lean_ctor_get(x_4, 0);
+x_19 = !lean_is_exclusive(x_4);
+if (x_19 == 0)
 {
-lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; uint8_t x_11; 
-x_7 = lean_ctor_get(x_4, 0);
-x_8 = lean_ctor_get(x_7, 1);
-lean_inc(x_8);
-x_9 = lean_ctor_get(x_7, 2);
-lean_inc(x_9);
-x_10 = lean_ctor_get(x_7, 3);
-lean_inc(x_10);
-lean_dec(x_7);
-x_11 = lean_name_eq(x_9, x_1);
-lean_dec(x_9);
-if (x_11 == 0)
-{
-lean_object* x_12; 
-lean_dec(x_10);
-lean_dec(x_8);
-lean_free_object(x_4);
-lean_dec_ref(x_3);
-x_12 = lean_box(0);
-return x_12;
+x_7 = x_4;
+x_8 = x_19;
+goto block_18;
 }
 else
+{
+lean_inc(x_6);
+lean_dec(x_4);
+x_7 = lean_box(0);
+x_8 = x_19;
+goto block_18;
+}
+block_18:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; uint8_t x_12; 
+x_9 = lean_ctor_get(x_6, 1);
+lean_inc(x_9);
+x_10 = lean_ctor_get(x_6, 2);
+lean_inc(x_10);
+x_11 = lean_ctor_get(x_6, 3);
+lean_inc(x_11);
+lean_dec(x_6);
+x_12 = lean_name_eq(x_10, x_1);
+lean_dec(x_10);
+if (x_12 == 0)
 {
 lean_object* x_13; 
-x_13 = lean_alloc_ctor(0, 3, 0);
-lean_ctor_set(x_13, 0, x_3);
-lean_ctor_set(x_13, 1, x_8);
-lean_ctor_set(x_13, 2, x_10);
-lean_ctor_set(x_4, 0, x_13);
-return x_4;
-}
-}
-else
-{
-lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; uint8_t x_18; 
-x_14 = lean_ctor_get(x_4, 0);
-lean_inc(x_14);
-lean_dec(x_4);
-x_15 = lean_ctor_get(x_14, 1);
-lean_inc(x_15);
-x_16 = lean_ctor_get(x_14, 2);
-lean_inc(x_16);
-x_17 = lean_ctor_get(x_14, 3);
-lean_inc(x_17);
-lean_dec(x_14);
-x_18 = lean_name_eq(x_16, x_1);
-lean_dec(x_16);
-if (x_18 == 0)
-{
-lean_object* x_19; 
-lean_dec(x_17);
-lean_dec(x_15);
+lean_dec(x_11);
+lean_dec(x_9);
+lean_del_object(x_7);
 lean_dec_ref(x_3);
-x_19 = lean_box(0);
-return x_19;
+x_13 = lean_box(0);
+return x_13;
 }
 else
 {
-lean_object* x_20; lean_object* x_21; 
-x_20 = lean_alloc_ctor(0, 3, 0);
-lean_ctor_set(x_20, 0, x_3);
-lean_ctor_set(x_20, 1, x_15);
-lean_ctor_set(x_20, 2, x_17);
-x_21 = lean_alloc_ctor(1, 1, 0);
-lean_ctor_set(x_21, 0, x_20);
-return x_21;
+lean_object* x_14; lean_object* x_15; 
+x_14 = lean_alloc_ctor(0, 3, 0);
+lean_ctor_set(x_14, 0, x_3);
+lean_ctor_set(x_14, 1, x_9);
+lean_ctor_set(x_14, 2, x_11);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_14);
+x_15 = x_7;
+goto block_16;
+}
+else
+{
+lean_object* x_17; 
+x_17 = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(x_17, 0, x_14);
+x_15 = x_17;
+goto block_16;
+}
+block_16:
+{
+return x_15;
+}
 }
 }
 }
@@ -388,16 +382,44 @@ lean_dec(x_1);
 return x_4;
 }
 }
+lean_object* runtime_initialize_Lake_Config_Package(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Lake_Config_ConfigTarget(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Lake_Config_Package(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Lake_Config_ConfigTarget(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+return lean_io_result_mk_ok(lean_box(0));
+}
 lean_object* initialize_Lake_Config_Package(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Lake_Config_ConfigTarget(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Lake_Config_Package(builtin);
+res = initialize_Lake_Config_Package(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-return lean_io_result_mk_ok(lean_box(0));
+res = runtime_initialize_Lake_Config_ConfigTarget(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Lake_Config_ConfigTarget(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Lake_Config_ConfigTarget(builtin);
 }
 #ifdef __cplusplus
 }

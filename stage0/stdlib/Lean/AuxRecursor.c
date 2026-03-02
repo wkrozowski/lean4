@@ -919,6 +919,48 @@ return x_11;
 }
 }
 }
+lean_object* runtime_initialize_Lean_EnvExtension(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_String_TakeDrop(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Lean_AuxRecursor(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Lean_EnvExtension(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_String_TakeDrop(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = l_Lean_initFn_00___x40_Lean_AuxRecursor_3622182683____hygCtx___hyg_2_()
+;
+if (lean_io_result_is_error(res)) return res;
+l_Lean_auxRecExt = lean_io_result_get_value(res);
+lean_mark_persistent(l_Lean_auxRecExt);
+lean_dec_ref(res);
+res = l___private_Lean_AuxRecursor_0__Lean_initFn_00___x40_Lean_AuxRecursor_2879463644____hygCtx___hyg_2_()
+;
+if (lean_io_result_is_error(res)) return res;
+l___private_Lean_AuxRecursor_0__Lean_sparseCasesOnExt = lean_io_result_get_value(res);
+lean_mark_persistent(l___private_Lean_AuxRecursor_0__Lean_sparseCasesOnExt);
+lean_dec_ref(res);
+res = l_Lean_initFn_00___x40_Lean_AuxRecursor_1899236304____hygCtx___hyg_2_()
+;
+if (lean_io_result_is_error(res)) return res;
+l_Lean_noConfusionExt = lean_io_result_get_value(res);
+lean_mark_persistent(l_Lean_noConfusionExt);
+lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Lean_AuxRecursor(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+return lean_io_result_mk_ok(lean_box(0));
+}
 lean_object* initialize_Lean_EnvExtension(uint8_t builtin);
 lean_object* initialize_Init_Data_String_TakeDrop(uint8_t builtin);
 static bool _G_initialized = false;
@@ -926,28 +968,23 @@ LEAN_EXPORT lean_object* initialize_Lean_AuxRecursor(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Lean_EnvExtension(builtin);
+res = initialize_Lean_EnvExtension(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_String_TakeDrop(builtin);
+res = initialize_Init_Data_String_TakeDrop(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-if (builtin) {res = l_Lean_initFn_00___x40_Lean_AuxRecursor_3622182683____hygCtx___hyg_2_();
+res = runtime_initialize_Lean_AuxRecursor(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
-l_Lean_auxRecExt = lean_io_result_get_value(res);
-lean_mark_persistent(l_Lean_auxRecExt);
 lean_dec_ref(res);
-}if (builtin) {res = l___private_Lean_AuxRecursor_0__Lean_initFn_00___x40_Lean_AuxRecursor_2879463644____hygCtx___hyg_2_();
+res = meta_initialize_Lean_AuxRecursor(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
-l___private_Lean_AuxRecursor_0__Lean_sparseCasesOnExt = lean_io_result_get_value(res);
-lean_mark_persistent(l___private_Lean_AuxRecursor_0__Lean_sparseCasesOnExt);
 lean_dec_ref(res);
-}if (builtin) {res = l_Lean_initFn_00___x40_Lean_AuxRecursor_1899236304____hygCtx___hyg_2_();
-if (lean_io_result_is_error(res)) return res;
-l_Lean_noConfusionExt = lean_io_result_get_value(res);
-lean_mark_persistent(l_Lean_noConfusionExt);
-lean_dec_ref(res);
-}return lean_io_result_mk_ok(lean_box(0));
+return initialize_Lean_AuxRecursor(builtin);
 }
 #ifdef __cplusplus
 }

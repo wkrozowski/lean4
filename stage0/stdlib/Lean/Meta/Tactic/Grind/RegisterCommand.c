@@ -461,23 +461,44 @@ goto block_213;
 }
 else
 {
-uint8_t x_216; 
-x_216 = !lean_is_exclusive(x_214);
-if (x_216 == 0)
+lean_object* x_216; lean_object* x_217; uint8_t x_218; uint8_t x_223; 
+x_216 = lean_ctor_get(x_214, 0);
+x_223 = !lean_is_exclusive(x_214);
+if (x_223 == 0)
 {
-x_178 = x_214;
-goto block_213;
+x_217 = x_214;
+x_218 = x_223;
+goto block_222;
 }
 else
 {
-lean_object* x_217; lean_object* x_218; 
-x_217 = lean_ctor_get(x_214, 0);
-lean_inc(x_217);
+lean_inc(x_216);
 lean_dec(x_214);
-x_218 = lean_alloc_ctor(1, 1, 0);
-lean_ctor_set(x_218, 0, x_217);
-x_178 = x_218;
+x_217 = lean_box(0);
+x_218 = x_223;
+goto block_222;
+}
+block_222:
+{
+lean_object* x_219; 
+if (x_218 == 0)
+{
+x_219 = x_217;
+goto block_220;
+}
+else
+{
+lean_object* x_221; 
+x_221 = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(x_221, 0, x_216);
+x_219 = x_221;
+goto block_220;
+}
+block_220:
+{
+x_178 = x_219;
 goto block_213;
+}
 }
 }
 block_213:
@@ -933,18 +954,46 @@ return x_168;
 }
 }
 }
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Lean_Meta_Tactic_Grind_RegisterCommand(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+return lean_io_result_mk_ok(lean_box(0));
+}
+lean_object* runtime_initialize_Lean_Meta_Tactic_Grind_Attr(uint8_t builtin);
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Lean_Meta_Tactic_Grind_RegisterCommand(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+res = runtime_initialize_Lean_Meta_Tactic_Grind_Attr(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+l_Lean_Parser_Command_registerGrindAttr = _init_l_Lean_Parser_Command_registerGrindAttr();
+lean_mark_persistent(l_Lean_Parser_Command_registerGrindAttr);
+return lean_io_result_mk_ok(lean_box(0));
+}
 lean_object* initialize_Lean_Meta_Tactic_Grind_Attr(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Lean_Meta_Tactic_Grind_RegisterCommand(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Lean_Meta_Tactic_Grind_Attr(builtin);
+res = initialize_Lean_Meta_Tactic_Grind_Attr(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-l_Lean_Parser_Command_registerGrindAttr = _init_l_Lean_Parser_Command_registerGrindAttr();
-lean_mark_persistent(l_Lean_Parser_Command_registerGrindAttr);
-return lean_io_result_mk_ok(lean_box(0));
+res = runtime_initialize_Lean_Meta_Tactic_Grind_RegisterCommand(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Lean_Meta_Tactic_Grind_RegisterCommand(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Lean_Meta_Tactic_Grind_RegisterCommand(builtin);
 }
 #ifdef __cplusplus
 }

@@ -341,23 +341,33 @@ x_1 = lean_obj_once(&l_LawfulMonad_mk_x27___auto__1___closed__32, &l_LawfulMonad
 return x_1;
 }
 }
-lean_object* initialize_Init_Control_Id(uint8_t builtin);
-lean_object* initialize_Init_Grind_Tactics(uint8_t builtin);
-lean_object* initialize_Init_Ext(uint8_t builtin);
-static bool _G_initialized = false;
-LEAN_EXPORT lean_object* initialize_Init_Control_Lawful_Basic(uint8_t builtin) {
+lean_object* runtime_initialize_Init_Control_Id(uint8_t builtin);
+lean_object* runtime_initialize_Init_Grind_Tactics(uint8_t builtin);
+lean_object* runtime_initialize_Init_Ext(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Init_Control_Lawful_Basic(uint8_t builtin) {
 lean_object * res;
-if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
-_G_initialized = true;
-res = initialize_Init_Control_Id(builtin);
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Init_Control_Id(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Grind_Tactics(builtin);
+res = runtime_initialize_Init_Grind_Tactics(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Ext(builtin);
+res = runtime_initialize_Init_Ext(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Init_Control_Lawful_Basic(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
 l_LawfulMonad_mk_x27___auto__1 = _init_l_LawfulMonad_mk_x27___auto__1();
 lean_mark_persistent(l_LawfulMonad_mk_x27___auto__1);
 l_LawfulMonad_mk_x27___auto__3 = _init_l_LawfulMonad_mk_x27___auto__3();
@@ -369,6 +379,36 @@ lean_mark_persistent(l_LawfulMonad_mk_x27___auto__7);
 l_LawfulMonad_mk_x27___auto__9 = _init_l_LawfulMonad_mk_x27___auto__9();
 lean_mark_persistent(l_LawfulMonad_mk_x27___auto__9);
 return lean_io_result_mk_ok(lean_box(0));
+}
+lean_object* initialize_Init_Control_Id(uint8_t builtin);
+lean_object* initialize_Init_Grind_Tactics(uint8_t builtin);
+lean_object* initialize_Init_Ext(uint8_t builtin);
+static bool _G_initialized = false;
+LEAN_EXPORT lean_object* initialize_Init_Control_Lawful_Basic(uint8_t builtin) {
+lean_object * res;
+if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_initialized = true;
+res = initialize_Init_Control_Id(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_Grind_Tactics(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_Ext(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Control_Lawful_Basic(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Init_Control_Lawful_Basic(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Init_Control_Lawful_Basic(builtin);
 }
 #ifdef __cplusplus
 }

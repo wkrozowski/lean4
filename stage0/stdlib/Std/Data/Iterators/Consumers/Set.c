@@ -700,19 +700,28 @@ lean_dec(x_3);
 return x_9;
 }
 }
-lean_object* initialize_Std_Data_Iterators_Consumers_Monadic_Set(uint8_t builtin);
-lean_object* initialize_Init_Data_Iterators_Consumers_Total(uint8_t builtin);
-static bool _G_initialized = false;
-LEAN_EXPORT lean_object* initialize_Std_Data_Iterators_Consumers_Set(uint8_t builtin) {
+lean_object* runtime_initialize_Std_Data_Iterators_Consumers_Monadic_Set(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Iterators_Consumers_Total(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Std_Data_Iterators_Consumers_Set(uint8_t builtin) {
 lean_object * res;
-if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
-_G_initialized = true;
-res = initialize_Std_Data_Iterators_Consumers_Monadic_Set(builtin);
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Std_Data_Iterators_Consumers_Monadic_Set(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Iterators_Consumers_Total(builtin);
+res = runtime_initialize_Init_Data_Iterators_Consumers_Total(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Std_Data_Iterators_Consumers_Set(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
 l_Std_Iter_toTreeSet___auto__1 = _init_l_Std_Iter_toTreeSet___auto__1();
 lean_mark_persistent(l_Std_Iter_toTreeSet___auto__1);
 l_Std_Iter_Total_toTreeSet___auto__1 = _init_l_Std_Iter_Total_toTreeSet___auto__1();
@@ -722,6 +731,31 @@ lean_mark_persistent(l_Std_Iter_toExtTreeSet___auto__1);
 l_Std_Iter_Total_toExtTreeSet___auto__1 = _init_l_Std_Iter_Total_toExtTreeSet___auto__1();
 lean_mark_persistent(l_Std_Iter_Total_toExtTreeSet___auto__1);
 return lean_io_result_mk_ok(lean_box(0));
+}
+lean_object* initialize_Std_Data_Iterators_Consumers_Monadic_Set(uint8_t builtin);
+lean_object* initialize_Init_Data_Iterators_Consumers_Total(uint8_t builtin);
+static bool _G_initialized = false;
+LEAN_EXPORT lean_object* initialize_Std_Data_Iterators_Consumers_Set(uint8_t builtin) {
+lean_object * res;
+if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_initialized = true;
+res = initialize_Std_Data_Iterators_Consumers_Monadic_Set(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_Data_Iterators_Consumers_Total(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Std_Data_Iterators_Consumers_Set(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Std_Data_Iterators_Consumers_Set(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Std_Data_Iterators_Consumers_Set(builtin);
 }
 #ifdef __cplusplus
 }

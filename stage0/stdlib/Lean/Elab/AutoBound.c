@@ -138,133 +138,145 @@ LEAN_EXPORT lean_object* l_Lean_Elab_AutoBoundImplicitContext_push(lean_object*,
 LEAN_EXPORT lean_object* l_Lean_Option_register___at___00Lean_Elab_initFn_00___x40_Lean_Elab_AutoBound_366037992____hygCtx___hyg_4__spec__0(lean_object* x_1, lean_object* x_2, lean_object* x_3) {
 _start:
 {
-uint8_t x_5; 
-x_5 = !lean_is_exclusive(x_2);
-if (x_5 == 0)
+lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_33; 
+x_5 = lean_ctor_get(x_2, 0);
+x_6 = lean_ctor_get(x_2, 1);
+x_33 = !lean_is_exclusive(x_2);
+if (x_33 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; uint8_t x_9; lean_object* x_10; lean_object* x_11; 
-x_6 = lean_ctor_get(x_2, 0);
-x_7 = lean_ctor_get(x_2, 1);
-x_8 = lean_alloc_ctor(1, 0, 1);
-x_9 = lean_unbox(x_6);
-lean_ctor_set_uint8(x_8, 0, x_9);
-lean_inc(x_1);
-x_10 = lean_alloc_ctor(0, 4, 0);
-lean_ctor_set(x_10, 0, x_1);
-lean_ctor_set(x_10, 1, x_3);
-lean_ctor_set(x_10, 2, x_8);
-lean_ctor_set(x_10, 3, x_7);
-lean_inc(x_1);
-x_11 = lean_register_option(x_1, x_10);
-if (lean_obj_tag(x_11) == 0)
-{
-uint8_t x_12; 
-x_12 = !lean_is_exclusive(x_11);
-if (x_12 == 0)
-{
-lean_object* x_13; 
-x_13 = lean_ctor_get(x_11, 0);
-lean_dec(x_13);
-lean_ctor_set(x_2, 1, x_6);
-lean_ctor_set(x_2, 0, x_1);
-lean_ctor_set(x_11, 0, x_2);
-return x_11;
+x_7 = x_2;
+x_8 = x_33;
+goto block_32;
 }
 else
 {
-lean_object* x_14; 
-lean_dec(x_11);
-lean_ctor_set(x_2, 1, x_6);
-lean_ctor_set(x_2, 0, x_1);
-x_14 = lean_alloc_ctor(0, 1, 0);
-lean_ctor_set(x_14, 0, x_2);
-return x_14;
-}
-}
-else
-{
-uint8_t x_15; 
-lean_free_object(x_2);
-lean_dec(x_6);
-lean_dec(x_1);
-x_15 = !lean_is_exclusive(x_11);
-if (x_15 == 0)
-{
-return x_11;
-}
-else
-{
-lean_object* x_16; lean_object* x_17; 
-x_16 = lean_ctor_get(x_11, 0);
-lean_inc(x_16);
-lean_dec(x_11);
-x_17 = lean_alloc_ctor(1, 1, 0);
-lean_ctor_set(x_17, 0, x_16);
-return x_17;
-}
-}
-}
-else
-{
-lean_object* x_18; lean_object* x_19; lean_object* x_20; uint8_t x_21; lean_object* x_22; lean_object* x_23; 
-x_18 = lean_ctor_get(x_2, 0);
-x_19 = lean_ctor_get(x_2, 1);
-lean_inc(x_19);
-lean_inc(x_18);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_2);
-x_20 = lean_alloc_ctor(1, 0, 1);
-x_21 = lean_unbox(x_18);
-lean_ctor_set_uint8(x_20, 0, x_21);
-lean_inc(x_1);
-x_22 = lean_alloc_ctor(0, 4, 0);
-lean_ctor_set(x_22, 0, x_1);
-lean_ctor_set(x_22, 1, x_3);
-lean_ctor_set(x_22, 2, x_20);
-lean_ctor_set(x_22, 3, x_19);
-lean_inc(x_1);
-x_23 = lean_register_option(x_1, x_22);
-if (lean_obj_tag(x_23) == 0)
+x_7 = lean_box(0);
+x_8 = x_33;
+goto block_32;
+}
+block_32:
 {
-lean_object* x_24; lean_object* x_25; lean_object* x_26; 
-if (lean_is_exclusive(x_23)) {
- lean_ctor_release(x_23, 0);
- x_24 = x_23;
-} else {
- lean_dec_ref(x_23);
- x_24 = lean_box(0);
-}
-x_25 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_25, 0, x_1);
-lean_ctor_set(x_25, 1, x_18);
-if (lean_is_scalar(x_24)) {
- x_26 = lean_alloc_ctor(0, 1, 0);
-} else {
- x_26 = x_24;
-}
-lean_ctor_set(x_26, 0, x_25);
-return x_26;
+lean_object* x_9; uint8_t x_10; lean_object* x_11; lean_object* x_12; 
+x_9 = lean_alloc_ctor(1, 0, 1);
+x_10 = lean_unbox(x_5);
+lean_ctor_set_uint8(x_9, 0, x_10);
+lean_inc(x_1);
+x_11 = lean_alloc_ctor(0, 4, 0);
+lean_ctor_set(x_11, 0, x_1);
+lean_ctor_set(x_11, 1, x_3);
+lean_ctor_set(x_11, 2, x_9);
+lean_ctor_set(x_11, 3, x_6);
+lean_inc(x_1);
+x_12 = lean_register_option(x_1, x_11);
+if (lean_obj_tag(x_12) == 0)
+{
+lean_object* x_13; uint8_t x_14; uint8_t x_22; 
+x_22 = !lean_is_exclusive(x_12);
+if (x_22 == 0)
+{
+lean_object* x_23; 
+x_23 = lean_ctor_get(x_12, 0);
+lean_dec(x_23);
+x_13 = x_12;
+x_14 = x_22;
+goto block_21;
 }
 else
 {
-lean_object* x_27; lean_object* x_28; lean_object* x_29; 
-lean_dec(x_18);
+lean_dec(x_12);
+x_13 = lean_box(0);
+x_14 = x_22;
+goto block_21;
+}
+block_21:
+{
+lean_object* x_15; 
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 1, x_5);
+lean_ctor_set(x_7, 0, x_1);
+x_15 = x_7;
+goto block_19;
+}
+else
+{
+lean_object* x_20; 
+x_20 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_20, 0, x_1);
+lean_ctor_set(x_20, 1, x_5);
+x_15 = x_20;
+goto block_19;
+}
+block_19:
+{
+lean_object* x_16; 
+if (x_14 == 0)
+{
+lean_ctor_set(x_13, 0, x_15);
+x_16 = x_13;
+goto block_17;
+}
+else
+{
+lean_object* x_18; 
+x_18 = lean_alloc_ctor(0, 1, 0);
+lean_ctor_set(x_18, 0, x_15);
+x_16 = x_18;
+goto block_17;
+}
+block_17:
+{
+return x_16;
+}
+}
+}
+}
+else
+{
+lean_object* x_24; lean_object* x_25; uint8_t x_26; uint8_t x_31; 
+lean_del_object(x_7);
+lean_dec(x_5);
 lean_dec(x_1);
-x_27 = lean_ctor_get(x_23, 0);
-lean_inc(x_27);
-if (lean_is_exclusive(x_23)) {
- lean_ctor_release(x_23, 0);
- x_28 = x_23;
-} else {
- lean_dec_ref(x_23);
- x_28 = lean_box(0);
+x_24 = lean_ctor_get(x_12, 0);
+x_31 = !lean_is_exclusive(x_12);
+if (x_31 == 0)
+{
+x_25 = x_12;
+x_26 = x_31;
+goto block_30;
 }
-if (lean_is_scalar(x_28)) {
- x_29 = lean_alloc_ctor(1, 1, 0);
-} else {
- x_29 = x_28;
+else
+{
+lean_inc(x_24);
+lean_dec(x_12);
+x_25 = lean_box(0);
+x_26 = x_31;
+goto block_30;
 }
-lean_ctor_set(x_29, 0, x_27);
-return x_29;
+block_30:
+{
+lean_object* x_27; 
+if (x_26 == 0)
+{
+x_27 = x_25;
+goto block_28;
+}
+else
+{
+lean_object* x_29; 
+x_29 = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(x_29, 0, x_24);
+x_27 = x_29;
+goto block_28;
+}
+block_28:
+{
+return x_27;
+}
+}
 }
 }
 }
@@ -991,30 +1003,86 @@ return x_1;
 LEAN_EXPORT lean_object* l_Lean_Elab_AutoBoundImplicitContext_push(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-uint8_t x_3; 
-x_3 = !lean_is_exclusive(x_1);
-if (x_3 == 0)
-{
-lean_object* x_4; lean_object* x_5; 
+uint8_t x_3; lean_object* x_4; lean_object* x_5; uint8_t x_6; uint8_t x_12; 
+x_3 = lean_ctor_get_uint8(x_1, sizeof(void*)*1);
 x_4 = lean_ctor_get(x_1, 0);
-x_5 = l_Lean_PersistentArray_push___redArg(x_4, x_2);
-lean_ctor_set(x_1, 0, x_5);
-return x_1;
+x_12 = !lean_is_exclusive(x_1);
+if (x_12 == 0)
+{
+x_5 = x_1;
+x_6 = x_12;
+goto block_11;
 }
 else
 {
-uint8_t x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; 
-x_6 = lean_ctor_get_uint8(x_1, sizeof(void*)*1);
-x_7 = lean_ctor_get(x_1, 0);
-lean_inc(x_7);
+lean_inc(x_4);
 lean_dec(x_1);
-x_8 = l_Lean_PersistentArray_push___redArg(x_7, x_2);
-x_9 = lean_alloc_ctor(0, 1, 1);
-lean_ctor_set(x_9, 0, x_8);
-lean_ctor_set_uint8(x_9, sizeof(void*)*1, x_6);
-return x_9;
+x_5 = lean_box(0);
+x_6 = x_12;
+goto block_11;
+}
+block_11:
+{
+lean_object* x_7; lean_object* x_8; 
+x_7 = l_Lean_PersistentArray_push___redArg(x_4, x_2);
+if (x_6 == 0)
+{
+lean_ctor_set(x_5, 0, x_7);
+x_8 = x_5;
+goto block_9;
+}
+else
+{
+lean_object* x_10; 
+x_10 = lean_alloc_ctor(0, 1, 1);
+lean_ctor_set(x_10, 0, x_7);
+lean_ctor_set_uint8(x_10, sizeof(void*)*1, x_3);
+x_8 = x_10;
+goto block_9;
+}
+block_9:
+{
+return x_8;
 }
 }
+}
+}
+lean_object* runtime_initialize_Lean_Meta_Hint(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Lean_Elab_AutoBound(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Lean_Meta_Hint(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = l_Lean_Elab_initFn_00___x40_Lean_Elab_AutoBound_366037992____hygCtx___hyg_4_()
+;
+if (lean_io_result_is_error(res)) return res;
+l_Lean_Elab_autoImplicit = lean_io_result_get_value(res);
+lean_mark_persistent(l_Lean_Elab_autoImplicit);
+lean_dec_ref(res);
+res = l_Lean_Elab_initFn_00___x40_Lean_Elab_AutoBound_323533819____hygCtx___hyg_4_()
+;
+if (lean_io_result_is_error(res)) return res;
+l_Lean_Elab_relaxedAutoImplicit = lean_io_result_get_value(res);
+lean_mark_persistent(l_Lean_Elab_relaxedAutoImplicit);
+lean_dec_ref(res);
+l_Lean_Elab_instInhabitedAutoBoundImplicitContext_default = _init_l_Lean_Elab_instInhabitedAutoBoundImplicitContext_default();
+lean_mark_persistent(l_Lean_Elab_instInhabitedAutoBoundImplicitContext_default);
+l_Lean_Elab_instInhabitedAutoBoundImplicitContext = _init_l_Lean_Elab_instInhabitedAutoBoundImplicitContext();
+lean_mark_persistent(l_Lean_Elab_instInhabitedAutoBoundImplicitContext);
+l_Lean_Elab_instEmptyCollectionAutoBoundImplicitContext = _init_l_Lean_Elab_instEmptyCollectionAutoBoundImplicitContext();
+lean_mark_persistent(l_Lean_Elab_instEmptyCollectionAutoBoundImplicitContext);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Lean_Elab_AutoBound(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+return lean_io_result_mk_ok(lean_box(0));
 }
 lean_object* initialize_Lean_Meta_Hint(uint8_t builtin);
 static bool _G_initialized = false;
@@ -1022,26 +1090,19 @@ LEAN_EXPORT lean_object* initialize_Lean_Elab_AutoBound(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Lean_Meta_Hint(builtin);
+res = initialize_Lean_Meta_Hint(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-if (builtin) {res = l_Lean_Elab_initFn_00___x40_Lean_Elab_AutoBound_366037992____hygCtx___hyg_4_();
+res = runtime_initialize_Lean_Elab_AutoBound(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
-l_Lean_Elab_autoImplicit = lean_io_result_get_value(res);
-lean_mark_persistent(l_Lean_Elab_autoImplicit);
 lean_dec_ref(res);
-}if (builtin) {res = l_Lean_Elab_initFn_00___x40_Lean_Elab_AutoBound_323533819____hygCtx___hyg_4_();
+res = meta_initialize_Lean_Elab_AutoBound(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
-l_Lean_Elab_relaxedAutoImplicit = lean_io_result_get_value(res);
-lean_mark_persistent(l_Lean_Elab_relaxedAutoImplicit);
 lean_dec_ref(res);
-}l_Lean_Elab_instInhabitedAutoBoundImplicitContext_default = _init_l_Lean_Elab_instInhabitedAutoBoundImplicitContext_default();
-lean_mark_persistent(l_Lean_Elab_instInhabitedAutoBoundImplicitContext_default);
-l_Lean_Elab_instInhabitedAutoBoundImplicitContext = _init_l_Lean_Elab_instInhabitedAutoBoundImplicitContext();
-lean_mark_persistent(l_Lean_Elab_instInhabitedAutoBoundImplicitContext);
-l_Lean_Elab_instEmptyCollectionAutoBoundImplicitContext = _init_l_Lean_Elab_instEmptyCollectionAutoBoundImplicitContext();
-lean_mark_persistent(l_Lean_Elab_instEmptyCollectionAutoBoundImplicitContext);
-return lean_io_result_mk_ok(lean_box(0));
+return initialize_Lean_Elab_AutoBound(builtin);
 }
 #ifdef __cplusplus
 }

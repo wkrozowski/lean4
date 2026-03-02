@@ -129,7 +129,7 @@ def hasParam (u : Level) : Bool :=
 
 end Level
 
-@[expose] def levelZero :=
+@[expose, implicit_reducible] def levelZero :=
   Level.zero
 
 def mkLevelMVar (mvarId : LMVarId) :=
@@ -213,7 +213,7 @@ def isAlwaysZero : Level → Bool
   | max l₁ l₂    => isAlwaysZero l₁ && isAlwaysZero l₂
   | imax _  l₂   => isAlwaysZero l₂
 
-@[expose] def ofNat : Nat → Level
+@[expose, implicit_reducible] def ofNat : Nat → Level
   | 0   => levelZero
   | n+1 => mkLevelSucc (ofNat n)
 
