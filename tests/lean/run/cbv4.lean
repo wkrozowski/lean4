@@ -11,6 +11,4 @@ def checkAll (gas : Nat) : Nat → Bool
   | 0 => true
   | n + 1 => bif manyStep (n + 2) (n + 2) gas then checkAll gas n else false
 
-set_option maxRecDepth 5000
-set_option trace.Meta.Tactic true
 example : checkAll 70 100 = true := by cbv
