@@ -158,4 +158,23 @@ theorem Int.dvd_eq_true (a b : Int) (h : decide (a ∣ b) = true) : (a ∣ b) = 
 theorem Nat.dvd_eq_false (a b : Nat) (h : decide (a ∣ b) = false) : (a ∣ b) = False := by simp_all
 theorem Int.dvd_eq_false (a b : Int) (h : decide (a ∣ b) = false) : (a ∣ b) = False := by simp_all
 
+-- When instance reduces to isTrue/isFalse (used by simpDecideDecidable)
+theorem decide_isTrue (p : Prop) {inst : Decidable p} {h : p}
+    : @decide p inst = true := by simp [*]
+
+theorem decide_isFalse (p : Prop) {inst : Decidable p} {h : ¬p}
+    : @decide p inst = false := by simp [*]
+
+-- When proposition simplifies to True/False (used by simpDecideCbv .step case)
+theorem decide_prop_eq_true (p : Prop) {inst : Decidable p} (h : p = True)
+    : @decide p inst = true := by simp [*]
+
+theorem decide_prop_eq_false (p : Prop) {inst : Decidable p} (h : p = False)
+    : @decide p inst = false := by simp [*]
+
+-- Congr lemma for rebuilding decide with a new proposition (fallback)
+theorem decide_congr (p : Prop) {inst : Decidable p}
+    (p' : Prop) {inst' : Decidable p'} (h : p = p')
+    : @decide p inst = @decide p' inst' := by simp [*]
+
 end Lean.Sym

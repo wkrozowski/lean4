@@ -23,7 +23,7 @@ import Lean.Meta.Tactic.Cbv.Opaque
 /-!
 # Control Flow Handling for Cbv
 
-Cbv-specific simprocs for `ite`, `dite`, `cond`, `match`, and `Decidable.rec`.
+Cbv-specific simprocs for `ite`, `dite`, `cond`, `match`, `Decidable.rec`, and `Decidable.decide`.
 
 The standard `Sym.Simp` control flow simprocs (`simpIte`, `simpDIte`) give up
 when the condition does not reduce to `True` or `False` directly. The Cbv variants
@@ -172,6 +172,61 @@ public def simpAnd : Simproc := fun e => do
     else
       return .rfl
 
+/-- Reduce `decide` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
+def simpDecideDecidable (p inst : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst with
+  | Decidable.isTrue _ hp =>
+    return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_isTrue) p inst hp
+  | Decidable.isFalse _ hnp =>
+    return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_isFalse) p inst hnp
+  | _ => fallback
+
+/-- Simplify the `Decidable` instance, then try `simpDecideDecidable`. -/
+def simpDecideDecidableWithFallback (p inst : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst) with
+  | .rfl _ => simpDecideDecidable p inst fallback
+  | .step inst' _ _ => simpDecideDecidable p inst' fallback
+
+/-- Simplify `Decidable.decide` by reducing the instance or simplifying the proposition.
+
+Tries the instance reduction path first (which handles the common case where the `Decidable`
+instance reduces to `isTrue`/`isFalse` after evaluation). Only falls back to simplifying
+the proposition when the instance doesn't reduce, to avoid deep recursion into complex
+propositions. -/
+public def simpDecideCbv : Simproc := fun e => do
+  let numArgs := e.getAppNumArgs
+  if numArgs < 2 then return .rfl (done := true)
+  propagateOverApplied e (numArgs - 2) fun e => do
+    let_expr Decidable.decide p inst := e | return .rfl
+    -- First check if p is already True/False (cheap check, no recursion)
+    if (← isTrueExpr p) then
+      return .step (← getBoolTrueExpr) <| mkApp (mkConst ``decide_true) inst
+    else if (← isFalseExpr p) then
+      return .step (← getBoolFalseExpr) <| mkApp (mkConst ``decide_false) inst
+    else
+      -- Try reducing the instance first (handles decide_cbv's common path)
+      simpDecideDecidableWithFallback p inst <| do
+        -- Instance didn't reduce; try simplifying the proposition
+        match (← simp p) with
+        | .rfl _ =>
+          if (← isTrueExpr p) then
+            return .step (← getBoolTrueExpr) <| mkApp (mkConst ``decide_true) inst
+          else if (← isFalseExpr p) then
+            return .step (← getBoolFalseExpr) <| mkApp (mkConst ``decide_false) inst
+          else
+            return .rfl (done := true)
+        | .step p' h _ =>
+          if (← isTrueExpr p') then
+            return .step (← getBoolTrueExpr) <| mkApp (e.replaceFn ``Sym.decide_prop_eq_true) h
+          else if (← isFalseExpr p') then
+            return .step (← getBoolFalseExpr) <| mkApp (e.replaceFn ``Sym.decide_prop_eq_false) h
+          else
+            let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) p p' inst h
+            let e' := e.getBoundedAppFn 2
+            let e' ← mkAppS₂ e' p' inst'
+            let h' := mkApp3 (e.replaceFn ``Sym.decide_congr) p' inst' h
+            return .step e' h' (done := true)
+
 end Lean.Meta.Sym.Simp
 
 namespace Lean.Meta.Tactic.Cbv
@@ -235,11 +290,13 @@ public def simpControlCbv : Simproc := fun e => do
     simpDIteCbv e
   else if declName == ``Decidable.rec then
     -- We force the rewrite in the last argument, so that we can unfold the `Decidable` instance.
-    (simpInterlaced · #[false,false,true,true,true]) >> reduceRecMatcher <| e
+    (simpInterlaced · #[false,false,false,false,true]) >> reduceRecMatcher <| e
   else if declName == ``Or then
     simpOr e
   else if declName == ``And then
     simpAnd e
+  else if declName == ``Decidable.decide then
+    simpDecideCbv e
   else
     tryMatcher e
 
