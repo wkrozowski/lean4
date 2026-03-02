@@ -8,6 +8,7 @@ module
 prelude
 public import Lean.Meta.Tactic.Cbv
 public import Lean.Meta.Tactic
+public import Lean.Elab.Tactic.Location
 
 public section
 
@@ -15,16 +16,24 @@ namespace Lean.Elab.Tactic.Cbv
 
 open Lean.Meta.Tactic.Cbv
 
-@[builtin_tactic Lean.Parser.Tactic.cbv] def evalCbv : Tactic := fun stx =>
-  match stx with
-  | `(tactic| cbv) => withMainContext do
-    if cbv.warning.get (← getOptions) then
-      logWarningAt stx "The `cbv` tactic is experimental and still under development. Avoid using it in production projects"
+@[builtin_tactic Lean.Parser.Tactic.cbv] def evalCbv : Tactic := fun stx => withMainContext do
+  if cbv.warning.get (← getOptions) then
+    logWarningAt stx "The `cbv` tactic is experimental and still under development. Avoid using it in production projects"
+  let loc := expandOptLocation stx[1]
+  match loc with
+  | Location.targets hyps simplifyTarget =>
+    let fvarIds ← getFVarIds hyps
     liftMetaTactic fun mvar => do
-      match (← cbvGoal mvar) with
+      match (← cbvGoal mvar (simplifyTarget := simplifyTarget) (fvarIdsToSimp := fvarIds)) with
       | .none => return []
       | .some newGoal => return [newGoal]
-  | _ => throwUnsupportedSyntax
+  | Location.wildcard =>
+    let mvarId ← getMainGoal
+    let fvarIds ← mvarId.getNondepPropHyps
+    liftMetaTactic fun mvar => do
+      match (← cbvGoal mvar (simplifyTarget := true) (fvarIdsToSimp := fvarIds)) with
+      | .none => return []
+      | .some newGoal => return [newGoal]
 
 @[builtin_tactic Lean.Parser.Tactic.decide_cbv] def evalDecideCbv : Tactic := fun stx =>
   match stx with

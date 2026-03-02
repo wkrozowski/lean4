@@ -15,6 +15,8 @@ import Lean.Meta.Tactic.Cbv.TheoremsLookup
 import Lean.Meta.Tactic.Cbv.CbvEvalExt
 import Lean.Meta.Sym
 import Lean.Meta.Tactic.Refl
+import Lean.Meta.Tactic.Replace
+import Lean.Meta.Tactic.Assert
 
 /-!
 # Cbv Evaluator
@@ -84,7 +86,7 @@ For a constant application, `handleApp` tries in order:
 ## Entry points
 
 - `cbvEntry`: reduces a single expression (used by `conv => cbv`)
-- `cbvGoal`: reduces both sides of an equation goal (used by the `cbv` tactic)
+- `cbvGoal`: reduces goal target and/or hypothesis types (used by the `cbv` tactic)
 - `cbvDecideGoal`: reduces `decide P = true` and closes or errors (used by `decide_cbv`)
 -/
 
@@ -281,49 +283,55 @@ public def cbvEntry (e : Expr) : MetaM Result := do
     let e ← Sym.shareCommon e
     SimpM.run' (simp e) (methods := methods)
 
-/-- Reduce one side of an equation goal. When `inv = false`, reduces the LHS;
-when `inv = true`, reduces the RHS. Returns `none` if the goal is closed,
-or a residual goal with the reduced side. -/
-public def cbvGoalCore (m : MVarId) (inv : Bool := false) : MetaM (Option MVarId) := do
-  Sym.SymM.run do
-    let methods := {pre := cbvPre, post := cbvPost}
-    let m ← Sym.preprocessMVar m
-    let mType ← m.getType
-    let some (_, lhs, rhs) := mType.eq? | return m
-    let (toReduce, toCompare) := if inv then (rhs, lhs) else (lhs, rhs)
-    let result ← SimpM.run' (simp toReduce) (methods := methods)
-    match result with
-    | .rfl _ =>
-      unless (← isDefEq toReduce toCompare) do return m
-      m.refl
-      return .none
-    | .step e' proof _ =>
-      if (← isDefEq e' toCompare) then
-        if inv then
-          m.assign (← mkEqSymm proof)
-        else
-          m.assign proof
-        return .none
-      else
-        if inv then
-          let newGoalType ← mkEq toCompare e'
-          let newGoal ← mkFreshExprMVar newGoalType
-          let toAssign ← mkEqTrans newGoal proof
-          m.assign toAssign
-          return newGoal.mvarId!
-        else
-          let newGoalType ← mkEq e' toCompare
-          let newGoal ← mkFreshExprMVar newGoalType
-          let toAssign ← mkEqTrans proof newGoal
-          m.assign toAssign
-          return newGoal.mvarId!
+/-- Reduce goal target and/or hypothesis types using call-by-value evaluation.
 
-/-- Reduce both sides of an equation goal. Tries the LHS first, then the RHS.
-Used by the `cbv` tactic. -/
-public def cbvGoal (m : MVarId) : MetaM (Option MVarId) := do
-  match (← cbvGoalCore m (inv := false)) with
-  | .none => return .none
-  | .some m' => cbvGoalCore m' (inv := true)
+For each hypothesis in `fvarIdsToSimp`, reduces its type via `cbvEntry`. If the
+reduced type is `False`, the goal is closed immediately. Otherwise, the hypothesis
+is replaced with the reduced type.
+
+If `simplifyTarget` is true, reduces the goal type via `cbvEntry`. If the reduced
+type is `True`, the goal is closed. Otherwise, the target is replaced.
+
+After all reductions, attempts `refl` to close equation goals of the form `v = v`. -/
+public def cbvGoal (mvarId : MVarId) (simplifyTarget : Bool := true) (fvarIdsToSimp : Array FVarId := #[]) : MetaM (Option MVarId) := do
+  mvarId.withContext do
+    let mut mvarIdNew := mvarId
+    let mut toAssert : Array Hypothesis := #[]
+    -- Process hypotheses
+    for fvarId in fvarIdsToSimp do
+      let localDecl ← fvarId.getDecl
+      let type ← instantiateMVars localDecl.type
+      let result ← cbvEntry type
+      match result with
+      | .rfl _ => pure ()
+      | .step type' proof _ =>
+        if type'.isFalse then
+          let u ← getLevel type
+          mvarIdNew.assign (← mkFalseElim (← mvarIdNew.getType) (mkApp4 (mkConst ``Eq.mp [u]) type type' proof (mkFVar fvarId)))
+          return none
+        else
+          let u ← getLevel type
+          toAssert := toAssert.push { userName := localDecl.userName, type := type', value := mkApp4 (mkConst ``Eq.mp [u]) type type' proof (mkFVar fvarId) }
+    -- Process target
+    if simplifyTarget then
+      let target ← instantiateMVars (← mvarIdNew.getType)
+      let result ← cbvEntry target
+      match result with
+      | .rfl _ => pure ()
+      | .step target' proof _ =>
+        if target'.isTrue then
+          mvarIdNew.assign (← mkOfEqTrue proof)
+          return none
+        else
+          mvarIdNew ← mvarIdNew.replaceTargetEq target' proof
+    -- Assert new hypotheses and clear old ones
+    let (_, mvarIdNew') ← mvarIdNew.assertHypotheses toAssert
+    mvarIdNew := mvarIdNew'
+    mvarIdNew ← mvarIdNew.tryClearMany fvarIdsToSimp
+    -- Try refl to close equation goals
+    match (← observing? mvarIdNew.refl) with
+    | some () => return none
+    | none => return some mvarIdNew
 
 /--
 Attempt to close a goal of the form `decide P = true` by reducing only the LHS using `cbv`.
