@@ -2408,6 +2408,7 @@ def extractAndExtendAux (k len : Nat) (x : BitVec w) (acc : BitVec (k * len)) (h
   | n' + 1 =>
     let acc' := extractAndExtendBit k len x ++ acc
     extractAndExtendAux (k + 1) len x (acc'.cast (by simp [Nat.add_mul]; omega)) (by omega)
+termination_by w - k
 
 /-- We instantiate `extractAndExtendAux` to extend each bit to `len`, extending
   each bit in `x` to have width `w` and returning a `BitVec (w * w)`. -/
@@ -2443,6 +2444,7 @@ def cpopTree (l : BitVec (len * w)) : BitVec w :=
     l.cast (by simp [h])
   else
     cpopTree (cpopLayer l 0#(0 * w) (by omega))
+termination_by len
 
 /--
   Given flattened bitvector `x : BitVec w` and a length `l : Nat`,
@@ -2778,6 +2780,7 @@ private theorem addRecAux_cpopTree {x : BitVec (len * w)} :
       · rfl
       · intros j hj
         simp [extractLsb'_cpopLayer]
+termination_by len
 
 private theorem addRecAux_eq_cpopTree {x : BitVec (len * w)} :
     x.addRecAux len 0#w = (x.cpopTree).cast (by simp) := by

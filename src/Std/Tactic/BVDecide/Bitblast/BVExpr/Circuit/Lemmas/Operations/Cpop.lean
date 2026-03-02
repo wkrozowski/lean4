@@ -124,6 +124,7 @@ theorem denote_blastExtractAndExtend.go (assign : α → Bool) (aig : AIG α) (c
   · have hcurr : currIdx = w := by omega
     subst hcurr
     rw [← hgen, ← hacc idx hidx]
+termination_by w - currIdx
 
 theorem denote_blastExtractAndExtend (assign : α → Bool) (aig : AIG α) (w : Nat) (xc : AIG.RefVec aig w)
     (x : BitVec w)
@@ -212,6 +213,7 @@ theorem denote_blastCpopLayer.go (aig : AIG α) (iterNum : Nat)
   · have h : iterNum = (len + 1) / 2 := by omega
     subst h
     rw [← hgen, hnew]
+termination_by len - iterNum * 2
 
 theorem denote_blastCpopLayer (aig : AIG α)
     (oldLayer : AIG.RefVec aig (len * w))
@@ -277,6 +279,7 @@ theorem denote_blastCpopTree.go (aig : AIG α) (len : Nat)
       · apply eqRec_heq
       · apply proof_irrel_heq
     · omega
+termination_by len
 
 
 theorem denote_blastCpopTree (aig : AIG α) (len : Nat)
@@ -293,7 +296,8 @@ theorem denote_blastCpopTree (aig : AIG α) (len : Nat)
   simp [hpar]
 
 @[simp]
-theorem denote_blastCpop (aig : AIG α) (xc : AIG.RefVec aig w) (x : BitVec w) (assign : α → Bool)
+public theorem denote_blastCpop (aig : AIG α) (xc : AIG.RefVec aig w) (x : BitVec w)
+    (assign : α → Bool)
     (hx : ∀ (idx : Nat) (hidx : idx < w), ⟦aig, xc.get idx hidx, assign⟧ = x.getLsbD idx) :
     ∀ (idx : Nat) (hidx : idx < w),
       ⟦
