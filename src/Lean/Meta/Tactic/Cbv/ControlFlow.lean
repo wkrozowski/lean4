@@ -159,6 +159,46 @@ public def simpDIteCbv : Simproc := fun e => do
         let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
         return .step e' h'
 
+/-- Short-circuit evaluation of `Or`. Simplifies only the left argument;
+if it reduces to `True`, returns `True` immediately without evaluating the right side. -/
+public def simpOr : Simproc := fun e => do
+  let_expr Or a b := e | return .rfl
+  match (← simp a) with
+  | .rfl _ =>
+    if (← isTrueExpr a) then
+      return .step (← getTrueExpr) (mkApp (mkConst ``true_or) b) (done := true)
+    else if (← isFalseExpr a) then
+      return .step b (mkApp (mkConst ``false_or) b)
+    else
+      return .rfl
+  | .step a' ha _ =>
+    if (← isTrueExpr a') then
+      return .step (← getTrueExpr) (mkApp (e.replaceFn ``Sym.or_eq_true_left) ha) (done := true)
+    else if (← isFalseExpr a') then
+      return .step b (mkApp (e.replaceFn ``Sym.or_eq_right) ha)
+    else
+      return .rfl
+
+/-- Short-circuit evaluation of `And`. Simplifies only the left argument;
+if it reduces to `False`, returns `False` immediately without evaluating the right side. -/
+public def simpAnd : Simproc := fun e => do
+  let_expr And a b := e | return .rfl
+  match (← simp a) with
+  | .rfl _ =>
+    if (← isFalseExpr a) then
+      return .step (← getFalseExpr) (mkApp (mkConst ``false_and) b) (done := true)
+    else if (← isTrueExpr a) then
+      return .step b (mkApp (mkConst ``true_and) b)
+    else
+      return .rfl
+  | .step a' ha _ =>
+    if (← isFalseExpr a') then
+      return .step (← getFalseExpr) (mkApp (e.replaceFn ``Sym.and_eq_false_left) ha) (done := true)
+    else if (← isTrueExpr a') then
+      return .step b (mkApp (e.replaceFn ``Sym.and_eq_left) ha)
+    else
+      return .rfl
+
 end Lean.Meta.Sym.Simp
 
 namespace Lean.Meta.Tactic.Cbv
@@ -223,6 +263,10 @@ public def simpControlCbv : Simproc := fun e => do
   else if declName == ``Decidable.rec then
     -- We force the rewrite in the last argument, so that we can unfold the `Decidable` instance.
     (simpInterlaced · #[false,false,true,true,true]) >> reduceRecMatcher <| e
+  else if declName == ``Or then
+    simpOr e
+  else if declName == ``And then
+    simpAnd e
   else
     tryMatcher e
 
