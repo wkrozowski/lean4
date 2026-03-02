@@ -198,34 +198,21 @@ public def simpDecideCbv : Simproc := fun e => do
   if numArgs < 2 then return .rfl (done := true)
   propagateOverApplied e (numArgs - 2) fun e => do
     let_expr Decidable.decide p inst := e | return .rfl
-    -- First check if p is already True/False (cheap check, no recursion)
-    if (← isTrueExpr p) then
-      return .step (← getBoolTrueExpr) <| mkApp (mkConst ``decide_true) inst
-    else if (← isFalseExpr p) then
-      return .step (← getBoolFalseExpr) <| mkApp (mkConst ``decide_false) inst
-    else
-      -- Try reducing the instance first (handles decide_cbv's common path)
-      simpDecideDecidableWithFallback p inst <| do
-        -- Instance didn't reduce; try simplifying the proposition
-        match (← simp p) with
-        | .rfl _ =>
-          if (← isTrueExpr p) then
-            return .step (← getBoolTrueExpr) <| mkApp (mkConst ``decide_true) inst
-          else if (← isFalseExpr p) then
-            return .step (← getBoolFalseExpr) <| mkApp (mkConst ``decide_false) inst
-          else
-            return .rfl (done := true)
-        | .step p' h _ =>
-          if (← isTrueExpr p') then
-            return .step (← getBoolTrueExpr) <| mkApp (e.replaceFn ``Sym.decide_prop_eq_true) h
-          else if (← isFalseExpr p') then
-            return .step (← getBoolFalseExpr) <| mkApp (e.replaceFn ``Sym.decide_prop_eq_false) h
-          else
-            let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) p p' inst h
-            let e' := e.getBoundedAppFn 2
-            let e' ← mkAppS₂ e' p' inst'
-            let h' := mkApp3 (e.replaceFn ``Sym.decide_congr) p' inst' h
-            return .step e' h' (done := true)
+    match (← simp p) with
+    | .rfl _ =>
+      if (← isTrueExpr p) then
+        return .step (← getBoolTrueExpr) (mkApp (mkConst ``decide_true) inst)
+      else if (← isFalseExpr p) then
+        return .step (← getBoolFalseExpr) (mkApp (mkConst ``decide_false) inst)
+      else
+        simpDecideDecidableWithFallback p inst (do return .rfl)
+    | .step p' hp _ =>
+      if (← isTrueExpr p') then
+        return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_true) p inst hp
+      else if (← isFalseExpr p') then
+        return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_false) p inst hp
+      else
+        return .rfl
 
 end Lean.Meta.Sym.Simp
 
