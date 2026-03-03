@@ -1,4 +1,5 @@
 set_option cbv.warning false
+set_option linter.unusedVariables false
 
 example : 2 + 3 = 5 := by cbv
 
@@ -16,10 +17,6 @@ example : Nat.succ 0 = 1 ∧ Nat.succ 1 = 2 := by cbv
 /--
 trace: h : True
 ⊢ True
----
-warning: unused variable `h`
-
-Note: This linter can be disabled with `set_option linter.unusedVariables false`
 -/
 #guard_msgs in
 example (h : 2 + 3 = 5) : True := by
@@ -32,8 +29,8 @@ example (h : 2 + 3 = 6) : 42 = 0 := by
   cbv at h
 
 -- `cbv at h |-` — reduces both hypothesis and target
-example (_h : 2 + 3 = 5) : 1 + 1 = 2 := by
-  cbv at _h |-
+example (h : 2 + 3 = 5) : 1 + 1 = 2 := by
+  cbv at h |-
 
 /--
 trace: h₁ h₂ : True
@@ -50,8 +47,8 @@ example (h₁ : 2 + 3 = 5) (h₂ : 1 + 1 = 2) : False := by
 -- Reduces hypothesis but not target when only hypothesis is specified
 /-- warning: declaration uses `sorry` -/
 #guard_msgs in
-example (_h : (fun x => x + 1) 0 = 1) : 2 + 2 = 5 := by
-  cbv at _h
+example (h : (fun x => x + 1) 0 = 1) : 2 + 2 = 5 := by
+  cbv at h
   sorry
 
 /--
