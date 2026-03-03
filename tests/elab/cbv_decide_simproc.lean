@@ -6,14 +6,14 @@ theorem test2 : decide False = false := by cbv
 
 /--
 info: theorem test1 : decide True = true :=
-decide_true instDecidableTrue
+of_eq_true (Eq.trans (congrFun' (congrArg Eq (decide_true instDecidableTrue)) true) (eq_self true))
 -/
 #guard_msgs in
 #print test1
 
 /--
 info: theorem test2 : decide False = false :=
-decide_false instDecidableFalse
+of_eq_true (Eq.trans (congrFun' (congrArg Eq (decide_false instDecidableFalse)) false) (eq_self false))
 -/
 #guard_msgs in
 #print test2
@@ -24,14 +24,24 @@ theorem test4 : decide (3 < 2) = false := by cbv
 
 /--
 info: theorem test3 : decide (1 < 2) = true :=
-Lean.Sym.decide_prop_eq_true (1 < 2) (Lean.Sym.Nat.lt_eq_true 1 2 (eagerReduce (Eq.refl true)))
+of_eq_true
+  (Eq.trans
+    (congrFun'
+      (congrArg Eq (Lean.Sym.decide_prop_eq_true (1 < 2) (Lean.Sym.Nat.lt_eq_true 1 2 (eagerReduce (Eq.refl true)))))
+      true)
+    (eq_self true))
 -/
 #guard_msgs in
 #print test3
 
 /--
 info: theorem test4 : decide (3 < 2) = false :=
-Lean.Sym.decide_prop_eq_false (3 < 2) (Lean.Sym.Nat.lt_eq_false 3 2 (eagerReduce (Eq.refl false)))
+of_eq_true
+  (Eq.trans
+    (congrFun'
+      (congrArg Eq (Lean.Sym.decide_prop_eq_false (3 < 2) (Lean.Sym.Nat.lt_eq_false 3 2 (eagerReduce (Eq.refl false)))))
+      false)
+    (eq_self false))
 -/
 #guard_msgs in
 #print test4
