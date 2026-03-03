@@ -319,3 +319,36 @@ can be inserted.
 #guard_msgs in
 def D3 := Bool
 deriving Decidable
+
+/-!
+Noncomputable delta deriving.
+-/
+
+class NC (α : Type) where
+  val : α
+
+noncomputable instance instNCNat : NC Nat where
+  val := Classical.choice ⟨0⟩
+
+def NCAlias := Nat
+
+deriving noncomputable instance NC for NCAlias
+
+/-- info: instNCNCAlias -/
+#guard_msgs in #synth NC NCAlias
+
+/-!
+Actionable error when `noncomputable` is omitted for a noncomputable instance.
+-/
+def NCAlias2 := Nat
+/--
+info: Try this: deriving noncomputable instance NC for NCAlias2
+---
+error: failed to derive instance because it depends on `instNCNat`, which is noncomputable
+-/
+#guard_msgs in deriving instance NC for NCAlias2
+
+/-!
+After the suggestion, `deriving noncomputable instance` works.
+-/
+deriving noncomputable instance NC for NCAlias2

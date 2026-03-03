@@ -1394,10 +1394,11 @@ private def isNonTrivialRegular (info : DefinitionVal) : MetaM Bool := do
     compares `instX a =?= instX b` with the correct transparency bump for
     instance-implicit parameters, which succeeds. -/
     if let some projInfo ← getProjectionFnInfo? info.name then
-      /- Only classify class projections as nontrivial at `.reducible` transparency,
+      /- HACK: Only classify class projections as nontrivial at `.reducible` transparency,
          since `unfoldDefault`'s extra `.instances` reduction (the reason for this classification)
          only applies there. At higher transparency levels, the normal unfolding behavior is
-         sufficient, and running the heuristic adds overhead without benefit. -/
+         sufficient, and running the heuristic adds overhead without benefit.
+         See https://github.com/leanprover/lean4/pull/12650 -/
       return projInfo.fromClass && backward.whnf.reducibleClassField.get (← getOptions) && (← getTransparency) == .reducible
     return false
   | .opaque => return false

@@ -70,7 +70,7 @@ private abbrev MonitorM := ReaderT MonitorContext <| StateT MonitorState BaseIO
 @[inline] private def MonitorM.run
   (ctx : MonitorContext) (s : MonitorState) (self : MonitorM α)
 : BaseIO (α × MonitorState) :=
-  self ctx s
+  StateT.run (ReaderT.run self ctx) s
 
 /--
 The ANSI escape sequence for clearing the current line

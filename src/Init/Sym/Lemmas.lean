@@ -20,8 +20,26 @@ theorem ne_self (a : α) : (a ≠ a) = False := by simp
 theorem not_true_eq : (¬ True) = False := by simp
 theorem not_false_eq : (¬ False) = True := by simp
 
+theorem or_eq_true_left (a b : Prop) (h : a = True) : (a ∨ b) = True := by simp [h]
+theorem or_eq_right (a b : Prop) (h : a = False) : (a ∨ b) = b := by simp [h]
+
+theorem and_eq_false_left (a b : Prop) (h : a = False) : (a ∧ b) = False := by simp [h]
+theorem and_eq_left (a b : Prop) (h : a = True) : (a ∧ b) = b := by simp [h]
+
 theorem ite_cond_congr {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α)
     (c' : Prop) {inst' : Decidable c'} (h : c = c') : @ite α c inst a b = @ite α c' inst' a b := by
+  simp [*]
+
+theorem ite_true {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α) {ht : c} : @ite α c inst a b = a := by
+  simp [*]
+
+theorem ite_false {α : Sort u} (c : Prop) {inst : Decidable c} (a b : α) {ht : ¬ c} : @ite α c inst a b = b := by
+  simp [*]
+
+theorem dite_true {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α) {ht : c} : @dite α c inst a b = a ht := by
+  simp [*]
+
+theorem dite_false {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α) {ht : ¬ c} : @dite α c inst a b = b ht := by
   simp [*]
 
 theorem dite_cond_congr {α : Sort u} (c : Prop) {inst : Decidable c} (a : c → α) (b : ¬ c → α)

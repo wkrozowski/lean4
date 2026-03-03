@@ -1,3 +1,5 @@
+import Lean.Elab.Command
+
 /-!
 Testing for linter.constructorNameAsVariable
 
@@ -9,6 +11,15 @@ where a constructor would be expected in a pattern, so that users who don't know
 will be guided to the right qualified names. Thus, both are tested together here.
 -/
 set_option linter.unusedVariables false
+
+-- The test harness passes `-Dlinter.all=false`, which would disable this linter.
+-- We unset `linter.all` so that the linter uses its default value (`true`).
+-- This is a minimal inline version of Mathlib's `unset_option`.
+open Lean Elab Command in
+elab "unset_option " opt:ident : command => do
+  modifyScope fun scope => { scope with opts := scope.opts.erase opt.getId.eraseMacroScopes }
+
+unset_option linter.all
 
 inductive A where
   | x | y
@@ -39,6 +50,12 @@ def g : A → Unit
 #guard_msgs in
 set_option linter.constructorNameAsVariable false in
 def g' : A → Unit
+  | x => ()
+
+-- Check that turning it off via `linter.all` works
+#guard_msgs in
+set_option linter.all false in
+def g'' : A → Unit
   | x => ()
 
 -- Avoid false positives
@@ -108,16 +125,18 @@ def ctorSuggestion1 (pair : MyProd) : Nat :=
 error: Invalid pattern: Expected a constructor or constant marked with `[match_pattern]`
 
 Hint: Using one of these would be valid:
-  [apply] `List.Sublist.cons`
+  [apply] `Std.DHashMap.Internal.AssocList.cons`
+  [apply] `List.Pairwise.cons`
   [apply] `Lean.Grind.AC.Seq.cons`
   [apply] `List.Lex.cons`
+  [apply] `List.Sublist.below.cons`
+  [apply] `List.Perm.cons`
+  [apply] `List.Sublist.cons`
+  [apply] `Lean.AssocList.cons`
   [apply] `List.Perm.below.cons`
   [apply] `List.Lex.below.cons`
   [apply] `List.Pairwise.below.cons`
   [apply] `List.cons`
-  [apply] `List.Sublist.below.cons`
-  [apply] `List.Perm.cons`
-  [apply] `List.Pairwise.cons`
 ---
 warning: Local variable 'nil' resembles constructor 'List.nil' - write '.nil' (with a dot) or 'List.nil' to use the constructor.
 
@@ -138,16 +157,18 @@ inductive StringList : Type where
 error: Invalid pattern: Expected a constructor or constant marked with `[match_pattern]`
 
 Hint: Using one of these would be valid:
-  [apply] `List.Sublist.cons`
+  [apply] `Std.DHashMap.Internal.AssocList.cons`
+  [apply] `List.Pairwise.cons`
   [apply] `Lean.Grind.AC.Seq.cons`
   [apply] `List.Lex.cons`
+  [apply] `List.Sublist.below.cons`
+  [apply] `List.Perm.cons`
+  [apply] `List.Sublist.cons`
+  [apply] `Lean.AssocList.cons`
   [apply] `List.Perm.below.cons`
   [apply] `List.Lex.below.cons`
   [apply] `List.Pairwise.below.cons`
   [apply] `List.cons`
-  [apply] `List.Sublist.below.cons`
-  [apply] `List.Perm.cons`
-  [apply] `List.Pairwise.cons`
   [apply] `StringList.cons`
 ---
 warning: Local variable 'nil' resembles constructor 'List.nil' - write '.nil' (with a dot) or 'List.nil' to use the constructor.
