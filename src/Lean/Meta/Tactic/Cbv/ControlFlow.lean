@@ -23,7 +23,7 @@ import Lean.Meta.Tactic.Cbv.Opaque
 /-!
 # Control Flow Handling for Cbv
 
-Cbv-specific simprocs for `ite`, `dite`, `cond`, `match`, and `Decidable.rec`.
+Cbv-specific simprocs for `ite`, `dite`, `cond`, `match`, `Decidable.rec`, and `Decidable.decide`.
 
 The standard `Sym.Simp` control flow simprocs (`simpIte`, `simpDIte`) give up
 when the condition does not reduce to `True` or `False` directly. The Cbv variants
@@ -172,6 +172,70 @@ public def simpAnd : Simproc := fun e => do
     else
       return .rfl
 
+/-- Reduce `decide` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
+def simpDecideByInst (p inst : Expr) : SimpM Result := do
+  match_expr inst with
+  | Decidable.isTrue _ hp =>
+    return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_isTrue) p inst hp
+  | Decidable.isFalse _ hnp =>
+    return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_isFalse) p inst hnp
+  | _ => return .rfl (done := true)
+
+/-- Like `simpDecideByInst`, but for the case where `p` was simplified to `p'` with proof `h`. -/
+def simpDecideByInstCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst' with
+  | Decidable.isTrue _ hp =>
+    return .step (← getBoolTrueExpr) <| mkApp5 (mkConst ``Sym.decide_isTrue_congr) p p' h inst hp
+  | Decidable.isFalse _ hnp =>
+    return .step (← getBoolFalseExpr) <| mkApp5 (mkConst ``Sym.decide_isFalse_congr) p p' h inst hnp
+  | _ => fallback
+
+/-- Simplify the `Decidable` instance, then try `simpDecideByInst`. -/
+def simpDecideByInstWithFallback (p inst : Expr) : SimpM Result := do
+  match (← simp inst) with
+  | .rfl _ => simpDecideByInst p inst
+  | .step inst' _ _ => simpDecideByInst p inst'
+
+/-- Like `simpDecideByInstWithFallback`, but for the case where `p` was simplified to `p'`. -/
+def simpDecideByInstWithFallbackCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst') with
+  | .rfl _ => simpDecideByInstCongr p p' h inst inst' fallback
+  | .step inst'' _ _ => simpDecideByInstCongr p p' h inst inst'' fallback
+
+/-- Simplify `Decidable.decide` by simplifying the proposition and reducing the instance.
+
+First simplifies the proposition `p`. If the result is `True` or `False`, produces the
+corresponding boolean directly. Otherwise, simplifies the `Decidable` instance and matches
+on `isTrue`/`isFalse` to determine the boolean value. When `p` simplified to a new `p'`
+but the instance doesn't reduce to `isTrue`/`isFalse`, falls back to rebuilding
+`decide p'` with a congruence proof. -/
+public def simpDecideCbv : Simproc := fun e => do
+  let numArgs := e.getAppNumArgs
+  if numArgs < 2 then return .rfl (done := true)
+  propagateOverApplied e (numArgs - 2) fun e => do
+    let_expr Decidable.decide p inst := e | return .rfl
+    match (← simp p) with
+    | .rfl _ =>
+      if (← isTrueExpr p) then
+        return .step (← getBoolTrueExpr) (mkApp (mkConst ``decide_true) inst)
+      else if (← isFalseExpr p) then
+        return .step (← getBoolFalseExpr) (mkApp (mkConst ``decide_false) inst)
+      else
+        simpDecideByInstWithFallback p inst
+    | .step p' hp _ =>
+      if (← isTrueExpr p') then
+        return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_true) p inst hp
+      else if (← isFalseExpr p') then
+        return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_false) p inst hp
+      else
+        let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) p') | return .rfl
+        let inst' ← shareCommon inst'
+        simpDecideByInstWithFallbackCongr p p' hp inst inst' (do
+          let res := (mkConst ``Decidable.decide)
+          let res ← shareCommon res
+          let res ← mkAppS₂ res p' inst'
+          return .step res (mkApp5 (mkConst ``Decidable.decide.congr_simp) p p' hp inst inst') (done := true))
+
 end Lean.Meta.Sym.Simp
 
 namespace Lean.Meta.Tactic.Cbv
@@ -235,11 +299,13 @@ public def simpControlCbv : Simproc := fun e => do
     simpDIteCbv e
   else if declName == ``Decidable.rec then
     -- We force the rewrite in the last argument, so that we can unfold the `Decidable` instance.
-    (simpInterlaced · #[false,false,true,true,true]) >> reduceRecMatcher <| e
+    (simpInterlaced · #[false,false,false,false,true]) >> reduceRecMatcher <| e
   else if declName == ``Or then
     simpOr e
   else if declName == ``And then
     simpAnd e
+  else if declName == ``Decidable.decide then
+    simpDecideCbv e
   else
     tryMatcher e
 
