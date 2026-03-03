@@ -273,6 +273,10 @@ def cbvPre : Simproc := isBuiltinValue <|> isProofTerm <|> cbvPreStep
 /-- Post-pass: evaluate ground arithmetic, then try unfolding/beta-reducing applications. -/
 def cbvPost : Simproc := evalGround <|> handleApp
 
+def cbvCore (e : Expr) : Sym.SymM Result :=
+  SimpM.run' (methods := {pre := cbvPre, post := cbvPost})
+    <| simp e
+
 /-- Reduce a single expression. Unfolds reducibles, shares subterms, then runs the
 simplifier with `cbvPre`/`cbvPost`. Used by `conv => cbv`. -/
 public def cbvEntry (e : Expr) : MetaM Result := do
@@ -285,53 +289,59 @@ public def cbvEntry (e : Expr) : MetaM Result := do
 
 /-- Reduce goal target and/or hypothesis types using call-by-value evaluation.
 
-For each hypothesis in `fvarIdsToSimp`, reduces its type via `cbvEntry`. If the
+Preprocesses the goal via `Sym.preprocessMVar` (instantiates metavariables, unfolds
+reducibles, shares common subterms), then runs `cbvCore` on each selected hypothesis
+and the target within a single `SymM` context.
+
+For each hypothesis in `fvarIdsToSimp`, reduces its type via `cbvCore`. If the
 reduced type is `False`, the goal is closed immediately. Otherwise, the hypothesis
 is replaced with the reduced type.
 
-If `simplifyTarget` is true, reduces the goal type via `cbvEntry`. If the reduced
+If `simplifyTarget` is true, reduces the goal type via `cbvCore`. If the reduced
 type is `True`, the goal is closed. Otherwise, the target is replaced.
 
 After all reductions, attempts `refl` to close equation goals of the form `v = v`. -/
 public def cbvGoal (mvarId : MVarId) (simplifyTarget : Bool := true) (fvarIdsToSimp : Array FVarId := #[]) : MetaM (Option MVarId) := do
-  mvarId.withContext do
-    let mut mvarIdNew := mvarId
-    let mut toAssert : Array Hypothesis := #[]
-    -- Process hypotheses
-    for fvarId in fvarIdsToSimp do
-      let localDecl ← fvarId.getDecl
-      let type ← instantiateMVars localDecl.type
-      let result ← cbvEntry type
-      match result with
-      | .rfl _ => pure ()
-      | .step type' proof _ =>
-        if type'.isFalse then
-          let u ← getLevel type
-          mvarIdNew.assign (← mkFalseElim (← mvarIdNew.getType) (mkApp4 (mkConst ``Eq.mp [u]) type type' proof (mkFVar fvarId)))
-          return none
-        else
-          let u ← getLevel type
-          toAssert := toAssert.push { userName := localDecl.userName, type := type', value := mkApp4 (mkConst ``Eq.mp [u]) type type' proof (mkFVar fvarId) }
-    -- Process target
-    if simplifyTarget then
-      let target ← instantiateMVars (← mvarIdNew.getType)
-      let result ← cbvEntry target
-      match result with
-      | .rfl _ => pure ()
-      | .step target' proof _ =>
-        if target'.isTrue then
-          mvarIdNew.assign (← mkOfEqTrue proof)
-          return none
-        else
-          mvarIdNew ← mvarIdNew.replaceTargetEq target' proof
-    -- Assert new hypotheses and clear old ones
-    let (_, mvarIdNew') ← mvarIdNew.assertHypotheses toAssert
-    mvarIdNew := mvarIdNew'
-    mvarIdNew ← mvarIdNew.tryClearMany fvarIdsToSimp
-    -- Try refl to close equation goals
-    match (← observing? mvarIdNew.refl) with
-    | some () => return none
-    | none => return some mvarIdNew
+  Sym.SymM.run do
+    let mvarId ← Sym.preprocessMVar mvarId
+    mvarId.withContext do
+      let mut mvarIdNew := mvarId
+      let mut toAssert : Array Hypothesis := #[]
+      -- Process hypotheses
+      for fvarId in fvarIdsToSimp do
+        let localDecl ← fvarId.getDecl
+        let type := localDecl.type
+        let result ← cbvCore type
+        match result with
+        | .rfl _ => pure ()
+        | .step type' proof _ =>
+          if type'.isFalse then
+            let u ← getLevel type
+            mvarIdNew.assign (← mkFalseElim (← mvarIdNew.getType) (mkApp4 (mkConst ``Eq.mp [u]) type type' proof (mkFVar fvarId)))
+            return none
+          else
+            let u ← getLevel type
+            toAssert := toAssert.push { userName := localDecl.userName, type := type', value := mkApp4 (mkConst ``Eq.mp [u]) type type' proof (mkFVar fvarId) }
+      -- Process target
+      if simplifyTarget then
+        let target ← mvarIdNew.getType
+        let result ← cbvCore target
+        match result with
+        | .rfl _ => pure ()
+        | .step target' proof _ =>
+          if target'.isTrue then
+            mvarIdNew.assign (← mkOfEqTrue proof)
+            return none
+          else
+            mvarIdNew ← mvarIdNew.replaceTargetEq target' proof
+      -- Assert new hypotheses and clear old ones
+      let (_, mvarIdNew') ← mvarIdNew.assertHypotheses toAssert
+      mvarIdNew := mvarIdNew'
+      mvarIdNew ← mvarIdNew.tryClearMany fvarIdsToSimp
+      -- Try refl to close equation goals
+      let s ← Meta.saveState
+      try mvarIdNew.refl; return none
+      catch _ => s.restore; return some mvarIdNew
 
 /--
 Attempt to close a goal of the form `decide P = true` by reducing only the LHS using `cbv`.
@@ -342,12 +352,11 @@ Attempt to close a goal of the form `decide P = true` by reducing only the LHS u
 -/
 public def cbvDecideGoal (m : MVarId) : MetaM Unit := do
   Sym.SymM.run do
-    let methods := {pre := cbvPre, post := cbvPost}
     let m ← Sym.preprocessMVar m
     let mType ← m.getType
     let some (_, lhs, _) := mType.eq? |
       throwError "`decide_cbv`: expected goal of the form `decide _ = true`, got: {indentExpr mType}"
-    let result ← SimpM.run' (simp lhs) (methods := methods)
+    let result ← cbvCore lhs
     let checkResult (e : Expr) (onTrue : Sym.SymM Unit) : Sym.SymM Unit := do
       if (← Sym.isBoolTrueExpr e) then
         onTrue

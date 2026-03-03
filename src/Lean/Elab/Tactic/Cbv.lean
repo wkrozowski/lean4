@@ -19,21 +19,13 @@ open Lean.Meta.Tactic.Cbv
 @[builtin_tactic Lean.Parser.Tactic.cbv] def evalCbv : Tactic := fun stx => withMainContext do
   if cbv.warning.get (← getOptions) then
     logWarningAt stx "The `cbv` tactic is experimental and still under development. Avoid using it in production projects"
-  let loc := expandOptLocation stx[1]
-  match loc with
-  | Location.targets hyps simplifyTarget =>
-    let fvarIds ← getFVarIds hyps
-    liftMetaTactic fun mvar => do
-      match (← cbvGoal mvar (simplifyTarget := simplifyTarget) (fvarIdsToSimp := fvarIds)) with
-      | .none => return []
-      | .some newGoal => return [newGoal]
-  | Location.wildcard =>
-    let mvarId ← getMainGoal
-    let fvarIds ← mvarId.getNondepPropHyps
-    liftMetaTactic fun mvar => do
-      match (← cbvGoal mvar (simplifyTarget := true) (fvarIdsToSimp := fvarIds)) with
-      | .none => return []
-      | .some newGoal => return [newGoal]
+  let (fvarIds, simplifyTarget) ← match expandOptLocation stx[1] with
+    | Location.targets hyps simplifyTarget => pure (← getFVarIds hyps, simplifyTarget)
+    | Location.wildcard => pure (← (← getMainGoal).getNondepPropHyps, true)
+  liftMetaTactic fun mvar => do
+    match (← cbvGoal mvar (simplifyTarget := simplifyTarget) (fvarIdsToSimp := fvarIds)) with
+    | .none => return []
+    | .some newGoal => return [newGoal]
 
 @[builtin_tactic Lean.Parser.Tactic.decide_cbv] def evalDecideCbv : Tactic := fun stx =>
   match stx with

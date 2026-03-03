@@ -1,6 +1,5 @@
 set_option cbv.warning false
 
--- 1. Bare `cbv` on equation goals (regression test for existing behavior)
 example : 2 + 3 = 5 := by cbv
 
 example : (fun x => x + 1) 3 = 4 := by cbv
@@ -12,9 +11,7 @@ example : foo = 42 := by cbv
 -- `cbv` reduces ground equalities to True/False and uses mkOfEqTrue for True
 example : id (1 = 1) := by cbv
 
-example : Nat.succ 0 = 1 ∧ Nat.succ 1 = 2 := by
-  cbv
-  exact ⟨True.intro, True.intro⟩
+example : Nat.succ 0 = 1 ∧ Nat.succ 1 = 2 := by cbv
 
 /--
 trace: h : True
@@ -51,5 +48,8 @@ example (h₁ : 2 + 3 = 5) (h₂ : 1 + 1 = 2) : False := by
   sorry
 
 -- Reduces hypothesis but not target when only hypothesis is specified
-example (h : (fun x => x + 1) 0 = 1) : 2 + 2 = 4 := by
-  cbv at h
+/-- warning: declaration uses `sorry` -/
+#guard_msgs in
+example (_h : (fun x => x + 1) 0 = 1) : 2 + 2 = 5 := by
+  cbv at _h
+  sorry
