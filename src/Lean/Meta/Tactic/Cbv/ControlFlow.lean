@@ -173,15 +173,16 @@ public def simpAnd : Simproc := fun e => do
       return .rfl
 
 /-- Reduce `decide` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
-def simpDecideDecidable (p inst : Expr) : SimpM Result := do
+def simpDecideByInst (p inst : Expr) : SimpM Result := do
   match_expr inst with
   | Decidable.isTrue _ hp =>
     return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_isTrue) p inst hp
   | Decidable.isFalse _ hnp =>
     return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_isFalse) p inst hnp
-  | _ => return .rfl
+  | _ => return .rfl (done := true)
 
-def simpDecideDecidableCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+/-- Like `simpDecideByInst`, but for the case where `p` was simplified to `p'` with proof `h`. -/
+def simpDecideByInstCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
   match_expr inst' with
   | Decidable.isTrue _ hp =>
     return .step (← getBoolTrueExpr) <| mkApp5 (mkConst ``Sym.decide_isTrue_congr) p p' h inst hp
@@ -189,24 +190,25 @@ def simpDecideDecidableCongr (p p' h inst inst' : Expr) (fallback : SimpM Result
     return .step (← getBoolFalseExpr) <| mkApp5 (mkConst ``Sym.decide_isFalse_congr) p p' h inst hnp
   | _ => fallback
 
-
-/-- Simplify the `Decidable` instance, then try `simpDecideDecidable`. -/
-def simpDecideDecidableWithFallback (p inst : Expr) : SimpM Result := do
+/-- Simplify the `Decidable` instance, then try `simpDecideByInst`. -/
+def simpDecideByInstWithFallback (p inst : Expr) : SimpM Result := do
   match (← simp inst) with
-  | .rfl _ => simpDecideDecidable p inst
-  | .step inst' _ _ => simpDecideDecidable p inst'
+  | .rfl _ => simpDecideByInst p inst
+  | .step inst' _ _ => simpDecideByInst p inst'
 
-def simpDecideDecidableWithFallbackCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+/-- Like `simpDecideByInstWithFallback`, but for the case where `p` was simplified to `p'`. -/
+def simpDecideByInstWithFallbackCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
   match (← simp inst') with
-  | .rfl _ => simpDecideDecidableCongr p p' h inst inst' fallback
-  | .step inst'' _ _ => simpDecideDecidableCongr p p' h inst inst'' fallback
+  | .rfl _ => simpDecideByInstCongr p p' h inst inst' fallback
+  | .step inst'' _ _ => simpDecideByInstCongr p p' h inst inst'' fallback
 
-/-- Simplify `Decidable.decide` by reducing the instance or simplifying the proposition.
+/-- Simplify `Decidable.decide` by simplifying the proposition and reducing the instance.
 
-Tries the instance reduction path first (which handles the common case where the `Decidable`
-instance reduces to `isTrue`/`isFalse` after evaluation). Only falls back to simplifying
-the proposition when the instance doesn't reduce, to avoid deep recursion into complex
-propositions. -/
+First simplifies the proposition `p`. If the result is `True` or `False`, produces the
+corresponding boolean directly. Otherwise, simplifies the `Decidable` instance and matches
+on `isTrue`/`isFalse` to determine the boolean value. When `p` simplified to a new `p'`
+but the instance doesn't reduce to `isTrue`/`isFalse`, falls back to rebuilding
+`decide p'` with a congruence proof. -/
 public def simpDecideCbv : Simproc := fun e => do
   let numArgs := e.getAppNumArgs
   if numArgs < 2 then return .rfl (done := true)
@@ -219,7 +221,7 @@ public def simpDecideCbv : Simproc := fun e => do
       else if (← isFalseExpr p) then
         return .step (← getBoolFalseExpr) (mkApp (mkConst ``decide_false) inst)
       else
-        simpDecideDecidableWithFallback p inst
+        simpDecideByInstWithFallback p inst
     | .step p' hp _ =>
       if (← isTrueExpr p') then
         return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_true) p inst hp
@@ -228,7 +230,7 @@ public def simpDecideCbv : Simproc := fun e => do
       else
         let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) p') | return .rfl
         let inst' ← shareCommon inst'
-        simpDecideDecidableWithFallbackCongr p p' hp inst inst' (do
+        simpDecideByInstWithFallbackCongr p p' hp inst inst' (do
           let res := (mkConst ``Decidable.decide)
           let res ← shareCommon res
           let res ← mkAppS₂ res p' inst'
