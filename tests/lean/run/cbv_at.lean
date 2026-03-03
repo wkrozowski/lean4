@@ -53,3 +53,15 @@ example (h₁ : 2 + 3 = 5) (h₂ : 1 + 1 = 2) : False := by
 example (_h : (fun x => x + 1) 0 = 1) : 2 + 2 = 5 := by
   cbv at _h
   sorry
+
+/--
+trace: x : Nat
+⊢ x = 4
+---
+warning: declaration uses `sorry`
+-/
+#guard_msgs in
+example : x = 2 + 2 := by
+  cbv
+  trace_state
+  sorry
