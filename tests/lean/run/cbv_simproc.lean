@@ -89,14 +89,14 @@ cbv_simproc ↓ stringToList (String.toList _) := fun e => do
   let_expr String.toList s := e | return .rfl
   let some str := getStringValue? s | return .rfl
   let result ← Sym.share <| toExpr str.toList
-  let typeExpr := mkApp (mkConst ``List [levelZero]) (mkConst ``Char)
+  let typeExpr := mkApp (mkConst ``List [Lean.Level.zero]) (mkConst ``Char)
   return .step result (mkApp2 (mkConst ``Eq.refl [1]) typeExpr result) (done := true)
 
 theorem simprocTest : "a".toList = ['a'] := by cbv
 
 /--
 info: theorem simprocTest : "a".toList = ['a'] :=
-Eq.refl ['a']
+of_eq_true (Eq.trans (congrFun' (congrArg Eq (Eq.refl ['a'])) ['a']) (eq_self ['a']))
 -/
 #guard_msgs in
 #print simprocTest
@@ -109,7 +109,7 @@ theorem erasableProcTest : Nat.gcd 1 2 = 1 := by cbv
 
 /--
 info: theorem erasableProcTest : Nat.gcd 1 2 = 1 :=
-Eq.refl 1
+of_eq_true (Eq.trans (congrFun' (congrArg Eq (Eq.refl 1)) 1) (eq_self 1))
 -/
 #guard_msgs in
 #print erasableProcTest
@@ -249,11 +249,11 @@ end
 
 -- Multiple simprocs matching the same head: first non-rfl result wins
 section
-local cbv_simproc ↓ multiFirst (myFun _) := fun e => do
+local cbv_simproc ↓ multiFirst (myFun _) := fun _ => do
   logInfo m!"first fired"
   return .rfl (done := true)
 
-local cbv_simproc ↓ multiSecond (myFun _) := fun e => do
+local cbv_simproc ↓ multiSecond (myFun _) := fun _ => do
   logInfo m!"second fired"
   return .rfl
 

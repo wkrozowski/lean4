@@ -161,20 +161,26 @@ theorem fib_sum : Nat.fib 10 + Nat.fib 20 = 6820 := by cbv
 
 /--
 info: theorem fib_sum : Nat.fib 10 + Nat.fib 20 = 6820 :=
-Eq.trans
-  (congr
-    (congrArg HAdd.hAdd
-      (isFibAux_two_mul_done
-        (isFibAux_two_mul_add_one (isFibAux_two_mul isFibAux_one (Eq.refl 2) (Eq.refl 1) (Eq.refl 2)) (Eq.refl 5)
-          (Eq.refl 5) (Eq.refl 8))
-        (Eq.refl 10) (Eq.refl 55)))
-    (isFibAux_two_mul_done
-      (isFibAux_two_mul
-        (isFibAux_two_mul_add_one (isFibAux_two_mul isFibAux_one (Eq.refl 2) (Eq.refl 1) (Eq.refl 2)) (Eq.refl 5)
-          (Eq.refl 5) (Eq.refl 8))
-        (Eq.refl 10) (Eq.refl 55) (Eq.refl 89))
-      (Eq.refl 20) (Eq.refl 6765)))
-  (Eq.refl 6820)
+of_eq_true
+  (Eq.trans
+    (congrFun'
+      (congrArg Eq
+        (Eq.trans
+          (congr
+            (congrArg HAdd.hAdd
+              (isFibAux_two_mul_done
+                (isFibAux_two_mul_add_one (isFibAux_two_mul isFibAux_one (Eq.refl 2) (Eq.refl 1) (Eq.refl 2))
+                  (Eq.refl 5) (Eq.refl 5) (Eq.refl 8))
+                (Eq.refl 10) (Eq.refl 55)))
+            (isFibAux_two_mul_done
+              (isFibAux_two_mul
+                (isFibAux_two_mul_add_one (isFibAux_two_mul isFibAux_one (Eq.refl 2) (Eq.refl 1) (Eq.refl 2))
+                  (Eq.refl 5) (Eq.refl 5) (Eq.refl 8))
+                (Eq.refl 10) (Eq.refl 55) (Eq.refl 89))
+              (Eq.refl 20) (Eq.refl 6765)))
+          (Eq.refl 6820)))
+      6820)
+    (eq_self 6820))
 -/
 #guard_msgs in
 #print fib_sum
