@@ -224,7 +224,7 @@ def processDefDeriving (view : DerivingClassView) (decl : Expr) (isNoncomputable
   let decl ← mkDefinitionValInferringUnsafe instName result.levelParams.toList result.type result.value hints
   -- Pre-check: if the instance value depends on noncomputable definitions and the user didn't write
   -- `noncomputable`, give an actionable error with a `Try this:` suggestion.
-  unless isNoncomputable || (← read).isNoncomputableSection do
+  unless isNoncomputable || (← read).isNoncomputableSection || (← isProp result.type) do
     let noncompRef? := result.value.foldConsts none fun n acc =>
       acc <|> if Lean.isNoncomputable (asyncMode := .local) env n then some n else none
     if let some noncompRef := noncompRef? then
