@@ -21,6 +21,8 @@ public import Lean.Server.FileWorker.SetupFile
 public import Lean.Server.Completion.ImportCompletion
 public import Lean.Server.CodeActions.UnknownIdentifier
 
+import Init.Data.String.OrderInstances
+
 public section
 
 /-!
@@ -659,7 +661,7 @@ def handleRpcRelease (p : Lsp.RpcReleaseParams) : WorkerM Unit := do
         discard do rpcReleaseRef ref
     seshRef.modify fun st =>
       let st := st.keptAlive monoMsNow
-      let ((), objects) := discardRefs st.objects
+      let ((), objects) := discardRefs.run st.objects
       { st with objects }
 
 def handleRpcKeepAlive (p : Lsp.RpcKeepAliveParams) : WorkerM Unit := do

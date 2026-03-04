@@ -421,6 +421,47 @@ private def instantiateMVarsAtInductive (indType : InductiveType) : TermElabM In
   let ctors ← indType.ctors.mapM fun ctor => return { ctor with type := (← instantiateMVars ctor.type) }
   return { indType with type, ctors }
 
+open Parser.Term in
+private def typelessBinder? : Syntax → Option (Array Ident × BinderInfo)
+  | `(bracketedBinderF|($ids:ident*)) => some (ids, .default)
+  | `(bracketedBinderF|{$ids:ident*}) => some (ids, .implicit)
+  | `(bracketedBinderF|⦃$ids:ident*⦄)  => some (ids, .strictImplicit)
+  | `(bracketedBinderF|[$id:ident])   => some (#[id], .instImplicit)
+  | _                                 => none
+
+/--
+Takes a binder list and interprets the prefix to see if any could be construed to be binder info updates.
+Returns the binder list without these updates along with the new binder infos for these parameters.
+
+- `params` are the parameters appearing in the header
+- `binders` is the binder list to process
+- `maybeParam` should return true for every local that could be a parameter
+  (for example, in structures we check that the ids don't refer to previously defined fields)
+-/
+def elabParamInfoUpdates
+    [Monad m] [MonadError m] [MonadLCtx m] [MonadLiftT TermElabM m]
+    (params : Array Expr) (binders : Array Syntax)
+    (maybeParam : FVarId → m Bool) :
+    m (Array Syntax × ExprMap (Syntax × BinderInfo)) := do
+  let mut overrides : ExprMap (Syntax × BinderInfo) := {}
+  for i in *...binders.size do
+    match typelessBinder? binders[i]! with
+    | none => return (binders.extract i, overrides)
+    | some (ids, bi) =>
+      let lctx ← getLCtx
+      let decls := ids.filterMap fun id => lctx.findFromUserName? id.getId
+      let decls ← decls.filterM fun decl => maybeParam decl.fvarId
+      if decls.size != ids.size then
+        -- Then either these are for a new variables or the binder isn't only for parameters
+        return (binders.extract i, overrides)
+      for decl in decls, id in ids do
+        Term.addTermInfo' id decl.toExpr
+        unless params.contains decl.toExpr do
+          throwErrorAt id m!"Only parameters appearing in the declaration header may have their binders kinds be overridden"
+            ++ .hint' "If this is not intended to be an override, use a binder with a type: for example, `(x : _)`"
+        overrides := overrides.insert decl.toExpr (id, bi)
+  return (#[], overrides)
+
 section IndexPromotion
 /-!
 ## Index-to-parameter promotion
@@ -696,7 +737,7 @@ private partial def simplifyResultingUniverse (u : Level) (paramConst := false) 
     -- If there's a variable, then these dominate at infinity; constants can be eliminated
     if (acc.any fun l _ => varies l) then acc.filter (fun l _ => varies l) else acc
   let germMax (acc : LevelMap Nat) : Level :=
-    (simpAcc acc).fold (init := levelZero) fun u l offset => mkLevelMax' u (l.addOffset offset)
+    (simpAcc acc).fold (init := Level.zero) fun u l offset => mkLevelMax' u (l.addOffset offset)
   let accInsert (acc : LevelMap Nat) (u : Level) (offset : Nat) : LevelMap Nat :=
     acc.alter u (fun offset? => some (max (offset?.getD 0) offset))
   -- Simplifies `u+offset`, accumulating `max` arguments in `acc`.
@@ -707,7 +748,7 @@ private partial def simplifyResultingUniverse (u : Level) (paramConst := false) 
     | .max a b => simp b offset (simp a offset acc)
     | .imax a b =>
       if b.isAlwaysZero then
-        accInsert acc levelZero offset
+        accInsert acc Level.zero offset
       else if a.isAlwaysZero || b.isNeverZero then
         simp b offset (simp a offset acc)
       else
@@ -755,7 +796,7 @@ private structure AccLevelState where
   /--
   The constraint `u ≤ ?r + k` is represented by `levels[u] := k`.
   When `k` is negative, this represents `u + (-k) ≤ ?r`.
-  The level `u` is either a parameter, metavariable, or `levelZero`.
+  The level `u` is either a parameter, metavariable, or `Level.zero`.
 
   When `k ≥ 0`, this is potentially a "bad" level constraint.
   -/
@@ -910,8 +951,8 @@ private def inferResultingUniverse (views : Array InductiveView)
   -- For `Prop` candidates, need to examine `u` itself, rather than `univForInfer` (which has been simplified).
   if let Level.mvar mvarId := u.normalize then
     if ← isPropCandidate numParams indTypes indFVars then
-      -- May as well assign now, since `levelZero` is already normalized.
-      assignLevelMVar mvarId levelZero
+      -- May as well assign now, since `Level.zero` is already normalized.
+      assignLevelMVar mvarId Level.zero
       return { u := u, assign? := none }
   -- Proceed with non-`Prop`-candidate case.
   let univForInfer ← withViewTypeRef views <| processResultingUniverseForInference u
@@ -934,13 +975,13 @@ private def inferResultingUniverse (views : Array InductiveView)
       (l, k) :: parts
   trace[Elab.inductive] "inferResultingUniverse r: {r}, rOffset: {rOffset}, rConstraints: {rConstraints}"
   /- Compute the inferred `r` -/
-  let rInferred := Level.normalize <| rConstraints.foldl (init := levelZero) fun u' (level, k) =>
+  let rInferred := Level.normalize <| rConstraints.foldl (init := Level.zero) fun u' (level, k) =>
     -- If `k ≤ 0`, then add `level + (-k) ≤ ?r` constraint, otherwise add `level ≤ ?r`.
     mkLevelMax' u' <| level.addOffset (-k).toNat
   let uInferred := (u.replace fun v => if v == r then some rInferred else none).normalize
   /- Analyze "bad" constraints if there are any, and report an error if needed. -/
   if rConstraints.any (fun (_, k) => k > 0) then
-    let uAtZero := u.replace fun v => if v == r then some levelZero else none
+    let uAtZero := u.replace fun v => if v == r then some Level.zero else none
     /- For "bad" level constraints (those of the form `l ≤ ?r + k` where `k > 0`),
     we add `rOffset - k` to both sides to get the ideal constraint. -/
     let uIdeal := Level.normalize <| rConstraints.foldl (init := uAtZero) fun u' (level, k) =>
@@ -1134,8 +1175,8 @@ private def withUsed {α} (elabs : Array InductiveElabStep2) (vars : Array Expr)
 private def updateParams (vars : Array Expr) (indTypes : List InductiveType) : TermElabM (List InductiveType) :=
   indTypes.mapM fun indType => do
     let type ← mkForallFVars vars indType.type
-    let ctors ← indType.ctors.mapM fun ctor => do
-      let ctorType ← withExplicitToImplicit vars (mkForallFVars vars ctor.type)
+    let ctors ← withExplicitToImplicit vars <| indType.ctors.mapM fun ctor => do
+      let ctorType ← mkForallFVars vars ctor.type
       return { ctor with type := ctorType }
     return { indType with type, ctors }
 

@@ -25,6 +25,7 @@ static const lean_object* l_List_getLast_x21___redArg___closed__1 = (const lean_
 static const lean_string_object l_List_getLast_x21___redArg___closed__2_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 11, .m_capacity = 11, .m_length = 10, .m_data = "empty list"};
 static const lean_object* l_List_getLast_x21___redArg___closed__2 = (const lean_object*)&l_List_getLast_x21___redArg___closed__2_value;
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+static lean_once_cell_t l_List_getLast_x21___redArg___closed__3_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List_getLast_x21___redArg___closed__3;
 lean_object* l_panic___redArg(lean_object*, lean_object*);
 lean_object* l_List_getLast___redArg(lean_object*);
@@ -34,6 +35,7 @@ LEAN_EXPORT lean_object* l_List_getLast_x21(lean_object*, lean_object*, lean_obj
 LEAN_EXPORT lean_object* l_List_getLast_x21___boxed(lean_object*, lean_object*, lean_object*);
 static const lean_string_object l_List_head_x21___redArg___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 11, .m_capacity = 11, .m_length = 10, .m_data = "List.head!"};
 static const lean_object* l_List_head_x21___redArg___closed__0 = (const lean_object*)&l_List_head_x21___redArg___closed__0_value;
+static lean_once_cell_t l_List_head_x21___redArg___closed__1_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List_head_x21___redArg___closed__1;
 LEAN_EXPORT lean_object* l_List_head_x21___redArg(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_List_head_x21___redArg___boxed(lean_object*, lean_object*);
@@ -44,6 +46,7 @@ LEAN_EXPORT lean_object* l_panic___at___00List_tail_x21_spec__0___redArg(lean_ob
 LEAN_EXPORT lean_object* l_panic___at___00List_tail_x21_spec__0(lean_object*, lean_object*);
 static const lean_string_object l_List_tail_x21___redArg___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 11, .m_capacity = 11, .m_length = 10, .m_data = "List.tail!"};
 static const lean_object* l_List_tail_x21___redArg___closed__0 = (const lean_object*)&l_List_tail_x21___redArg___closed__0_value;
+static lean_once_cell_t l_List_tail_x21___redArg___closed__1_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List_tail_x21___redArg___closed__1;
 LEAN_EXPORT lean_object* l_List_tail_x21___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_List_tail_x21___redArg___boxed(lean_object*);
@@ -56,7 +59,8 @@ LEAN_EXPORT lean_object* l___private_Init_Data_List_BasicAux_0__List_partitionM_
 lean_object* lean_array_push(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Init_Data_List_BasicAux_0__List_partitionM_go(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
-static lean_object* l_List_partitionM___redArg___closed__0;
+static const lean_array_object l_List_partitionM___redArg___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_array_object) + sizeof(void*)*0, .m_other = 0, .m_tag = 246}, .m_size = 0, .m_capacity = 0, .m_data = {}};
+static const lean_object* l_List_partitionM___redArg___closed__0 = (const lean_object*)&l_List_partitionM___redArg___closed__0_value;
 LEAN_EXPORT lean_object* l_List_partitionM___redArg(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_List_partitionM(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Init_Data_List_BasicAux_0__List_partitionMap_go___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
@@ -151,6 +155,7 @@ static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRul
 static const lean_string_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__19_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 17, .m_capacity = 17, .m_length = 16, .m_data = "sizeOf_lt_of_mem"};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__19 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__19_value;
 lean_object* l_String_toRawSubstring_x27(lean_object*);
+static lean_once_cell_t l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20;
 static const lean_ctor_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__21_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__19_value),LEAN_SCALAR_PTR_LITERAL(62, 240, 33, 111, 18, 75, 77, 36)}};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__21 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__21_value;
@@ -188,6 +193,7 @@ static const lean_ctor_object l_List___aux__Init__Data__List__BasicAux______macr
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__32 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__32_value;
 static const lean_string_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__33_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 19, .m_capacity = 19, .m_length = 18, .m_data = "Nat.lt_of_lt_of_le"};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__33 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__33_value;
+static lean_once_cell_t l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34;
 static const lean_string_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__35_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 4, .m_capacity = 4, .m_length = 3, .m_data = "Nat"};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__35 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__35_value;
@@ -222,6 +228,7 @@ static const lean_ctor_object l_List___aux__Init__Data__List__BasicAux______macr
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__46 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__46_value;
 static const lean_string_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__47_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 1, .m_capacity = 1, .m_length = 0, .m_data = ""};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__47 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__47_value;
+static lean_once_cell_t l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48;
 static const lean_ctor_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__49_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_List_tacticSizeOf__list__dec___closed__0_value),LEAN_SCALAR_PTR_LITERAL(245, 188, 225, 225, 165, 5, 251, 132)}};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__49 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__49_value;
@@ -240,12 +247,14 @@ static const lean_string_object l_List___aux__Init__Data__List__BasicAux______ma
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__54 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__54_value;
 static const lean_string_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__55_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 2, .m_capacity = 2, .m_length = 1, .m_data = "h"};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__55 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__55_value;
+static lean_once_cell_t l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56;
 static const lean_ctor_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__57_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__55_value),LEAN_SCALAR_PTR_LITERAL(176, 181, 207, 77, 197, 87, 68, 121)}};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__57 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__57_value;
 static const lean_string_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__58_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 2, .m_capacity = 2, .m_length = 1, .m_data = ")"};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__58 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__58_value;
 lean_object* l_Array_mkArray0(lean_object*);
+static lean_once_cell_t l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59;
 static const lean_string_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__60_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 6, .m_capacity = 6, .m_length = 5, .m_data = "case'"};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__60 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__60_value;
@@ -300,6 +309,7 @@ static const lean_string_object l_List___aux__Init__Data__List__BasicAux______ma
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__75 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__75_value;
 static const lean_string_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__76_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 6, .m_capacity = 6, .m_length = 5, .m_data = "arith"};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__76 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__76_value;
+static lean_once_cell_t l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77;
 static const lean_ctor_object l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__78_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__76_value),LEAN_SCALAR_PTR_LITERAL(72, 221, 106, 103, 22, 21, 224, 51)}};
 static const lean_object* l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__78 = (const lean_object*)&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__78_value;
@@ -373,7 +383,7 @@ lean_dec(x_2);
 return x_5;
 }
 }
-static lean_object* _init_l_List_getLast_x21___redArg___closed__3() {
+static lean_object* _init_l_List_getLast_x21___redArg___closed__3(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; 
@@ -392,7 +402,7 @@ _start:
 if (lean_obj_tag(x_2) == 0)
 {
 lean_object* x_3; lean_object* x_4; 
-x_3 = l_List_getLast_x21___redArg___closed__3;
+x_3 = lean_obj_once(&l_List_getLast_x21___redArg___closed__3, &l_List_getLast_x21___redArg___closed__3_once, _init_l_List_getLast_x21___redArg___closed__3);
 x_4 = l_panic___redArg(x_1, x_3);
 return x_4;
 }
@@ -431,7 +441,7 @@ lean_dec(x_3);
 return x_4;
 }
 }
-static lean_object* _init_l_List_head_x21___redArg___closed__1() {
+static lean_object* _init_l_List_head_x21___redArg___closed__1(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; 
@@ -450,7 +460,7 @@ _start:
 if (lean_obj_tag(x_2) == 0)
 {
 lean_object* x_3; lean_object* x_4; 
-x_3 = l_List_head_x21___redArg___closed__1;
+x_3 = lean_obj_once(&l_List_head_x21___redArg___closed__1, &l_List_head_x21___redArg___closed__1_once, _init_l_List_head_x21___redArg___closed__1);
 x_4 = l_panic___redArg(x_1, x_3);
 return x_4;
 }
@@ -507,7 +517,7 @@ x_3 = l_panic___at___00List_tail_x21_spec__0___redArg(x_2);
 return x_3;
 }
 }
-static lean_object* _init_l_List_tail_x21___redArg___closed__1() {
+static lean_object* _init_l_List_tail_x21___redArg___closed__1(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; 
@@ -526,7 +536,7 @@ _start:
 if (lean_obj_tag(x_1) == 0)
 {
 lean_object* x_2; lean_object* x_3; 
-x_2 = l_List_tail_x21___redArg___closed__1;
+x_2 = lean_obj_once(&l_List_tail_x21___redArg___closed__1, &l_List_tail_x21___redArg___closed__1_once, _init_l_List_tail_x21___redArg___closed__1);
 x_3 = l_panic___at___00List_tail_x21_spec__0___redArg(x_2);
 return x_3;
 }
@@ -579,66 +589,83 @@ _start:
 {
 if (lean_obj_tag(x_3) == 0)
 {
-lean_object* x_6; uint8_t x_7; 
+lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_17; 
 x_6 = lean_ctor_get(x_1, 0);
 lean_inc_ref(x_6);
 lean_dec(x_2);
-x_7 = !lean_is_exclusive(x_1);
-if (x_7 == 0)
+x_17 = !lean_is_exclusive(x_1);
+if (x_17 == 0)
 {
-lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_8 = lean_ctor_get(x_1, 1);
-lean_dec(x_8);
-x_9 = lean_ctor_get(x_1, 0);
-lean_dec(x_9);
-x_10 = lean_ctor_get(x_6, 1);
-lean_inc(x_10);
+lean_object* x_18; lean_object* x_19; 
+x_18 = lean_ctor_get(x_1, 1);
+lean_dec(x_18);
+x_19 = lean_ctor_get(x_1, 0);
+lean_dec(x_19);
+x_7 = x_1;
+x_8 = x_17;
+goto block_16;
+}
+else
+{
+lean_dec(x_1);
+x_7 = lean_box(0);
+x_8 = x_17;
+goto block_16;
+}
+block_16:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; 
+x_9 = lean_ctor_get(x_6, 1);
+lean_inc(x_9);
 lean_dec_ref(x_6);
-x_11 = lean_array_to_list(x_4);
-x_12 = lean_array_to_list(x_5);
-lean_ctor_set(x_1, 1, x_12);
-lean_ctor_set(x_1, 0, x_11);
-x_13 = lean_apply_2(x_10, lean_box(0), x_1);
+x_10 = lean_array_to_list(x_4);
+x_11 = lean_array_to_list(x_5);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 1, x_11);
+lean_ctor_set(x_7, 0, x_10);
+x_12 = x_7;
+goto block_14;
+}
+else
+{
+lean_object* x_15; 
+x_15 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_15, 0, x_10);
+lean_ctor_set(x_15, 1, x_11);
+x_12 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_13; 
+x_13 = lean_apply_2(x_9, lean_box(0), x_12);
 return x_13;
 }
-else
-{
-lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; 
-lean_dec(x_1);
-x_14 = lean_ctor_get(x_6, 1);
-lean_inc(x_14);
-lean_dec_ref(x_6);
-x_15 = lean_array_to_list(x_4);
-x_16 = lean_array_to_list(x_5);
-x_17 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_17, 0, x_15);
-lean_ctor_set(x_17, 1, x_16);
-x_18 = lean_apply_2(x_14, lean_box(0), x_17);
-return x_18;
 }
 }
 else
 {
-lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_22; lean_object* x_23; lean_object* x_24; 
-x_19 = lean_ctor_get(x_1, 1);
-lean_inc(x_19);
-x_20 = lean_ctor_get(x_3, 0);
+lean_object* x_20; lean_object* x_21; lean_object* x_22; lean_object* x_23; lean_object* x_24; lean_object* x_25; 
+x_20 = lean_ctor_get(x_1, 1);
 lean_inc(x_20);
-x_21 = lean_ctor_get(x_3, 1);
+x_21 = lean_ctor_get(x_3, 0);
 lean_inc(x_21);
+x_22 = lean_ctor_get(x_3, 1);
+lean_inc(x_22);
 lean_dec_ref(x_3);
 lean_inc(x_2);
-lean_inc(x_20);
-x_22 = lean_alloc_closure((void*)(l___private_Init_Data_List_BasicAux_0__List_partitionM_go___redArg___lam__0___boxed), 7, 6);
-lean_closure_set(x_22, 0, x_5);
-lean_closure_set(x_22, 1, x_20);
-lean_closure_set(x_22, 2, x_1);
-lean_closure_set(x_22, 3, x_2);
-lean_closure_set(x_22, 4, x_21);
-lean_closure_set(x_22, 5, x_4);
-x_23 = lean_apply_1(x_2, x_20);
-x_24 = lean_apply_4(x_19, lean_box(0), lean_box(0), x_23, x_22);
-return x_24;
+lean_inc(x_21);
+x_23 = lean_alloc_closure((void*)(l___private_Init_Data_List_BasicAux_0__List_partitionM_go___redArg___lam__0___boxed), 7, 6);
+lean_closure_set(x_23, 0, x_5);
+lean_closure_set(x_23, 1, x_21);
+lean_closure_set(x_23, 2, x_1);
+lean_closure_set(x_23, 3, x_2);
+lean_closure_set(x_23, 4, x_22);
+lean_closure_set(x_23, 5, x_4);
+x_24 = lean_apply_1(x_2, x_21);
+x_25 = lean_apply_4(x_20, lean_box(0), lean_box(0), x_24, x_23);
+return x_25;
 }
 }
 }
@@ -669,20 +696,11 @@ x_8 = l___private_Init_Data_List_BasicAux_0__List_partitionM_go___redArg(x_3, x_
 return x_8;
 }
 }
-static lean_object* _init_l_List_partitionM___redArg___closed__0() {
-_start:
-{
-lean_object* x_1; lean_object* x_2; 
-x_1 = lean_unsigned_to_nat(0u);
-x_2 = lean_mk_empty_array_with_capacity(x_1);
-return x_2;
-}
-}
 LEAN_EXPORT lean_object* l_List_partitionM___redArg(lean_object* x_1, lean_object* x_2, lean_object* x_3) {
 _start:
 {
 lean_object* x_4; lean_object* x_5; 
-x_4 = l_List_partitionM___redArg___closed__0;
+x_4 = ((lean_object*)(l_List_partitionM___redArg___closed__0));
 x_5 = l___private_Init_Data_List_BasicAux_0__List_partitionM_go___redArg(x_1, x_2, x_3, x_4, x_4);
 return x_5;
 }
@@ -691,7 +709,7 @@ LEAN_EXPORT lean_object* l_List_partitionM(lean_object* x_1, lean_object* x_2, l
 _start:
 {
 lean_object* x_6; lean_object* x_7; 
-x_6 = l_List_partitionM___redArg___closed__0;
+x_6 = ((lean_object*)(l_List_partitionM___redArg___closed__0));
 x_7 = l___private_Init_Data_List_BasicAux_0__List_partitionM_go___redArg(x_3, x_4, x_5, x_6, x_6);
 return x_7;
 }
@@ -757,7 +775,7 @@ LEAN_EXPORT lean_object* l_List_partitionMap___redArg(lean_object* x_1, lean_obj
 _start:
 {
 lean_object* x_3; lean_object* x_4; 
-x_3 = l_List_partitionM___redArg___closed__0;
+x_3 = ((lean_object*)(l_List_partitionM___redArg___closed__0));
 x_4 = l___private_Init_Data_List_BasicAux_0__List_partitionMap_go___redArg(x_1, x_2, x_3, x_3);
 return x_4;
 }
@@ -766,7 +784,7 @@ LEAN_EXPORT lean_object* l_List_partitionMap(lean_object* x_1, lean_object* x_2,
 _start:
 {
 lean_object* x_6; lean_object* x_7; 
-x_6 = l_List_partitionM___redArg___closed__0;
+x_6 = ((lean_object*)(l_List_partitionM___redArg___closed__0));
 x_7 = l___private_Init_Data_List_BasicAux_0__List_partitionMap_go___redArg(x_4, x_5, x_6, x_6);
 return x_7;
 }
@@ -978,7 +996,7 @@ return x_2;
 }
 else
 {
-lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; uint8_t x_7; size_t x_13; size_t x_14; uint8_t x_15; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; uint8_t x_7; size_t x_18; size_t x_19; uint8_t x_20; 
 x_3 = lean_ctor_get(x_2, 0);
 x_4 = lean_ctor_get(x_2, 1);
 lean_inc(x_1);
@@ -986,48 +1004,70 @@ lean_inc(x_3);
 x_5 = lean_apply_1(x_1, x_3);
 lean_inc(x_4);
 x_6 = l___private_Init_Data_List_BasicAux_0__List_mapMonoMImp___at___00List_mapMono_spec__0___redArg(x_1, x_4);
-x_13 = lean_ptr_addr(x_5);
-x_14 = lean_ptr_addr(x_3);
-x_15 = lean_usize_dec_eq(x_13, x_14);
-if (x_15 == 0)
+x_18 = lean_ptr_addr(x_5);
+x_19 = lean_ptr_addr(x_3);
+x_20 = lean_usize_dec_eq(x_18, x_19);
+if (x_20 == 0)
 {
-x_7 = x_15;
-goto block_12;
+x_7 = x_20;
+goto block_17;
 }
 else
 {
-size_t x_16; size_t x_17; uint8_t x_18; 
-x_16 = lean_ptr_addr(x_6);
-x_17 = lean_ptr_addr(x_4);
-x_18 = lean_usize_dec_eq(x_16, x_17);
-x_7 = x_18;
-goto block_12;
+size_t x_21; size_t x_22; uint8_t x_23; 
+x_21 = lean_ptr_addr(x_6);
+x_22 = lean_ptr_addr(x_4);
+x_23 = lean_usize_dec_eq(x_21, x_22);
+x_7 = x_23;
+goto block_17;
 }
-block_12:
+block_17:
 {
 if (x_7 == 0)
 {
-uint8_t x_8; 
-x_8 = !lean_is_exclusive(x_2);
-if (x_8 == 0)
+lean_object* x_8; uint8_t x_9; uint8_t x_14; 
+x_14 = !lean_is_exclusive(x_2);
+if (x_14 == 0)
 {
-lean_object* x_9; lean_object* x_10; 
-x_9 = lean_ctor_get(x_2, 1);
-lean_dec(x_9);
-x_10 = lean_ctor_get(x_2, 0);
-lean_dec(x_10);
-lean_ctor_set(x_2, 1, x_6);
-lean_ctor_set(x_2, 0, x_5);
-return x_2;
+lean_object* x_15; lean_object* x_16; 
+x_15 = lean_ctor_get(x_2, 1);
+lean_dec(x_15);
+x_16 = lean_ctor_get(x_2, 0);
+lean_dec(x_16);
+x_8 = x_2;
+x_9 = x_14;
+goto block_13;
 }
 else
 {
-lean_object* x_11; 
 lean_dec(x_2);
-x_11 = lean_alloc_ctor(1, 2, 0);
-lean_ctor_set(x_11, 0, x_5);
-lean_ctor_set(x_11, 1, x_6);
-return x_11;
+x_8 = lean_box(0);
+x_9 = x_14;
+goto block_13;
+}
+block_13:
+{
+lean_object* x_10; 
+if (x_9 == 0)
+{
+lean_ctor_set(x_8, 1, x_6);
+lean_ctor_set(x_8, 0, x_5);
+x_10 = x_8;
+goto block_11;
+}
+else
+{
+lean_object* x_12; 
+x_12 = lean_alloc_ctor(1, 2, 0);
+lean_ctor_set(x_12, 0, x_5);
+lean_ctor_set(x_12, 1, x_6);
+x_10 = x_12;
+goto block_11;
+}
+block_11:
+{
+return x_10;
+}
 }
 }
 else
@@ -1064,7 +1104,7 @@ x_4 = l___private_Init_Data_List_BasicAux_0__List_mapMonoMImp___at___00List_mapM
 return x_4;
 }
 }
-static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20() {
+static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -1073,7 +1113,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34() {
+static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -1082,7 +1122,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48() {
+static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -1091,7 +1131,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56() {
+static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -1100,7 +1140,7 @@ x_2 = l_String_toRawSubstring_x27(x_1);
 return x_2;
 }
 }
-static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59() {
+static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59(void) {
 _start:
 {
 lean_object* x_1; 
@@ -1108,7 +1148,7 @@ x_1 = l_Array_mkArray0(lean_box(0));
 return x_1;
 }
 }
-static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77() {
+static lean_object* _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77(void) {
 _start:
 {
 lean_object* x_1; lean_object* x_2; 
@@ -1173,7 +1213,7 @@ lean_inc(x_12);
 x_27 = lean_alloc_ctor(2, 2, 0);
 lean_ctor_set(x_27, 0, x_12);
 lean_ctor_set(x_27, 1, x_25);
-x_28 = l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20;
+x_28 = lean_obj_once(&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20, &l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20_once, _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20);
 x_29 = ((lean_object*)(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__21));
 lean_inc(x_9);
 lean_inc(x_8);
@@ -1232,7 +1272,7 @@ lean_inc_ref(x_19);
 lean_inc(x_12);
 x_52 = l_Lean_Syntax_node2(x_12, x_17, x_19, x_51);
 x_53 = ((lean_object*)(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__32));
-x_54 = l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34;
+x_54 = lean_obj_once(&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34, &l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34_once, _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34);
 x_55 = ((lean_object*)(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__37));
 lean_inc(x_9);
 lean_inc(x_8);
@@ -1252,7 +1292,7 @@ x_62 = lean_alloc_ctor(2, 2, 0);
 lean_ctor_set(x_62, 0, x_12);
 lean_ctor_set(x_62, 1, x_61);
 x_63 = ((lean_object*)(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__46));
-x_64 = l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48;
+x_64 = lean_obj_once(&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48, &l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48_once, _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48);
 x_65 = lean_box(0);
 lean_inc(x_9);
 lean_inc(x_8);
@@ -1274,7 +1314,7 @@ lean_inc(x_12);
 x_73 = lean_alloc_ctor(2, 2, 0);
 lean_ctor_set(x_73, 0, x_12);
 lean_ctor_set(x_73, 1, x_72);
-x_74 = l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56;
+x_74 = lean_obj_once(&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56, &l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56_once, _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56);
 x_75 = ((lean_object*)(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__57));
 lean_inc(x_9);
 lean_inc(x_8);
@@ -1305,7 +1345,7 @@ lean_inc(x_12);
 x_85 = l_Lean_Syntax_node2(x_12, x_53, x_58, x_84);
 lean_inc(x_12);
 x_86 = l_Lean_Syntax_node2(x_12, x_26, x_27, x_85);
-x_87 = l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59;
+x_87 = lean_obj_once(&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59, &l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59_once, _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59);
 lean_inc(x_12);
 x_88 = lean_alloc_ctor(1, 3, 0);
 lean_ctor_set(x_88, 0, x_12);
@@ -1362,7 +1402,7 @@ lean_inc(x_12);
 x_114 = lean_alloc_ctor(2, 2, 0);
 lean_ctor_set(x_114, 0, x_12);
 lean_ctor_set(x_114, 1, x_113);
-x_115 = l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77;
+x_115 = lean_obj_once(&l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77, &l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77_once, _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77);
 x_116 = ((lean_object*)(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__78));
 x_117 = l_Lean_addMacroScope(x_8, x_116, x_9);
 lean_inc(x_12);
@@ -1499,6 +1539,50 @@ lean_dec(x_4);
 return x_7;
 }
 }
+lean_object* runtime_initialize_Init_GetElem(uint8_t builtin);
+lean_object* runtime_initialize_Init_WFTactics(uint8_t builtin);
+lean_object* runtime_initialize_Init_ByCases(uint8_t builtin);
+lean_object* runtime_initialize_Init_Classical(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Array_Basic(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Nat_Linear(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Init_Data_List_BasicAux(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Init_GetElem(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_WFTactics(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_ByCases(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Classical(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Array_Basic(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Nat_Linear(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Init_Data_List_BasicAux(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+return lean_io_result_mk_ok(lean_box(0));
+}
 lean_object* initialize_Init_GetElem(uint8_t builtin);
 lean_object* initialize_Init_WFTactics(uint8_t builtin);
 lean_object* initialize_Init_ByCases(uint8_t builtin);
@@ -1510,45 +1594,39 @@ LEAN_EXPORT lean_object* initialize_Init_Data_List_BasicAux(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Init_GetElem(builtin);
+res = initialize_Init_GetElem(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_WFTactics(builtin);
+res = initialize_Init_WFTactics(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_ByCases(builtin);
+res = initialize_Init_ByCases(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Classical(builtin);
+res = initialize_Init_Classical(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Array_Basic(builtin);
+res = initialize_Init_Data_Array_Basic(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Nat_Linear(builtin);
+res = initialize_Init_Data_Nat_Linear(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-l_List_getLast_x21___redArg___closed__3 = _init_l_List_getLast_x21___redArg___closed__3();
-lean_mark_persistent(l_List_getLast_x21___redArg___closed__3);
-l_List_head_x21___redArg___closed__1 = _init_l_List_head_x21___redArg___closed__1();
-lean_mark_persistent(l_List_head_x21___redArg___closed__1);
-l_List_tail_x21___redArg___closed__1 = _init_l_List_tail_x21___redArg___closed__1();
-lean_mark_persistent(l_List_tail_x21___redArg___closed__1);
-l_List_partitionM___redArg___closed__0 = _init_l_List_partitionM___redArg___closed__0();
-lean_mark_persistent(l_List_partitionM___redArg___closed__0);
-l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20 = _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20();
-lean_mark_persistent(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__20);
-l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34 = _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34();
-lean_mark_persistent(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__34);
-l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48 = _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48();
-lean_mark_persistent(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__48);
-l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56 = _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56();
-lean_mark_persistent(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__56);
-l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59 = _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59();
-lean_mark_persistent(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__59);
-l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77 = _init_l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77();
-lean_mark_persistent(l_List___aux__Init__Data__List__BasicAux______macroRules__List__tacticSizeOf__list__dec__1___closed__77);
-return lean_io_result_mk_ok(lean_box(0));
+res = runtime_initialize_Init_Data_List_BasicAux(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Init_Data_List_BasicAux(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Init_Data_List_BasicAux(builtin);
 }
 #ifdef __cplusplus
 }

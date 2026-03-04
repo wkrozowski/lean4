@@ -121,6 +121,20 @@ The nightly build system uses branches and tags across two repositories:
 
 When a nightly succeeds with mathlib, all three should point to the same commit. Don't confuse these: branches are in the main lean4 repo, dated tags are in lean4-nightly.
 
+## Waiting for CI or Merges
+
+Use `gh pr checks --watch` to block until a PR's CI checks complete (no polling needed).
+Run these as background bash commands so you get notified when they finish:
+
+```bash
+# Watch CI, then check merge state
+gh pr checks <number> --repo <owner>/<repo> --watch && gh pr view <number> --repo <owner>/<repo> --json state --jq '.state'
+```
+
+For multiple PRs, launch one background command per PR in parallel. When each completes,
+you'll be notified automatically via a task-notification. Do NOT use sleep-based polling
+loops — `--watch` is event-driven and exits as soon as checks finish.
+
 ## Error Handling
 
 **CRITICAL**: If something goes wrong or a command fails:

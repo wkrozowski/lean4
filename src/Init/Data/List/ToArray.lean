@@ -393,7 +393,7 @@ theorem isPrefixOfAux_toArray_zero [BEq α] (l₁ l₂ : List α) (hle : l₁.le
   | [], _ => rw [dif_neg] <;> simp
   | _::_, [] => simp at hle
   | a::l₁, b::l₂ =>
-    simp [isPrefixOf_cons₂, isPrefixOfAux_toArray_succ', isPrefixOfAux_toArray_zero]
+    simp [isPrefixOf_cons_cons, isPrefixOfAux_toArray_succ', isPrefixOfAux_toArray_zero]
 
 @[simp, grind =] theorem isPrefixOf_toArray [BEq α] (l₁ l₂ : List α) :
     l₁.toArray.isPrefixOf l₂.toArray = l₁.isPrefixOf l₂ := by
@@ -407,7 +407,7 @@ theorem isPrefixOfAux_toArray_zero [BEq α] (l₁ l₂ : List α) (hle : l₁.le
       cases l₂ with
       | nil => simp
       | cons b l₂ =>
-        simp only [isPrefixOf_cons₂, Bool.and_eq_false_imp]
+        simp only [isPrefixOf_cons_cons, Bool.and_eq_false_imp]
         intro w
         rw [ih]
         simp_all
@@ -589,7 +589,7 @@ theorem flatMap_toArray_cons {β} (f : α → Array β) (a : α) (as : List α) 
 @[simp, grind =] theorem swap_toArray (l : List α) (i j : Nat) {hi hj}:
     l.toArray.swap i j hi hj = ((l.set i l[j]).set j l[i]).toArray := by
   apply ext'
-  simp; rfl
+  simp
 
 @[simp, grind =] theorem eraseIdx_toArray (l : List α) (i : Nat) (h : i < l.toArray.size) :
     l.toArray.eraseIdx i h = (l.eraseIdx i).toArray := by
@@ -644,8 +644,8 @@ private theorem insertIdx_loop_toArray (i : Nat) (l : List α) (j : Nat) (hj : j
       drop_append_of_le_length (by simp; omega)]
     simp only [append_assoc, cons_append, nil_append]
     cases i with
-    | zero => simp; rfl
-    | succ i => rw [take_set_of_le (by omega)]; rfl
+    | zero => simp
+    | succ i => rw [take_set_of_le (by omega)]
   · simp only [Nat.not_lt] at h'
     have : i = j := by omega
     subst this
