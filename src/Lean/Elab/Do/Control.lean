@@ -37,20 +37,20 @@ def ControlStack.base (mi : MonadInfo) : ControlStack where
   runInBase e := pure e
   restoreCont dec := pure dec
 
-def ControlStack.stateT (baseMonadInfo : MonadInfo) (mutVars : Array Name) (σ : Expr) (base : ControlStack) : ControlStack where
+def ControlStack.stateT (baseMonadInfo : MonadInfo) (mutVarIdents : Array Ident) (σ : Expr) (base : ControlStack) : ControlStack where
   description _ := m!"StateT {σ} over {base.description ()}"
   m := return mkApp2 (mkConst ``StateT [baseMonadInfo.u, baseMonadInfo.v]) (← getσ) (← base.m)
   stM α := stM α >>= base.stM
   runInBase e := do
     -- `e : StateT σ m α`. Fetch the state tuple `s : σ` and apply it to `e`, `e.run s`.
     -- See also `StateT.monadControl.liftWith`.
-    let (tuple, tupleTy) ← mkProdMkN (← mutVars.mapM (getFVarFromUserName ·)) baseMonadInfo.u
+    let mutExprs ← mutVarIdents.mapM fun x => do
+      let defn ← getLocalDeclFromUserName x.getId
+      Term.addTermInfo' x defn.toExpr
+      pure defn.toExpr
+    let (tuple, tupleTy) ← mkProdMkN mutExprs baseMonadInfo.u
     unless ← isDefEq tupleTy σ do -- just for sanity; maybe delete in the future
       throwError "State tuple type mismatch: expected {σ}, got {tupleTy}. This is a bug in the `do` elaborator."
-    -- throwError "tuple: {tuple}, tupleTy: {tupleTy}, {σ}"
-    -- let α ← mkFreshResultType `α
-    -- let eTy := mkApp3 (mkConst ``StateT [mi.u, mi.v]) σ mi.m α
-    -- let e ← Term.ensureHasType eTy e -- might need to replace mi.m by a metavariable due to match refinement
     base.runInBase <| mkApp e tuple
   restoreCont dec := do
     -- Wrap `dec` such that the result type is `(dec.resultType × σ)` by unpacking the state tuple
@@ -59,11 +59,12 @@ def ControlStack.stateT (baseMonadInfo : MonadInfo) (mutVars : Array Name) (σ :
     let resultType ← stM dec.resultType
     let k : DoElabM Expr := do
       let p ← getFVarFromUserName resultName
-      bindMutVarsFromTuple (dec.resultName :: mutVars.toList) p.fvarId! do
+      bindMutVarsFromTuple (dec.resultName :: mutVarNames.toList) p.fvarId! do
         dec.k
     base.restoreCont { resultName, resultType, k }
 where
-  getσ := do mkProdN (← mutVars.mapM (LocalDecl.type <$> getLocalDeclFromUserName ·)) baseMonadInfo.u
+  mutVarNames := mutVarIdents.map (·.getId)
+  getσ := do mkProdN (← mutVarNames.mapM (LocalDecl.type <$> getLocalDeclFromUserName ·)) baseMonadInfo.u
   stM α := return mkApp2 (mkConst ``Prod [baseMonadInfo.u, baseMonadInfo.u]) α (← getσ) -- NB: muts `σ` might have been refined by dependent pattern matches
 
 def ControlStack.optionT (baseMonadInfo : MonadInfo) (optionTWrapper casesOnWrapper : Name)
@@ -200,9 +201,10 @@ structure ControlLifter where
 
 def ControlLifter.ofCont (info : ControlInfo) (dec : DoElemCont) : DoElabM ControlLifter := do
   let mi := (← read).monadInfo
-  let reassignedMutVars := (← read).mutVars |>.map (·.getId) |>.filter info.reassigns.contains
+  let reassignedMutVars := (← read).mutVars |>.filter (info.reassigns.contains ·.getId)
+  let reassignedMutVarNames := reassignedMutVars.map (·.getId)
   let ρ := (← getReturnCont).resultType
-  let σ ← mkProdN (← reassignedMutVars.mapM (LocalDecl.type <$> getLocalDeclFromUserName ·)) mi.u
+  let σ ← mkProdN (← reassignedMutVarNames.mapM (LocalDecl.type <$> getLocalDeclFromUserName ·)) mi.u
 
   let needEarlyReturn := if info.returnsEarly then some ρ else none
   let needBreak := info.breaks && (← getBreakCont).isSome

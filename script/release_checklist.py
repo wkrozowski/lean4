@@ -311,20 +311,21 @@ def check_cmake_version(repo_url, branch, version_major, version_minor, github_t
         print(f"  ❌ Could not retrieve {cmake_file_path} from {branch}")
         return False
 
-    expected_lines = [
-        f"set(LEAN_VERSION_MAJOR {version_major})",
-        f"set(LEAN_VERSION_MINOR {version_minor})",
-        f"set(LEAN_VERSION_PATCH 0)",
-        f"set(LEAN_VERSION_IS_RELEASE 1)"
+    expected_prefixes = [
+        f"set(LEAN_VERSION_MAJOR {version_major}",
+        f"set(LEAN_VERSION_MINOR {version_minor}",
+        f"set(LEAN_VERSION_PATCH 0",
+        f"set(LEAN_VERSION_IS_RELEASE 1"
     ]
 
-    for line in expected_lines:
-        if not any(l.strip().startswith(line) for l in content.splitlines()):
-            print(f"  ❌ Missing or incorrect line in {cmake_file_path}: {line}")
+    for prefix in expected_prefixes:
+        if not any(l.strip().startswith(prefix) for l in content.splitlines()):
+            print(f"  ❌ Missing or incorrect line in {cmake_file_path}: {prefix}...)")
             return False
 
     print(f"  ✅ CMake version settings are correct in {cmake_file_path}")
     return True
+
 
 def extract_org_repo_from_url(repo_url):
     """Extract the 'org/repo' part from a GitHub URL."""

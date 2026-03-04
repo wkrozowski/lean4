@@ -381,105 +381,105 @@ _start:
 {
 if (lean_obj_tag(x_2) == 0)
 {
-uint8_t x_4; 
-x_4 = !lean_is_exclusive(x_2);
-if (x_4 == 0)
+lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; uint8_t x_10; uint8_t x_23; 
+x_4 = lean_ctor_get(x_2, 0);
+x_5 = lean_ctor_get(x_2, 1);
+x_6 = lean_ctor_get(x_2, 2);
+x_7 = lean_ctor_get(x_2, 3);
+x_8 = lean_ctor_get(x_2, 4);
+x_23 = !lean_is_exclusive(x_2);
+if (x_23 == 0)
 {
-lean_object* x_5; lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; uint8_t x_11; 
-x_5 = lean_ctor_get(x_2, 0);
-x_6 = lean_ctor_get(x_2, 1);
-x_7 = lean_ctor_get(x_2, 2);
-x_8 = lean_ctor_get(x_2, 3);
-x_9 = lean_ctor_get(x_2, 4);
-lean_inc_ref(x_1);
-lean_inc(x_6);
-lean_inc(x_3);
-x_10 = lean_apply_2(x_1, x_3, x_6);
-x_11 = lean_unbox(x_10);
-switch (x_11) {
-case 0:
-{
-lean_object* x_12; 
-x_12 = l___private_Std_Data_DTreeMap_Internal_Zipper_0__Std_DTreeMap_Internal_Impl_pruneLE___redArg(x_1, x_8, x_3);
-lean_ctor_set(x_2, 3, x_12);
-return x_2;
-}
-case 1:
-{
-lean_object* x_13; 
-lean_dec(x_8);
-lean_dec(x_3);
-lean_dec_ref(x_1);
-x_13 = lean_box(1);
-lean_ctor_set(x_2, 3, x_13);
-return x_2;
-}
-default: 
-{
-lean_free_object(x_2);
-lean_dec(x_8);
-lean_dec(x_7);
-lean_dec(x_6);
-lean_dec(x_5);
-x_2 = x_9;
-goto _start;
-}
-}
+x_9 = x_2;
+x_10 = x_23;
+goto block_22;
 }
 else
 {
-lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; lean_object* x_19; lean_object* x_20; uint8_t x_21; 
-x_15 = lean_ctor_get(x_2, 0);
-x_16 = lean_ctor_get(x_2, 1);
-x_17 = lean_ctor_get(x_2, 2);
-x_18 = lean_ctor_get(x_2, 3);
-x_19 = lean_ctor_get(x_2, 4);
-lean_inc(x_19);
-lean_inc(x_18);
-lean_inc(x_17);
-lean_inc(x_16);
-lean_inc(x_15);
+lean_inc(x_8);
+lean_inc(x_7);
+lean_inc(x_6);
+lean_inc(x_5);
+lean_inc(x_4);
 lean_dec(x_2);
+x_9 = lean_box(0);
+x_10 = x_23;
+goto block_22;
+}
+block_22:
+{
+lean_object* x_11; uint8_t x_12; 
 lean_inc_ref(x_1);
-lean_inc(x_16);
+lean_inc(x_5);
 lean_inc(x_3);
-x_20 = lean_apply_2(x_1, x_3, x_16);
-x_21 = lean_unbox(x_20);
-switch (x_21) {
+x_11 = lean_apply_2(x_1, x_3, x_5);
+x_12 = lean_unbox(x_11);
+switch (x_12) {
 case 0:
 {
-lean_object* x_22; lean_object* x_23; 
-x_22 = l___private_Std_Data_DTreeMap_Internal_Zipper_0__Std_DTreeMap_Internal_Impl_pruneLE___redArg(x_1, x_18, x_3);
-x_23 = lean_alloc_ctor(0, 5, 0);
-lean_ctor_set(x_23, 0, x_15);
-lean_ctor_set(x_23, 1, x_16);
-lean_ctor_set(x_23, 2, x_17);
-lean_ctor_set(x_23, 3, x_22);
-lean_ctor_set(x_23, 4, x_19);
-return x_23;
+lean_object* x_13; lean_object* x_14; 
+x_13 = l___private_Std_Data_DTreeMap_Internal_Zipper_0__Std_DTreeMap_Internal_Impl_pruneLE___redArg(x_1, x_7, x_3);
+if (x_10 == 0)
+{
+lean_ctor_set(x_9, 3, x_13);
+x_14 = x_9;
+goto block_15;
+}
+else
+{
+lean_object* x_16; 
+x_16 = lean_alloc_ctor(0, 5, 0);
+lean_ctor_set(x_16, 0, x_4);
+lean_ctor_set(x_16, 1, x_5);
+lean_ctor_set(x_16, 2, x_6);
+lean_ctor_set(x_16, 3, x_13);
+lean_ctor_set(x_16, 4, x_8);
+x_14 = x_16;
+goto block_15;
+}
+block_15:
+{
+return x_14;
+}
 }
 case 1:
 {
-lean_object* x_24; lean_object* x_25; 
-lean_dec(x_18);
+lean_object* x_17; lean_object* x_18; 
+lean_dec(x_7);
 lean_dec(x_3);
 lean_dec_ref(x_1);
-x_24 = lean_box(1);
-x_25 = lean_alloc_ctor(0, 5, 0);
-lean_ctor_set(x_25, 0, x_15);
-lean_ctor_set(x_25, 1, x_16);
-lean_ctor_set(x_25, 2, x_17);
-lean_ctor_set(x_25, 3, x_24);
-lean_ctor_set(x_25, 4, x_19);
-return x_25;
+x_17 = lean_box(1);
+if (x_10 == 0)
+{
+lean_ctor_set(x_9, 3, x_17);
+x_18 = x_9;
+goto block_19;
+}
+else
+{
+lean_object* x_20; 
+x_20 = lean_alloc_ctor(0, 5, 0);
+lean_ctor_set(x_20, 0, x_4);
+lean_ctor_set(x_20, 1, x_5);
+lean_ctor_set(x_20, 2, x_6);
+lean_ctor_set(x_20, 3, x_17);
+lean_ctor_set(x_20, 4, x_8);
+x_18 = x_20;
+goto block_19;
+}
+block_19:
+{
+return x_18;
+}
 }
 default: 
 {
-lean_dec(x_18);
-lean_dec(x_17);
-lean_dec(x_16);
-lean_dec(x_15);
-x_2 = x_19;
+lean_del_object(x_9);
+lean_dec(x_7);
+lean_dec(x_6);
+lean_dec(x_5);
+lean_dec(x_4);
+x_2 = x_8;
 goto _start;
 }
 }
@@ -506,101 +506,86 @@ _start:
 {
 if (lean_obj_tag(x_2) == 0)
 {
-uint8_t x_4; 
-x_4 = !lean_is_exclusive(x_2);
-if (x_4 == 0)
+lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; uint8_t x_10; uint8_t x_19; 
+x_4 = lean_ctor_get(x_2, 0);
+x_5 = lean_ctor_get(x_2, 1);
+x_6 = lean_ctor_get(x_2, 2);
+x_7 = lean_ctor_get(x_2, 3);
+x_8 = lean_ctor_get(x_2, 4);
+x_19 = !lean_is_exclusive(x_2);
+if (x_19 == 0)
 {
-lean_object* x_5; lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; uint8_t x_11; 
-x_5 = lean_ctor_get(x_2, 0);
-x_6 = lean_ctor_get(x_2, 1);
-x_7 = lean_ctor_get(x_2, 2);
-x_8 = lean_ctor_get(x_2, 3);
-x_9 = lean_ctor_get(x_2, 4);
-lean_inc_ref(x_1);
-lean_inc(x_6);
-lean_inc(x_3);
-x_10 = lean_apply_2(x_1, x_3, x_6);
-x_11 = lean_unbox(x_10);
-switch (x_11) {
-case 0:
-{
-lean_object* x_12; 
-x_12 = l___private_Std_Data_DTreeMap_Internal_Zipper_0__Std_DTreeMap_Internal_Impl_pruneLT___redArg(x_1, x_8, x_3);
-lean_ctor_set(x_2, 3, x_12);
-return x_2;
-}
-case 1:
-{
-lean_free_object(x_2);
-lean_dec(x_8);
-lean_dec(x_7);
-lean_dec(x_6);
-lean_dec(x_5);
-lean_dec(x_3);
-lean_dec_ref(x_1);
-return x_9;
-}
-default: 
-{
-lean_free_object(x_2);
-lean_dec(x_8);
-lean_dec(x_7);
-lean_dec(x_6);
-lean_dec(x_5);
-x_2 = x_9;
-goto _start;
-}
-}
+x_9 = x_2;
+x_10 = x_19;
+goto block_18;
 }
 else
 {
-lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; lean_object* x_19; uint8_t x_20; 
-x_14 = lean_ctor_get(x_2, 0);
-x_15 = lean_ctor_get(x_2, 1);
-x_16 = lean_ctor_get(x_2, 2);
-x_17 = lean_ctor_get(x_2, 3);
-x_18 = lean_ctor_get(x_2, 4);
-lean_inc(x_18);
-lean_inc(x_17);
-lean_inc(x_16);
-lean_inc(x_15);
-lean_inc(x_14);
+lean_inc(x_8);
+lean_inc(x_7);
+lean_inc(x_6);
+lean_inc(x_5);
+lean_inc(x_4);
 lean_dec(x_2);
+x_9 = lean_box(0);
+x_10 = x_19;
+goto block_18;
+}
+block_18:
+{
+lean_object* x_11; uint8_t x_12; 
 lean_inc_ref(x_1);
-lean_inc(x_15);
+lean_inc(x_5);
 lean_inc(x_3);
-x_19 = lean_apply_2(x_1, x_3, x_15);
-x_20 = lean_unbox(x_19);
-switch (x_20) {
+x_11 = lean_apply_2(x_1, x_3, x_5);
+x_12 = lean_unbox(x_11);
+switch (x_12) {
 case 0:
 {
-lean_object* x_21; lean_object* x_22; 
-x_21 = l___private_Std_Data_DTreeMap_Internal_Zipper_0__Std_DTreeMap_Internal_Impl_pruneLT___redArg(x_1, x_17, x_3);
-x_22 = lean_alloc_ctor(0, 5, 0);
-lean_ctor_set(x_22, 0, x_14);
-lean_ctor_set(x_22, 1, x_15);
-lean_ctor_set(x_22, 2, x_16);
-lean_ctor_set(x_22, 3, x_21);
-lean_ctor_set(x_22, 4, x_18);
-return x_22;
+lean_object* x_13; lean_object* x_14; 
+x_13 = l___private_Std_Data_DTreeMap_Internal_Zipper_0__Std_DTreeMap_Internal_Impl_pruneLT___redArg(x_1, x_7, x_3);
+if (x_10 == 0)
+{
+lean_ctor_set(x_9, 3, x_13);
+x_14 = x_9;
+goto block_15;
+}
+else
+{
+lean_object* x_16; 
+x_16 = lean_alloc_ctor(0, 5, 0);
+lean_ctor_set(x_16, 0, x_4);
+lean_ctor_set(x_16, 1, x_5);
+lean_ctor_set(x_16, 2, x_6);
+lean_ctor_set(x_16, 3, x_13);
+lean_ctor_set(x_16, 4, x_8);
+x_14 = x_16;
+goto block_15;
+}
+block_15:
+{
+return x_14;
+}
 }
 case 1:
 {
-lean_dec(x_17);
-lean_dec(x_16);
-lean_dec(x_15);
-lean_dec(x_14);
+lean_del_object(x_9);
+lean_dec(x_7);
+lean_dec(x_6);
+lean_dec(x_5);
+lean_dec(x_4);
 lean_dec(x_3);
 lean_dec_ref(x_1);
-return x_18;
+return x_8;
 }
 default: 
 {
-lean_dec(x_17);
-lean_dec(x_16);
-lean_dec(x_15);
-lean_dec(x_14);
-x_2 = x_18;
+lean_del_object(x_9);
+lean_dec(x_7);
+lean_dec(x_6);
+lean_dec(x_5);
+lean_dec(x_4);
+x_2 = x_8;
 goto _start;
 }
 }
@@ -1558,14 +1543,29 @@ return x_4;
 }
 else
 {
-uint8_t x_5; 
-x_5 = !lean_is_exclusive(x_2);
-if (x_5 == 0)
+lean_object* x_5; lean_object* x_6; uint8_t x_7; uint8_t x_22; 
+x_5 = lean_ctor_get(x_2, 1);
+x_22 = !lean_is_exclusive(x_2);
+if (x_22 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; uint8_t x_13; 
-x_6 = lean_ctor_get(x_2, 1);
-x_7 = lean_ctor_get(x_2, 0);
-lean_dec(x_7);
+lean_object* x_23; 
+x_23 = lean_ctor_get(x_2, 0);
+lean_dec(x_23);
+x_6 = x_2;
+x_7 = x_22;
+goto block_21;
+}
+else
+{
+lean_inc(x_5);
+lean_dec(x_2);
+x_6 = lean_box(0);
+x_7 = x_22;
+goto block_21;
+}
+block_21:
+{
+lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; uint8_t x_13; 
 x_8 = lean_ctor_get(x_3, 0);
 lean_inc(x_8);
 x_9 = lean_ctor_get(x_3, 1);
@@ -1575,9 +1575,9 @@ lean_inc(x_10);
 x_11 = lean_ctor_get(x_3, 3);
 lean_inc(x_11);
 lean_dec_ref(x_3);
-lean_inc(x_6);
+lean_inc(x_5);
 lean_inc(x_8);
-x_12 = lean_apply_2(x_1, x_8, x_6);
+x_12 = lean_apply_2(x_1, x_8, x_5);
 x_13 = lean_unbox(x_12);
 if (x_13 == 2)
 {
@@ -1586,71 +1586,42 @@ lean_dec(x_11);
 lean_dec(x_10);
 lean_dec(x_9);
 lean_dec(x_8);
-lean_free_object(x_2);
-lean_dec(x_6);
+lean_del_object(x_6);
+lean_dec(x_5);
 x_14 = lean_box(2);
 return x_14;
 }
 else
 {
-lean_object* x_15; lean_object* x_16; lean_object* x_17; 
+lean_object* x_15; lean_object* x_16; 
 x_15 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_10, x_11);
 lean_dec(x_10);
-lean_ctor_set(x_2, 0, x_15);
-x_16 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_16, 0, x_8);
-lean_ctor_set(x_16, 1, x_9);
+if (x_7 == 0)
+{
+lean_ctor_set(x_6, 0, x_15);
+x_16 = x_6;
+goto block_19;
+}
+else
+{
+lean_object* x_20; 
+x_20 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_20, 0, x_15);
+lean_ctor_set(x_20, 1, x_5);
+x_16 = x_20;
+goto block_19;
+}
+block_19:
+{
+lean_object* x_17; lean_object* x_18; 
 x_17 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_17, 0, x_2);
-lean_ctor_set(x_17, 1, x_16);
-return x_17;
+lean_ctor_set(x_17, 0, x_8);
+lean_ctor_set(x_17, 1, x_9);
+x_18 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_18, 0, x_16);
+lean_ctor_set(x_18, 1, x_17);
+return x_18;
 }
-}
-else
-{
-lean_object* x_18; lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_22; lean_object* x_23; uint8_t x_24; 
-x_18 = lean_ctor_get(x_2, 1);
-lean_inc(x_18);
-lean_dec(x_2);
-x_19 = lean_ctor_get(x_3, 0);
-lean_inc(x_19);
-x_20 = lean_ctor_get(x_3, 1);
-lean_inc(x_20);
-x_21 = lean_ctor_get(x_3, 2);
-lean_inc(x_21);
-x_22 = lean_ctor_get(x_3, 3);
-lean_inc(x_22);
-lean_dec_ref(x_3);
-lean_inc(x_18);
-lean_inc(x_19);
-x_23 = lean_apply_2(x_1, x_19, x_18);
-x_24 = lean_unbox(x_23);
-if (x_24 == 2)
-{
-lean_object* x_25; 
-lean_dec(x_22);
-lean_dec(x_21);
-lean_dec(x_20);
-lean_dec(x_19);
-lean_dec(x_18);
-x_25 = lean_box(2);
-return x_25;
-}
-else
-{
-lean_object* x_26; lean_object* x_27; lean_object* x_28; lean_object* x_29; 
-x_26 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_21, x_22);
-lean_dec(x_21);
-x_27 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_27, 0, x_26);
-lean_ctor_set(x_27, 1, x_18);
-x_28 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_28, 0, x_19);
-lean_ctor_set(x_28, 1, x_20);
-x_29 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_29, 0, x_27);
-lean_ctor_set(x_29, 1, x_28);
-return x_29;
 }
 }
 }
@@ -1777,14 +1748,29 @@ return x_4;
 }
 else
 {
-uint8_t x_5; 
-x_5 = !lean_is_exclusive(x_2);
-if (x_5 == 0)
+lean_object* x_5; lean_object* x_6; uint8_t x_7; uint8_t x_22; 
+x_5 = lean_ctor_get(x_2, 1);
+x_22 = !lean_is_exclusive(x_2);
+if (x_22 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; uint8_t x_13; 
-x_6 = lean_ctor_get(x_2, 1);
-x_7 = lean_ctor_get(x_2, 0);
-lean_dec(x_7);
+lean_object* x_23; 
+x_23 = lean_ctor_get(x_2, 0);
+lean_dec(x_23);
+x_6 = x_2;
+x_7 = x_22;
+goto block_21;
+}
+else
+{
+lean_inc(x_5);
+lean_dec(x_2);
+x_6 = lean_box(0);
+x_7 = x_22;
+goto block_21;
+}
+block_21:
+{
+lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; uint8_t x_13; 
 x_8 = lean_ctor_get(x_3, 0);
 lean_inc(x_8);
 x_9 = lean_ctor_get(x_3, 1);
@@ -1794,82 +1780,53 @@ lean_inc(x_10);
 x_11 = lean_ctor_get(x_3, 3);
 lean_inc(x_11);
 lean_dec_ref(x_3);
-lean_inc(x_6);
+lean_inc(x_5);
 lean_inc(x_8);
-x_12 = lean_apply_2(x_1, x_8, x_6);
+x_12 = lean_apply_2(x_1, x_8, x_5);
 x_13 = lean_unbox(x_12);
 if (x_13 == 0)
 {
-lean_object* x_14; lean_object* x_15; lean_object* x_16; 
+lean_object* x_14; lean_object* x_15; 
 x_14 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_10, x_11);
 lean_dec(x_10);
-lean_ctor_set(x_2, 0, x_14);
-x_15 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_15, 0, x_8);
-lean_ctor_set(x_15, 1, x_9);
-x_16 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_16, 0, x_2);
-lean_ctor_set(x_16, 1, x_15);
-return x_16;
+if (x_7 == 0)
+{
+lean_ctor_set(x_6, 0, x_14);
+x_15 = x_6;
+goto block_18;
 }
 else
 {
-lean_object* x_17; 
-lean_dec(x_11);
-lean_dec(x_10);
-lean_dec(x_9);
-lean_dec(x_8);
-lean_free_object(x_2);
-lean_dec(x_6);
-x_17 = lean_box(2);
+lean_object* x_19; 
+x_19 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_19, 0, x_14);
+lean_ctor_set(x_19, 1, x_5);
+x_15 = x_19;
+goto block_18;
+}
+block_18:
+{
+lean_object* x_16; lean_object* x_17; 
+x_16 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_16, 0, x_8);
+lean_ctor_set(x_16, 1, x_9);
+x_17 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_17, 0, x_15);
+lean_ctor_set(x_17, 1, x_16);
 return x_17;
 }
 }
 else
 {
-lean_object* x_18; lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_22; lean_object* x_23; uint8_t x_24; 
-x_18 = lean_ctor_get(x_2, 1);
-lean_inc(x_18);
-lean_dec(x_2);
-x_19 = lean_ctor_get(x_3, 0);
-lean_inc(x_19);
-x_20 = lean_ctor_get(x_3, 1);
-lean_inc(x_20);
-x_21 = lean_ctor_get(x_3, 2);
-lean_inc(x_21);
-x_22 = lean_ctor_get(x_3, 3);
-lean_inc(x_22);
-lean_dec_ref(x_3);
-lean_inc(x_18);
-lean_inc(x_19);
-x_23 = lean_apply_2(x_1, x_19, x_18);
-x_24 = lean_unbox(x_23);
-if (x_24 == 0)
-{
-lean_object* x_25; lean_object* x_26; lean_object* x_27; lean_object* x_28; 
-x_25 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_21, x_22);
-lean_dec(x_21);
-x_26 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_26, 0, x_25);
-lean_ctor_set(x_26, 1, x_18);
-x_27 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_27, 0, x_19);
-lean_ctor_set(x_27, 1, x_20);
-x_28 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_28, 0, x_26);
-lean_ctor_set(x_28, 1, x_27);
-return x_28;
-}
-else
-{
-lean_object* x_29; 
-lean_dec(x_22);
-lean_dec(x_21);
-lean_dec(x_20);
-lean_dec(x_19);
-lean_dec(x_18);
-x_29 = lean_box(2);
-return x_29;
+lean_object* x_20; 
+lean_dec(x_11);
+lean_dec(x_10);
+lean_dec(x_9);
+lean_dec(x_8);
+lean_del_object(x_6);
+lean_dec(x_5);
+x_20 = lean_box(2);
+return x_20;
 }
 }
 }
@@ -2010,33 +1967,50 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_RicSlice_instToIterator___lam__0(lean_object* x_1) {
 _start:
 {
-uint8_t x_2; 
-x_2 = !lean_is_exclusive(x_1);
-if (x_2 == 0)
+lean_object* x_2; lean_object* x_3; lean_object* x_4; uint8_t x_5; uint8_t x_12; 
+x_2 = lean_ctor_get(x_1, 0);
+x_3 = lean_ctor_get(x_1, 1);
+x_12 = !lean_is_exclusive(x_1);
+if (x_12 == 0)
 {
-lean_object* x_3; lean_object* x_4; lean_object* x_5; 
-x_3 = lean_ctor_get(x_1, 0);
-x_4 = lean_box(0);
-x_5 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_3, x_4);
-lean_dec(x_3);
-lean_ctor_set(x_1, 0, x_5);
-return x_1;
+x_4 = x_1;
+x_5 = x_12;
+goto block_11;
 }
 else
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; 
-x_6 = lean_ctor_get(x_1, 0);
-x_7 = lean_ctor_get(x_1, 1);
-lean_inc(x_7);
-lean_inc(x_6);
+lean_inc(x_3);
+lean_inc(x_2);
 lean_dec(x_1);
-x_8 = lean_box(0);
-x_9 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_6, x_8);
-lean_dec(x_6);
+x_4 = lean_box(0);
+x_5 = x_12;
+goto block_11;
+}
+block_11:
+{
+lean_object* x_6; lean_object* x_7; lean_object* x_8; 
+x_6 = lean_box(0);
+x_7 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_2, x_6);
+lean_dec(x_2);
+if (x_5 == 0)
+{
+lean_ctor_set(x_4, 0, x_7);
+x_8 = x_4;
+goto block_9;
+}
+else
+{
+lean_object* x_10; 
 x_10 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_10, 0, x_9);
-lean_ctor_set(x_10, 1, x_7);
-return x_10;
+lean_ctor_set(x_10, 0, x_7);
+lean_ctor_set(x_10, 1, x_3);
+x_8 = x_10;
+goto block_9;
+}
+block_9:
+{
+return x_8;
+}
 }
 }
 }
@@ -2087,33 +2061,50 @@ return x_3;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Unit_RicSlice_instToIterator___lam__0(lean_object* x_1) {
 _start:
 {
-uint8_t x_2; 
-x_2 = !lean_is_exclusive(x_1);
-if (x_2 == 0)
+lean_object* x_2; lean_object* x_3; lean_object* x_4; uint8_t x_5; uint8_t x_12; 
+x_2 = lean_ctor_get(x_1, 0);
+x_3 = lean_ctor_get(x_1, 1);
+x_12 = !lean_is_exclusive(x_1);
+if (x_12 == 0)
 {
-lean_object* x_3; lean_object* x_4; lean_object* x_5; 
-x_3 = lean_ctor_get(x_1, 0);
-x_4 = lean_box(0);
-x_5 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_3, x_4);
-lean_dec(x_3);
-lean_ctor_set(x_1, 0, x_5);
-return x_1;
+x_4 = x_1;
+x_5 = x_12;
+goto block_11;
 }
 else
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; 
-x_6 = lean_ctor_get(x_1, 0);
-x_7 = lean_ctor_get(x_1, 1);
-lean_inc(x_7);
-lean_inc(x_6);
+lean_inc(x_3);
+lean_inc(x_2);
 lean_dec(x_1);
-x_8 = lean_box(0);
-x_9 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_6, x_8);
-lean_dec(x_6);
+x_4 = lean_box(0);
+x_5 = x_12;
+goto block_11;
+}
+block_11:
+{
+lean_object* x_6; lean_object* x_7; lean_object* x_8; 
+x_6 = lean_box(0);
+x_7 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_2, x_6);
+lean_dec(x_2);
+if (x_5 == 0)
+{
+lean_ctor_set(x_4, 0, x_7);
+x_8 = x_4;
+goto block_9;
+}
+else
+{
+lean_object* x_10; 
 x_10 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_10, 0, x_9);
-lean_ctor_set(x_10, 1, x_7);
-return x_10;
+lean_ctor_set(x_10, 0, x_7);
+lean_ctor_set(x_10, 1, x_3);
+x_8 = x_10;
+goto block_9;
+}
+block_9:
+{
+return x_8;
+}
 }
 }
 }
@@ -2164,33 +2155,50 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Const_RicSlice_instToIterator___lam__0(lean_object* x_1) {
 _start:
 {
-uint8_t x_2; 
-x_2 = !lean_is_exclusive(x_1);
-if (x_2 == 0)
+lean_object* x_2; lean_object* x_3; lean_object* x_4; uint8_t x_5; uint8_t x_12; 
+x_2 = lean_ctor_get(x_1, 0);
+x_3 = lean_ctor_get(x_1, 1);
+x_12 = !lean_is_exclusive(x_1);
+if (x_12 == 0)
 {
-lean_object* x_3; lean_object* x_4; lean_object* x_5; 
-x_3 = lean_ctor_get(x_1, 0);
-x_4 = lean_box(0);
-x_5 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_3, x_4);
-lean_dec(x_3);
-lean_ctor_set(x_1, 0, x_5);
-return x_1;
+x_4 = x_1;
+x_5 = x_12;
+goto block_11;
 }
 else
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; 
-x_6 = lean_ctor_get(x_1, 0);
-x_7 = lean_ctor_get(x_1, 1);
-lean_inc(x_7);
-lean_inc(x_6);
+lean_inc(x_3);
+lean_inc(x_2);
 lean_dec(x_1);
-x_8 = lean_box(0);
-x_9 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_6, x_8);
-lean_dec(x_6);
+x_4 = lean_box(0);
+x_5 = x_12;
+goto block_11;
+}
+block_11:
+{
+lean_object* x_6; lean_object* x_7; lean_object* x_8; 
+x_6 = lean_box(0);
+x_7 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_2, x_6);
+lean_dec(x_2);
+if (x_5 == 0)
+{
+lean_ctor_set(x_4, 0, x_7);
+x_8 = x_4;
+goto block_9;
+}
+else
+{
+lean_object* x_10; 
 x_10 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_10, 0, x_9);
-lean_ctor_set(x_10, 1, x_7);
-return x_10;
+lean_ctor_set(x_10, 0, x_7);
+lean_ctor_set(x_10, 1, x_3);
+x_8 = x_10;
+goto block_9;
+}
+block_9:
+{
+return x_8;
+}
 }
 }
 }
@@ -2241,33 +2249,50 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_RioSlice_instToIterator___lam__0(lean_object* x_1) {
 _start:
 {
-uint8_t x_2; 
-x_2 = !lean_is_exclusive(x_1);
-if (x_2 == 0)
+lean_object* x_2; lean_object* x_3; lean_object* x_4; uint8_t x_5; uint8_t x_12; 
+x_2 = lean_ctor_get(x_1, 0);
+x_3 = lean_ctor_get(x_1, 1);
+x_12 = !lean_is_exclusive(x_1);
+if (x_12 == 0)
 {
-lean_object* x_3; lean_object* x_4; lean_object* x_5; 
-x_3 = lean_ctor_get(x_1, 0);
-x_4 = lean_box(0);
-x_5 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_3, x_4);
-lean_dec(x_3);
-lean_ctor_set(x_1, 0, x_5);
-return x_1;
+x_4 = x_1;
+x_5 = x_12;
+goto block_11;
 }
 else
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; 
-x_6 = lean_ctor_get(x_1, 0);
-x_7 = lean_ctor_get(x_1, 1);
-lean_inc(x_7);
-lean_inc(x_6);
+lean_inc(x_3);
+lean_inc(x_2);
 lean_dec(x_1);
-x_8 = lean_box(0);
-x_9 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_6, x_8);
-lean_dec(x_6);
+x_4 = lean_box(0);
+x_5 = x_12;
+goto block_11;
+}
+block_11:
+{
+lean_object* x_6; lean_object* x_7; lean_object* x_8; 
+x_6 = lean_box(0);
+x_7 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_2, x_6);
+lean_dec(x_2);
+if (x_5 == 0)
+{
+lean_ctor_set(x_4, 0, x_7);
+x_8 = x_4;
+goto block_9;
+}
+else
+{
+lean_object* x_10; 
 x_10 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_10, 0, x_9);
-lean_ctor_set(x_10, 1, x_7);
-return x_10;
+lean_ctor_set(x_10, 0, x_7);
+lean_ctor_set(x_10, 1, x_3);
+x_8 = x_10;
+goto block_9;
+}
+block_9:
+{
+return x_8;
+}
 }
 }
 }
@@ -2318,33 +2343,50 @@ return x_3;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Unit_RioSlice_instToIterator___lam__0(lean_object* x_1) {
 _start:
 {
-uint8_t x_2; 
-x_2 = !lean_is_exclusive(x_1);
-if (x_2 == 0)
+lean_object* x_2; lean_object* x_3; lean_object* x_4; uint8_t x_5; uint8_t x_12; 
+x_2 = lean_ctor_get(x_1, 0);
+x_3 = lean_ctor_get(x_1, 1);
+x_12 = !lean_is_exclusive(x_1);
+if (x_12 == 0)
 {
-lean_object* x_3; lean_object* x_4; lean_object* x_5; 
-x_3 = lean_ctor_get(x_1, 0);
-x_4 = lean_box(0);
-x_5 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_3, x_4);
-lean_dec(x_3);
-lean_ctor_set(x_1, 0, x_5);
-return x_1;
+x_4 = x_1;
+x_5 = x_12;
+goto block_11;
 }
 else
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; 
-x_6 = lean_ctor_get(x_1, 0);
-x_7 = lean_ctor_get(x_1, 1);
-lean_inc(x_7);
-lean_inc(x_6);
+lean_inc(x_3);
+lean_inc(x_2);
 lean_dec(x_1);
-x_8 = lean_box(0);
-x_9 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_6, x_8);
-lean_dec(x_6);
+x_4 = lean_box(0);
+x_5 = x_12;
+goto block_11;
+}
+block_11:
+{
+lean_object* x_6; lean_object* x_7; lean_object* x_8; 
+x_6 = lean_box(0);
+x_7 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_2, x_6);
+lean_dec(x_2);
+if (x_5 == 0)
+{
+lean_ctor_set(x_4, 0, x_7);
+x_8 = x_4;
+goto block_9;
+}
+else
+{
+lean_object* x_10; 
 x_10 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_10, 0, x_9);
-lean_ctor_set(x_10, 1, x_7);
-return x_10;
+lean_ctor_set(x_10, 0, x_7);
+lean_ctor_set(x_10, 1, x_3);
+x_8 = x_10;
+goto block_9;
+}
+block_9:
+{
+return x_8;
+}
 }
 }
 }
@@ -2395,33 +2437,50 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Const_RioSlice_instToIterator___lam__0(lean_object* x_1) {
 _start:
 {
-uint8_t x_2; 
-x_2 = !lean_is_exclusive(x_1);
-if (x_2 == 0)
+lean_object* x_2; lean_object* x_3; lean_object* x_4; uint8_t x_5; uint8_t x_12; 
+x_2 = lean_ctor_get(x_1, 0);
+x_3 = lean_ctor_get(x_1, 1);
+x_12 = !lean_is_exclusive(x_1);
+if (x_12 == 0)
 {
-lean_object* x_3; lean_object* x_4; lean_object* x_5; 
-x_3 = lean_ctor_get(x_1, 0);
-x_4 = lean_box(0);
-x_5 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_3, x_4);
-lean_dec(x_3);
-lean_ctor_set(x_1, 0, x_5);
-return x_1;
+x_4 = x_1;
+x_5 = x_12;
+goto block_11;
 }
 else
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; 
-x_6 = lean_ctor_get(x_1, 0);
-x_7 = lean_ctor_get(x_1, 1);
-lean_inc(x_7);
-lean_inc(x_6);
+lean_inc(x_3);
+lean_inc(x_2);
 lean_dec(x_1);
-x_8 = lean_box(0);
-x_9 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_6, x_8);
-lean_dec(x_6);
+x_4 = lean_box(0);
+x_5 = x_12;
+goto block_11;
+}
+block_11:
+{
+lean_object* x_6; lean_object* x_7; lean_object* x_8; 
+x_6 = lean_box(0);
+x_7 = l_Std_DTreeMap_Internal_Zipper_prependMap___redArg(x_2, x_6);
+lean_dec(x_2);
+if (x_5 == 0)
+{
+lean_ctor_set(x_4, 0, x_7);
+x_8 = x_4;
+goto block_9;
+}
+else
+{
+lean_object* x_10; 
 x_10 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_10, 0, x_9);
-lean_ctor_set(x_10, 1, x_7);
-return x_10;
+lean_ctor_set(x_10, 0, x_7);
+lean_ctor_set(x_10, 1, x_3);
+x_8 = x_10;
+goto block_9;
+}
+block_9:
+{
+return x_8;
+}
 }
 }
 }
@@ -2496,36 +2555,54 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_RccSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -2581,36 +2658,54 @@ return x_3;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Unit_RccSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -2666,36 +2761,54 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Const_RccSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -2775,36 +2888,54 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_RcoSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -2860,36 +2991,54 @@ return x_3;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Unit_RcoSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -2945,36 +3094,54 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Const_RcoSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGE___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -3054,36 +3221,54 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_RooSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -3139,36 +3324,54 @@ return x_3;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Unit_RooSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -3224,36 +3427,54 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Const_RooSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -3333,36 +3554,54 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_RocSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -3418,36 +3657,54 @@ return x_3;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Unit_RocSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -3503,36 +3760,54 @@ return x_4;
 LEAN_EXPORT lean_object* l_Std_DTreeMap_Internal_Const_RocSlice_instToIterator___redArg___lam__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+lean_object* x_3; lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; uint8_t x_15; 
 x_3 = lean_ctor_get(x_2, 1);
 lean_inc_ref(x_3);
 x_4 = lean_ctor_get(x_2, 0);
 lean_inc(x_4);
 lean_dec_ref(x_2);
-x_5 = !lean_is_exclusive(x_3);
-if (x_5 == 0)
+x_5 = lean_ctor_get(x_3, 0);
+x_6 = lean_ctor_get(x_3, 1);
+x_15 = !lean_is_exclusive(x_3);
+if (x_15 == 0)
 {
-lean_object* x_6; lean_object* x_7; lean_object* x_8; 
-x_6 = lean_ctor_get(x_3, 0);
-x_7 = lean_box(0);
-x_8 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_6, x_7);
-lean_ctor_set(x_3, 0, x_8);
-return x_3;
+x_7 = x_3;
+x_8 = x_15;
+goto block_14;
 }
 else
 {
-lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
-x_9 = lean_ctor_get(x_3, 0);
-x_10 = lean_ctor_get(x_3, 1);
-lean_inc(x_10);
-lean_inc(x_9);
+lean_inc(x_6);
+lean_inc(x_5);
 lean_dec(x_3);
-x_11 = lean_box(0);
-x_12 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_9, x_11);
+x_7 = lean_box(0);
+x_8 = x_15;
+goto block_14;
+}
+block_14:
+{
+lean_object* x_9; lean_object* x_10; lean_object* x_11; 
+x_9 = lean_box(0);
+x_10 = l_Std_DTreeMap_Internal_Zipper_prependMapGT___redArg(x_1, x_4, x_5, x_9);
+if (x_8 == 0)
+{
+lean_ctor_set(x_7, 0, x_10);
+x_11 = x_7;
+goto block_12;
+}
+else
+{
+lean_object* x_13; 
 x_13 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_13, 0, x_12);
-lean_ctor_set(x_13, 1, x_10);
-return x_13;
+lean_ctor_set(x_13, 0, x_10);
+lean_ctor_set(x_13, 1, x_6);
+x_11 = x_13;
+goto block_12;
+}
+block_12:
+{
+return x_11;
+}
 }
 }
 }
@@ -4141,6 +4416,75 @@ x_3 = ((lean_object*)(l_Std_DTreeMap_Internal_Const_RiiSlice_instToIterator___cl
 return x_3;
 }
 }
+lean_object* runtime_initialize_Std_Data_Iterators_Lemmas_Producers_Slice(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Slice(uint8_t builtin);
+lean_object* runtime_initialize_Std_Data_DTreeMap_Internal_Lemmas(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Iterators_Combinators_FilterMap(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Iterators_Lemmas_Combinators_FilterMap(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Iterators_Lemmas_Consumers_Collect(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Iterators_Lemmas_Consumers_Monadic_Collect(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_List_Pairwise(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_List_Sublist(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_List_TakeDrop(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Slice_InternalLemmas(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Std_Data_DTreeMap_Internal_Zipper(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Std_Data_Iterators_Lemmas_Producers_Slice(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Slice(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Std_Data_DTreeMap_Internal_Lemmas(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Iterators_Combinators_FilterMap(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Iterators_Lemmas_Combinators_FilterMap(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Iterators_Lemmas_Consumers_Collect(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Iterators_Lemmas_Consumers_Monadic_Collect(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_List_Pairwise(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_List_Sublist(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_List_TakeDrop(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_Slice_InternalLemmas(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Std_Data_DTreeMap_Internal_Zipper(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+return lean_io_result_mk_ok(lean_box(0));
+}
 lean_object* initialize_Std_Data_Iterators_Lemmas_Producers_Slice(uint8_t builtin);
 lean_object* initialize_Init_Data_Slice(uint8_t builtin);
 lean_object* initialize_Std_Data_DTreeMap_Internal_Lemmas(uint8_t builtin);
@@ -4157,40 +4501,59 @@ LEAN_EXPORT lean_object* initialize_Std_Data_DTreeMap_Internal_Zipper(uint8_t bu
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Std_Data_Iterators_Lemmas_Producers_Slice(builtin);
+res = initialize_Std_Data_Iterators_Lemmas_Producers_Slice(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Slice(builtin);
+res = initialize_Init_Data_Slice(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Std_Data_DTreeMap_Internal_Lemmas(builtin);
+res = initialize_Std_Data_DTreeMap_Internal_Lemmas(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Iterators_Combinators_FilterMap(builtin);
+res = initialize_Init_Data_Iterators_Combinators_FilterMap(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Iterators_Lemmas_Combinators_FilterMap(builtin);
+res = initialize_Init_Data_Iterators_Lemmas_Combinators_FilterMap(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Iterators_Lemmas_Consumers_Collect(builtin);
+res = initialize_Init_Data_Iterators_Lemmas_Consumers_Collect(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Iterators_Lemmas_Consumers_Monadic_Collect(builtin);
+res = initialize_Init_Data_Iterators_Lemmas_Consumers_Monadic_Collect(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_List_Pairwise(builtin);
+res = initialize_Init_Data_List_Pairwise(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_List_Sublist(builtin);
+res = initialize_Init_Data_List_Sublist(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_List_TakeDrop(builtin);
+res = initialize_Init_Data_List_TakeDrop(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_Slice_InternalLemmas(builtin);
+res = initialize_Init_Data_Slice_InternalLemmas(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-return lean_io_result_mk_ok(lean_box(0));
+res = runtime_initialize_Std_Data_DTreeMap_Internal_Zipper(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Std_Data_DTreeMap_Internal_Zipper(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Std_Data_DTreeMap_Internal_Zipper(builtin);
 }
 #ifdef __cplusplus
 }

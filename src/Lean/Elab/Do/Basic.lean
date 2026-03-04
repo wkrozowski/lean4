@@ -105,7 +105,7 @@ inductive DoElemContKind
 
 /--
 Elaboration of a `do` block `do $e; $rest`, results in a call
-``elabTerm `(do $e; $rest) = elabElem e dec``, where `elabElem e ·` is the elaborator for `do`
+``elabTerm `(do $e; $rest) = elabDoElem e dec``, where `elabDoElem e ·` is the elaborator for `do`
 element `e`, and `dec` is the `DoElemCont` describing the elaboration of the rest of the block
 `rest`.
 
@@ -147,8 +147,8 @@ deriving Inhabited
 /--
 The type of elaborators for `do` block elements.
 
-It is ``elabTerm `(do $e; $rest) = elabElem e dec``, where `elabElem e ·` is the elaborator for `do`
-element `e`, and `dec` is the `DoElemCont` describing the elaboration of the rest of the block
+It is ``elabTerm `(do $e; $rest) = elabDoElem e dec``, where `elabDoElem e ·` is the elaborator for
+`do` element `e`, and `dec` is the `DoElemCont` describing the elaboration of the rest of the block
 `rest`.
 -/
 abbrev DoElab := TSyntax `doElem → DoElemCont → DoElabM Expr

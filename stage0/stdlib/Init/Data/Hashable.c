@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Init.Data.Hashable
-// Imports: public import Init.Data.String.PosRaw public import Init.Data.UInt.Basic
+// Imports: import Init.Data.Array.Basic public import Init.Data.UInt.Basic
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -17,7 +17,6 @@ lean_object* l_UInt64_ofNat___boxed(lean_object*);
 static const lean_closure_object l_instHashableNat___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_closure_object) + sizeof(void*)*0, .m_other = 0, .m_tag = 245}, .m_fun = (void*)l_UInt64_ofNat___boxed, .m_arity = 1, .m_num_fixed = 0, .m_objs = {} };
 static const lean_object* l_instHashableNat___closed__0 = (const lean_object*)&l_instHashableNat___closed__0_value;
 LEAN_EXPORT const lean_object* l_instHashableNat = (const lean_object*)&l_instHashableNat___closed__0_value;
-LEAN_EXPORT const lean_object* l_instHashableRaw = (const lean_object*)&l_instHashableNat___closed__0_value;
 uint64_t lean_uint64_mix_hash(uint64_t, uint64_t);
 LEAN_EXPORT uint64_t l_instHashableProd___redArg___lam__0(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_instHashableProd___redArg___lam__0___boxed(lean_object*, lean_object*, lean_object*);
@@ -44,7 +43,8 @@ LEAN_EXPORT lean_object* l_instHashableOption___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_instHashableOption(lean_object*, lean_object*);
 LEAN_EXPORT uint64_t l_instHashableList___redArg___lam__0(lean_object*, uint64_t, lean_object*);
 LEAN_EXPORT lean_object* l_instHashableList___redArg___lam__0___boxed(lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* l_instHashableList___redArg___lam__1___boxed__const__1;
+static const lean_ctor_object l_instHashableList___redArg___lam__1___boxed__const__1_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*0 + 8, .m_other = 0, .m_tag = 0}, .m_objs = {LEAN_SCALAR_PTR_LITERAL(7, 0, 0, 0, 0, 0, 0, 0)}};
+LEAN_EXPORT const lean_object* l_instHashableList___redArg___lam__1___boxed__const__1 = (const lean_object*)&l_instHashableList___redArg___lam__1___boxed__const__1_value;
 lean_object* l_List_foldl___redArg(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT uint64_t l_instHashableList___redArg___lam__1(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_instHashableList___redArg___lam__1___boxed(lean_object*, lean_object*);
@@ -315,20 +315,11 @@ x_6 = lean_box_uint64(x_5);
 return x_6;
 }
 }
-static lean_object* _init_l_instHashableList___redArg___lam__1___boxed__const__1(void) {
-_start:
-{
-uint64_t x_1; lean_object* x_2; 
-x_1 = 7;
-x_2 = lean_box_uint64(x_1);
-return x_2;
-}
-}
 LEAN_EXPORT uint64_t l_instHashableList___redArg___lam__1(lean_object* x_1, lean_object* x_2) {
 _start:
 {
 lean_object* x_3; lean_object* x_4; uint64_t x_5; 
-x_3 = l_instHashableList___redArg___lam__1___boxed__const__1;
+x_3 = ((lean_object*)(l_instHashableList___redArg___lam__1___boxed__const__1));
 x_4 = l_List_foldl___redArg(x_1, x_3, x_2);
 x_5 = lean_unbox_uint64(x_4);
 lean_dec(x_4);
@@ -417,7 +408,7 @@ else
 size_t x_9; size_t x_10; lean_object* x_11; lean_object* x_12; uint64_t x_13; 
 x_9 = 0;
 x_10 = lean_usize_of_nat(x_5);
-x_11 = l_instHashableList___redArg___lam__1___boxed__const__1;
+x_11 = ((lean_object*)(l_instHashableList___redArg___lam__1___boxed__const__1));
 x_12 = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold(lean_box(0), lean_box(0), lean_box(0), x_6, x_1, x_2, x_9, x_10, x_11);
 x_13 = lean_unbox_uint64(x_12);
 lean_dec(x_12);
@@ -429,7 +420,7 @@ else
 size_t x_14; size_t x_15; lean_object* x_16; lean_object* x_17; uint64_t x_18; 
 x_14 = 0;
 x_15 = lean_usize_of_nat(x_5);
-x_16 = l_instHashableList___redArg___lam__1___boxed__const__1;
+x_16 = ((lean_object*)(l_instHashableList___redArg___lam__1___boxed__const__1));
 x_17 = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold(lean_box(0), lean_box(0), lean_box(0), x_6, x_1, x_2, x_14, x_15, x_16);
 x_18 = lean_unbox_uint64(x_17);
 lean_dec(x_17);
@@ -599,22 +590,54 @@ x_4 = lean_box_uint64(x_3);
 return x_4;
 }
 }
-lean_object* initialize_Init_Data_String_PosRaw(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Array_Basic(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_UInt_Basic(uint8_t builtin);
+static bool _G_runtime_initialized = false;
+LEAN_EXPORT lean_object* runtime_initialize_Init_Data_Hashable(uint8_t builtin) {
+lean_object * res;
+if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_runtime_initialized = true;
+res = runtime_initialize_Init_Data_Array_Basic(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_UInt_Basic(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return lean_io_result_mk_ok(lean_box(0));
+}
+static bool _G_meta_initialized = false;
+LEAN_EXPORT lean_object* meta_initialize_Init_Data_Hashable(uint8_t builtin) {
+lean_object * res;
+if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
+_G_meta_initialized = true;
+return lean_io_result_mk_ok(lean_box(0));
+}
+lean_object* initialize_Init_Data_Array_Basic(uint8_t builtin);
 lean_object* initialize_Init_Data_UInt_Basic(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Init_Data_Hashable(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Init_Data_String_PosRaw(builtin);
+res = initialize_Init_Data_Array_Basic(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Data_UInt_Basic(builtin);
+res = initialize_Init_Data_UInt_Basic(builtin)
+;
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-l_instHashableList___redArg___lam__1___boxed__const__1 = _init_l_instHashableList___redArg___lam__1___boxed__const__1();
-lean_mark_persistent(l_instHashableList___redArg___lam__1___boxed__const__1);
-return lean_io_result_mk_ok(lean_box(0));
+res = runtime_initialize_Init_Data_Hashable(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = meta_initialize_Init_Data_Hashable(builtin)
+;
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+return initialize_Init_Data_Hashable(builtin);
 }
 #ifdef __cplusplus
 }

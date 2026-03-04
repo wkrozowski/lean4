@@ -321,7 +321,7 @@ abbrev PlausibleIterStep (IsPlausibleStep : IterStep α β → Prop) := Subtype 
 Match pattern for the `yield` case. See also `IterStep.yield`.
 -/
 @[match_pattern, simp, spec, expose]
-abbrev PlausibleIterStep.yield {IsPlausibleStep : IterStep α β → Prop}
+def PlausibleIterStep.yield {IsPlausibleStep : IterStep α β → Prop}
     (it' : α) (out : β) (h : IsPlausibleStep (.yield it' out)) :
     PlausibleIterStep IsPlausibleStep :=
   ⟨.yield it' out, h⟩
@@ -330,7 +330,7 @@ abbrev PlausibleIterStep.yield {IsPlausibleStep : IterStep α β → Prop}
 Match pattern for the `skip` case. See also `IterStep.skip`.
 -/
 @[match_pattern, simp, grind =, expose]
-abbrev PlausibleIterStep.skip {IsPlausibleStep : IterStep α β → Prop}
+def PlausibleIterStep.skip {IsPlausibleStep : IterStep α β → Prop}
     (it' : α) (h : IsPlausibleStep (.skip it')) : PlausibleIterStep IsPlausibleStep :=
   ⟨.skip it', h⟩
 
@@ -338,7 +338,7 @@ abbrev PlausibleIterStep.skip {IsPlausibleStep : IterStep α β → Prop}
 Match pattern for the `done` case. See also `IterStep.done`.
 -/
 @[match_pattern, simp, grind =, expose]
-abbrev PlausibleIterStep.done {IsPlausibleStep : IterStep α β → Prop}
+def PlausibleIterStep.done {IsPlausibleStep : IterStep α β → Prop}
     (h : IsPlausibleStep .done) : PlausibleIterStep IsPlausibleStep :=
   ⟨.done, h⟩
 

@@ -43,24 +43,18 @@ where
       return ()
 
     modify fun s => { s with seen := s.seen.insert decl.name }
-    decl.value.forCodeM visit
+    decl.value.forCodeM (·.forM visitConsts)
     modify fun s => { s with order := s.order.push decl }
 
-  visit (code : Code pu) : ToposortM pu Unit := do
+  visitConsts (code : Code pu) : ToposortM pu Unit := do
     match code with
-    | .let decl k =>
+    | .let decl _ =>
       match decl.value with
       | .const declName .. | .fap declName .. | .pap declName .. =>
         if let some d := (← read).declsMap[declName]? then
           process d
-      | _ => pure ()
-      visit k
-    | .jp decl k | .fun decl k .. =>
-      visit decl.value
-      visit k
-    | .cases c => c.alts.forM fun alt => visit alt.getCode
-    | .jmp .. | .return .. | .unreach .. => return ()
-    | .uset (k := k) .. | .sset (k := k) .. | .inc (k := k) .. | .dec (k := k) .. => visit k
+      | _ => return ()
+    | _ => return ()
 
 public def toposortDecls (decls : Array (Decl pu)) : CompilerM (Array (Decl pu)) := do
   let (externDecls, otherDecls) := decls.partition (fun decl => decl.value matches .extern ..)

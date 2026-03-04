@@ -23,7 +23,7 @@ import Lean.Meta.Tactic.Cbv.Opaque
 /-!
 # Control Flow Handling for Cbv
 
-Cbv-specific simprocs for `ite`, `dite`, `cond`, `match`, and `Decidable.rec`.
+Cbv-specific simprocs for `ite`, `dite`, `cond`, `match`, `Decidable.rec`, and `Decidable.decide`.
 
 The standard `Sym.Simp` control flow simprocs (`simpIte`, `simpDIte`) give up
 when the condition does not reduce to `True` or `False` directly. The Cbv variants
@@ -34,6 +34,21 @@ corresponding branch.
 
 namespace Lean.Meta.Sym.Simp
 open Internal
+
+/-- Reduce `ite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
+def simpIteDecidable (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst with
+  | Decidable.isTrue _ hp =>
+    return .step a <| mkApp6 (mkConst ``Sym.ite_true f.constLevels!) α c inst a b hp
+  | Decidable.isFalse _ hnp =>
+    return .step b <| mkApp6 (mkConst ``Sym.ite_false f.constLevels!) α c inst a b hnp
+  | _ => fallback
+
+/-- Simplify the `Decidable` instance, then try `simpIteDecidable`. -/
+def simpIteDecidableWithFallback (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst) with
+  | .rfl _ => simpIteDecidable f α c inst a b fallback
+  | .step inst' _ _ => simpIteDecidable f α c inst' a b fallback
 
 /-- Like `simpIte` but also evaluates `Decidable.decide` when the condition does not
 reduce to `True`/`False` directly. -/
@@ -46,48 +61,39 @@ public def simpIteCbv : Simproc := fun e => do
     | .rfl _ =>
       if (← isTrueExpr c) then
         return .step a <| mkApp3 (mkConst ``ite_true f.constLevels!) α a b
-      else if (← isFalseExpr  c) then
+      else if (← isFalseExpr c) then
         return .step b <| mkApp3 (mkConst ``ite_false f.constLevels!) α a b
       else
-        let toEval ← mkAppS₂ (mkConst ``Decidable.decide) c inst
-        let evalRes ← simp toEval
-        match evalRes with
-        | .rfl _ =>
-          return .rfl (done := true)
-        | .step v hv _ =>
-          if (← isBoolTrueExpr v) then
-            let h' := mkApp3 (mkConst ``eq_true_of_decide) c inst hv
-            let inst' := mkConst ``instDecidableTrue
-            let c' ← getTrueExpr
-            let e' := e.getBoundedAppFn 4
-            let e' ← mkAppS₄ e' c' inst' a b
-            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h'
-            let ha := mkApp3 (mkConst ``ite_true f.constLevels!) α a b
-            let ha ← mkEqTrans e e' h' a ha
-            return .step a ha (done := false)
-          else if  (← isBoolFalseExpr v)  then
-            let h' := mkApp3 (mkConst ``eq_false_of_decide) c inst hv
-            let inst' := mkConst ``instDecidableFalse
-            let c' ← getFalseExpr
-            let e' := e.getBoundedAppFn 4
-            let e' ← mkAppS₄ e' c' inst' a b
-            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h'
-            let hb := mkApp3 (mkConst ``ite_false f.constLevels!) α a b
-            let hb ← mkEqTrans e e' h' b hb
-            return .step b hb (done := false)
-          else
-            return .rfl (done := true)
+        simpIteDecidableWithFallback f α c inst a b <| return .rfl (done := true)
     | .step c' h _ =>
       if (← isTrueExpr c') then
         return .step a <| mkApp (e.replaceFn ``ite_cond_eq_true) h
       else if (← isFalseExpr c') then
         return .step b <| mkApp (e.replaceFn ``ite_cond_eq_false) h
       else
-        let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
-        let e' := e.getBoundedAppFn 4
-        let e' ← mkAppS₄ e' c' inst' a b
-        let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
-        return .step e' h'
+        simpIteDecidableWithFallback f α c inst a b <| do
+          let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
+          let e' := e.getBoundedAppFn 4
+          let e' ← mkAppS₄ e' c' inst' a b
+          let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
+          return .step e' h' (done := true)
+
+/-- Reduce `dite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
+def simpDIteDecidable (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst with
+  | Decidable.isTrue _ hp =>
+    let a' ← share <| a.betaRev #[hp]
+    return .step a' <| mkApp6 (mkConst ``Sym.dite_true f.constLevels!) α c inst a b hp
+  | Decidable.isFalse _ hnp =>
+    let b' ← share <| b.betaRev #[hnp]
+    return .step b' <| mkApp6 (mkConst ``Sym.dite_false f.constLevels!) α c inst a b hnp
+  | _ => fallback
+
+/-- Simplify the `Decidable` instance, then try `simpDIteDecidable`. -/
+def simpDIteDecidableWithFallback (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst) with
+  | .rfl _ => simpDIteDecidable f α c inst a b fallback
+  | .step inst' _ _ => simpDIteDecidable f α c inst' a b fallback
 
 /-- Like `simpDIte` but also evaluates `Decidable.decide` when the condition does not
 reduce to `True`/`False` directly. -/
@@ -105,41 +111,7 @@ public def simpDIteCbv : Simproc := fun e => do
         let b' ← share <| b.betaRev #[mkConst ``not_false]
         return .step b' <| mkApp3 (mkConst ``dite_false f.constLevels!) α a b
       else
-        let toEval ← mkAppS₂ (mkConst ``Decidable.decide) c inst
-        let evalRes ← simp toEval
-        match evalRes with
-        | .rfl _ => return .rfl (done := true)
-        | .step v hv _ =>
-          if  (← isBoolTrueExpr v) then
-            let h' := mkApp3 (mkConst ``eq_true_of_decide) c inst hv
-            let inst' := mkConst ``instDecidableTrue
-            let e' := e.getBoundedAppFn 4
-            let h ← shareCommon h'
-            let c' ← getTrueExpr
-            let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
-            let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
-            let e' ← mkAppS₄ e' c' inst' a b
-            let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
-            let a' ← share <| a.betaRev #[mkConst ``True.intro]
-            let ha := mkApp3 (mkConst ``dite_true f.constLevels!) α a b
-            let ha ← mkEqTrans e e' h' a' ha
-            return .step a' ha
-          else if  (← isBoolFalseExpr v)  then
-            let h' := mkApp3 (mkConst ``eq_false_of_decide) c inst hv
-            let inst' := mkConst ``instDecidableFalse
-            let e' := e.getBoundedAppFn 4
-            let h ← shareCommon h'
-            let c' ← getFalseExpr
-            let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
-            let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
-            let e' ← mkAppS₄ e' c' inst' a b
-            let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
-            let b' ← share <| b.betaRev #[mkConst ``not_false]
-            let hb := mkApp3 (mkConst ``dite_false f.constLevels!) α a b
-            let hb ← mkEqTrans e e' h' b' hb
-            return .step b' hb
-          else
-            return .rfl (done := true)
+        simpDIteDecidableWithFallback f α c inst a b <| return .rfl (done := true)
     | .step c' h _ =>
       if (← isTrueExpr c') then
         let h' ← shareCommon <| mkOfEqTrueCore c h
@@ -150,14 +122,119 @@ public def simpDIteCbv : Simproc := fun e => do
         let b ← share <| b.betaRev #[h']
         return .step b <| mkApp (e.replaceFn ``dite_cond_eq_false) h
       else
-        let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
-        let e' := e.getBoundedAppFn 4
-        let h ← shareCommon h
-        let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
-        let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
-        let e' ← mkAppS₄ e' c' inst' a b
-        let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
-        return .step e' h'
+        simpDIteDecidableWithFallback f α c inst a b <| do
+          let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
+          let e' := e.getBoundedAppFn 4
+          let h ← shareCommon h
+          let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
+          let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
+          let e' ← mkAppS₄ e' c' inst' a b
+          let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
+          return .step e' h' (done := true)
+
+/-- Short-circuit evaluation of `Or`. Simplifies only the left argument;
+if it reduces to `True`, returns `True` immediately without evaluating the right side. -/
+public def simpOr : Simproc := fun e => do
+  let_expr Or a b := e | return .rfl
+  match (← simp a) with
+  | .rfl _ =>
+    if (← isTrueExpr a) then
+      return .step (← getTrueExpr) (mkApp (mkConst ``true_or) b) (done := true)
+    else if (← isFalseExpr a) then
+      return .step b (mkApp (mkConst ``false_or) b)
+    else
+      return .rfl
+  | .step a' ha _ =>
+    if (← isTrueExpr a') then
+      return .step (← getTrueExpr) (mkApp (e.replaceFn ``Sym.or_eq_true_left) ha) (done := true)
+    else if (← isFalseExpr a') then
+      return .step b (mkApp (e.replaceFn ``Sym.or_eq_right) ha)
+    else
+      return .rfl
+
+/-- Short-circuit evaluation of `And`. Simplifies only the left argument;
+if it reduces to `False`, returns `False` immediately without evaluating the right side. -/
+public def simpAnd : Simproc := fun e => do
+  let_expr And a b := e | return .rfl
+  match (← simp a) with
+  | .rfl _ =>
+    if (← isFalseExpr a) then
+      return .step (← getFalseExpr) (mkApp (mkConst ``false_and) b) (done := true)
+    else if (← isTrueExpr a) then
+      return .step b (mkApp (mkConst ``true_and) b)
+    else
+      return .rfl
+  | .step a' ha _ =>
+    if (← isFalseExpr a') then
+      return .step (← getFalseExpr) (mkApp (e.replaceFn ``Sym.and_eq_false_left) ha) (done := true)
+    else if (← isTrueExpr a') then
+      return .step b (mkApp (e.replaceFn ``Sym.and_eq_left) ha)
+    else
+      return .rfl
+
+/-- Reduce `decide` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
+def simpDecideByInst (p inst : Expr) : SimpM Result := do
+  match_expr inst with
+  | Decidable.isTrue _ hp =>
+    return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_isTrue) p inst hp
+  | Decidable.isFalse _ hnp =>
+    return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_isFalse) p inst hnp
+  | _ => return .rfl (done := true)
+
+/-- Like `simpDecideByInst`, but for the case where `p` was simplified to `p'` with proof `h`. -/
+def simpDecideByInstCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst' with
+  | Decidable.isTrue _ hp =>
+    return .step (← getBoolTrueExpr) <| mkApp5 (mkConst ``Sym.decide_isTrue_congr) p p' h inst hp
+  | Decidable.isFalse _ hnp =>
+    return .step (← getBoolFalseExpr) <| mkApp5 (mkConst ``Sym.decide_isFalse_congr) p p' h inst hnp
+  | _ => fallback
+
+/-- Simplify the `Decidable` instance, then try `simpDecideByInst`. -/
+def simpDecideByInstWithFallback (p inst : Expr) : SimpM Result := do
+  match (← simp inst) with
+  | .rfl _ => simpDecideByInst p inst
+  | .step inst' _ _ => simpDecideByInst p inst'
+
+/-- Like `simpDecideByInstWithFallback`, but for the case where `p` was simplified to `p'`. -/
+def simpDecideByInstWithFallbackCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst') with
+  | .rfl _ => simpDecideByInstCongr p p' h inst inst' fallback
+  | .step inst'' _ _ => simpDecideByInstCongr p p' h inst inst'' fallback
+
+/-- Simplify `Decidable.decide` by simplifying the proposition and reducing the instance.
+
+First simplifies the proposition `p`. If the result is `True` or `False`, produces the
+corresponding boolean directly. Otherwise, simplifies the `Decidable` instance and matches
+on `isTrue`/`isFalse` to determine the boolean value. When `p` simplified to a new `p'`
+but the instance doesn't reduce to `isTrue`/`isFalse`, falls back to rebuilding
+`decide p'` with a congruence proof. -/
+public def simpDecideCbv : Simproc := fun e => do
+  let numArgs := e.getAppNumArgs
+  if numArgs < 2 then return .rfl (done := true)
+  propagateOverApplied e (numArgs - 2) fun e => do
+    let_expr Decidable.decide p inst := e | return .rfl
+    match (← simp p) with
+    | .rfl _ =>
+      if (← isTrueExpr p) then
+        return .step (← getBoolTrueExpr) (mkApp (mkConst ``decide_true) inst)
+      else if (← isFalseExpr p) then
+        return .step (← getBoolFalseExpr) (mkApp (mkConst ``decide_false) inst)
+      else
+        simpDecideByInstWithFallback p inst
+    | .step p' hp _ =>
+      if (← isTrueExpr p') then
+        return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_true) p inst hp
+      else if (← isFalseExpr p') then
+        return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_false) p inst hp
+      else
+        let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) p') | return .rfl
+        let inst' ← shareCommon inst'
+        simpDecideByInstWithFallbackCongr p p' hp inst inst' (do
+          let res := (mkConst ``Decidable.decide)
+          let res ← shareCommon res
+          let res ← mkAppS₂ res p' inst'
+          return .step res (mkApp5 (mkConst ``Decidable.decide.congr_simp) p p' hp inst inst') (done := true))
 
 end Lean.Meta.Sym.Simp
 
@@ -222,7 +299,13 @@ public def simpControlCbv : Simproc := fun e => do
     simpDIteCbv e
   else if declName == ``Decidable.rec then
     -- We force the rewrite in the last argument, so that we can unfold the `Decidable` instance.
-    (simpInterlaced · #[false,false,true,true,true]) >> reduceRecMatcher <| e
+    (simpInterlaced · #[false,false,false,false,true]) >> reduceRecMatcher <| e
+  else if declName == ``Or then
+    simpOr e
+  else if declName == ``And then
+    simpAnd e
+  else if declName == ``Decidable.decide then
+    simpDecideCbv e
   else
     tryMatcher e
 
