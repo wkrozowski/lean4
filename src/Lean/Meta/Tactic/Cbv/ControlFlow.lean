@@ -36,8 +36,8 @@ namespace Lean.Meta.Sym.Simp
 open Internal
 
 /-- Reduce `ite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
-def matchIteDecidable (f α c inst a b : Expr) : SimpM Result := do
-  match_expr inst with
+def matchIteDecidable (f α c inst a b : Expr) (inst' : Expr := inst) : SimpM Result := do
+  match_expr inst' with
   | Decidable.isTrue _ hp =>
     return .step a <| mkApp6 (mkConst ``Sym.ite_true f.constLevels!) α c inst a b hp
   | Decidable.isFalse _ hnp =>
@@ -57,7 +57,7 @@ def matchIteDecidableCongr (f α c inst a b c' h inst' : Expr) (fallback : SimpM
 def simpAndMatchIteDecidable (f α c inst a b : Expr) : SimpM Result := do
   match (← simp inst) with
   | .rfl _ => matchIteDecidable f α c inst a b
-  | .step inst' _ _ => matchIteDecidable f α c inst' a b
+  | .step inst' _ _ => matchIteDecidable f α c inst a b inst'
 
 /-- Like `simpAndMatchIteDecidable`, but for the congruence case where `c` was simplified to `c'`. -/
 def simpAndMatchIteDecidableCongr (f α c inst a b c' h inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
@@ -94,8 +94,8 @@ public def simpIteCbv : Simproc := fun e => do
           return .step e' h' (done := true)
 
 /-- Reduce `dite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
-def matchDIteDecidable (f α c inst a b : Expr) : SimpM Result := do
-  match_expr inst with
+def matchDIteDecidable (f α c inst a b : Expr) (inst' : Expr := inst) : SimpM Result := do
+  match_expr inst' with
   | Decidable.isTrue _ hp =>
     let a' ← share <| a.betaRev #[hp]
     return .step a' <| mkApp6 (mkConst ``Sym.dite_true f.constLevels!) α c inst a b hp
@@ -121,7 +121,7 @@ def matchDIteDecidableCongr (f α c inst a b c' h inst' : Expr) (fallback : Simp
 def simpAndMatchDIteDecidable (f α c inst a b : Expr) : SimpM Result := do
   match (← simp inst) with
   | .rfl _ => matchDIteDecidable f α c inst a b
-  | .step inst' _ _ => matchDIteDecidable f α c inst' a b
+  | .step inst' _ _ => matchDIteDecidable f α c inst a b inst'
 
 /-- Like `simpAndMatchDIteDecidable`, but for the congruence case where `c` was simplified to `c'`. -/
 def simpAndMatchDIteDecidableCongr (f α c inst a b c' h inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
@@ -207,8 +207,8 @@ public def simpAnd : Simproc := fun e => do
       return .rfl
 
 /-- Reduce `decide` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
-def matchDecideInst (p inst : Expr) : SimpM Result := do
-  match_expr inst with
+def matchDecideInst (p inst : Expr) (inst' : Expr := inst) : SimpM Result := do
+  match_expr inst' with
   | Decidable.isTrue _ hp =>
     return .step (← getBoolTrueExpr) <| mkApp3 (mkConst ``Sym.decide_isTrue) p inst hp
   | Decidable.isFalse _ hnp =>
@@ -228,7 +228,7 @@ def matchDecideInstCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : 
 def simpAndMatchDecideInst (p inst : Expr) : SimpM Result := do
   match (← simp inst) with
   | .rfl _ => matchDecideInst p inst
-  | .step inst' _ _ => matchDecideInst p inst'
+  | .step inst' _ _ => matchDecideInst p inst inst'
 
 /-- Like `simpAndMatchDecideInst`, but for the congruence case where `p` was simplified to `p'`. -/
 def simpAndMatchDecideInstCongr (p p' h inst inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
