@@ -36,6 +36,14 @@ corresponding branch.
 namespace Lean.Meta.Sym.Simp
 open Internal
 
+/--
+Attemps to synthesize `Decidable p` instance and guards against picking up a `noncomputable` instance
+-/
+def trySynthComputableInstance (p : Expr) : SymM <| Option Expr := do
+  let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) p) | return .none
+  if inst'.getUsedConstants.any (Lean.isNoncomputable (← getEnv) ·) then return .none
+  shareCommon inst'
+
 /-- Reduce `ite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
 def simpIteDecidable (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
   match_expr inst with
@@ -73,7 +81,9 @@ public def simpIteCbv : Simproc := fun e => do
         return .step b <| mkApp (e.replaceFn ``ite_cond_eq_false) h
       else
         simpIteDecidableWithFallback f α c inst a b <| do
-          let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
+          -- let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
+          let inst' ← trySynthComputableInstance c'
+          let inst' := inst'.getD <| mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
           let e' := e.getBoundedAppFn 4
           let e' ← mkAppS₄ e' c' inst' a b
           let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
@@ -124,7 +134,9 @@ public def simpDIteCbv : Simproc := fun e => do
         return .step b <| mkApp (e.replaceFn ``dite_cond_eq_false) h
       else
         simpDIteDecidableWithFallback f α c inst a b <| do
-          let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
+          -- let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
+          let inst' ← trySynthComputableInstance c'
+          let inst' := inst'.getD <| mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
           let e' := e.getBoundedAppFn 4
           let h ← shareCommon h
           let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
@@ -202,11 +214,6 @@ def simpDecideByInstWithFallbackCongr (p p' h inst inst' : Expr) (fallback : Sim
   match (← simp inst') with
   | .rfl _ => simpDecideByInstCongr p p' h inst inst' fallback
   | .step inst'' _ _ => simpDecideByInstCongr p p' h inst inst'' fallback
-
-def trySynthComputableInstance (p' : Expr) : SymM <| Option Expr := do
-  let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) p') | return .none
-  if inst'.getUsedConstants.any (Lean.isNoncomputable (← getEnv) ·) then return .none
-  shareCommon inst'
 
 /-- Simplify `Decidable.decide` by simplifying the proposition and reducing the instance.
 
