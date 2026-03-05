@@ -18,8 +18,6 @@ attribute [cbv_eval] dQ_eval
 
 example : (if P then true else false) = true := by cbv
 
-set_option trace.Meta.Tactic true
-
 example : P := by decide_cbv
 
 example : decide P = true := by conv => lhs; cbv
