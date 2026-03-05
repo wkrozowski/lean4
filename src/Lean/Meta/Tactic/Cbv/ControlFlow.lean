@@ -203,6 +203,11 @@ def simpDecideByInstWithFallbackCongr (p p' h inst inst' : Expr) (fallback : Sim
   | .rfl _ => simpDecideByInstCongr p p' h inst inst' fallback
   | .step inst'' _ _ => simpDecideByInstCongr p p' h inst inst'' fallback
 
+def trySynthComputableInstance (p' : Expr) : SymM <| Option Expr := do
+  let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) p') | return .none
+  if inst'.getUsedConstants.any (Lean.isNoncomputable (← getEnv) ·) then return .none
+  shareCommon inst'
+
 /-- Simplify `Decidable.decide` by simplifying the proposition and reducing the instance.
 
 First simplifies the proposition `p`. If the result is `True` or `False`, produces the
@@ -229,11 +234,8 @@ public def simpDecideCbv : Simproc := fun e => do
       else if (← isFalseExpr p') then
         return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_false) p inst hp
       else
-        -- let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) p') | return .rfl
-        -- if inst'.getUsedConstants.any (Lean.isNoncomputable (← getEnv) ·) then
-        --   return .rfl
-        -- let inst' ← shareCommon inst'
-        let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) p p' inst hp
+        let inst' ← trySynthComputableInstance p'
+        let inst' := inst'.getD <| mkApp4 (mkConst ``decidable_of_decidable_of_eq) p p' inst hp
         simpDecideByInstWithFallbackCongr p p' hp inst inst' (do
           let res := (mkConst ``Decidable.decide)
           let res ← shareCommon res
