@@ -429,7 +429,6 @@ static lean_once_cell_t l_Lean_Compiler_LCNF_mkCasesResultType___closed__1_once 
 static lean_object* l_Lean_Compiler_LCNF_mkCasesResultType___closed__1;
 lean_object* l_Lean_Compiler_LCNF_instInhabitedAlt_default__1(uint8_t);
 lean_object* lean_array_get_borrowed(lean_object*, lean_object*, lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Compiler_LCNF_mkCasesResultType(uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Compiler_LCNF_mkCasesResultType___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_WellFounded_opaqueFix_u2083___at___00Lean_Compiler_LCNF_mkCasesResultType_spec__0(uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -8235,10 +8234,12 @@ return x_2;
 LEAN_EXPORT lean_object* l_Lean_Compiler_LCNF_mkCasesResultType(uint8_t x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4, lean_object* x_5, lean_object* x_6) {
 _start:
 {
-lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; uint8_t x_23; 
+lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_23; lean_object* x_24; uint8_t x_25; 
 x_8 = l_Lean_Compiler_LCNF_instInhabitedAlt_default__1(x_1);
-x_23 = l_Array_isEmpty___redArg(x_2);
-if (x_23 == 0)
+x_23 = lean_array_get_size(x_2);
+x_24 = lean_unsigned_to_nat(0u);
+x_25 = lean_nat_dec_eq(x_23, x_24);
+if (x_25 == 0)
 {
 x_9 = x_3;
 x_10 = x_4;
@@ -8249,50 +8250,50 @@ goto block_22;
 }
 else
 {
-lean_object* x_24; lean_object* x_25; lean_object* x_26; lean_object* x_27; uint8_t x_28; uint8_t x_33; 
+lean_object* x_26; lean_object* x_27; lean_object* x_28; lean_object* x_29; uint8_t x_30; uint8_t x_35; 
 lean_dec_ref(x_8);
 lean_dec_ref(x_2);
-x_24 = lean_obj_once(&l_Lean_Compiler_LCNF_mkCasesResultType___closed__1, &l_Lean_Compiler_LCNF_mkCasesResultType___closed__1_once, _init_l_Lean_Compiler_LCNF_mkCasesResultType___closed__1);
-x_25 = l_Lean_throwError___at___00Lean_Compiler_LCNF_mkCasesResultType_spec__1___redArg(x_24, x_3, x_4, x_5, x_6);
+x_26 = lean_obj_once(&l_Lean_Compiler_LCNF_mkCasesResultType___closed__1, &l_Lean_Compiler_LCNF_mkCasesResultType___closed__1_once, _init_l_Lean_Compiler_LCNF_mkCasesResultType___closed__1);
+x_27 = l_Lean_throwError___at___00Lean_Compiler_LCNF_mkCasesResultType_spec__1___redArg(x_26, x_3, x_4, x_5, x_6);
 lean_dec(x_6);
 lean_dec_ref(x_5);
 lean_dec(x_4);
 lean_dec_ref(x_3);
-x_26 = lean_ctor_get(x_25, 0);
-x_33 = !lean_is_exclusive(x_25);
-if (x_33 == 0)
+x_28 = lean_ctor_get(x_27, 0);
+x_35 = !lean_is_exclusive(x_27);
+if (x_35 == 0)
 {
-x_27 = x_25;
-x_28 = x_33;
+x_29 = x_27;
+x_30 = x_35;
+goto block_34;
+}
+else
+{
+lean_inc(x_28);
+lean_dec(x_27);
+x_29 = lean_box(0);
+x_30 = x_35;
+goto block_34;
+}
+block_34:
+{
+lean_object* x_31; 
+if (x_30 == 0)
+{
+x_31 = x_29;
 goto block_32;
 }
 else
 {
-lean_inc(x_26);
-lean_dec(x_25);
-x_27 = lean_box(0);
-x_28 = x_33;
+lean_object* x_33; 
+x_33 = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(x_33, 0, x_28);
+x_31 = x_33;
 goto block_32;
 }
 block_32:
 {
-lean_object* x_29; 
-if (x_28 == 0)
-{
-x_29 = x_27;
-goto block_30;
-}
-else
-{
-lean_object* x_31; 
-x_31 = lean_alloc_ctor(1, 1, 0);
-lean_ctor_set(x_31, 0, x_26);
-x_29 = x_31;
-goto block_30;
-}
-block_30:
-{
-return x_29;
+return x_31;
 }
 }
 }

@@ -6012,8 +6012,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6054,8 +6054,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6096,8 +6096,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6138,8 +6138,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6180,8 +6180,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6222,8 +6222,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6263,8 +6263,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6300,8 +6300,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6337,8 +6337,8 @@ goto block_59;
 }
 else
 {
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 if (lean_obj_tag(x_62) == 0)
 {
@@ -6389,8 +6389,8 @@ goto block_59;
 else
 {
 lean_object* x_184; lean_object* x_185; lean_object* x_186; 
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 x_184 = l_Lean_Name_str___override(x_61, x_68);
 x_185 = l_Lean_Expr_const___override(x_184, x_62);
@@ -6422,8 +6422,8 @@ goto block_59;
 else
 {
 lean_object* x_189; lean_object* x_190; lean_object* x_191; 
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 x_189 = l_Lean_Name_str___override(x_61, x_66);
 x_190 = l_Lean_Expr_const___override(x_189, x_62);
@@ -6455,8 +6455,8 @@ goto block_59;
 else
 {
 lean_object* x_194; lean_object* x_195; lean_object* x_196; 
-lean_inc(x_62);
 lean_inc(x_61);
+lean_inc(x_62);
 lean_dec_ref(x_28);
 x_194 = l_Lean_Name_str___override(x_61, x_64);
 x_195 = l_Lean_Expr_const___override(x_194, x_62);

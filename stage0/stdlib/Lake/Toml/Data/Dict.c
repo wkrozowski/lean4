@@ -65,7 +65,6 @@ LEAN_EXPORT lean_object* l_Lake_Toml_RBDict_size___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Lake_Toml_RBDict_size___redArg___boxed(lean_object*);
 LEAN_EXPORT lean_object* l_Lake_Toml_RBDict_size(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lake_Toml_RBDict_size___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 LEAN_EXPORT uint8_t l_Lake_Toml_RBDict_isEmpty___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Lake_Toml_RBDict_isEmpty___redArg___boxed(lean_object*);
 LEAN_EXPORT uint8_t l_Lake_Toml_RBDict_isEmpty(lean_object*, lean_object*, lean_object*, lean_object*);
@@ -1871,10 +1870,12 @@ return x_5;
 LEAN_EXPORT uint8_t l_Lake_Toml_RBDict_isEmpty___redArg(lean_object* x_1) {
 _start:
 {
-lean_object* x_2; uint8_t x_3; 
+lean_object* x_2; lean_object* x_3; lean_object* x_4; uint8_t x_5; 
 x_2 = lean_ctor_get(x_1, 0);
-x_3 = l_Array_isEmpty___redArg(x_2);
-return x_3;
+x_3 = lean_array_get_size(x_2);
+x_4 = lean_unsigned_to_nat(0u);
+x_5 = lean_nat_dec_eq(x_3, x_4);
+return x_5;
 }
 }
 LEAN_EXPORT lean_object* l_Lake_Toml_RBDict_isEmpty___redArg___boxed(lean_object* x_1) {
@@ -1890,10 +1891,12 @@ return x_3;
 LEAN_EXPORT uint8_t l_Lake_Toml_RBDict_isEmpty(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4) {
 _start:
 {
-lean_object* x_5; uint8_t x_6; 
+lean_object* x_5; lean_object* x_6; lean_object* x_7; uint8_t x_8; 
 x_5 = lean_ctor_get(x_4, 0);
-x_6 = l_Array_isEmpty___redArg(x_5);
-return x_6;
+x_6 = lean_array_get_size(x_5);
+x_7 = lean_unsigned_to_nat(0u);
+x_8 = lean_nat_dec_eq(x_6, x_7);
+return x_8;
 }
 }
 LEAN_EXPORT lean_object* l_Lake_Toml_RBDict_isEmpty___boxed(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4) {

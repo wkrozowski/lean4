@@ -480,7 +480,6 @@ lean_object* l_Lean_MVarId_getTag(lean_object*, lean_object*, lean_object*, lean
 lean_object* l_Lean_Meta_mkFreshExprSyntheticOpaqueMVar(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_mkLetFVars(lean_object*, lean_object*, uint8_t, uint8_t, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Expr_mvarId_x21(lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_MVarId_extractLets___lam__0(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_MVarId_extractLets___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_MVarId_checkNotAssigned(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -11251,20 +11250,21 @@ return x_6;
 LEAN_EXPORT lean_object* l_Lean_MVarId_extractLets___lam__0(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9, lean_object* x_10, lean_object* x_11) {
 _start:
 {
-lean_object* x_13; lean_object* x_14; lean_object* x_15; uint8_t x_65; uint8_t x_76; 
+lean_object* x_13; lean_object* x_14; lean_object* x_15; uint8_t x_65; lean_object* x_76; uint8_t x_77; 
 x_13 = lean_unsigned_to_nat(0u);
 x_14 = lean_array_get_borrowed(x_1, x_6, x_13);
-x_76 = l_Array_isEmpty___redArg(x_5);
-if (x_76 == 0)
+x_76 = lean_array_get_size(x_5);
+x_77 = lean_nat_dec_eq(x_76, x_13);
+if (x_77 == 0)
 {
-x_65 = x_76;
+x_65 = x_77;
 goto block_75;
 }
 else
 {
-uint8_t x_77; 
-x_77 = lean_expr_eqv(x_4, x_14);
-x_65 = x_77;
+uint8_t x_78; 
+x_78 = lean_expr_eqv(x_4, x_14);
+x_65 = x_78;
 goto block_75;
 }
 block_64:
@@ -12109,20 +12109,21 @@ return x_11;
 LEAN_EXPORT lean_object* l_Lean_MVarId_extractLetsLocalDecl___lam__1(lean_object* x_1, lean_object* x_2, lean_object* x_3, uint8_t x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9, lean_object* x_10, lean_object* x_11, lean_object* x_12, lean_object* x_13, lean_object* x_14, lean_object* x_15) {
 _start:
 {
-lean_object* x_17; lean_object* x_18; lean_object* x_19; uint8_t x_23; uint8_t x_34; 
+lean_object* x_17; lean_object* x_18; lean_object* x_19; uint8_t x_23; lean_object* x_34; uint8_t x_35; 
 x_17 = lean_unsigned_to_nat(0u);
 x_18 = lean_array_get_borrowed(x_1, x_10, x_17);
-x_34 = l_Array_isEmpty___redArg(x_9);
-if (x_34 == 0)
+x_34 = lean_array_get_size(x_9);
+x_35 = lean_nat_dec_eq(x_34, x_17);
+if (x_35 == 0)
 {
-x_23 = x_34;
+x_23 = x_35;
 goto block_33;
 }
 else
 {
-uint8_t x_35; 
-x_35 = lean_expr_eqv(x_8, x_18);
-x_23 = x_35;
+uint8_t x_36; 
+x_36 = lean_expr_eqv(x_8, x_18);
+x_23 = x_36;
 goto block_33;
 }
 block_22:
@@ -12220,23 +12221,24 @@ return x_18;
 LEAN_EXPORT lean_object* l_Lean_MVarId_extractLetsLocalDecl___lam__2(lean_object* x_1, lean_object* x_2, lean_object* x_3, uint8_t x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9, lean_object* x_10, lean_object* x_11, lean_object* x_12, lean_object* x_13, lean_object* x_14, lean_object* x_15, lean_object* x_16) {
 _start:
 {
-lean_object* x_18; lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_22; uint8_t x_26; uint8_t x_38; 
+lean_object* x_18; lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_22; uint8_t x_26; lean_object* x_38; uint8_t x_39; 
 x_18 = lean_unsigned_to_nat(0u);
 lean_inc_ref(x_1);
 x_19 = lean_array_get_borrowed(x_1, x_11, x_18);
 x_20 = lean_unsigned_to_nat(1u);
 x_21 = lean_array_get_borrowed(x_1, x_11, x_20);
-x_38 = l_Array_isEmpty___redArg(x_10);
-if (x_38 == 0)
+x_38 = lean_array_get_size(x_10);
+x_39 = lean_nat_dec_eq(x_38, x_18);
+if (x_39 == 0)
 {
-x_26 = x_38;
+x_26 = x_39;
 goto block_37;
 }
 else
 {
-uint8_t x_39; 
-x_39 = lean_expr_eqv(x_9, x_19);
-x_26 = x_39;
+uint8_t x_40; 
+x_40 = lean_expr_eqv(x_9, x_19);
+x_26 = x_40;
 goto block_37;
 }
 block_25:

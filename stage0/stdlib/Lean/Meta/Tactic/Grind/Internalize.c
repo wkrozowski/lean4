@@ -689,7 +689,7 @@ static lean_once_cell_t l_Lean_Meta_Grind_TheoremsArray_insert___at___00__privat
 static lean_object* l_Lean_Meta_Grind_TheoremsArray_insert___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremPatterns_spec__0___closed__2;
 static lean_once_cell_t l_Lean_Meta_Grind_TheoremsArray_insert___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremPatterns_spec__0___closed__3_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_Grind_TheoremsArray_insert___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremPatterns_spec__0___closed__3;
-uint8_t l_Array_isEmpty___redArg(lean_object*);
+uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_Grind_TheoremsArray_insert___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremPatterns_spec__0(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_List_filterTR_loop___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremsCore___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremPatterns_spec__1_spec__3(lean_object*, uint8_t, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_List_filterTR_loop___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremsCore___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremPatterns_spec__1_spec__3___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
@@ -845,7 +845,6 @@ static const lean_object* l___private_Lean_Meta_Tactic_Grind_Internalize_0__Lean
 static const lean_ctor_object l___private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_propagateEtaStruct___closed__1_value_aux_0 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l___private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_addCongrTable_isEqCongrSymm___redArg___closed__0_value),LEAN_SCALAR_PTR_LITERAL(143, 37, 101, 248, 9, 246, 191, 223)}};
 static const lean_ctor_object l___private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_propagateEtaStruct___closed__1_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l___private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_propagateEtaStruct___closed__1_value_aux_0),((lean_object*)&l___private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_propagateEtaStruct___closed__0_value),LEAN_SCALAR_PTR_LITERAL(72, 6, 107, 181, 0, 125, 21, 187)}};
 static const lean_object* l___private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_propagateEtaStruct___closed__1 = (const lean_object*)&l___private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_propagateEtaStruct___closed__1_value;
-uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 uint8_t l_Lean_Expr_isAppOf(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Grind_isExtTheorem___redArg(lean_object*, lean_object*);
 lean_object* l___private_Lean_Expr_0__Lean_Expr_getAppArgsAux(lean_object*, lean_object*, lean_object*);
@@ -16939,14 +16938,14 @@ return x_3;
 LEAN_EXPORT lean_object* l_Lean_Meta_Grind_TheoremsArray_insert___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateTheoremPatterns_spec__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-uint8_t x_3; 
-x_3 = l_Array_isEmpty___redArg(x_1);
-if (x_3 == 0)
-{
-lean_object* x_4; lean_object* x_5; uint8_t x_6; 
+lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+x_3 = lean_array_get_size(x_1);
 x_4 = lean_unsigned_to_nat(0u);
-x_5 = lean_array_get_size(x_1);
-x_6 = lean_nat_dec_lt(x_4, x_5);
+x_5 = lean_nat_dec_eq(x_3, x_4);
+if (x_5 == 0)
+{
+uint8_t x_6; 
+x_6 = lean_nat_dec_lt(x_4, x_3);
 if (x_6 == 0)
 {
 lean_dec_ref(x_2);
@@ -19420,14 +19419,14 @@ return x_3;
 LEAN_EXPORT lean_object* l_Lean_Meta_Grind_TheoremsArray_insert___at___00__private_Lean_Meta_Tactic_Grind_Internalize_0__Lean_Meta_Grind_activateInjectiveTheorems_spec__0(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-uint8_t x_3; 
-x_3 = l_Array_isEmpty___redArg(x_1);
-if (x_3 == 0)
-{
-lean_object* x_4; lean_object* x_5; uint8_t x_6; 
+lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+x_3 = lean_array_get_size(x_1);
 x_4 = lean_unsigned_to_nat(0u);
-x_5 = lean_array_get_size(x_1);
-x_6 = lean_nat_dec_lt(x_4, x_5);
+x_5 = lean_nat_dec_eq(x_3, x_4);
+if (x_5 == 0)
+{
+uint8_t x_6; 
+x_6 = lean_nat_dec_lt(x_4, x_3);
 if (x_6 == 0)
 {
 lean_dec_ref(x_2);

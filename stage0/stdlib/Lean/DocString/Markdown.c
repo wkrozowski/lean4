@@ -43,7 +43,6 @@ static const lean_object* l___private_Lean_DocString_Markdown_0__Lean_Doc_Markdo
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
 static const lean_array_object l___private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_State_endBlock___closed__1_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_array_object) + sizeof(void*)*0, .m_other = 0, .m_tag = 246}, .m_size = 0, .m_capacity = 0, .m_data = {}};
 static const lean_object* l___private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_State_endBlock___closed__1 = (const lean_object*)&l___private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_State_endBlock___closed__1_value;
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 lean_object* lean_array_get_size(lean_object*);
 uint8_t lean_nat_dec_lt(lean_object*, lean_object*);
 size_t lean_usize_of_nat(lean_object*);
@@ -499,41 +498,41 @@ goto block_29;
 }
 block_29:
 {
-lean_object* x_7; lean_object* x_8; uint8_t x_16; 
+lean_object* x_7; lean_object* x_8; lean_object* x_16; lean_object* x_17; uint8_t x_18; 
 x_7 = l___private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_combineBlocks(x_2, x_3);
 lean_dec_ref(x_3);
-x_16 = l_Array_isEmpty___redArg(x_4);
-if (x_16 == 0)
+x_16 = lean_array_get_size(x_4);
+x_17 = lean_unsigned_to_nat(0u);
+x_18 = lean_nat_dec_eq(x_16, x_17);
+if (x_18 == 0)
 {
-lean_object* x_17; lean_object* x_18; lean_object* x_19; uint8_t x_20; 
-x_17 = ((lean_object*)(l___private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_combineBlocks___closed__0));
-x_18 = lean_unsigned_to_nat(0u);
-x_19 = lean_array_get_size(x_4);
-x_20 = lean_nat_dec_lt(x_18, x_19);
+lean_object* x_19; uint8_t x_20; 
+x_19 = ((lean_object*)(l___private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_combineBlocks___closed__0));
+x_20 = lean_nat_dec_lt(x_17, x_16);
 if (x_20 == 0)
 {
 lean_dec_ref(x_4);
-x_8 = x_17;
+x_8 = x_19;
 goto block_15;
 }
 else
 {
 uint8_t x_21; 
-x_21 = lean_nat_dec_le(x_19, x_19);
+x_21 = lean_nat_dec_le(x_16, x_16);
 if (x_21 == 0)
 {
 if (x_20 == 0)
 {
 lean_dec_ref(x_4);
-x_8 = x_17;
+x_8 = x_19;
 goto block_15;
 }
 else
 {
 size_t x_22; size_t x_23; lean_object* x_24; 
 x_22 = 0;
-x_23 = lean_usize_of_nat(x_19);
-x_24 = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___at___00__private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_State_endBlock_spec__0(x_4, x_22, x_23, x_17);
+x_23 = lean_usize_of_nat(x_16);
+x_24 = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___at___00__private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_State_endBlock_spec__0(x_4, x_22, x_23, x_19);
 lean_dec_ref(x_4);
 x_8 = x_24;
 goto block_15;
@@ -543,8 +542,8 @@ else
 {
 size_t x_25; size_t x_26; lean_object* x_27; 
 x_25 = 0;
-x_26 = lean_usize_of_nat(x_19);
-x_27 = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___at___00__private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_State_endBlock_spec__0(x_4, x_25, x_26, x_17);
+x_26 = lean_usize_of_nat(x_16);
+x_27 = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___at___00__private_Lean_DocString_Markdown_0__Lean_Doc_MarkdownM_State_endBlock_spec__0(x_4, x_25, x_26, x_19);
 lean_dec_ref(x_4);
 x_8 = x_27;
 goto block_15;

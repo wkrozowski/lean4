@@ -103,7 +103,7 @@ lean_object* l_Lean_MVarId_getTag(lean_object*, lean_object*, lean_object*, lean
 lean_object* l_Lean_Elab_Tactic_Conv_mkConvGoalFor(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 size_t lean_array_size(lean_object*);
 lean_object* l_Lean_Expr_mvarId_x21(lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
+uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 uint8_t lean_expr_eqv(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_Conv_evalExtractLets___lam__2(lean_object*, lean_object*, size_t, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_Conv_evalExtractLets___lam__2___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -1456,20 +1456,21 @@ return x_2;
 LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_Conv_evalExtractLets___lam__2(lean_object* x_1, lean_object* x_2, size_t x_3, uint8_t x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9, lean_object* x_10, lean_object* x_11, lean_object* x_12, lean_object* x_13, lean_object* x_14) {
 _start:
 {
-lean_object* x_16; lean_object* x_17; lean_object* x_18; uint8_t x_81; uint8_t x_93; 
+lean_object* x_16; lean_object* x_17; lean_object* x_18; uint8_t x_81; lean_object* x_93; uint8_t x_94; 
 x_16 = l_Lean_instInhabitedExpr;
 x_17 = lean_array_get_borrowed(x_16, x_9, x_1);
-x_93 = l_Array_isEmpty___redArg(x_8);
-if (x_93 == 0)
+x_93 = lean_array_get_size(x_8);
+x_94 = lean_nat_dec_eq(x_93, x_1);
+if (x_94 == 0)
 {
-x_81 = x_93;
+x_81 = x_94;
 goto block_92;
 }
 else
 {
-uint8_t x_94; 
-x_94 = lean_expr_eqv(x_7, x_17);
-x_81 = x_94;
+uint8_t x_95; 
+x_95 = lean_expr_eqv(x_7, x_17);
+x_81 = x_95;
 goto block_92;
 }
 block_80:

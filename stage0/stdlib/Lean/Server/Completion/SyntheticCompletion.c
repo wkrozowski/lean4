@@ -266,7 +266,6 @@ static const lean_ctor_object l___private_Lean_Server_Completion_SyntheticComple
 static const lean_ctor_object l___private_Lean_Server_Completion_SyntheticCompletion_0__Lean_Server_Completion_isSyntheticStructFieldCompletion___lam__0___closed__1_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l___private_Lean_Server_Completion_SyntheticCompletion_0__Lean_Server_Completion_isSyntheticStructFieldCompletion___lam__0___closed__1_value_aux_2),((lean_object*)&l___private_Lean_Server_Completion_SyntheticCompletion_0__Lean_Server_Completion_isSyntheticStructFieldCompletion___lam__0___closed__0_value),LEAN_SCALAR_PTR_LITERAL(0, 82, 141, 43, 62, 171, 163, 69)}};
 static const lean_object* l___private_Lean_Server_Completion_SyntheticCompletion_0__Lean_Server_Completion_isSyntheticStructFieldCompletion___lam__0___closed__1 = (const lean_object*)&l___private_Lean_Server_Completion_SyntheticCompletion_0__Lean_Server_Completion_isSyntheticStructFieldCompletion___lam__0___closed__1_value;
 lean_object* l_Array_zipIdx___redArg(lean_object*, lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 lean_object* l_Lean_Syntax_getTrailingTailPos_x3f(lean_object*, uint8_t);
 LEAN_EXPORT uint8_t l___private_Lean_Server_Completion_SyntheticCompletion_0__Lean_Server_Completion_isSyntheticStructFieldCompletion___lam__0(uint8_t, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Lean_Server_Completion_SyntheticCompletion_0__Lean_Server_Completion_isSyntheticStructFieldCompletion___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -3532,7 +3531,7 @@ lean_object* x_20;
 x_20 = l_Lean_Syntax_getTailPos_x3f(x_16, x_19);
 if (lean_obj_tag(x_20) == 1)
 {
-lean_object* x_21; lean_object* x_22; lean_object* x_23; lean_object* x_24; uint8_t x_25; lean_object* x_33; lean_object* x_39; 
+lean_object* x_21; lean_object* x_22; lean_object* x_23; lean_object* x_24; uint8_t x_25; lean_object* x_33; lean_object* x_40; 
 x_21 = lean_ctor_get(x_20, 0);
 lean_inc(x_21);
 lean_dec_ref(x_20);
@@ -3540,18 +3539,18 @@ x_22 = lean_unsigned_to_nat(0u);
 x_23 = l_Lean_Syntax_getArg(x_7, x_22);
 x_24 = l_Lean_Syntax_getArgs(x_23);
 lean_dec(x_23);
-x_39 = l_Lean_Syntax_getTrailingTailPos_x3f(x_7, x_19);
-if (lean_obj_tag(x_39) == 0)
+x_40 = l_Lean_Syntax_getTrailingTailPos_x3f(x_7, x_19);
+if (lean_obj_tag(x_40) == 0)
 {
-lean_object* x_40; 
-x_40 = l_Lean_Syntax_getTrailingTailPos_x3f(x_16, x_19);
-x_33 = x_40;
-goto block_38;
+lean_object* x_41; 
+x_41 = l_Lean_Syntax_getTrailingTailPos_x3f(x_16, x_19);
+x_33 = x_41;
+goto block_39;
 }
 else
 {
-x_33 = x_39;
-goto block_38;
+x_33 = x_40;
+goto block_39;
 }
 block_32:
 {
@@ -3605,31 +3604,32 @@ lean_dec_ref(x_3);
 return x_19;
 }
 }
-block_38:
+block_39:
 {
 if (lean_obj_tag(x_33) == 1)
 {
-lean_object* x_34; uint8_t x_35; 
+lean_object* x_34; lean_object* x_35; uint8_t x_36; 
 x_34 = lean_ctor_get(x_33, 0);
 lean_inc(x_34);
 lean_dec_ref(x_33);
-x_35 = l_Array_isEmpty___redArg(x_24);
-if (x_35 == 0)
+x_35 = lean_array_get_size(x_24);
+x_36 = lean_nat_dec_eq(x_35, x_22);
+if (x_36 == 0)
 {
 lean_dec(x_34);
 lean_dec(x_21);
-x_25 = x_35;
+x_25 = x_36;
 goto block_32;
 }
 else
 {
-lean_object* x_36; uint8_t x_37; 
-x_36 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_36, 0, x_21);
-lean_ctor_set(x_36, 1, x_34);
-x_37 = l_Lean_Syntax_Range_contains(x_36, x_5, x_35);
-lean_dec_ref(x_36);
-x_25 = x_37;
+lean_object* x_37; uint8_t x_38; 
+x_37 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_37, 0, x_21);
+lean_ctor_set(x_37, 1, x_34);
+x_38 = l_Lean_Syntax_Range_contains(x_37, x_5, x_36);
+lean_dec_ref(x_37);
+x_25 = x_38;
 goto block_32;
 }
 }

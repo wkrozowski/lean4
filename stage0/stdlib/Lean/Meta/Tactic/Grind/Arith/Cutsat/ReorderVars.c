@@ -2612,7 +2612,7 @@ goto block_64;
 block_55:
 {
 lean_object* x_47; 
-x_47 = l_Lean_PersistentArray_forIn___at___00__private_Lean_Meta_Tactic_Grind_Arith_Cutsat_ReorderVars_0__Lean_Meta_Grind_Arith_Cutsat_collectVarInfo_go_spec__0(x_46, x_24, x_44, x_6, x_7, x_8, x_9, x_10, x_11, x_12, x_13, x_14, x_15);
+x_47 = l_Lean_PersistentArray_forIn___at___00__private_Lean_Meta_Tactic_Grind_Arith_Cutsat_ReorderVars_0__Lean_Meta_Grind_Arith_Cutsat_collectVarInfo_go_spec__0(x_46, x_24, x_45, x_6, x_7, x_8, x_9, x_10, x_11, x_12, x_13, x_14, x_15);
 if (lean_obj_tag(x_47) == 0)
 {
 lean_object* x_48; lean_object* x_49; lean_object* x_50; lean_object* x_51; uint8_t x_52; 
@@ -2629,8 +2629,8 @@ if (x_52 == 0)
 {
 lean_object* x_53; 
 x_53 = l_outOfBounds___redArg(x_51);
-x_30 = x_49;
-x_31 = lean_box(0);
+x_30 = lean_box(0);
+x_31 = x_49;
 x_32 = x_53;
 goto block_39;
 }
@@ -2639,8 +2639,8 @@ else
 lean_object* x_54; 
 lean_inc_ref(x_41);
 x_54 = l_Lean_PersistentArray_get_x21___redArg(x_51, x_41, x_4);
-x_30 = x_49;
-x_31 = lean_box(0);
+x_30 = lean_box(0);
+x_31 = x_49;
 x_32 = x_54;
 goto block_39;
 }
@@ -2670,8 +2670,8 @@ if (x_61 == 0)
 {
 lean_object* x_62; 
 x_62 = l_outOfBounds___redArg(x_56);
-x_44 = x_60;
-x_45 = lean_box(0);
+x_44 = lean_box(0);
+x_45 = x_60;
 x_46 = x_62;
 goto block_55;
 }
@@ -2680,8 +2680,8 @@ else
 lean_object* x_63; 
 lean_inc_ref(x_43);
 x_63 = l_Lean_PersistentArray_get_x21___redArg(x_56, x_43, x_4);
-x_44 = x_60;
-x_45 = lean_box(0);
+x_44 = lean_box(0);
+x_45 = x_60;
 x_46 = x_63;
 goto block_55;
 }
@@ -2723,7 +2723,7 @@ lean_inc(x_34);
 lean_dec(x_33);
 x_35 = lean_nat_abs(x_34);
 lean_dec(x_34);
-x_36 = l___private_Lean_Meta_Tactic_Grind_Arith_Cutsat_ReorderVars_0__Lean_Meta_Grind_Arith_Cutsat_updateDvd___redArg(x_35, x_4, x_30);
+x_36 = l___private_Lean_Meta_Tactic_Grind_Arith_Cutsat_ReorderVars_0__Lean_Meta_Grind_Arith_Cutsat_updateDvd___redArg(x_35, x_4, x_31);
 x_37 = lean_ctor_get(x_36, 0);
 lean_inc(x_37);
 lean_dec_ref(x_36);
@@ -2737,7 +2737,7 @@ goto block_29;
 else
 {
 lean_dec(x_32);
-x_25 = x_30;
+x_25 = x_31;
 x_26 = lean_box(0);
 goto block_29;
 }

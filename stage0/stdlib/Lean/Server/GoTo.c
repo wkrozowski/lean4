@@ -444,7 +444,6 @@ LEAN_EXPORT lean_object* l_Lean_Server_locationLinksFromCommandInfo___redArg(lea
 LEAN_EXPORT lean_object* l_Lean_Server_locationLinksFromCommandInfo___redArg___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Server_locationLinksFromCommandInfo(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Server_locationLinksFromCommandInfo___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Server_locationLinksOfInfo___lam__0(uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Server_locationLinksOfInfo___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Server_locationLinksOfInfo___lam__1(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -8819,9 +8818,11 @@ x_22 = 0;
 x_23 = l_Lean_Server_instBEqGoToKind_beq(x_1, x_22);
 if (x_23 == 0)
 {
-uint8_t x_24; 
-x_24 = l_Array_isEmpty___redArg(x_2);
-x_9 = x_24;
+lean_object* x_24; lean_object* x_25; uint8_t x_26; 
+x_24 = lean_array_get_size(x_2);
+x_25 = lean_unsigned_to_nat(0u);
+x_26 = lean_nat_dec_eq(x_24, x_25);
+x_9 = x_26;
 goto block_21;
 }
 else

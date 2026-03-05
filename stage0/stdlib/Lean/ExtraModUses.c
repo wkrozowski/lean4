@@ -390,7 +390,7 @@ LEAN_EXPORT lean_object* l_Lean_initFn_00___x40_Lean_ExtraModUses_2233475121____
 LEAN_EXPORT lean_object* l___private_Lean_ExtraModUses_0__Lean_isExtraRevModUseExt;
 static const lean_ctor_object l_Lean_isExtraRevModUse___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 0, .m_other = 2, .m_tag = 0}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)(((size_t)(0) << 1) | 1))}};
 static const lean_object* l_Lean_isExtraRevModUse___closed__0 = (const lean_object*)&l_Lean_isExtraRevModUse___closed__0_value;
-uint8_t l_Array_isEmpty___redArg(lean_object*);
+uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 LEAN_EXPORT uint8_t l_Lean_isExtraRevModUse(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_isExtraRevModUse___boxed(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_recordExtraRevUseOfCurrentModule___redArg___lam__0(lean_object*, lean_object*);
@@ -3764,24 +3764,26 @@ return x_2;
 LEAN_EXPORT uint8_t l_Lean_isExtraRevModUse(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_3; lean_object* x_4; uint8_t x_5; lean_object* x_6; uint8_t x_7; 
+lean_object* x_3; lean_object* x_4; uint8_t x_5; lean_object* x_6; lean_object* x_7; lean_object* x_8; uint8_t x_9; 
 x_3 = ((lean_object*)(l_Lean_isExtraRevModUse___closed__0));
 x_4 = l___private_Lean_ExtraModUses_0__Lean_isExtraRevModUseExt;
 x_5 = 0;
 x_6 = l_Lean_PersistentEnvExtension_getModuleEntries___redArg(x_3, x_4, x_1, x_2, x_5);
-x_7 = l_Array_isEmpty___redArg(x_6);
+x_7 = lean_array_get_size(x_6);
 lean_dec_ref(x_6);
-if (x_7 == 0)
+x_8 = lean_unsigned_to_nat(0u);
+x_9 = lean_nat_dec_eq(x_7, x_8);
+if (x_9 == 0)
 {
-uint8_t x_8; 
-x_8 = 1;
-return x_8;
+uint8_t x_10; 
+x_10 = 1;
+return x_10;
 }
 else
 {
-uint8_t x_9; 
-x_9 = 0;
-return x_9;
+uint8_t x_11; 
+x_11 = 0;
+return x_11;
 }
 }
 }

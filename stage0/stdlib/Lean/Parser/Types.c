@@ -303,7 +303,7 @@ static const lean_object* l_Lean_Parser_SyntaxStack_back___closed__2 = (const le
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 static lean_once_cell_t l_Lean_Parser_SyntaxStack_back___closed__3_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Parser_SyntaxStack_back___closed__3;
-lean_object* l_Array_back_x21___redArg(lean_object*, lean_object*);
+lean_object* lean_array_get_borrowed(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Parser_SyntaxStack_back(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Parser_SyntaxStack_back___boxed(lean_object*);
 static const lean_string_object l_Lean_Parser_SyntaxStack_get_x21___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 29, .m_capacity = 29, .m_length = 28, .m_data = "Lean.Parser.SyntaxStack.get!"};
@@ -312,7 +312,6 @@ static const lean_string_object l_Lean_Parser_SyntaxStack_get_x21___closed__1_va
 static const lean_object* l_Lean_Parser_SyntaxStack_get_x21___closed__1 = (const lean_object*)&l_Lean_Parser_SyntaxStack_get_x21___closed__1_value;
 static lean_once_cell_t l_Lean_Parser_SyntaxStack_get_x21___closed__2_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Parser_SyntaxStack_get_x21___closed__2;
-lean_object* lean_array_get_borrowed(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Parser_SyntaxStack_get_x21(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Parser_SyntaxStack_get_x21___boxed(lean_object*, lean_object*);
 lean_object* l_Array_extract___redArg(lean_object*, lean_object*, lean_object*);
@@ -2918,11 +2917,16 @@ return x_6;
 }
 else
 {
-lean_object* x_7; lean_object* x_8; lean_object* x_9; 
+lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; 
 x_7 = lean_ctor_get(x_1, 0);
 x_8 = lean_box(0);
-x_9 = l_Array_back_x21___redArg(x_8, x_7);
-return x_9;
+x_9 = lean_array_get_size(x_7);
+x_10 = lean_unsigned_to_nat(1u);
+x_11 = lean_nat_sub(x_9, x_10);
+x_12 = lean_array_get_borrowed(x_8, x_7, x_11);
+lean_dec(x_11);
+lean_inc(x_12);
+return x_12;
 }
 }
 }

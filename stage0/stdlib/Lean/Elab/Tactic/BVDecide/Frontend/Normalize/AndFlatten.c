@@ -186,7 +186,7 @@ static lean_object* l_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_andFlattening
 static lean_once_cell_t l_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_andFlatteningPass___lam__0___closed__3_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_andFlatteningPass___lam__0___closed__3;
 lean_object* lean_st_mk_ref(lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
+uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 size_t lean_array_size(lean_object*);
 lean_object* l_Lean_MVarId_assertHypotheses(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_MVarId_tryClearMany(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -2840,7 +2840,7 @@ goto block_67;
 }
 block_67:
 {
-lean_object* x_15; lean_object* x_16; lean_object* x_17; uint8_t x_18; 
+lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; uint8_t x_19; 
 x_15 = lean_st_ref_get(x_11);
 lean_dec(x_11);
 x_16 = lean_ctor_get(x_15, 0);
@@ -2848,41 +2848,41 @@ lean_inc_ref(x_16);
 x_17 = lean_ctor_get(x_15, 1);
 lean_inc_ref(x_17);
 lean_dec(x_15);
-x_18 = l_Array_isEmpty___redArg(x_17);
-if (x_18 == 0)
+x_18 = lean_array_get_size(x_17);
+x_19 = lean_nat_dec_eq(x_18, x_9);
+if (x_19 == 0)
 {
-size_t x_19; size_t x_20; lean_object* x_21; lean_object* x_22; 
+size_t x_20; size_t x_21; lean_object* x_22; lean_object* x_23; 
 lean_del_object(x_13);
-x_19 = lean_array_size(x_17);
-x_20 = 0;
+x_20 = lean_array_size(x_17);
+x_21 = 0;
 lean_inc_ref(x_17);
-x_21 = l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Lean_Elab_Tactic_BVDecide_Frontend_Normalize_andFlatteningPass_spec__0(x_19, x_20, x_17);
+x_22 = l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Lean_Elab_Tactic_BVDecide_Frontend_Normalize_andFlatteningPass_spec__0(x_20, x_21, x_17);
 lean_inc(x_7);
 lean_inc_ref(x_6);
 lean_inc(x_5);
 lean_inc_ref(x_4);
-x_22 = l_Lean_MVarId_assertHypotheses(x_1, x_21, x_4, x_5, x_6, x_7);
-if (lean_obj_tag(x_22) == 0)
+x_23 = l_Lean_MVarId_assertHypotheses(x_1, x_22, x_4, x_5, x_6, x_7);
+if (lean_obj_tag(x_23) == 0)
 {
-lean_object* x_23; lean_object* x_24; lean_object* x_25; lean_object* x_26; lean_object* x_27; lean_object* x_28; 
-x_23 = lean_ctor_get(x_22, 0);
-lean_inc(x_23);
-lean_dec_ref(x_22);
+lean_object* x_24; lean_object* x_25; lean_object* x_26; lean_object* x_27; lean_object* x_28; 
 x_24 = lean_ctor_get(x_23, 0);
 lean_inc(x_24);
-x_25 = lean_ctor_get(x_23, 1);
+lean_dec_ref(x_23);
+x_25 = lean_ctor_get(x_24, 0);
 lean_inc(x_25);
-lean_dec(x_23);
-x_26 = lean_array_get_size(x_17);
-x_27 = lean_box(0);
-x_28 = l_WellFounded_opaqueFix_u2083___at___00Lean_Elab_Tactic_BVDecide_Frontend_Normalize_andFlatteningPass_spec__3___redArg(x_26, x_17, x_24, x_9, x_27, x_2, x_3, x_4, x_5, x_6, x_7);
+x_26 = lean_ctor_get(x_24, 1);
+lean_inc(x_26);
 lean_dec(x_24);
+x_27 = lean_box(0);
+x_28 = l_WellFounded_opaqueFix_u2083___at___00Lean_Elab_Tactic_BVDecide_Frontend_Normalize_andFlatteningPass_spec__3___redArg(x_18, x_17, x_25, x_9, x_27, x_2, x_3, x_4, x_5, x_6, x_7);
+lean_dec(x_25);
 lean_dec_ref(x_17);
 if (lean_obj_tag(x_28) == 0)
 {
 lean_object* x_29; 
 lean_dec_ref(x_28);
-x_29 = l_Lean_MVarId_tryClearMany(x_25, x_16, x_4, x_5, x_6, x_7);
+x_29 = l_Lean_MVarId_tryClearMany(x_26, x_16, x_4, x_5, x_6, x_7);
 lean_dec_ref(x_16);
 if (lean_obj_tag(x_29) == 0)
 {
@@ -2973,7 +2973,7 @@ return x_42;
 else
 {
 lean_object* x_47; lean_object* x_48; uint8_t x_49; uint8_t x_54; 
-lean_dec(x_25);
+lean_dec(x_26);
 lean_dec_ref(x_16);
 lean_dec(x_7);
 lean_dec_ref(x_6);
@@ -3027,18 +3027,18 @@ lean_dec(x_7);
 lean_dec_ref(x_6);
 lean_dec(x_5);
 lean_dec_ref(x_4);
-x_55 = lean_ctor_get(x_22, 0);
-x_62 = !lean_is_exclusive(x_22);
+x_55 = lean_ctor_get(x_23, 0);
+x_62 = !lean_is_exclusive(x_23);
 if (x_62 == 0)
 {
-x_56 = x_22;
+x_56 = x_23;
 x_57 = x_62;
 goto block_61;
 }
 else
 {
 lean_inc(x_55);
-lean_dec(x_22);
+lean_dec(x_23);
 x_56 = lean_box(0);
 x_57 = x_62;
 goto block_61;

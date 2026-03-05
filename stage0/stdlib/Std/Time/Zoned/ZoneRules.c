@@ -264,7 +264,6 @@ LEAN_EXPORT lean_object* l_Std_Time_TimeZone_Transition_findTransitionIndexForTi
 lean_object* lean_nat_sub(lean_object*, lean_object*);
 uint8_t lean_nat_dec_lt(lean_object*, lean_object*);
 lean_object* lean_array_fget_borrowed(lean_object*, lean_object*);
-lean_object* l_Array_back_x3f___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Std_Time_TimeZone_Transition_findTransitionForTimestamp(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Std_Time_TimeZone_Transition_findTransitionForTimestamp___boxed(lean_object*, lean_object*);
 static const lean_string_object l_Std_Time_TimeZone_Transition_timezoneAt___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 28, .m_capacity = 28, .m_length = 27, .m_data = "cannot find local timezone."};
@@ -1881,10 +1880,29 @@ return x_13;
 }
 else
 {
-lean_object* x_18; 
+lean_object* x_18; lean_object* x_19; lean_object* x_20; uint8_t x_21; 
 lean_dec(x_3);
-x_18 = l_Array_back_x3f___redArg(x_1);
-return x_18;
+x_18 = lean_array_get_size(x_1);
+x_19 = lean_unsigned_to_nat(1u);
+x_20 = lean_nat_sub(x_18, x_19);
+x_21 = lean_nat_dec_lt(x_20, x_18);
+if (x_21 == 0)
+{
+lean_object* x_22; 
+lean_dec(x_20);
+x_22 = lean_box(0);
+return x_22;
+}
+else
+{
+lean_object* x_23; lean_object* x_24; 
+x_23 = lean_array_fget_borrowed(x_1, x_20);
+lean_dec(x_20);
+lean_inc(x_23);
+x_24 = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(x_24, 0, x_23);
+return x_24;
+}
 }
 }
 }

@@ -1434,16 +1434,16 @@ x_68 = lean_array_get_size(x_27);
 x_69 = lean_nat_dec_le(x_58, x_57);
 if (x_69 == 0)
 {
-x_28 = x_66;
-x_29 = lean_box(0);
+x_28 = lean_box(0);
+x_29 = x_66;
 x_30 = x_58;
 x_31 = x_68;
 goto block_42;
 }
 else
 {
-x_28 = x_66;
-x_29 = lean_box(0);
+x_28 = lean_box(0);
+x_29 = x_66;
 x_30 = x_57;
 x_31 = x_68;
 goto block_42;
@@ -1505,7 +1505,7 @@ block_42:
 lean_object* x_32; lean_object* x_33; 
 lean_inc_ref(x_27);
 x_32 = l_Array_toSubarray___redArg(x_27, x_30, x_31);
-x_33 = l_WellFounded_opaqueFix_u2083___at___00Lean_Compiler_LCNF_FindUsed_visitLetValue_spec__3___redArg(x_32, x_28, x_2, x_3);
+x_33 = l_WellFounded_opaqueFix_u2083___at___00Lean_Compiler_LCNF_FindUsed_visitLetValue_spec__3___redArg(x_32, x_29, x_2, x_3);
 lean_dec_ref(x_2);
 if (lean_obj_tag(x_33) == 0)
 {
@@ -1532,7 +1532,7 @@ block_39:
 lean_object* x_36; 
 if (x_35 == 0)
 {
-lean_ctor_set(x_34, 0, x_28);
+lean_ctor_set(x_34, 0, x_29);
 x_36 = x_34;
 goto block_37;
 }
@@ -1540,7 +1540,7 @@ else
 {
 lean_object* x_38; 
 x_38 = lean_alloc_ctor(0, 1, 0);
-lean_ctor_set(x_38, 0, x_28);
+lean_ctor_set(x_38, 0, x_29);
 x_36 = x_38;
 goto block_37;
 }

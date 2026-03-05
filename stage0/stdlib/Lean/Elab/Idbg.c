@@ -10228,15 +10228,15 @@ block_22:
 {
 lean_object* x_14; lean_object* x_15; 
 x_14 = lean_box(0);
-x_15 = l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__0___redArg(x_9, x_10, x_12, x_13, x_14);
-lean_dec(x_12);
-lean_dec_ref(x_10);
+x_15 = l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__0___redArg(x_10, x_12, x_9, x_13, x_14);
+lean_dec(x_9);
+lean_dec_ref(x_12);
 if (lean_obj_tag(x_15) == 0)
 {
 lean_object* x_16; lean_object* x_17; lean_object* x_18; 
 x_16 = ((lean_object*)(l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__3___redArg___closed__0));
-x_17 = lean_string_append(x_16, x_9);
-lean_dec_ref(x_9);
+x_17 = lean_string_append(x_16, x_10);
+lean_dec_ref(x_10);
 x_18 = l_IO_eprintln___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__1(x_17);
 if (lean_obj_tag(x_18) == 0)
 {
@@ -10258,7 +10258,7 @@ else
 {
 lean_object* x_21; 
 lean_dec_ref(x_15);
-lean_dec_ref(x_9);
+lean_dec_ref(x_10);
 x_21 = l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__3___redArg___lam__0(x_8);
 x_5 = x_21;
 goto block_7;
@@ -10280,10 +10280,10 @@ if (x_29 == 0)
 {
 lean_object* x_30; 
 x_30 = lean_obj_once(&l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__3___redArg___closed__6, &l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__3___redArg___closed__6_once, _init_l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__3___redArg___closed__6);
-x_9 = x_25;
-x_10 = x_28;
+x_9 = x_27;
+x_10 = x_25;
 x_11 = lean_box(0);
-x_12 = x_27;
+x_12 = x_28;
 x_13 = x_30;
 goto block_22;
 }
@@ -10291,10 +10291,10 @@ else
 {
 lean_object* x_31; 
 x_31 = ((lean_object*)(l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Elab_Idbg_0__Lean_Idbg_idbgClientLoopImpl_spec__3___redArg___closed__7));
-x_9 = x_25;
-x_10 = x_28;
+x_9 = x_27;
+x_10 = x_25;
 x_11 = lean_box(0);
-x_12 = x_27;
+x_12 = x_28;
 x_13 = x_31;
 goto block_22;
 }

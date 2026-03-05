@@ -413,15 +413,14 @@ LEAN_EXPORT lean_object* l___private_Lean_Meta_HaveTelescope_0__Lean_Meta_SimpHa
 LEAN_EXPORT lean_object* l___private_Lean_Meta_HaveTelescope_0__Lean_Meta_SimpHaveResult_toResult___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__0(lean_object*, lean_object*, lean_object*, uint8_t, uint8_t, uint8_t, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__1(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__1(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 static const lean_string_object l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 28, .m_capacity = 28, .m_length = 27, .m_data = "Lean.Meta.simpHaveTelescope"};
 static const lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__0 = (const lean_object*)&l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__0_value;
 static const lean_string_object l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__1_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 47, .m_capacity = 47, .m_length = 46, .m_data = "assertion violation: !info.haveInfo.isEmpty\n  "};
 static const lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__1 = (const lean_object*)&l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__1_value;
 static lean_once_cell_t l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2;
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__2(lean_object*, lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__2___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, uint8_t);
@@ -7361,30 +7360,28 @@ x_11 = l_Lean_Meta_simpHaveTelescope___redArg___lam__0(x_1, x_2, x_3, x_8, x_9, 
 return x_11;
 }
 }
-LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__1(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9, lean_object* x_10) {
+LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__1(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9, lean_object* x_10, lean_object* x_11) {
 _start:
 {
-lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; 
-x_11 = lean_ctor_get(x_10, 0);
-lean_inc(x_11);
-x_12 = lean_ctor_get(x_10, 1);
+lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; 
+x_12 = lean_ctor_get(x_11, 0);
 lean_inc(x_12);
-lean_dec_ref(x_10);
-x_13 = lean_unsigned_to_nat(0u);
-x_14 = lean_array_get_size(x_1);
-x_15 = lean_mk_empty_array_with_capacity(x_14);
-x_16 = l___private_Lean_Meta_HaveTelescope_0__Lean_Meta_simpHaveTelescopeAux___redArg(x_2, x_3, x_4, x_5, x_6, x_11, x_12, x_7, x_13, x_15);
-x_17 = lean_apply_4(x_8, lean_box(0), lean_box(0), x_16, x_9);
-return x_17;
+x_13 = lean_ctor_get(x_11, 1);
+lean_inc(x_13);
+lean_dec_ref(x_11);
+x_14 = lean_mk_empty_array_with_capacity(x_1);
+x_15 = l___private_Lean_Meta_HaveTelescope_0__Lean_Meta_simpHaveTelescopeAux___redArg(x_2, x_3, x_4, x_5, x_6, x_12, x_13, x_7, x_8, x_14);
+x_16 = lean_apply_4(x_9, lean_box(0), lean_box(0), x_15, x_10);
+return x_16;
 }
 }
-LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__1___boxed(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9, lean_object* x_10) {
+LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__1___boxed(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9, lean_object* x_10, lean_object* x_11) {
 _start:
 {
-lean_object* x_11; 
-x_11 = l_Lean_Meta_simpHaveTelescope___redArg___lam__1(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, x_9, x_10);
-lean_dec_ref(x_1);
-return x_11;
+lean_object* x_12; 
+x_12 = l_Lean_Meta_simpHaveTelescope___redArg___lam__1(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, x_9, x_10, x_11);
+lean_dec(x_1);
+return x_12;
 }
 }
 static lean_object* _init_l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2(void) {
@@ -7403,84 +7400,86 @@ return x_6;
 LEAN_EXPORT lean_object* l_Lean_Meta_simpHaveTelescope___redArg___lam__2(lean_object* x_1, lean_object* x_2, uint8_t x_3, lean_object* x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8) {
 _start:
 {
-lean_object* x_9; lean_object* x_10; uint8_t x_11; 
+lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; uint8_t x_13; 
 x_9 = lean_ctor_get(x_8, 0);
 x_10 = lean_ctor_get(x_8, 5);
-x_11 = l_Array_isEmpty___redArg(x_9);
-if (x_11 == 0)
+x_11 = lean_array_get_size(x_9);
+x_12 = lean_unsigned_to_nat(0u);
+x_13 = lean_nat_dec_eq(x_11, x_12);
+if (x_13 == 0)
 {
-uint8_t x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; uint8_t x_18; 
-x_12 = 1;
-x_13 = lean_box(x_3);
-x_14 = lean_box(x_12);
-x_15 = lean_box(x_11);
+uint8_t x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; lean_object* x_19; uint8_t x_20; 
+x_14 = 1;
+x_15 = lean_box(x_3);
+x_16 = lean_box(x_14);
+x_17 = lean_box(x_13);
 lean_inc(x_2);
 lean_inc_ref(x_1);
 lean_inc(x_10);
-x_16 = lean_alloc_closure((void*)(l_Lean_Meta_simpHaveTelescope___redArg___lam__0___boxed), 7, 6);
-lean_closure_set(x_16, 0, x_10);
-lean_closure_set(x_16, 1, x_1);
-lean_closure_set(x_16, 2, x_2);
-lean_closure_set(x_16, 3, x_13);
-lean_closure_set(x_16, 4, x_14);
-lean_closure_set(x_16, 5, x_15);
+x_18 = lean_alloc_closure((void*)(l_Lean_Meta_simpHaveTelescope___redArg___lam__0___boxed), 7, 6);
+lean_closure_set(x_18, 0, x_10);
+lean_closure_set(x_18, 1, x_1);
+lean_closure_set(x_18, 2, x_2);
+lean_closure_set(x_18, 3, x_15);
+lean_closure_set(x_18, 4, x_16);
+lean_closure_set(x_18, 5, x_17);
 lean_inc(x_7);
 lean_inc_ref(x_8);
 lean_inc(x_2);
-lean_inc_ref(x_9);
-x_17 = lean_alloc_closure((void*)(l_Lean_Meta_simpHaveTelescope___redArg___lam__1___boxed), 10, 9);
-lean_closure_set(x_17, 0, x_9);
-lean_closure_set(x_17, 1, x_4);
-lean_closure_set(x_17, 2, x_2);
-lean_closure_set(x_17, 3, x_5);
-lean_closure_set(x_17, 4, x_6);
-lean_closure_set(x_17, 5, x_8);
-lean_closure_set(x_17, 6, x_1);
-lean_closure_set(x_17, 7, x_7);
-lean_closure_set(x_17, 8, x_16);
+x_19 = lean_alloc_closure((void*)(l_Lean_Meta_simpHaveTelescope___redArg___lam__1___boxed), 11, 10);
+lean_closure_set(x_19, 0, x_11);
+lean_closure_set(x_19, 1, x_4);
+lean_closure_set(x_19, 2, x_2);
+lean_closure_set(x_19, 3, x_5);
+lean_closure_set(x_19, 4, x_6);
+lean_closure_set(x_19, 5, x_8);
+lean_closure_set(x_19, 6, x_1);
+lean_closure_set(x_19, 7, x_12);
+lean_closure_set(x_19, 8, x_7);
+lean_closure_set(x_19, 9, x_18);
 switch (x_3) {
 case 0:
 {
-x_18 = x_12;
-goto block_23;
+x_20 = x_14;
+goto block_25;
 }
 case 2:
 {
-x_18 = x_12;
-goto block_23;
+x_20 = x_14;
+goto block_25;
 }
 default: 
 {
-x_18 = x_11;
-goto block_23;
+x_20 = x_13;
+goto block_25;
 }
 }
-block_23:
+block_25:
 {
-lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_22; 
-x_19 = lean_box(x_18);
-x_20 = lean_alloc_closure((void*)(l_Lean_Meta_HaveTelescopeInfo_computeFixedUsed___boxed), 7, 2);
-lean_closure_set(x_20, 0, x_8);
-lean_closure_set(x_20, 1, x_19);
-x_21 = lean_apply_2(x_2, lean_box(0), x_20);
-x_22 = lean_apply_4(x_7, lean_box(0), lean_box(0), x_21, x_17);
-return x_22;
+lean_object* x_21; lean_object* x_22; lean_object* x_23; lean_object* x_24; 
+x_21 = lean_box(x_20);
+x_22 = lean_alloc_closure((void*)(l_Lean_Meta_HaveTelescopeInfo_computeFixedUsed___boxed), 7, 2);
+lean_closure_set(x_22, 0, x_8);
+lean_closure_set(x_22, 1, x_21);
+x_23 = lean_apply_2(x_2, lean_box(0), x_22);
+x_24 = lean_apply_4(x_7, lean_box(0), lean_box(0), x_23, x_19);
+return x_24;
 }
 }
 else
 {
-lean_object* x_24; lean_object* x_25; lean_object* x_26; lean_object* x_27; 
+lean_object* x_26; lean_object* x_27; lean_object* x_28; lean_object* x_29; 
 lean_dec_ref(x_8);
 lean_dec(x_7);
 lean_dec_ref(x_6);
 lean_dec_ref(x_5);
 lean_dec(x_2);
 lean_dec_ref(x_1);
-x_24 = lean_box(0);
-x_25 = l_instInhabitedOfMonad___redArg(x_4, x_24);
-x_26 = lean_obj_once(&l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2, &l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2_once, _init_l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2);
-x_27 = l_panic___redArg(x_25, x_26);
-return x_27;
+x_26 = lean_box(0);
+x_27 = l_instInhabitedOfMonad___redArg(x_4, x_26);
+x_28 = lean_obj_once(&l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2, &l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2_once, _init_l_Lean_Meta_simpHaveTelescope___redArg___lam__2___closed__2);
+x_29 = l_panic___redArg(x_27, x_28);
+return x_29;
 }
 }
 }

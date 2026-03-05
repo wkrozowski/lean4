@@ -2863,7 +2863,6 @@ lean_object* lean_array_get_borrowed(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Tactic_withoutRecover___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Lean_Elab_Tactic_BuiltinTactic_0__Lean_Elab_Tactic_evalFirst_loop(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Lean_Elab_Tactic_BuiltinTactic_0__Lean_Elab_Tactic_evalFirst_loop___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_evalFirst(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_evalFirst___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 static const lean_string_object l_Lean_Elab_Tactic_evalFirst___regBuiltin_Lean_Elab_Tactic_evalFirst__1___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 6, .m_capacity = 6, .m_length = 5, .m_data = "first"};
@@ -46899,13 +46898,15 @@ return x_12;
 LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_evalFirst(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4, lean_object* x_5, lean_object* x_6, lean_object* x_7, lean_object* x_8, lean_object* x_9) {
 _start:
 {
-lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_22; uint8_t x_26; 
+lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; lean_object* x_19; lean_object* x_20; lean_object* x_21; lean_object* x_22; lean_object* x_26; lean_object* x_27; uint8_t x_28; 
 x_11 = lean_unsigned_to_nat(1u);
 x_12 = l_Lean_Syntax_getArg(x_1, x_11);
 x_13 = l_Lean_Syntax_getArgs(x_12);
 lean_dec(x_12);
-x_26 = l_Array_isEmpty___redArg(x_13);
-if (x_26 == 0)
+x_26 = lean_array_get_size(x_13);
+x_27 = lean_unsigned_to_nat(0u);
+x_28 = lean_nat_dec_eq(x_26, x_27);
+if (x_28 == 0)
 {
 x_14 = x_2;
 x_15 = x_3;
@@ -46920,7 +46921,7 @@ goto block_25;
 }
 else
 {
-lean_object* x_27; 
+lean_object* x_29; 
 lean_dec_ref(x_13);
 lean_dec(x_9);
 lean_dec_ref(x_8);
@@ -46930,8 +46931,8 @@ lean_dec(x_5);
 lean_dec_ref(x_4);
 lean_dec(x_3);
 lean_dec_ref(x_2);
-x_27 = l_Lean_Elab_throwUnsupportedSyntax___at___00Lean_Elab_Tactic_evalOpen_spec__0___redArg();
-return x_27;
+x_29 = l_Lean_Elab_throwUnsupportedSyntax___at___00Lean_Elab_Tactic_evalOpen_spec__0___redArg();
+return x_29;
 }
 block_25:
 {

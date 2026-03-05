@@ -352,3 +352,20 @@ error: failed to derive instance because it depends on `instNCNat`, which is non
 After the suggestion, `deriving noncomputable instance` works.
 -/
 deriving noncomputable instance NC for NCAlias2
+
+/-!
+Prop-valued classes should not require `noncomputable`, since proofs are erased by the compiler.
+-/
+class NCP (α : Type) : Prop where
+  cond : True
+
+noncomputable instance instNCPNat : NCP Nat where
+  cond := trivial
+
+def NCPAlias := Nat
+
+-- This should work without `noncomputable` since `NCP` is `Prop`-valued.
+deriving instance NCP for NCPAlias
+
+/-- info: instNCPNCPAlias -/
+#guard_msgs in #synth NCP NCPAlias

@@ -110,7 +110,6 @@ LEAN_EXPORT lean_object* l_Lean_Widget_instToJsonTaggedText_toJson(lean_object*,
 LEAN_EXPORT lean_object* l_Lean_Widget_instToJsonTaggedText___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Widget_instToJsonTaggedText(lean_object*, lean_object*);
 lean_object* lean_string_append(lean_object*, lean_object*);
-lean_object* l_Array_back_x21___redArg(lean_object*, lean_object*);
 lean_object* lean_nat_sub(lean_object*, lean_object*);
 lean_object* lean_array_set(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Widget_TaggedText_appendText___redArg(lean_object*, lean_object*);
@@ -1779,40 +1778,40 @@ goto block_38;
 }
 block_38:
 {
-lean_object* x_15; lean_object* x_16; 
+lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; lean_object* x_19; 
 x_15 = lean_obj_once(&l_Lean_Widget_instInhabitedTaggedText___closed__0, &l_Lean_Widget_instInhabitedTaggedText___closed__0_once, _init_l_Lean_Widget_instInhabitedTaggedText___closed__0);
-x_16 = l_Array_back_x21___redArg(x_15, x_12);
-if (lean_obj_tag(x_16) == 0)
+x_16 = lean_array_get_size(x_12);
+x_17 = lean_unsigned_to_nat(1u);
+x_18 = lean_nat_sub(x_16, x_17);
+x_19 = lean_array_get(x_15, x_12, x_18);
+if (lean_obj_tag(x_19) == 0)
 {
-lean_object* x_17; lean_object* x_18; uint8_t x_19; uint8_t x_32; 
-x_17 = lean_ctor_get(x_16, 0);
-x_32 = !lean_is_exclusive(x_16);
+lean_object* x_20; lean_object* x_21; uint8_t x_22; uint8_t x_32; 
+x_20 = lean_ctor_get(x_19, 0);
+x_32 = !lean_is_exclusive(x_19);
 if (x_32 == 0)
 {
-x_18 = x_16;
-x_19 = x_32;
+x_21 = x_19;
+x_22 = x_32;
 goto block_31;
 }
 else
 {
-lean_inc(x_17);
-lean_dec(x_16);
-x_18 = lean_box(0);
-x_19 = x_32;
+lean_inc(x_20);
+lean_dec(x_19);
+x_21 = lean_box(0);
+x_22 = x_32;
 goto block_31;
 }
 block_31:
 {
-lean_object* x_20; lean_object* x_21; lean_object* x_22; lean_object* x_23; lean_object* x_24; 
-x_20 = lean_array_get_size(x_12);
-x_21 = lean_unsigned_to_nat(1u);
-x_22 = lean_nat_sub(x_20, x_21);
-x_23 = lean_string_append(x_17, x_1);
+lean_object* x_23; lean_object* x_24; 
+x_23 = lean_string_append(x_20, x_1);
 lean_dec_ref(x_1);
-if (x_19 == 0)
+if (x_22 == 0)
 {
-lean_ctor_set(x_18, 0, x_23);
-x_24 = x_18;
+lean_ctor_set(x_21, 0, x_23);
+x_24 = x_21;
 goto block_29;
 }
 else
@@ -1826,8 +1825,8 @@ goto block_29;
 block_29:
 {
 lean_object* x_25; lean_object* x_26; 
-x_25 = lean_array_set(x_12, x_22, x_24);
-lean_dec(x_22);
+x_25 = lean_array_set(x_12, x_18, x_24);
+lean_dec(x_18);
 if (x_14 == 0)
 {
 lean_ctor_set(x_13, 0, x_25);
@@ -1852,7 +1851,8 @@ return x_26;
 else
 {
 lean_object* x_33; 
-lean_dec(x_16);
+lean_dec(x_19);
+lean_dec(x_18);
 if (x_14 == 0)
 {
 lean_ctor_set_tag(x_13, 0);
@@ -5249,46 +5249,43 @@ x_4 = lean_unsigned_to_nat(0u);
 x_5 = lean_nat_dec_eq(x_3, x_4);
 if (x_5 == 0)
 {
-lean_object* x_6; lean_object* x_7; 
+lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; 
 x_6 = lean_obj_once(&l_Lean_Widget_instInhabitedTaggedText___closed__0, &l_Lean_Widget_instInhabitedTaggedText___closed__0_once, _init_l_Lean_Widget_instInhabitedTaggedText___closed__0);
-x_7 = l_Array_back_x21___redArg(x_6, x_2);
-switch (lean_obj_tag(x_7)) {
+x_7 = lean_unsigned_to_nat(1u);
+x_8 = lean_nat_sub(x_3, x_7);
+x_9 = lean_array_get_borrowed(x_6, x_2, x_8);
+switch (lean_obj_tag(x_9)) {
 case 0:
 {
-lean_object* x_8; lean_object* x_9; lean_object* x_10; 
-x_8 = lean_ctor_get(x_7, 0);
-lean_inc_ref(x_8);
-lean_dec_ref(x_7);
-x_9 = lean_string_append(x_1, x_8);
-lean_dec_ref(x_8);
-x_10 = lean_array_pop(x_2);
-x_1 = x_9;
-x_2 = x_10;
+lean_object* x_10; lean_object* x_11; lean_object* x_12; 
+lean_dec(x_8);
+x_10 = lean_ctor_get(x_9, 0);
+x_11 = lean_string_append(x_1, x_10);
+x_12 = lean_array_pop(x_2);
+x_1 = x_11;
+x_2 = x_12;
 goto _start;
 }
 case 1:
 {
-lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; 
-x_12 = lean_ctor_get(x_7, 0);
-lean_inc_ref(x_12);
-lean_dec_ref(x_7);
-x_13 = lean_array_pop(x_2);
-x_14 = l_Array_reverse___redArg(x_12);
-x_15 = l_Array_append___redArg(x_13, x_14);
-lean_dec_ref(x_14);
-x_2 = x_15;
+lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; 
+lean_dec(x_8);
+x_14 = lean_ctor_get(x_9, 0);
+lean_inc_ref(x_14);
+x_15 = lean_array_pop(x_2);
+x_16 = l_Array_reverse___redArg(x_14);
+x_17 = l_Array_append___redArg(x_15, x_16);
+lean_dec_ref(x_16);
+x_2 = x_17;
 goto _start;
 }
 default: 
 {
-lean_object* x_17; lean_object* x_18; lean_object* x_19; lean_object* x_20; 
-x_17 = lean_ctor_get(x_7, 1);
-lean_inc_ref(x_17);
-lean_dec_ref(x_7);
-x_18 = lean_unsigned_to_nat(1u);
-x_19 = lean_nat_sub(x_3, x_18);
-x_20 = lean_array_set(x_2, x_19, x_17);
-lean_dec(x_19);
+lean_object* x_19; lean_object* x_20; 
+x_19 = lean_ctor_get(x_9, 1);
+lean_inc_ref(x_19);
+x_20 = lean_array_set(x_2, x_8, x_19);
+lean_dec(x_8);
 x_2 = x_20;
 goto _start;
 }

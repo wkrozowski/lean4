@@ -7,6 +7,8 @@ module
 
 prelude
 public import Init.Data.String.Slice
+public import Init.Data.String.Search
+public import Init.Data.String.Lemmas.Splits
 import Init.Data.String.Lemmas.Pattern.Find.Basic
 import Init.Data.String.Lemmas.Pattern.Char
 import Init.Data.String.Lemmas.Basic
@@ -16,6 +18,8 @@ import Init.Data.String.Lemmas.Iterate
 import Init.Grind
 import Init.Data.Option.Lemmas
 import Init.Data.String.OrderInstances
+
+public section
 
 namespace String.Slice
 
@@ -98,7 +102,7 @@ end Slice
 theorem Pos.find?_char_eq_some_iff {c : Char} {s : String} {pos pos' : s.Pos} :
     pos.find? c = some pos' ↔
       pos ≤ pos' ∧ (∃ h, pos'.get h = c) ∧
-        ∀ pos'', pos ≤ pos'' → (h' : pos'' < pos') → pos''.get (Pos.ne_endPos_of_lt h') ≠ c := by
+        ∀ pos'', pos ≤ pos'' → (h' : pos'' < pos') → pos''.get (by exact Pos.ne_endPos_of_lt h') ≠ c := by
   simp only [Pos.find?_eq_find?_toSlice, Option.map_eq_some_iff,
     Slice.Pos.find?_char_eq_some_iff, ne_eq, endPos_toSlice]
   refine ⟨?_, ?_⟩
@@ -143,9 +147,21 @@ theorem Pos.find?_char_eq_none_iff_not_mem_of_splits {c : Char} {s : String} {po
   rw [Pos.find?_eq_find?_toSlice, Option.map_eq_none_iff]
   exact Slice.Pos.find?_char_eq_none_iff_not_mem_of_splits (Pos.splits_toSlice_iff.mpr hs)
 
+theorem Pos.find?_char_eq_find?_beq {c : Char} {s : String} {pos : s.Pos} :
+    pos.find? c = pos.find? (· == c) := by
+  simp only [Pos.find?_eq_find?_toSlice, Slice.Pos.find?_char_eq_find?_beq]
+
+theorem find?_char_eq_find?_beq {c : Char} {s : String} :
+    s.find? c = s.find? (· == c) := by
+  simp only [find?_eq_find?_toSlice, Slice.find?_char_eq_find?_beq]
+
+theorem contains_char_eq_contains_beq {c : Char} {s : String} :
+    s.contains c = s.contains (· == c) := by
+  simp only [contains_eq_contains_toSlice, Slice.contains_char_eq_contains_beq]
+
 theorem find?_char_eq_some_iff {c : Char} {s : String} {pos : s.Pos} :
     s.find? c = some pos ↔
-      ∃ h, pos.get h = c ∧ ∀ pos', (h' : pos' < pos) → pos'.get (Pos.ne_endPos_of_lt h') ≠ c := by
+      ∃ h, pos.get h = c ∧ ∀ pos', (h' : pos' < pos) → pos'.get (by exact Pos.ne_endPos_of_lt h') ≠ c := by
   simp only [find?_eq_find?_toSlice, Option.map_eq_some_iff, Slice.find?_char_eq_some_iff, ne_eq,
     endPos_toSlice, exists_and_right]
   refine ⟨?_, ?_⟩

@@ -2420,7 +2420,7 @@ block_44:
 if (x_40 == 0)
 {
 lean_dec(x_39);
-lean_dec_ref(x_36);
+lean_dec_ref(x_35);
 lean_dec_ref(x_6);
 lean_dec(x_5);
 lean_dec(x_4);
@@ -2435,8 +2435,8 @@ goto block_25;
 else
 {
 lean_object* x_41; lean_object* x_42; uint8_t x_43; 
-x_41 = lean_string_utf8_byte_size(x_36);
-lean_dec_ref(x_36);
+x_41 = lean_string_utf8_byte_size(x_35);
+lean_dec_ref(x_35);
 x_42 = lean_unsigned_to_nat(0u);
 x_43 = lean_nat_dec_eq(x_41, x_42);
 if (x_43 == 0)
@@ -2506,8 +2506,8 @@ x_63 = ((lean_object*)(l___private_Lake_Build_Package_0__Lake_Package_maybeFetch
 x_64 = lean_string_dec_eq(x_55, x_63);
 lean_inc(x_53);
 lean_inc_ref(x_48);
-x_35 = lean_box(0);
-x_36 = x_48;
+x_35 = x_48;
+x_36 = lean_box(0);
 x_37 = x_57;
 x_38 = x_50;
 x_39 = x_53;
@@ -2518,8 +2518,8 @@ else
 {
 lean_inc(x_53);
 lean_inc_ref(x_48);
-x_35 = lean_box(0);
-x_36 = x_48;
+x_35 = x_48;
+x_36 = lean_box(0);
 x_37 = x_57;
 x_38 = x_50;
 x_39 = x_53;

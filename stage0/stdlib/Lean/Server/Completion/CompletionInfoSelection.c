@@ -64,7 +64,6 @@ lean_object* l_Lean_Elab_Info_pos_x3f(lean_object*);
 LEAN_EXPORT lean_object* l___private_Lean_Server_Completion_CompletionInfoSelection_0__Lean_Server_Completion_findCompletionInfosAt_go(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Lean_Server_Completion_CompletionInfoSelection_0__Lean_Server_Completion_findCompletionInfosAt_go___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Elab_InfoTree_foldInfo___redArg(lean_object*, lean_object*, lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
 lean_object* l_Lean_Server_Completion_findSyntheticCompletions(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Server_Completion_findCompletionInfosAt(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Info_size_x3f(lean_object*);
@@ -929,7 +928,7 @@ return x_7;
 LEAN_EXPORT lean_object* l_Lean_Server_Completion_findCompletionInfosAt(lean_object* x_1, lean_object* x_2, lean_object* x_3, lean_object* x_4) {
 _start:
 {
-lean_object* x_5; uint8_t x_6; lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; uint8_t x_16; 
+lean_object* x_5; uint8_t x_6; lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; uint8_t x_18; 
 lean_inc_ref(x_1);
 x_11 = l_Lean_FileMap_toPosition(x_1, x_2);
 x_12 = lean_ctor_get(x_11, 0);
@@ -941,30 +940,32 @@ x_13 = lean_alloc_closure((void*)(l___private_Lean_Server_Completion_CompletionI
 lean_closure_set(x_13, 0, x_1);
 lean_closure_set(x_13, 1, x_2);
 lean_closure_set(x_13, 2, x_12);
-x_14 = ((lean_object*)(l___private_Lean_Server_Completion_CompletionInfoSelection_0__Lean_Server_Completion_filterDuplicateCompletionInfos___closed__0));
+x_14 = lean_unsigned_to_nat(0u);
+x_15 = ((lean_object*)(l___private_Lean_Server_Completion_CompletionInfoSelection_0__Lean_Server_Completion_filterDuplicateCompletionInfos___closed__0));
 lean_inc_ref(x_4);
-x_15 = l_Lean_Elab_InfoTree_foldInfo___redArg(x_13, x_14, x_4);
-x_16 = l_Array_isEmpty___redArg(x_15);
-if (x_16 == 0)
+x_16 = l_Lean_Elab_InfoTree_foldInfo___redArg(x_13, x_15, x_4);
+x_17 = lean_array_get_size(x_16);
+x_18 = lean_nat_dec_eq(x_17, x_14);
+if (x_18 == 0)
 {
-uint8_t x_17; 
+uint8_t x_19; 
 lean_dec_ref(x_4);
 lean_dec(x_3);
 lean_dec(x_2);
 lean_dec_ref(x_1);
-x_17 = 1;
-x_5 = x_15;
-x_6 = x_17;
+x_19 = 1;
+x_5 = x_16;
+x_6 = x_19;
 goto block_10;
 }
 else
 {
-lean_object* x_18; uint8_t x_19; 
-lean_dec(x_15);
-x_18 = l_Lean_Server_Completion_findSyntheticCompletions(x_1, x_2, x_3, x_4);
-x_19 = 0;
-x_5 = x_18;
-x_6 = x_19;
+lean_object* x_20; uint8_t x_21; 
+lean_dec(x_16);
+x_20 = l_Lean_Server_Completion_findSyntheticCompletions(x_1, x_2, x_3, x_4);
+x_21 = 0;
+x_5 = x_20;
+x_6 = x_21;
 goto block_10;
 }
 block_10:

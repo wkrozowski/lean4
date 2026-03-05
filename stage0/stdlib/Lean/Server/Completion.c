@@ -76,7 +76,7 @@ lean_object* l_Lean_Server_Completion_errorNameCompletion(lean_object*, lean_obj
 lean_object* l_Lean_Server_Completion_endSectionCompletion(lean_object*, lean_object*, lean_object*, lean_object*, uint8_t, lean_object*);
 lean_object* l_Lean_Server_Completion_tacticCompletion(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lean_Server_Completion_find_x3f_spec__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-uint8_t l_Array_isEmpty___redArg(lean_object*);
+uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lean_Server_Completion_find_x3f_spec__1(lean_object*, lean_object*, lean_object*, lean_object*, size_t, size_t, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lean_Server_Completion_find_x3f_spec__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Server_Completion_findPrioritizedCompletionPartitionsAt(lean_object*, lean_object*, lean_object*, lean_object*);
@@ -1409,12 +1409,14 @@ return x_16;
 }
 else
 {
-lean_object* x_18; uint8_t x_19; 
+lean_object* x_18; lean_object* x_19; lean_object* x_20; uint8_t x_21; 
 x_18 = lean_ctor_get(x_17, 0);
 lean_inc(x_18);
 lean_dec_ref(x_17);
-x_19 = l_Array_isEmpty___redArg(x_18);
-if (x_19 == 0)
+x_19 = lean_array_get_size(x_18);
+x_20 = lean_unsigned_to_nat(0u);
+x_21 = lean_nat_dec_eq(x_19, x_20);
+if (x_21 == 0)
 {
 lean_dec(x_18);
 lean_dec_ref(x_8);
@@ -1425,11 +1427,11 @@ return x_16;
 }
 else
 {
-size_t x_20; size_t x_21; 
+size_t x_22; size_t x_23; 
 lean_dec_ref(x_16);
-x_20 = 1;
-x_21 = lean_usize_add(x_6, x_20);
-x_6 = x_21;
+x_22 = 1;
+x_23 = lean_usize_add(x_6, x_22);
+x_6 = x_23;
 x_7 = x_18;
 goto _start;
 }
