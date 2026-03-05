@@ -20,55 +20,13 @@ instance : DecidablePred IsEven := fun n =>
   else
     .isFalse (by intro ⟨k, hk⟩; omega)
 
--- Without Classical: works fine
-set_option trace.Meta.synthInstance.instances true
-set_option trace.Meta.Tactic true
-/--
-trace: [Meta.synthInstance.instances] #[instDecidablePredNatIsEven]
----
-trace: [Meta.synthInstance.instances] #[@Lean.Grind.Semiring.ofNat, instOfNatNat]
----
-trace: [Meta.synthInstance.instances] #[@exists_prop_decidable, @List.decidableBEx, @Option.decidableExistsMem, @Array.instDecidableExistsAndMemOfDecidablePred, @Vector.instDecidableExistsAndMemOfDecidablePred, @Nat.decidableExistsLT, @Nat.decidableExistsLE, @Nat.decidableExistsLT', @Nat.decidableExistsLE']
--/
-#guard_msgs in
+
 example : decide (IsEven 2) = true := by cbv
 
-/--
-trace: [Meta.synthInstance.instances] #[instDecidablePredNatIsEven]
----
-trace: [Meta.synthInstance.instances] #[@Lean.Grind.Semiring.ofNat, instOfNatNat]
----
-trace: [Meta.synthInstance.instances] #[@exists_prop_decidable, @List.decidableBEx, @Option.decidableExistsMem, @Array.instDecidableExistsAndMemOfDecidablePred, @Vector.instDecidableExistsAndMemOfDecidablePred, @Nat.decidableExistsLT, @Nat.decidableExistsLE, @Nat.decidableExistsLT', @Nat.decidableExistsLE']
--/
-#guard_msgs in
 example : decide (IsEven 3) = false := by cbv
 
--- With Classical: cbv unfolds `IsEven` to the existential, re-synthesizes
--- with `Classical.propDecidable`, and gets stuck on `choice`.
-/--
-error: unsolved goals
-⊢ decide (∃ k, 2 = 2 * k) = true
----
-trace: [Meta.synthInstance.instances] #[propDecidable, instDecidablePredNatIsEven]
----
-trace: [Meta.synthInstance.instances] #[@Lean.Grind.Semiring.ofNat, instOfNatNat]
----
-trace: [Meta.synthInstance.instances] #[propDecidable, @exists_prop_decidable, @List.decidableBEx, @Option.decidableExistsMem, @Array.instDecidableExistsAndMemOfDecidablePred, @Vector.instDecidableExistsAndMemOfDecidablePred, @Nat.decidableExistsLT, @Nat.decidableExistsLE, @Nat.decidableExistsLT', @Nat.decidableExistsLE']
--/
-#guard_msgs in
 open Classical in
 example : decide (IsEven 2) = true := by cbv
 
-/--
-error: unsolved goals
-⊢ decide (∃ k, 3 = 2 * k) = false
----
-trace: [Meta.synthInstance.instances] #[propDecidable, instDecidablePredNatIsEven]
----
-trace: [Meta.synthInstance.instances] #[@Lean.Grind.Semiring.ofNat, instOfNatNat]
----
-trace: [Meta.synthInstance.instances] #[propDecidable, @exists_prop_decidable, @List.decidableBEx, @Option.decidableExistsMem, @Array.instDecidableExistsAndMemOfDecidablePred, @Vector.instDecidableExistsAndMemOfDecidablePred, @Nat.decidableExistsLT, @Nat.decidableExistsLE, @Nat.decidableExistsLT', @Nat.decidableExistsLE']
--/
-#guard_msgs in
 open Classical in
 example : decide (IsEven 3) = false := by cbv
