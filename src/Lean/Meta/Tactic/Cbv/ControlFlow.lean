@@ -19,6 +19,7 @@ import Lean.Meta.AppBuilder
 import Init.Sym.Lemmas
 import Lean.Meta.Tactic.Cbv.TheoremsLookup
 import Lean.Meta.Tactic.Cbv.Opaque
+import Lean.Compiler.NoncomputableAttr
 
 /-!
 # Control Flow Handling for Cbv
@@ -229,7 +230,10 @@ public def simpDecideCbv : Simproc := fun e => do
         return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_false) p inst hp
       else
         let .some inst' ← trySynthInstance (mkApp (mkConst ``Decidable) p') | return .rfl
+        -- if inst'.getUsedConstants.any (Lean.isNoncomputable (← getEnv) ·) then
+        --   return .rfl
         let inst' ← shareCommon inst'
+        -- let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) p p' inst hp
         simpDecideByInstWithFallbackCongr p p' hp inst inst' (do
           let res := (mkConst ``Decidable.decide)
           let res ← shareCommon res
