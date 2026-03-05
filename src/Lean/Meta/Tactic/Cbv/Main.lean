@@ -284,7 +284,7 @@ def cbvPost (simprocs : CbvSimprocs) : Simproc :=
 def mkCbvMethods (simprocs : CbvSimprocs) : Methods :=
   { pre := cbvPre simprocs, post := cbvPost simprocs }
 
-def cbvCore (e : Expr) (config : Sym.Simp.Config := {}) : Sym.SymM Result :=
+def cbvCore (e : Expr) (config : Sym.Simp.Config := {}) : Sym.SymM Result := do
   let simprocs ← getCbvSimprocs
   let methods := mkCbvMethods simprocs
   SimpM.run' (methods := methods) (config := config)
