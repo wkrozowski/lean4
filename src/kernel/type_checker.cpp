@@ -483,12 +483,12 @@ expr type_checker::whnf_core(expr const & e, bool cheap_rec, bool cheap_proj) {
 }
 
 /** \brief Return some definition \c d iff \c e is a target for delta-reduction, and the given definition is the one
-    to be expanded. */
+    to be expanded. If \c is_delta succeeds, then \c unfold_definition will also succeed. */
 optional<constant_info> type_checker::is_delta(expr const & e) const {
     expr const & f = get_app_fn(e);
     if (is_constant(f)) {
         if (optional<constant_info> info = env().find(const_name(f)))
-            if (info->has_value())
+            if (info->has_value() && length(const_levels(f)) == info->get_num_lparams())
                 return info;
     }
     return none_constant_info();
@@ -499,20 +499,18 @@ optional<expr> type_checker::unfold_definition_core(expr const & e) {
         if (auto d = is_delta(e)) {
             levels const & us = const_levels(e);
             unsigned len = length(us);
-            if (len == d->get_num_lparams()) {
-                if (m_diag) {
-                    m_diag->record_unfold(d->get_name());
-                }
-                if (len > 0) {
-                    auto it = m_st->m_unfold.find(e);
-                    if (it != m_st->m_unfold.end())
-                        return some_expr(it->second);
-                    expr result = instantiate_value_lparams(*d, us);
-                    m_st->m_unfold.insert(mk_pair(e, result));
-                    return some_expr(result);
-                } else {
-                    return some_expr(instantiate_value_lparams(*d, us));
-                }
+            if (m_diag) {
+                m_diag->record_unfold(d->get_name());
+            }
+            if (len > 0) {
+                auto it = m_st->m_unfold.find(e);
+                if (it != m_st->m_unfold.end())
+                    return some_expr(it->second);
+                expr result = instantiate_value_lparams(*d, us);
+                m_st->m_unfold.insert(mk_pair(e, result));
+                return some_expr(result);
+            } else {
+                return some_expr(instantiate_value_lparams(*d, us));
             }
         }
     }

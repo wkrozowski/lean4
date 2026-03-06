@@ -291,47 +291,45 @@ return x_4;
 LEAN_EXPORT lean_object* l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_Rewrite_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_rewriteRulesPass_getHyps_spec__1___redArg(lean_object* x_1, size_t x_2, size_t x_3, lean_object* x_4, lean_object* x_5) {
 _start:
 {
-lean_object* x_7; lean_object* x_8; uint8_t x_13; 
-x_13 = lean_usize_dec_eq(x_2, x_3);
-if (x_13 == 0)
+lean_object* x_7; uint8_t x_12; 
+x_12 = lean_usize_dec_eq(x_2, x_3);
+if (x_12 == 0)
 {
-lean_object* x_14; lean_object* x_15; lean_object* x_16; uint8_t x_17; 
-x_14 = lean_st_ref_get(x_5);
-x_15 = lean_ctor_get(x_14, 0);
-lean_inc_ref(x_15);
-lean_dec(x_14);
-x_16 = lean_array_uget_borrowed(x_1, x_2);
-x_17 = l_Std_DHashMap_Internal_Raw_u2080_contains___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_Rewrite_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_rewriteRulesPass_getHyps_spec__0___redArg(x_15, x_16);
-lean_dec_ref(x_15);
-if (x_17 == 0)
+lean_object* x_13; lean_object* x_14; lean_object* x_15; uint8_t x_16; 
+x_13 = lean_st_ref_get(x_5);
+x_14 = lean_ctor_get(x_13, 0);
+lean_inc_ref(x_14);
+lean_dec(x_13);
+x_15 = lean_array_uget_borrowed(x_1, x_2);
+x_16 = l_Std_DHashMap_Internal_Raw_u2080_contains___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_Rewrite_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_rewriteRulesPass_getHyps_spec__0___redArg(x_14, x_15);
+lean_dec_ref(x_14);
+if (x_16 == 0)
 {
-lean_object* x_18; 
-lean_inc(x_16);
-x_18 = lean_array_push(x_4, x_16);
-x_7 = x_18;
-x_8 = lean_box(0);
-goto block_12;
+lean_object* x_17; 
+lean_inc(x_15);
+x_17 = lean_array_push(x_4, x_15);
+x_7 = x_17;
+goto block_11;
 }
 else
 {
 x_7 = x_4;
-x_8 = lean_box(0);
-goto block_12;
+goto block_11;
 }
 }
 else
 {
-lean_object* x_19; 
-x_19 = lean_alloc_ctor(0, 1, 0);
-lean_ctor_set(x_19, 0, x_4);
-return x_19;
+lean_object* x_18; 
+x_18 = lean_alloc_ctor(0, 1, 0);
+lean_ctor_set(x_18, 0, x_4);
+return x_18;
 }
-block_12:
+block_11:
 {
-size_t x_9; size_t x_10; 
-x_9 = 1;
-x_10 = lean_usize_add(x_2, x_9);
-x_2 = x_10;
+size_t x_8; size_t x_9; 
+x_8 = 1;
+x_9 = lean_usize_add(x_2, x_8);
+x_2 = x_9;
 x_4 = x_7;
 goto _start;
 }
