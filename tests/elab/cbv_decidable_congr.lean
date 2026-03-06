@@ -16,10 +16,9 @@ noncomputable instance : Decidable Q := instDecidableQ
 axiom dQ_eval : instDecidableQ = Decidable.isTrue hQ
 attribute [cbv_eval] dQ_eval
 
-theorem test : (if P then true else false) = true := by cbv
+example : (if P then true else false) = true := by cbv
 
-#print test
-
+example : (if _ : P then true else false) = true := by cbv
 
 example : P := by decide_cbv
 
