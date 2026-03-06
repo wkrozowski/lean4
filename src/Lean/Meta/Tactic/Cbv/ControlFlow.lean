@@ -38,7 +38,7 @@ namespace Lean.Meta.Sym.Simp
 open Internal
 
 def isCbvNoncomputable (p : Name) : CoreM Bool := do
-  let evalLemmas ← Meta.Tactic.Cbv.getCbvEvalLemmas p
+  let evalLemmas ← Tactic.Cbv.getCbvEvalLemmas p
   return evalLemmas.isNone && Lean.isNoncomputable (← getEnv) p
 
 /--
@@ -90,7 +90,7 @@ public def simpIteCbv : Simproc := fun e => do
           let e' := e.getBoundedAppFn 4
           let e' ← mkAppS₄ e' c' inst' a b
           let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
-          return .step e' h'
+          return .step e' h' (done := true)
 
 /-- Reduce `dite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
 def matchDIteDecidable (f α c inst a b instToMatch : Expr) (fallback : SimpM Result) : SimpM Result := do
@@ -144,7 +144,7 @@ public def simpDIteCbv : Simproc := fun e => do
           let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
           let e' ← mkAppS₄ e' c' inst' a b
           let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
-          return .step e' h'
+          return .step e' h' (done := true)
 
 /-- Short-circuit evaluation of `Or`. Simplifies only the left argument;
 if it reduces to `True`, returns `True` immediately without evaluating the right side. -/
@@ -242,22 +242,13 @@ public def simpDecideCbv : Simproc := fun e => do
       else if (← isFalseExpr p') then
         return .step (← getBoolFalseExpr) <| mkApp3 (mkConst ``Sym.decide_prop_eq_false) p inst hp
       else
-        -- If we were able to synthetise a new instance, we should transport it.
-        -- Otherwise, we do a usual fallback
-        match (← trySynthComputableInstance p') with
-        | .none =>
-          simpAndMatchDecideDecidable p inst do
-            let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) p p' inst hp
-            let res := (mkConst ``Decidable.decide)
-            let res ← shareCommon res
-            let res ← mkAppS₂ res p' inst'
-            return .step res (mkApp5 (mkConst ``Decidable.decide.congr_simp) p p' hp inst inst')
-        | .some inst' =>
-          simpAndMatchDecideDecidableCongr p p' hp inst inst' (do
-            let res := (mkConst ``Decidable.decide)
-            let res ← shareCommon res
-            let res ← mkAppS₂ res p' inst'
-            return .step res (mkApp5 (mkConst ``Decidable.decide.congr_simp) p p' hp inst inst') (done := true))
+        let inst' ← trySynthComputableInstance p'
+        let inst' := inst'.getD <| mkApp4 (mkConst ``decidable_of_decidable_of_eq) p p' inst hp
+        simpAndMatchDecideDecidableCongr p p' hp inst inst' do
+          let res := (mkConst ``Decidable.decide)
+          let res ← shareCommon res
+          let res ← mkAppS₂ res p' inst'
+          return .step res (mkApp5 (mkConst ``Decidable.decide.congr_simp) p p' hp inst inst') (done := true)
 
 end Lean.Meta.Sym.Simp
 
