@@ -18,6 +18,8 @@ attribute [cbv_eval] dQ_eval
 
 example : (if P then true else false) = true := by cbv
 
+example : (if P then true else false) = true := by conv => lhs; cbv
+
 example : (if _ : P then true else false) = true := by cbv
 
 example : P := by decide_cbv

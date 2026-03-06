@@ -58,11 +58,26 @@ def matchIteDecidable (f α c inst a b instToMatch : Expr) (fallback : SimpM Res
     return .step b <| mkApp6 (mkConst ``Sym.ite_false f.constLevels!) α c inst a b hnp
   | _ => fallback
 
+/-- Like `matchIteDecidable`, but for the congruence case where `c` was simplified to `c'` with proof `h`. -/
+def matchIteDecidableCongr (f α c inst a b c' h inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst' with
+  | Decidable.isTrue _ hp =>
+    return .step a <| mkApp8 (mkConst ``Sym.ite_true_congr f.constLevels!) α c inst a b c' h hp
+  | Decidable.isFalse _ hnp =>
+    return .step b <| mkApp8 (mkConst ``Sym.ite_false_congr f.constLevels!) α c inst a b c' h hnp
+  | _ => fallback
+
 /-- Simplify the `Decidable` instance, then try `simpIteDecidable`. -/
 def simpAndMatchIteDecidable (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
   match (← simp inst) with
   | .rfl _ => matchIteDecidable f α c inst a b inst fallback
   | .step inst' _ _ => matchIteDecidable f α c inst a b inst' fallback
+
+/-- Like `simpAndMatchIteDecidable`, but for the congruence case where `c` was simplified to `c'`. -/
+def simpAndMatchIteDecidableCongr (f α c inst a b c' h inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst') with
+  | .rfl _ => matchIteDecidableCongr f α c inst a b c' h inst' fallback
+  | .step inst'' _ _ => matchIteDecidableCongr f α c inst a b c' h inst'' fallback
 
 /-- Like `simpIte` but also evaluates `Decidable.decide` when the condition does not
 reduce to `True`/`False` directly. -/
@@ -85,12 +100,16 @@ public def simpIteCbv : Simproc := fun e => do
       else if (← isFalseExpr c') then
         return .step b <| mkApp (e.replaceFn ``ite_cond_eq_false) h
       else
+        -- If we got stuck with simplifying `p` then let's try evaluating the original isntance
         simpAndMatchIteDecidable f α c inst a b do
+          -- If we get stuck here, maybe the problem is that we need to look at `Decidable c'`
           let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
-          let e' := e.getBoundedAppFn 4
-          let e' ← mkAppS₄ e' c' inst' a b
-          let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
-          return .step e' h' (done := true)
+          simpAndMatchIteDecidableCongr f α c inst a b c' h inst' do
+            -- If we fail, then we just rewrite `c` to `c'`
+            let e' := e.getBoundedAppFn 4
+            let e' ← mkAppS₄ e' c' inst' a b
+            let h' := mkApp3 (e.replaceFn ``Sym.ite_cond_congr) c' inst' h
+            return .step e' h' (done := true)
 
 /-- Reduce `dite` by matching the `Decidable` instance for `isTrue`/`isFalse`. -/
 def matchDIteDecidable (f α c inst a b instToMatch : Expr) (fallback : SimpM Result) : SimpM Result := do
@@ -103,11 +122,30 @@ def matchDIteDecidable (f α c inst a b instToMatch : Expr) (fallback : SimpM Re
     return .step b' <| mkApp6 (mkConst ``Sym.dite_false f.constLevels!) α c inst a b hnp
   | _ => fallback
 
+/-- Like `matchDIteDecidable`, but for the congruence case where `c` was simplified to `c'` with proof `h`. -/
+def matchDIteDecidableCongr (f α c inst a b c' h inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match_expr inst' with
+  | Decidable.isTrue _ hp =>
+    let hp' := mkApp4 (mkConst ``Eq.mpr_prop) c c' h hp
+    let a' ← share <| a.betaRev #[hp']
+    return .step a' <| mkApp8 (mkConst ``Sym.dite_true_congr f.constLevels!) α c inst a b c' h hp
+  | Decidable.isFalse _ hnp =>
+    let hnp' := mkApp4 (mkConst ``Eq.mpr_not) c c' h hnp
+    let b' ← share <| b.betaRev #[hnp']
+    return .step b' <| mkApp8 (mkConst ``Sym.dite_false_congr f.constLevels!) α c inst a b c' h hnp
+  | _ => fallback
+
 /-- Simplify the `Decidable` instance, then try `simpDIteDecidable`. -/
 def simpAndMatchDIteDecidable (f α c inst a b : Expr) (fallback : SimpM Result) : SimpM Result := do
   match (← simp inst) with
   | .rfl _ => matchDIteDecidable f α c inst a b inst fallback
   | .step inst' _ _ => matchDIteDecidable f α c inst a b inst' fallback
+
+/-- Like `simpAndMatchDIteDecidable`, but for the congruence case where `c` was simplified to `c'`. -/
+def simpAndMatchDIteDecidableCongr (f α c inst a b c' h inst' : Expr) (fallback : SimpM Result) : SimpM Result := do
+  match (← simp inst') with
+  | .rfl _ => matchDIteDecidableCongr f α c inst a b c' h inst' fallback
+  | .step inst'' _ _ => matchDIteDecidableCongr f α c inst a b c' h inst'' fallback
 
 /-- Like `simpDIte` but also evaluates `Decidable.decide` when the condition does not
 reduce to `True`/`False` directly. -/
@@ -136,15 +174,18 @@ public def simpDIteCbv : Simproc := fun e => do
         let b ← share <| b.betaRev #[h']
         return .step b <| mkApp (e.replaceFn ``dite_cond_eq_false) h
       else
+        -- If we get stuck after simplifying `p` to `p'`, then we try to evaluate the original instance 
         simpAndMatchDIteDecidable f α c inst a b do
+          -- Otherwise, we make `Decidable c'` instance and try to evaluate it instead
           let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
-          let e' := e.getBoundedAppFn 4
-          let h ← shareCommon h
-          let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
-          let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
-          let e' ← mkAppS₄ e' c' inst' a b
-          let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
-          return .step e' h' (done := true)
+          simpAndMatchDIteDecidableCongr f α c inst a b c' h inst' do
+            let e' := e.getBoundedAppFn 4
+            let h ← shareCommon h
+            let a ← share <| mkLambda `h .default c' (a.betaRev #[mkApp4 (mkConst ``Eq.mpr_prop) c c' h (mkBVar 0)])
+            let b ← share <| mkLambda `h .default (mkNot c') (b.betaRev #[mkApp4 (mkConst ``Eq.mpr_not) c c' h (mkBVar 0)])
+            let e' ← mkAppS₄ e' c' inst' a b
+            let h' := mkApp3 (e.replaceFn ``Sym.dite_cond_congr) c' inst' h
+            return .step e' h' (done := true)
 
 /-- Short-circuit evaluation of `Or`. Simplifies only the left argument;
 if it reduces to `True`, returns `True` immediately without evaluating the right side. -/
