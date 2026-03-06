@@ -81,7 +81,6 @@ public def simpIteCbv : Simproc := fun e => do
         return .step b <| mkApp (e.replaceFn ``ite_cond_eq_false) h
       else
         simpIteDecidableWithFallback f α c inst a b <| do
-          -- let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
           let inst' ← trySynthComputableInstance c'
           let inst' := inst'.getD <| mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
           let e' := e.getBoundedAppFn 4
@@ -134,7 +133,6 @@ public def simpDIteCbv : Simproc := fun e => do
         return .step b <| mkApp (e.replaceFn ``dite_cond_eq_false) h
       else
         simpDIteDecidableWithFallback f α c inst a b <| do
-          -- let inst' := mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
           let inst' ← trySynthComputableInstance c'
           let inst' := inst'.getD <| mkApp4 (mkConst ``decidable_of_decidable_of_eq) c c' inst h
           let e' := e.getBoundedAppFn 4
