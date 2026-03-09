@@ -14,6 +14,7 @@ import Lean.Meta.Tactic.Cbv.Util
 import Lean.Meta.Tactic.Cbv.TheoremsLookup
 import Lean.Meta.Tactic.Cbv.CbvEvalExt
 import Lean.Meta.Sym
+import Lean.Meta.LetToHave
 import Lean.Meta.Tactic.Refl
 import Lean.Meta.Tactic.Replace
 import Lean.Meta.Tactic.Assert
@@ -268,7 +269,12 @@ def cbvPreStep : Simproc := fun e => do
       let betaAppResult ← toBetaApp e
       return .step (betaAppResult.e) (betaAppResult.h)
     else
-      zetaReduce e
+      let e' ← letToHave e
+      if e'.isLet && e'.letNondep! then
+        let betaAppResult ← toBetaApp e'
+        return .step (betaAppResult.e) (betaAppResult.h)
+      else
+        zetaReduce e
   | .forallE .. | .lam .. | .fvar .. | .mvar .. | .bvar .. | .sort .. => return .rfl (done := true)
   | _ => return .rfl
 
