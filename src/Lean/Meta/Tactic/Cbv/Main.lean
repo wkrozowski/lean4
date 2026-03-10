@@ -10,6 +10,7 @@ prelude
 public import Lean.Meta.Sym.Simp.SimpM
 public import Lean.Meta.Tactic.Cbv.Opaque
 public import Lean.Meta.Tactic.Cbv.ControlFlow
+import Lean.Meta.Tactic.Cbv.BuiltinCbvSimprocs.Core
 import Lean.Meta.Tactic.Cbv.Util
 import Lean.Meta.Tactic.Cbv.TheoremsLookup
 import Lean.Meta.Tactic.Cbv.CbvEvalExt
@@ -263,7 +264,7 @@ def cbvPreStep : Simproc := fun e => do
   | .lit .. => foldLit e
   | .proj .. => handleProj e
   | .const .. => isOpaqueConst >> handleConst <| e
-  | .app .. => simpControlCbv <|> simplifyAppFn <| e
+  | .app .. => tryMatcher <|> simplifyAppFn <| e
   | .letE .. =>
     if e.letNondep! then
       let betaAppResult ← toBetaApp e
