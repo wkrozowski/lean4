@@ -4421,7 +4421,7 @@ goto block_182;
 }
 block_182:
 {
-uint8_t x_34; lean_object* x_35; lean_object* x_36; lean_object* x_37; uint8_t x_38; lean_object* x_39; lean_object* x_40; lean_object* x_41; 
+uint8_t x_34; lean_object* x_35; lean_object* x_36; lean_object* x_37; lean_object* x_38; lean_object* x_39; uint8_t x_40; lean_object* x_41; 
 x_34 = 0;
 x_35 = lean_array_uget_borrowed(x_7, x_9);
 if (lean_obj_tag(x_35) == 0)
@@ -4897,11 +4897,11 @@ x_141 = lean_ctor_get(x_138, 0);
 lean_inc(x_141);
 lean_dec(x_138);
 lean_inc(x_130);
-x_36 = x_140;
-x_37 = x_134;
-x_38 = x_135;
-x_39 = x_130;
-x_40 = x_131;
+x_36 = x_130;
+x_37 = x_131;
+x_38 = x_134;
+x_39 = x_140;
+x_40 = x_135;
 x_41 = x_141;
 goto block_53;
 }
@@ -5149,11 +5149,11 @@ return x_177;
 block_53:
 {
 lean_object* x_42; lean_object* x_43; lean_object* x_44; lean_object* x_45; lean_object* x_46; lean_object* x_47; 
-x_42 = lean_ctor_get(x_37, 0);
+x_42 = lean_ctor_get(x_38, 0);
 lean_inc(x_42);
-lean_dec_ref(x_37);
+lean_dec_ref(x_38);
 lean_inc_ref(x_5);
-x_43 = l___private_Lean_Compiler_LCNF_Simp_JpCases_0__Lean_Compiler_LCNF_Simp_mkJmpArgsAtJp(x_5, x_39, x_40, x_38);
+x_43 = l___private_Lean_Compiler_LCNF_Simp_JpCases_0__Lean_Compiler_LCNF_Simp_mkJmpArgsAtJp(x_5, x_36, x_37, x_40);
 x_44 = lean_alloc_ctor(3, 2, 0);
 lean_ctor_set(x_44, 0, x_42);
 lean_ctor_set(x_44, 1, x_43);
@@ -5163,7 +5163,7 @@ x_46 = lean_array_push(x_31, x_45);
 if (x_33 == 0)
 {
 lean_ctor_set(x_32, 1, x_46);
-lean_ctor_set(x_32, 0, x_36);
+lean_ctor_set(x_32, 0, x_39);
 x_47 = x_32;
 goto block_51;
 }
@@ -5171,7 +5171,7 @@ else
 {
 lean_object* x_52; 
 x_52 = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(x_52, 0, x_36);
+lean_ctor_set(x_52, 0, x_39);
 lean_ctor_set(x_52, 1, x_46);
 x_47 = x_52;
 goto block_51;

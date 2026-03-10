@@ -8483,7 +8483,7 @@ goto block_110;
 block_31:
 {
 lean_object* x_21; 
-x_21 = l___private_Lean_Util_Trace_0__Lean_addTraceNode___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Meta_UnificationHint_0__Lean_Meta_tryUnificationHints_tryCandidate_spec__8_spec__9(x_6, x_20, x_19, x_18, x_9, x_10, x_11, x_12);
+x_21 = l___private_Lean_Util_Trace_0__Lean_addTraceNode___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Meta_UnificationHint_0__Lean_Meta_tryUnificationHints_tryCandidate_spec__8_spec__9(x_6, x_20, x_18, x_19, x_9, x_10, x_11, x_12);
 lean_dec(x_12);
 lean_dec(x_10);
 lean_dec_ref(x_9);
@@ -8641,8 +8641,8 @@ lean_dec(x_33);
 lean_dec(x_32);
 lean_dec_ref(x_3);
 lean_dec(x_1);
-x_18 = x_45;
-x_19 = x_38;
+x_18 = x_38;
+x_19 = x_45;
 x_20 = x_49;
 goto block_31;
 }
@@ -8661,8 +8661,8 @@ x_52 = lean_unbox_float(x_33);
 lean_dec(x_33);
 lean_ctor_set_float(x_50, sizeof(void*)*3 + 8, x_52);
 lean_ctor_set_uint8(x_50, sizeof(void*)*3 + 16, x_2);
-x_18 = x_45;
-x_19 = x_38;
+x_18 = x_38;
+x_19 = x_45;
 x_20 = x_50;
 goto block_31;
 }
@@ -8953,7 +8953,7 @@ block_46:
 {
 lean_object* x_37; double x_38; double x_39; lean_object* x_40; lean_object* x_41; lean_object* x_42; lean_object* x_43; uint8_t x_44; lean_object* x_45; 
 x_37 = lean_io_get_num_heartbeats();
-x_38 = lean_float_of_nat(x_34);
+x_38 = lean_float_of_nat(x_35);
 x_39 = lean_float_of_nat(x_37);
 x_40 = lean_box_float(x_38);
 x_41 = lean_box_float(x_39);
@@ -8965,7 +8965,7 @@ lean_ctor_set(x_43, 0, x_36);
 lean_ctor_set(x_43, 1, x_42);
 x_44 = lean_unbox(x_15);
 lean_dec(x_15);
-x_45 = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Meta_UnificationHint_0__Lean_Meta_tryUnificationHints_tryCandidate_spec__8(x_13, x_11, x_17, x_9, x_44, x_35, x_16, x_43, x_4, x_5, x_6, x_7);
+x_45 = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Meta_UnificationHint_0__Lean_Meta_tryUnificationHints_tryCandidate_spec__8(x_13, x_11, x_17, x_9, x_44, x_34, x_16, x_43, x_4, x_5, x_6, x_7);
 lean_dec_ref(x_9);
 return x_45;
 }
@@ -9125,8 +9125,8 @@ goto block_75;
 }
 block_75:
 {
-x_34 = x_69;
-x_35 = x_48;
+x_34 = x_48;
+x_35 = x_69;
 x_36 = x_74;
 goto block_46;
 }
@@ -9170,8 +9170,8 @@ goto block_83;
 }
 block_83:
 {
-x_34 = x_69;
-x_35 = x_48;
+x_34 = x_48;
+x_35 = x_69;
 x_36 = x_82;
 goto block_46;
 }

@@ -1604,8 +1604,8 @@ lean_dec_ref(x_129);
 x_131 = lean_expr_eqv(x_130, x_1);
 if (x_131 == 0)
 {
-lean_dec_ref(x_93);
 lean_dec_ref(x_1);
+lean_dec_ref(x_93);
 x_1 = x_130;
 goto _start;
 }
@@ -1624,8 +1624,8 @@ goto block_127;
 else
 {
 lean_object* x_133; lean_object* x_134; uint8_t x_135; uint8_t x_140; 
-lean_dec_ref(x_1);
 lean_dec_ref(x_93);
+lean_dec_ref(x_1);
 lean_dec(x_7);
 lean_dec_ref(x_6);
 lean_dec(x_5);
@@ -1740,8 +1740,8 @@ lean_dec(x_113);
 lean_dec_ref(x_112);
 lean_dec(x_111);
 lean_dec_ref(x_110);
-lean_dec_ref(x_93);
 lean_dec_ref(x_1);
+lean_dec_ref(x_93);
 x_118 = lean_ctor_get(x_116, 0);
 x_125 = !lean_is_exclusive(x_116);
 if (x_125 == 0)

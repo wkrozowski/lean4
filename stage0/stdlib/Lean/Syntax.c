@@ -4076,8 +4076,8 @@ return x_15;
 }
 else
 {
-lean_dec(x_6);
 lean_dec_ref(x_1);
+lean_dec(x_6);
 goto block_5;
 }
 }

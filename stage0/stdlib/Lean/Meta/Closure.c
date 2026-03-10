@@ -1942,8 +1942,8 @@ x_67 = lean_ptr_addr(x_64);
 x_68 = lean_usize_dec_eq(x_66, x_67);
 if (x_68 == 0)
 {
-x_4 = x_64;
-x_5 = x_65;
+x_4 = x_65;
+x_5 = x_64;
 x_6 = x_68;
 goto block_11;
 }
@@ -1953,8 +1953,8 @@ size_t x_69; size_t x_70; uint8_t x_71;
 x_69 = lean_ptr_addr(x_63);
 x_70 = lean_ptr_addr(x_65);
 x_71 = lean_usize_dec_eq(x_69, x_70);
-x_4 = x_64;
-x_5 = x_65;
+x_4 = x_65;
+x_5 = x_64;
 x_6 = x_71;
 goto block_11;
 }
@@ -2594,7 +2594,7 @@ if (x_6 == 0)
 {
 lean_object* x_7; lean_object* x_8; 
 lean_dec(x_1);
-x_7 = l_Lean_mkLevelMax_x27(x_4, x_5);
+x_7 = l_Lean_mkLevelMax_x27(x_5, x_4);
 x_8 = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(x_8, 0, x_7);
 return x_8;
@@ -2602,10 +2602,10 @@ return x_8;
 else
 {
 lean_object* x_9; lean_object* x_10; 
-x_9 = l_Lean_simpLevelMax_x27(x_4, x_5, x_1);
+x_9 = l_Lean_simpLevelMax_x27(x_5, x_4, x_1);
 lean_dec(x_1);
-lean_dec(x_5);
 lean_dec(x_4);
+lean_dec(x_5);
 x_10 = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(x_10, 0, x_9);
 return x_10;
@@ -11447,14 +11447,14 @@ return x_108;
 block_80:
 {
 lean_object* x_31; lean_object* x_32; lean_object* x_33; lean_object* x_34; lean_object* x_35; uint8_t x_36; uint8_t x_79; 
-x_31 = lean_ctor_get(x_29, 0);
-x_32 = lean_ctor_get(x_29, 1);
-x_33 = lean_ctor_get(x_29, 2);
-x_34 = lean_ctor_get(x_29, 3);
-x_79 = !lean_is_exclusive(x_29);
+x_31 = lean_ctor_get(x_28, 0);
+x_32 = lean_ctor_get(x_28, 1);
+x_33 = lean_ctor_get(x_28, 2);
+x_34 = lean_ctor_get(x_28, 3);
+x_79 = !lean_is_exclusive(x_28);
 if (x_79 == 0)
 {
-x_35 = x_29;
+x_35 = x_28;
 x_36 = x_79;
 goto block_78;
 }
@@ -11464,7 +11464,7 @@ lean_inc(x_34);
 lean_inc(x_33);
 lean_inc(x_32);
 lean_inc(x_31);
-lean_dec(x_29);
+lean_dec(x_28);
 x_35 = lean_box(0);
 x_36 = x_79;
 goto block_78;
@@ -11498,7 +11498,7 @@ block_76:
 {
 lean_object* x_42; lean_object* x_43; 
 x_42 = l_Lean_LocalDecl_type(x_11);
-x_43 = l_Lean_ForEachExpr_visit___at___00__private_Lean_Meta_Closure_0__Lean_Meta_Closure_sortDecls_visit_spec__4(x_27, x_42, x_38, x_41, x_30, x_28);
+x_43 = l_Lean_ForEachExpr_visit___at___00__private_Lean_Meta_Closure_0__Lean_Meta_Closure_sortDecls_visit_spec__4(x_27, x_42, x_38, x_41, x_30, x_29);
 if (lean_obj_tag(x_43) == 0)
 {
 lean_object* x_44; lean_object* x_45; uint8_t x_46; uint8_t x_75; 
@@ -11656,8 +11656,8 @@ uint8_t x_84;
 x_84 = l_Lean_LocalDecl_isLet(x_11, x_25);
 if (x_84 == 0)
 {
-x_28 = x_83;
-x_29 = x_81;
+x_28 = x_81;
+x_29 = x_83;
 x_30 = x_82;
 goto block_80;
 }
@@ -11676,8 +11676,8 @@ return x_86;
 }
 else
 {
-x_28 = x_83;
-x_29 = x_81;
+x_28 = x_81;
+x_29 = x_83;
 x_30 = x_82;
 goto block_80;
 }

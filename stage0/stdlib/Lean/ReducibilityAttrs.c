@@ -5083,7 +5083,7 @@ return x_2;
 LEAN_EXPORT lean_object* l___private_Lean_ReducibilityAttrs_0__Lean_validate___lam__0(lean_object* x_1, uint8_t x_2, lean_object* x_3, uint8_t x_4, lean_object* x_5, lean_object* x_6) {
 _start:
 {
-lean_object* x_26; lean_object* x_27; uint8_t x_28; uint8_t x_29; lean_object* x_30; lean_object* x_31; uint8_t x_76; lean_object* x_77; lean_object* x_78; lean_object* x_87; lean_object* x_88; 
+lean_object* x_26; lean_object* x_27; uint8_t x_28; uint8_t x_29; lean_object* x_30; lean_object* x_31; lean_object* x_76; lean_object* x_77; uint8_t x_78; lean_object* x_87; lean_object* x_88; 
 x_26 = lean_ctor_get(x_5, 2);
 x_27 = l_Lean_allowUnsafeReducibility;
 x_28 = l_Lean_Option_get___at___00__private_Lean_ReducibilityAttrs_0__Lean_validate_spec__0(x_26, x_27);
@@ -5423,8 +5423,8 @@ lean_ctor_set(x_83, 1, x_82);
 x_84 = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(x_84, 0, x_83);
 lean_ctor_set(x_84, 1, x_3);
-x_85 = l_Lean_throwError___at___00__private_Lean_ReducibilityAttrs_0__Lean_validate_spec__1___redArg(x_84, x_78, x_77);
-lean_dec_ref(x_78);
+x_85 = l_Lean_throwError___at___00__private_Lean_ReducibilityAttrs_0__Lean_validate_spec__1___redArg(x_84, x_77, x_76);
+lean_dec_ref(x_77);
 return x_85;
 }
 block_145:
@@ -5449,9 +5449,9 @@ lean_dec_ref(x_93);
 if (lean_obj_tag(x_94) == 1)
 {
 lean_dec_ref(x_94);
-x_76 = x_91;
-x_77 = x_88;
-x_78 = x_87;
+x_76 = x_88;
+x_77 = x_87;
+x_78 = x_91;
 goto block_86;
 }
 else
@@ -5466,9 +5466,9 @@ goto block_75;
 }
 else
 {
-x_76 = x_91;
-x_77 = x_88;
-x_78 = x_87;
+x_76 = x_88;
+x_77 = x_87;
+x_78 = x_91;
 goto block_86;
 }
 }

@@ -2930,7 +2930,7 @@ goto block_67;
 block_38:
 {
 lean_object* x_30; lean_object* x_31; lean_object* x_32; lean_object* x_33; 
-x_30 = l_Lean_mkApp8(x_26, x_18, x_19, x_20, x_2, x_3, x_28, x_27, x_29);
+x_30 = l_Lean_mkApp8(x_26, x_18, x_19, x_20, x_2, x_3, x_27, x_28, x_29);
 x_31 = l_Lean_eagerReflBoolTrue;
 x_32 = l_Lean_mkApp3(x_30, x_31, x_10, x_14);
 if (x_16 == 0)
@@ -2980,8 +2980,8 @@ x_49 = lean_nat_to_int(x_42);
 x_50 = l_Lean_instToExprRat_mkInt(x_49);
 lean_dec(x_49);
 x_51 = l_Lean_mkApp6(x_45, x_46, x_46, x_46, x_47, x_48, x_50);
-x_27 = x_40;
-x_28 = x_39;
+x_27 = x_39;
+x_28 = x_40;
 x_29 = x_51;
 goto block_38;
 }
@@ -2991,8 +2991,8 @@ lean_object* x_52;
 lean_dec(x_42);
 x_52 = l_Lean_instToExprRat_mkInt(x_41);
 lean_dec(x_41);
-x_27 = x_40;
-x_28 = x_39;
+x_27 = x_39;
+x_28 = x_40;
 x_29 = x_52;
 goto block_38;
 }

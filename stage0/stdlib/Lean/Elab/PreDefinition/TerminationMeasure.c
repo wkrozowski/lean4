@@ -1521,7 +1521,7 @@ block_40:
 {
 uint8_t x_38; lean_object* x_39; 
 x_38 = 0;
-x_39 = l_Lean_Meta_forallBoundedTelescope___at___00Lean_Elab_TerminationMeasure_elab_spec__0___redArg(x_34, x_37, x_27, x_38, x_38, x_28, x_29, x_33, x_32, x_31, x_30);
+x_39 = l_Lean_Meta_forallBoundedTelescope___at___00Lean_Elab_TerminationMeasure_elab_spec__0___redArg(x_34, x_37, x_27, x_38, x_38, x_29, x_30, x_33, x_28, x_31, x_32);
 return x_39;
 }
 }
@@ -1532,11 +1532,11 @@ if (lean_obj_tag(x_8) == 0)
 lean_object* x_49; lean_object* x_50; 
 x_49 = lean_obj_once(&l_Lean_Elab_TerminationMeasure_elab___lam__1___closed__3, &l_Lean_Elab_TerminationMeasure_elab___lam__1___closed__3_once, _init_l_Lean_Elab_TerminationMeasure_elab___lam__1___closed__3);
 x_50 = l_panic___at___00Lean_Elab_TerminationMeasure_elab_spec__1(x_49);
-x_28 = x_43;
-x_29 = x_44;
-x_30 = x_48;
+x_28 = x_46;
+x_29 = x_43;
+x_30 = x_44;
 x_31 = x_47;
-x_32 = x_46;
+x_32 = x_48;
 x_33 = x_45;
 x_34 = x_50;
 goto block_42;
@@ -1547,11 +1547,11 @@ lean_object* x_51;
 x_51 = lean_ctor_get(x_8, 0);
 lean_inc(x_51);
 lean_dec_ref(x_8);
-x_28 = x_43;
-x_29 = x_44;
-x_30 = x_48;
+x_28 = x_46;
+x_29 = x_43;
+x_30 = x_44;
 x_31 = x_47;
-x_32 = x_46;
+x_32 = x_48;
 x_33 = x_45;
 x_34 = x_51;
 goto block_42;

@@ -12352,8 +12352,8 @@ x_10 = l_Lean_Environment_contains(x_8, x_5, x_9);
 if (x_10 == 0)
 {
 lean_object* x_11; lean_object* x_12; 
-lean_dec_ref(x_1);
 lean_dec(x_5);
+lean_dec_ref(x_1);
 lean_dec(x_3);
 lean_dec_ref(x_2);
 x_11 = lean_box(x_10);
@@ -12374,8 +12374,8 @@ x_25 = lean_string_dec_eq(x_6, x_24);
 if (x_25 == 0)
 {
 lean_object* x_26; lean_object* x_27; 
-lean_dec_ref(x_1);
 lean_dec(x_5);
+lean_dec_ref(x_1);
 lean_dec(x_3);
 lean_dec_ref(x_2);
 x_26 = lean_box(x_25);
@@ -12584,8 +12584,8 @@ lean_dec_ref(x_48);
 lean_dec(x_45);
 lean_dec(x_37);
 lean_dec_ref(x_34);
-lean_dec(x_5);
 lean_dec_ref(x_1);
+lean_dec(x_5);
 lean_dec(x_3);
 lean_dec_ref(x_2);
 x_73 = lean_ctor_get(x_51, 0);
@@ -12602,8 +12602,8 @@ lean_dec_ref(x_48);
 lean_dec(x_45);
 lean_dec(x_37);
 lean_dec_ref(x_34);
-lean_dec(x_5);
 lean_dec_ref(x_1);
+lean_dec(x_5);
 lean_dec(x_3);
 lean_dec_ref(x_2);
 x_74 = lean_ctor_get(x_49, 0);

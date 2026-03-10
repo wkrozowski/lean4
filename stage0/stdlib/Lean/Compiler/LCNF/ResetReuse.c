@@ -6077,8 +6077,8 @@ return x_259;
 else
 {
 lean_object* x_268; lean_object* x_269; uint8_t x_270; uint8_t x_275; 
-lean_dec_ref(x_3);
 lean_dec_ref(x_213);
+lean_dec_ref(x_3);
 lean_dec(x_8);
 lean_dec_ref(x_7);
 lean_dec(x_6);

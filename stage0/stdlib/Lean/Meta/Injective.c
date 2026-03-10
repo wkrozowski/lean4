@@ -19813,8 +19813,8 @@ else
 {
 lean_dec(x_46);
 lean_dec_ref(x_32);
-lean_dec_ref(x_2);
 lean_dec(x_14);
+lean_dec_ref(x_2);
 lean_dec(x_4);
 lean_dec_ref(x_3);
 x_38 = x_20;
@@ -19901,8 +19901,8 @@ return x_41;
 else
 {
 lean_dec(x_22);
-lean_dec_ref(x_2);
 lean_dec(x_14);
+lean_dec_ref(x_2);
 lean_dec(x_4);
 lean_dec_ref(x_3);
 lean_dec(x_1);
@@ -19912,8 +19912,8 @@ goto block_9;
 else
 {
 lean_dec(x_21);
-lean_dec(x_14);
 lean_dec_ref(x_2);
+lean_dec(x_14);
 lean_dec(x_4);
 lean_dec_ref(x_3);
 lean_dec(x_1);

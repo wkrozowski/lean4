@@ -5865,12 +5865,12 @@ goto block_113;
 block_16:
 {
 lean_object* x_8; lean_object* x_9; uint8_t x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; 
-lean_inc_ref(x_5);
+lean_inc_ref(x_6);
 x_8 = lean_alloc_ctor(0, 4, 0);
 lean_ctor_set(x_8, 0, x_7);
-lean_ctor_set(x_8, 1, x_6);
-lean_ctor_set(x_8, 2, x_5);
-lean_ctor_set(x_8, 3, x_5);
+lean_ctor_set(x_8, 1, x_5);
+lean_ctor_set(x_8, 2, x_6);
+lean_ctor_set(x_8, 3, x_6);
 x_9 = lean_box(0);
 x_10 = 0;
 x_11 = lean_alloc_ctor(0, 2, 1);
@@ -6018,8 +6018,8 @@ if (lean_obj_tag(x_40) == 0)
 lean_object* x_41; 
 lean_dec_ref(x_2);
 x_41 = lean_box(0);
-x_5 = x_39;
-x_6 = x_38;
+x_5 = x_38;
+x_6 = x_39;
 x_7 = x_41;
 goto block_16;
 }
@@ -6068,8 +6068,8 @@ goto block_49;
 }
 block_49:
 {
-x_5 = x_39;
-x_6 = x_38;
+x_5 = x_38;
+x_6 = x_39;
 x_7 = x_48;
 goto block_16;
 }

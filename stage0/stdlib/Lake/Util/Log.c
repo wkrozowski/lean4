@@ -9711,7 +9711,7 @@ return x_1;
 LEAN_EXPORT lean_object* l_Lake_LogIO_toBaseIO___redArg(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-lean_object* x_4; uint8_t x_5; uint8_t x_8; lean_object* x_9; lean_object* x_10; lean_object* x_12; lean_object* x_13; uint8_t x_14; lean_object* x_15; uint8_t x_16; lean_object* x_38; lean_object* x_39; uint8_t x_40; lean_object* x_43; lean_object* x_44; 
+uint8_t x_4; lean_object* x_5; uint8_t x_8; lean_object* x_9; lean_object* x_10; lean_object* x_12; lean_object* x_13; uint8_t x_14; lean_object* x_15; uint8_t x_16; lean_object* x_38; lean_object* x_39; uint8_t x_40; lean_object* x_43; lean_object* x_44; 
 x_12 = lean_obj_once(&l_Lake_LogIO_toBaseIO___redArg___closed__0, &l_Lake_LogIO_toBaseIO___redArg___closed__0_once, _init_l_Lake_LogIO_toBaseIO___redArg___closed__0);
 x_43 = ((lean_object*)(l_Lake_Log_empty___closed__0));
 x_44 = lean_apply_2(x_1, x_43, lean_box(0));
@@ -9764,22 +9764,22 @@ goto block_42;
 }
 block_7:
 {
-if (x_5 == 0)
+if (x_4 == 0)
 {
-return x_4;
+return x_5;
 }
 else
 {
 lean_object* x_6; 
-lean_dec(x_4);
+lean_dec(x_5);
 x_6 = lean_box(0);
 return x_6;
 }
 }
 block_11:
 {
-x_4 = x_9;
-x_5 = x_8;
+x_4 = x_8;
+x_5 = x_9;
 goto block_7;
 }
 block_37:
@@ -9797,8 +9797,8 @@ if (x_23 == 0)
 {
 lean_dec_ref(x_19);
 lean_dec_ref(x_13);
-x_4 = x_15;
-x_5 = x_14;
+x_4 = x_14;
+x_5 = x_15;
 goto block_7;
 }
 else
@@ -9818,8 +9818,8 @@ if (x_23 == 0)
 {
 lean_dec_ref(x_26);
 lean_dec_ref(x_13);
-x_4 = x_15;
-x_5 = x_14;
+x_4 = x_14;
+x_5 = x_15;
 goto block_7;
 }
 else
@@ -9873,7 +9873,7 @@ return x_4;
 LEAN_EXPORT lean_object* l_Lake_LogIO_toBaseIO(lean_object* x_1, lean_object* x_2, lean_object* x_3) {
 _start:
 {
-lean_object* x_5; uint8_t x_6; uint8_t x_9; lean_object* x_10; lean_object* x_11; lean_object* x_13; lean_object* x_14; uint8_t x_15; lean_object* x_16; uint8_t x_17; lean_object* x_39; lean_object* x_40; uint8_t x_41; lean_object* x_44; lean_object* x_45; 
+uint8_t x_5; lean_object* x_6; uint8_t x_9; lean_object* x_10; lean_object* x_11; lean_object* x_13; lean_object* x_14; uint8_t x_15; lean_object* x_16; uint8_t x_17; lean_object* x_39; lean_object* x_40; uint8_t x_41; lean_object* x_44; lean_object* x_45; 
 x_13 = lean_obj_once(&l_Lake_LogIO_toBaseIO___redArg___closed__0, &l_Lake_LogIO_toBaseIO___redArg___closed__0_once, _init_l_Lake_LogIO_toBaseIO___redArg___closed__0);
 x_44 = ((lean_object*)(l_Lake_Log_empty___closed__0));
 x_45 = lean_apply_2(x_2, x_44, lean_box(0));
@@ -9926,22 +9926,22 @@ goto block_43;
 }
 block_8:
 {
-if (x_6 == 0)
+if (x_5 == 0)
 {
-return x_5;
+return x_6;
 }
 else
 {
 lean_object* x_7; 
-lean_dec(x_5);
+lean_dec(x_6);
 x_7 = lean_box(0);
 return x_7;
 }
 }
 block_12:
 {
-x_5 = x_10;
-x_6 = x_9;
+x_5 = x_9;
+x_6 = x_10;
 goto block_8;
 }
 block_38:
@@ -9959,8 +9959,8 @@ if (x_24 == 0)
 {
 lean_dec_ref(x_20);
 lean_dec_ref(x_14);
-x_5 = x_16;
-x_6 = x_15;
+x_5 = x_15;
+x_6 = x_16;
 goto block_8;
 }
 else
@@ -9980,8 +9980,8 @@ if (x_24 == 0)
 {
 lean_dec_ref(x_27);
 lean_dec_ref(x_14);
-x_5 = x_16;
-x_6 = x_15;
+x_5 = x_15;
+x_6 = x_16;
 goto block_8;
 }
 else

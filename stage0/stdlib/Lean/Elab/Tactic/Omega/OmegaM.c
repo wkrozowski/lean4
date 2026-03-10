@@ -948,8 +948,8 @@ return x_8;
 block_15:
 {
 lean_object* x_14; 
-lean_dec(x_11);
-x_14 = l___private_Init_Data_Array_QSort_Basic_0__Array_qsort_sort___at___00Lean_Elab_Tactic_Omega_atoms_spec__1___redArg(x_12, x_10, x_13);
+lean_dec(x_10);
+x_14 = l___private_Init_Data_Array_QSort_Basic_0__Array_qsort_sort___at___00Lean_Elab_Tactic_Omega_atoms_spec__1___redArg(x_11, x_12, x_13);
 lean_dec(x_13);
 x_4 = x_14;
 goto block_9;
@@ -962,17 +962,17 @@ if (x_20 == 0)
 {
 lean_dec(x_16);
 lean_inc(x_19);
-x_10 = x_19;
-x_11 = x_17;
-x_12 = x_18;
+x_10 = x_17;
+x_11 = x_18;
+x_12 = x_19;
 x_13 = x_19;
 goto block_15;
 }
 else
 {
-x_10 = x_19;
-x_11 = x_17;
-x_12 = x_18;
+x_10 = x_17;
+x_11 = x_18;
+x_12 = x_19;
 x_13 = x_16;
 goto block_15;
 }
@@ -1620,8 +1620,8 @@ return x_22;
 else
 {
 lean_object* x_23; 
-lean_dec_ref(x_3);
 lean_dec(x_4);
+lean_dec_ref(x_3);
 lean_dec_ref(x_2);
 x_23 = l_Lean_Expr_nat_x3f(x_1);
 return x_23;
@@ -2134,8 +2134,8 @@ return x_97;
 else
 {
 lean_object* x_98; 
-lean_dec_ref(x_3);
 lean_dec(x_4);
+lean_dec_ref(x_3);
 lean_dec_ref(x_2);
 x_98 = l_Lean_Expr_nat_x3f(x_1);
 return x_98;
@@ -4520,8 +4520,8 @@ goto block_22;
 }
 else
 {
-lean_dec_ref(x_102);
 lean_dec(x_103);
+lean_dec_ref(x_102);
 lean_dec_ref(x_101);
 lean_dec(x_89);
 goto block_22;
@@ -5249,8 +5249,8 @@ return x_481;
 else
 {
 lean_object* x_482; 
-lean_dec_ref(x_416);
 lean_dec(x_417);
+lean_dec_ref(x_416);
 lean_dec_ref(x_415);
 lean_del_object(x_31);
 x_482 = lean_alloc_ctor(0, 1, 0);

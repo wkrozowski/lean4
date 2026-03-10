@@ -849,7 +849,7 @@ goto block_58;
 block_10:
 {
 lean_object* x_8; lean_object* x_9; 
-x_8 = lean_array_uset(x_5, x_6, x_4);
+x_8 = lean_array_uset(x_4, x_6, x_5);
 x_9 = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(x_9, 0, x_7);
 lean_ctor_set(x_9, 1, x_8);
@@ -978,16 +978,16 @@ lean_object* x_53; lean_object* x_54;
 x_53 = lean_unsigned_to_nat(1u);
 x_54 = lean_nat_sub(x_11, x_53);
 lean_dec(x_11);
-x_4 = x_51;
-x_5 = x_50;
+x_4 = x_50;
+x_5 = x_51;
 x_6 = x_27;
 x_7 = x_54;
 goto block_10;
 }
 else
 {
-x_4 = x_51;
-x_5 = x_50;
+x_4 = x_50;
+x_5 = x_51;
 x_6 = x_27;
 x_7 = x_11;
 goto block_10;

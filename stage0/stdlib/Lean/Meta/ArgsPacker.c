@@ -5729,7 +5729,7 @@ lean_inc_ref(x_2);
 x_9 = l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Lean_Meta_ArgsPacker_Mutual_uncurryType_spec__0(x_7, x_8, x_1, x_2, x_3, x_4, x_5);
 if (lean_obj_tag(x_9) == 0)
 {
-lean_object* x_10; lean_object* x_11; lean_object* x_12; size_t x_13; lean_object* x_14; size_t x_21; lean_object* x_22; lean_object* x_23; lean_object* x_49; lean_object* x_59; uint8_t x_60; 
+lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; size_t x_14; size_t x_21; lean_object* x_22; lean_object* x_23; lean_object* x_49; lean_object* x_59; uint8_t x_60; 
 x_10 = lean_ctor_get(x_9, 0);
 lean_inc(x_10);
 lean_dec_ref(x_9);
@@ -5773,7 +5773,7 @@ goto block_58;
 block_20:
 {
 lean_object* x_15; lean_object* x_16; 
-x_15 = l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Lean_Meta_ArgsPacker_Mutual_uncurryType_spec__1(x_13, x_8, x_10);
+x_15 = l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Lean_Meta_ArgsPacker_Mutual_uncurryType_spec__1(x_14, x_8, x_10);
 lean_inc(x_5);
 lean_inc_ref(x_4);
 x_16 = l_Lean_Meta_ArgsPacker_Mutual_packType(x_15, x_2, x_3, x_4, x_5);
@@ -5783,14 +5783,14 @@ lean_object* x_17; lean_object* x_18; lean_object* x_19;
 x_17 = lean_ctor_get(x_16, 0);
 lean_inc(x_17);
 lean_dec_ref(x_16);
-x_18 = lean_array_get(x_11, x_14, x_12);
-lean_dec_ref(x_14);
+x_18 = lean_array_get(x_11, x_13, x_12);
+lean_dec_ref(x_13);
 x_19 = l_Lean_mkArrow(x_17, x_18, x_4, x_5);
 return x_19;
 }
 else
 {
-lean_dec_ref(x_14);
+lean_dec_ref(x_13);
 lean_dec(x_5);
 lean_dec_ref(x_4);
 return x_16;
@@ -5801,8 +5801,8 @@ block_32:
 if (lean_obj_tag(x_23) == 0)
 {
 lean_dec_ref(x_23);
-x_13 = x_21;
-x_14 = x_22;
+x_13 = x_22;
+x_14 = x_21;
 goto block_20;
 }
 else
@@ -5872,8 +5872,8 @@ if (x_41 == 0)
 {
 lean_dec_ref(x_39);
 lean_dec(x_38);
-x_13 = x_33;
-x_14 = x_34;
+x_13 = x_34;
+x_14 = x_33;
 goto block_20;
 }
 else
@@ -5887,8 +5887,8 @@ if (x_41 == 0)
 {
 lean_dec_ref(x_39);
 lean_dec(x_38);
-x_13 = x_33;
-x_14 = x_34;
+x_13 = x_34;
+x_14 = x_33;
 goto block_20;
 }
 else

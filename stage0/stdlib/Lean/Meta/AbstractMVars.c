@@ -2369,8 +2369,8 @@ else
 lean_object* x_63; lean_object* x_64; 
 lean_dec_ref(x_10);
 lean_dec(x_9);
-lean_dec(x_5);
 lean_dec_ref(x_1);
+lean_dec(x_5);
 x_63 = lean_ctor_get(x_15, 0);
 lean_inc(x_63);
 lean_dec_ref(x_15);

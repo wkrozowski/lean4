@@ -5238,8 +5238,8 @@ goto _start;
 else
 {
 lean_object* x_21; lean_object* x_22; 
-lean_dec(x_7);
 lean_dec_ref(x_1);
+lean_dec(x_7);
 lean_dec(x_2);
 x_21 = lean_box(0);
 x_22 = lean_alloc_ctor(0, 1, 0);

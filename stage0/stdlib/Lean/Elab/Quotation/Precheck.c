@@ -5005,8 +5005,8 @@ if (lean_obj_tag(x_64) == 1)
 {
 lean_object* x_67; lean_object* x_68; 
 lean_dec_ref(x_64);
-lean_dec(x_10);
 lean_dec_ref(x_1);
+lean_dec(x_10);
 lean_dec(x_8);
 lean_dec_ref(x_7);
 lean_dec(x_6);

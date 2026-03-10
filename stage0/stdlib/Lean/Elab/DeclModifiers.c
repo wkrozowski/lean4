@@ -8003,10 +8003,10 @@ x_16 = x_94;
 x_17 = x_3;
 x_18 = x_1;
 x_19 = x_91;
-x_20 = x_93;
-x_21 = x_90;
-x_22 = x_88;
-x_23 = x_92;
+x_20 = x_90;
+x_21 = x_92;
+x_22 = x_93;
+x_23 = x_88;
 x_24 = x_89;
 goto block_78;
 }
@@ -8029,10 +8029,10 @@ x_16 = x_94;
 x_17 = x_98;
 x_18 = x_99;
 x_19 = x_91;
-x_20 = x_93;
-x_21 = x_90;
-x_22 = x_88;
-x_23 = x_92;
+x_20 = x_90;
+x_21 = x_92;
+x_22 = x_93;
+x_23 = x_88;
 x_24 = x_89;
 goto block_78;
 }
@@ -8049,12 +8049,12 @@ x_103 = lean_obj_once(&l_Lean_Elab_checkNotAlreadyDeclared___redArg___lam__9___c
 x_104 = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(x_104, 0, x_102);
 lean_ctor_set(x_104, 1, x_103);
-x_105 = l_Lean_throwError___at___00Lean_Elab_throwAlreadyDeclaredUniverseLevel___at___00Lean_Elab_expandDeclId_spec__1_spec__1___redArg(x_104, x_91, x_93, x_90, x_88, x_92, x_89);
+x_105 = l_Lean_throwError___at___00Lean_Elab_throwAlreadyDeclaredUniverseLevel___at___00Lean_Elab_expandDeclId_spec__1_spec__1___redArg(x_104, x_91, x_90, x_92, x_93, x_88, x_89);
 lean_dec(x_89);
-lean_dec_ref(x_92);
-lean_dec(x_88);
-lean_dec_ref(x_90);
+lean_dec_ref(x_88);
 lean_dec(x_93);
+lean_dec_ref(x_92);
+lean_dec(x_90);
 x_106 = lean_ctor_get(x_105, 0);
 x_113 = !lean_is_exclusive(x_105);
 if (x_113 == 0)
@@ -8107,12 +8107,12 @@ lean_dec(x_81);
 lean_inc(x_3);
 lean_inc(x_1);
 x_121 = l_Lean_Name_append(x_1, x_3);
-x_88 = x_118;
+x_88 = x_119;
 x_89 = x_120;
-x_90 = x_117;
+x_90 = x_116;
 x_91 = x_115;
-x_92 = x_119;
-x_93 = x_116;
+x_92 = x_117;
+x_93 = x_118;
 x_94 = x_121;
 goto block_114;
 }
@@ -8143,12 +8143,12 @@ block_126:
 {
 lean_object* x_125; 
 x_125 = l_Lean_MacroScopesView_review(x_124);
-x_88 = x_118;
+x_88 = x_119;
 x_89 = x_120;
-x_90 = x_117;
+x_90 = x_116;
 x_91 = x_115;
-x_92 = x_119;
-x_93 = x_116;
+x_92 = x_117;
+x_93 = x_118;
 x_94 = x_125;
 goto block_114;
 }

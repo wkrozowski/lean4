@@ -4530,7 +4530,7 @@ block_110:
 {
 lean_object* x_98; double x_99; double x_100; double x_101; double x_102; double x_103; lean_object* x_104; lean_object* x_105; lean_object* x_106; lean_object* x_107; uint8_t x_108; lean_object* x_109; 
 x_98 = lean_io_mono_nanos_now();
-x_99 = lean_float_of_nat(x_96);
+x_99 = lean_float_of_nat(x_95);
 x_100 = lean_float_once(&l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___closed__4, &l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___closed__4_once, _init_l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___closed__4);
 x_101 = lean_float_div(x_99, x_100);
 x_102 = lean_float_of_nat(x_98);
@@ -4545,7 +4545,7 @@ lean_ctor_set(x_107, 0, x_97);
 lean_ctor_set(x_107, 1, x_106);
 x_108 = lean_unbox(x_89);
 lean_dec(x_89);
-x_109 = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem_spec__5(x_87, x_14, x_94, x_13, x_108, x_95, x_93, x_107, x_2, x_3, x_4, x_5);
+x_109 = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem_spec__5(x_87, x_14, x_94, x_13, x_108, x_96, x_93, x_107, x_2, x_3, x_4, x_5);
 lean_dec_ref(x_13);
 return x_109;
 }
@@ -4912,8 +4912,8 @@ goto block_200;
 }
 block_200:
 {
-x_118 = x_159;
-x_119 = x_162;
+x_118 = x_162;
+x_119 = x_159;
 x_120 = x_199;
 goto block_122;
 }
@@ -4926,8 +4926,8 @@ lean_dec(x_166);
 x_202 = lean_ctor_get(x_198, 0);
 lean_inc(x_202);
 lean_dec_ref(x_198);
-x_111 = x_159;
-x_112 = x_162;
+x_111 = x_162;
+x_112 = x_159;
 x_113 = x_202;
 goto block_117;
 }
@@ -4952,8 +4952,8 @@ lean_inc(x_3);
 lean_inc_ref(x_2);
 x_221 = l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___lam__2(x_92, x_175, x_2, x_3, x_4, x_5);
 lean_dec_ref(x_175);
-x_123 = x_159;
-x_124 = x_162;
+x_123 = x_162;
+x_124 = x_159;
 x_125 = x_221;
 goto block_128;
 }
@@ -4970,8 +4970,8 @@ lean_inc(x_3);
 lean_inc_ref(x_2);
 x_222 = l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___lam__2(x_92, x_175, x_2, x_3, x_4, x_5);
 lean_dec(x_175);
-x_123 = x_159;
-x_124 = x_162;
+x_123 = x_162;
+x_124 = x_159;
 x_125 = x_222;
 goto block_128;
 }
@@ -4984,8 +4984,8 @@ lean_dec(x_166);
 lean_dec(x_1);
 x_223 = lean_box(0);
 x_224 = l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___lam__1(x_223, x_2, x_3, x_4, x_5);
-x_123 = x_159;
-x_124 = x_162;
+x_123 = x_162;
+x_124 = x_159;
 x_125 = x_224;
 goto block_128;
 }
@@ -4994,8 +4994,8 @@ else
 {
 lean_dec(x_166);
 lean_dec(x_1);
-x_123 = x_159;
-x_124 = x_162;
+x_123 = x_162;
+x_124 = x_159;
 x_125 = x_167;
 goto block_128;
 }

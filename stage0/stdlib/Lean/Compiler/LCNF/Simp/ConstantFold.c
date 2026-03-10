@@ -38285,8 +38285,8 @@ goto block_24;
 }
 else
 {
-lean_dec_ref(x_25);
 lean_dec(x_28);
+lean_dec_ref(x_25);
 lean_del_object(x_26);
 lean_del_object(x_13);
 goto block_24;

@@ -4271,12 +4271,12 @@ block_20:
 {
 lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; lean_object* x_17; lean_object* x_18; lean_object* x_19; 
 x_12 = ((lean_object*)(l_Lean_Elab_Tactic_BVDecide_External_satQuery___closed__0));
-x_13 = lean_string_append(x_12, x_10);
-lean_dec_ref(x_10);
+x_13 = lean_string_append(x_12, x_11);
+lean_dec_ref(x_11);
 x_14 = ((lean_object*)(l_Lean_Elab_Tactic_BVDecide_External_satQuery___closed__1));
 x_15 = lean_string_append(x_13, x_14);
-x_16 = lean_string_append(x_15, x_11);
-lean_dec_ref(x_11);
+x_16 = lean_string_append(x_15, x_10);
+lean_dec_ref(x_10);
 x_17 = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(x_17, 0, x_16);
 x_18 = l_Lean_MessageData_ofFormat(x_17);
@@ -4291,31 +4291,31 @@ if (x_24 == 0)
 {
 lean_object* x_25; lean_object* x_26; lean_object* x_27; uint8_t x_28; 
 x_25 = ((lean_object*)(l_Lean_Elab_Tactic_BVDecide_External_ModelParser_parseHeader___closed__0));
-x_26 = lean_string_utf8_byte_size(x_22);
+x_26 = lean_string_utf8_byte_size(x_23);
 x_27 = lean_obj_once(&l_Lean_Elab_Tactic_BVDecide_External_satQuery___closed__2, &l_Lean_Elab_Tactic_BVDecide_External_satQuery___closed__2_once, _init_l_Lean_Elab_Tactic_BVDecide_External_satQuery___closed__2);
 x_28 = lean_nat_dec_le(x_27, x_26);
 if (x_28 == 0)
 {
-x_10 = x_22;
+x_10 = x_21;
 x_11 = x_23;
 goto block_20;
 }
 else
 {
 uint8_t x_29; 
-x_29 = lean_string_memcmp(x_22, x_25, x_21, x_21, x_27);
+x_29 = lean_string_memcmp(x_23, x_25, x_22, x_22, x_27);
 if (x_29 == 0)
 {
-x_10 = x_22;
+x_10 = x_21;
 x_11 = x_23;
 goto block_20;
 }
 else
 {
 lean_object* x_30; lean_object* x_31; lean_object* x_32; 
-lean_dec_ref(x_23);
+lean_dec_ref(x_21);
 x_30 = lean_alloc_closure((void*)(l_Lean_Elab_Tactic_BVDecide_External_ModelParser_parse), 1, 0);
-x_31 = lean_string_to_utf8(x_22);
+x_31 = lean_string_to_utf8(x_23);
 x_32 = l_Std_Internal_Parsec_ByteArray_Parser_run___redArg(x_30, x_31);
 if (lean_obj_tag(x_32) == 0)
 {
@@ -4344,8 +4344,8 @@ x_37 = lean_string_append(x_36, x_33);
 lean_dec(x_33);
 x_38 = ((lean_object*)(l_Lean_Elab_Tactic_BVDecide_External_satQuery___closed__4));
 x_39 = lean_string_append(x_37, x_38);
-x_40 = lean_string_append(x_39, x_22);
-lean_dec_ref(x_22);
+x_40 = lean_string_append(x_39, x_23);
+lean_dec_ref(x_23);
 if (x_35 == 0)
 {
 lean_ctor_set_tag(x_34, 3);
@@ -4375,7 +4375,7 @@ return x_43;
 else
 {
 lean_object* x_48; lean_object* x_49; uint8_t x_50; uint8_t x_56; 
-lean_dec_ref(x_22);
+lean_dec_ref(x_23);
 lean_dec(x_8);
 lean_dec_ref(x_7);
 x_48 = lean_ctor_get(x_32, 0);
@@ -4427,7 +4427,7 @@ else
 {
 lean_object* x_57; lean_object* x_58; 
 lean_dec_ref(x_23);
-lean_dec_ref(x_22);
+lean_dec_ref(x_21);
 lean_dec(x_8);
 lean_dec_ref(x_7);
 x_57 = lean_box(1);
@@ -4517,9 +4517,9 @@ x_95 = lean_obj_once(&l_Lean_Elab_Tactic_BVDecide_External_satQuery___closed__12
 x_96 = lean_nat_dec_le(x_95, x_94);
 if (x_96 == 0)
 {
-x_21 = x_78;
-x_22 = x_89;
-x_23 = x_90;
+x_21 = x_90;
+x_22 = x_78;
+x_23 = x_89;
 x_24 = x_92;
 goto block_59;
 }
@@ -4527,9 +4527,9 @@ else
 {
 uint8_t x_97; 
 x_97 = lean_string_memcmp(x_89, x_93, x_78, x_78, x_95);
-x_21 = x_78;
-x_22 = x_89;
-x_23 = x_90;
+x_21 = x_90;
+x_22 = x_78;
+x_23 = x_89;
 x_24 = x_97;
 goto block_59;
 }

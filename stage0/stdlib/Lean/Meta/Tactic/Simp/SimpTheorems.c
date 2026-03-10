@@ -21454,14 +21454,14 @@ block_17:
 lean_object* x_11; lean_object* x_12; lean_object* x_13; lean_object* x_14; lean_object* x_15; lean_object* x_16; 
 x_11 = l_Lean_MessageData_ofName(x_10);
 x_12 = lean_alloc_ctor(7, 2, 0);
-lean_ctor_set(x_12, 0, x_8);
+lean_ctor_set(x_12, 0, x_9);
 lean_ctor_set(x_12, 1, x_11);
 x_13 = lean_obj_once(&l_Lean_Meta_SimpTheorems_erase___redArg___closed__1, &l_Lean_Meta_SimpTheorems_erase___redArg___closed__1_once, _init_l_Lean_Meta_SimpTheorems_erase___redArg___closed__1);
 x_14 = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(x_14, 0, x_12);
 lean_ctor_set(x_14, 1, x_13);
 x_15 = l_Lean_logWarning___redArg(x_1, x_2, x_3, x_4, x_14);
-x_16 = lean_apply_4(x_9, lean_box(0), lean_box(0), x_15, x_7);
+x_16 = lean_apply_4(x_8, lean_box(0), lean_box(0), x_15, x_7);
 return x_16;
 }
 block_21:
@@ -21473,8 +21473,8 @@ x_20 = lean_ctor_get(x_6, 0);
 lean_inc(x_20);
 lean_dec_ref(x_6);
 lean_inc(x_18);
-x_8 = x_19;
-x_9 = x_18;
+x_8 = x_18;
+x_9 = x_19;
 x_10 = x_20;
 goto block_17;
 }
