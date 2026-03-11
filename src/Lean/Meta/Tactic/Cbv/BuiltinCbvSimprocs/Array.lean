@@ -19,7 +19,7 @@ namespace Lean.Meta.Tactic.Cbv
 private partial def getListLitElems (e : Expr) (acc : Array Expr := #[]) : Option <| Array Expr :=
   match_expr e with
   | List.nil _ => some acc
-  | List.cons _ a as => getListLitElems as (acc.push a)
+  | List.cons _ a as => getListLitElems as <| acc.push a
   | _ => none
 
 /-- Extract elements from an array literal (`Array.mk` applied to a list literal). -/
@@ -40,7 +40,7 @@ builtin_cbv_simproc cbv_eval simpArrayGetElem (@GetElem.getElem (Array _) Nat _ 
     return .rfl
 
 /-- Reduce `#[...][n]?` for literal arrays and literal `Nat` indices. -/
-builtin_cbv_simproc cbv_eval simpArrayGetElemQ (@GetElem?.getElem? (Array _) Nat _ _ _ _ _) := fun e => do
+builtin_cbv_simproc cbv_eval simpArrayGetElem? (@GetElem?.getElem? (Array _) Nat _ _ _ _ _) := fun e => do
   let_expr GetElem?.getElem? _ _ α _ _ xs n := e | return .rfl
   let some elems := getArrayLitElems? xs | return .rfl
   let some idx := Sym.getNatValue? n | return .rfl
