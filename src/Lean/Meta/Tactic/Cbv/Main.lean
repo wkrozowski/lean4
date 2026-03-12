@@ -12,6 +12,7 @@ public import Lean.Meta.Tactic.Cbv.Opaque
 public import Lean.Meta.Tactic.Cbv.ControlFlow
 import Lean.Meta.Tactic.Cbv.BuiltinCbvSimprocs.Core
 import Lean.Meta.Tactic.Cbv.BuiltinCbvSimprocs.Array
+import Lean.Meta.Tactic.Cbv.BuiltinCbvSimprocs.String
 import Lean.Meta.Tactic.Cbv.Util
 import Lean.Meta.Tactic.Cbv.TheoremsLookup
 import Lean.Meta.Tactic.Cbv.CbvEvalExt
