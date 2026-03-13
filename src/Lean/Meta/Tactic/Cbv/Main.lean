@@ -71,16 +71,16 @@ There are also places where we deviate from strict call-by-value semantics:
 ## Attributes
 
 - `@[cbv_opaque]`: prevents `cbv` from unfolding a definition. The constant is
-  returned as-is without attempting any equation or unfold theorems.
+  returned as-is without attempting any rewrite rules, equation or unfold theorems.
 - `@[cbv_eval]`: registers a theorem as a custom rewrite rule for `cbv`. The
   theorem must be an unconditional equality whose LHS is an application of a
   constant. Use `@[cbv_eval ←]` to rewrite right-to-left. These rules are tried
-  before equation theorems, so they can be used together with `@[cbv_opaque]` to
-  replace the default unfolding behavior with a controlled set of evaluation rules.
+  before equation theorems.
 
 ## Unfolding order
 
-For a constant application, `handleApp` tries in order:
+For a constant application, `handleApp` first checks `@[cbv_opaque]` — if the
+constant is opaque, it is returned as-is immediately. Otherwise it tries in order:
 1. `@[cbv_eval]` rewrite rules
 2. Equation theorems (e.g. `foo.eq_1`, `foo.eq_2`)
 3. Unfold equations
@@ -150,15 +150,17 @@ def tryCbvTheorems : Simproc := fun e => do
   return result
 
 /--
-Post-pass handler for applications. For a constant-headed application, tries
-`@[cbv_eval]` rules, then equation/unfold theorems, then `reduceRecMatcher`.
-For a lambda-headed application, beta-reduces.
+Post-pass handler for applications. For a constant-headed application, checks
+`@[cbv_opaque]` first, then tries `@[cbv_eval]` rules, equation/unfold theorems,
+and `reduceRecMatcher`. For a lambda-headed application, beta-reduces.
 -/
 def handleApp : Simproc := fun e => do
   unless e.isApp do return .rfl
   let fn := e.getAppFn
   match fn with
   | .const constName _ =>
+    if (← isCbvOpaque constName) then
+      return .rfl (done := true)
     let info ← getConstInfo constName
     tryCbvTheorems <|> (guardSimproc (fun _ => info.hasValue) handleConstApp) <|> reduceRecMatcher <| e
   | .lam .. => betaReduce e
@@ -166,15 +168,7 @@ def handleApp : Simproc := fun e => do
 
 def isOpaqueConst : Simproc := fun e => do
   let .const constName _ := e | return .rfl
-  let hasTheorems := (← getCbvEvalLemmas constName).isSome
-  if hasTheorems then
-   let res ← (tryCbvTheorems) e
-    match res with
-    | .rfl false =>
-      return .rfl
-    | _ => return res
-  else
-    return .rfl (← isCbvOpaque constName)
+  return .rfl (← isCbvOpaque constName)
 
 def foldLit : Simproc := fun e => do
   let some n := e.rawNatLit? | return .rfl
@@ -285,7 +279,7 @@ def cbvPreStep : Simproc := fun e => do
   match e with
   | .lit .. => foldLit e
   | .proj .. => handleProj e
-  | .const .. => isOpaqueConst >> handleConst <| e
+  | .const .. => isOpaqueConst >> (tryCbvTheorems <|> handleConst) <| e
   | .app .. => tryMatcher <|> simplifyAppFn <| e
   | .letE .. =>
     if e.letNondep! then
