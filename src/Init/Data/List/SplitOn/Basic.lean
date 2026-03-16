@@ -59,6 +59,48 @@ def splitOnPTR (p : α → Bool) (l : List α) : List (List α) := go l #[] #[] 
   | cons x xs IH => cases h : P x <;> simp [splitOnPPrepend, splitOnPTR.go, *]
 
 /--
+Structurally recursive `splitOnP` using only lists (no arrays).
+Equivalent to `splitOnPTR` but avoids O(n²) `Array.push` overhead in symbolic evaluation.
+-/
+def splitOnPSR (p : α → Bool) : List α → List (List α)
+  | [] => [[]]
+  | a :: t =>
+    if p a then [] :: splitOnPSR p t
+    else match splitOnPSR p t with
+      | [] => [[a]]
+      | hd :: tl => (a :: hd) :: tl
+
+private theorem splitOnPSR_ne_nil (p : α → Bool) (l : List α) : splitOnPSR p l ≠ [] := by
+  induction l with
+  | nil => simp [splitOnPSR]
+  | cons x xs IH => simp only [splitOnPSR]; cases p x <;> simp; split <;> simp
+
+private theorem splitOnPPrepend_eq_splitOnPSR (p : α → Bool) (l : List α) (acc : List α) :
+    splitOnPPrepend p l acc = match splitOnPSR p l with
+      | [] => [acc.reverse]
+      | hd :: tl => (acc.reverse ++ hd) :: tl := by
+  induction l generalizing acc with
+  | nil => simp [splitOnPPrepend, splitOnPSR]
+  | cons x xs IH =>
+    simp only [splitOnPPrepend, splitOnPSR]
+    have hne := splitOnPSR_ne_nil p xs
+    cases h : p x <;> dsimp <;> rw [IH]
+    · match heq : splitOnPSR p xs with
+      | [] => exact absurd heq hne
+      | hd :: tl => simp [List.reverse_cons]
+    · match heq : splitOnPSR p xs with
+      | [] => exact absurd heq hne
+      | hd :: tl => simp
+
+theorem splitOnP_eq_splitOnPSR : @splitOnP = @splitOnPSR := by
+  funext α p l
+  simp only [splitOnP, splitOnPPrepend_eq_splitOnPSR]
+  have := splitOnPSR_ne_nil p l
+  match heq : splitOnPSR p l with
+  | [] => exact absurd heq this
+  | hd :: tl => simp
+
+/--
 Split a list at every occurrence of a separator element. The separators are not in the result.
 
 Examples:
@@ -66,5 +108,25 @@ Examples:
 -/
 @[inline] def splitOn [BEq α] (a : α) (as : List α) : List (List α) :=
   as.splitOnP (· == a)
+
+/--
+Split a list at every occurrence of a subsequence `sep`. Structurally recursive on `l`,
+using a `skip` counter to track remaining separator characters to consume after a match.
+-/
+def splitOnSeq [BEq α] (sep : List α) (l : List α) : List (List α) :=
+  match sep with
+  | [] => [l]
+  | _ => go l 0 where
+    /-- `skip` counts remaining separator chars to skip after a match. -/
+    go : List α → Nat → List (List α)
+      | [], _ => [[]]
+      | _ :: rest, skip + 1 => go rest skip
+      | a :: rest, 0 =>
+        if sep.isPrefixOf (a :: rest) then
+          [] :: go rest (sep.length - 1)
+        else
+          match go rest 0 with
+          | [] => [[a]]
+          | hd :: tl => (a :: hd) :: tl
 
 end List

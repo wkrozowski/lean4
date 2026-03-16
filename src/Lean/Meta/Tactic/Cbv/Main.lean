@@ -161,7 +161,7 @@ def handleApp : Simproc := fun e => do
   match fn with
   | .const constName _ =>
     if (← isCbvOpaque constName) then
-      return .rfl (done := true)
+      return (← tryCbvTheorems e).markAsDone
     let info ← getConstInfo constName
     tryCbvTheorems <|> (guardSimproc (fun _ => info.hasValue) handleConstApp) <|> reduceRecMatcher <| e
   | .lam .. => betaReduce e

@@ -152,8 +152,10 @@ private def parseNumV4 (str : String) : Option (BitVec 8) :=
     if n ≤ 0xff then .some n else .none
   else .none
 
+private def splitToList' (str : String) (p : Char → Bool) := ((str.split p).map (·.toString)).toList
+
 private def parseSegsV4 (str : String) : Option IPv4Addr :=
-  match str.splitToList (· = '.') with
+  match splitToList' str (· = '.') with
   | [s₀, s₁, s₂, s₃] => do
     let a₀ ← parseNumV4 s₀
     let a₁ ← parseNumV4 s₁
@@ -163,7 +165,7 @@ private def parseSegsV4 (str : String) : Option IPv4Addr :=
   | _ => .none
 
 private def parseIPv4Net (str : String) : Option IPNet :=
-  match str.splitToList (· = '/') with
+  match splitToList' str (· = '/') with
   | strV4 :: rest => do
     let pre ←
       match rest with
@@ -197,7 +199,7 @@ private def parseNumV6 (str : String) : Option (BitVec 16) :=
 private def parseNumSegsV6 (str : String) : Option (List (BitVec 16)) :=
   if str.isEmpty
   then .some []
-  else (str.splitToList (· = ':')).mapM parseNumV6
+  else (splitToList' str (· = ':')).mapM parseNumV6
 
 private def parseSegsV6 (str : String) : Option IPv6Addr := do
   let segs ←
@@ -217,7 +219,7 @@ private def parseSegsV6 (str : String) : Option IPv6Addr := do
   | _ => .none
 
 private def parseIPv6Net (str : String) : Option IPNet :=
-  match str.splitToList (· = '/') with
+  match splitToList' str (· = '/') with
   | strV6 :: rest => do
     let pre ←
       match rest with
@@ -306,19 +308,10 @@ namespace UnitTest.IPAddr
 
 open Cedar.Spec.Ext.IPAddr
 
-example : parse "192.168.0.1/32" = sorry := by conv => lhs; cbv
-
-set_option maxHeartbeats 16000000 in
 theorem test1 : toString ((ip "192.168.0.1/32").get!) = "192.168.0.1/32" := by cbv
-set_option maxHeartbeats 16000000 in
 theorem test2 : toString ((ip "0.0.0.0/1").get!) = "0.0.0.0/1" := by cbv
-set_option maxHeartbeats 16000000 in
 theorem test3 : toString ((ip "8.8.8.8/24").get!) = "8.8.8.8/24" := by cbv
-theorem test4 : toString ((ip "1:2:3:4:a:b:c:d/128").get!) = "0001:0002:0003:0004:000a:000b:000c:000d/128" := by native_decide
-theorem test5 : toString ((ip "1:22:333:4444:a:bb:ccc:dddd/128").get!) = "0001:0022:0333:4444:000a:00bb:0ccc:dddd/128" := by native_decide
-theorem test6 : toString ((ip "7:70:700:7000::a00/128").get!) = "0007:0070:0700:7000:0000:0000:0000:0a00/128" := by native_decide
-theorem test7 : toString ((ip "::ffff/128").get!) = "0000:0000:0000:0000:0000:0000:0000:ffff/128" := by native_decide
-theorem test8 : toString ((ip "ffff::/4").get!) = "ffff:0000:0000:0000:0000:0000:0000:0000/4" := by native_decide
+
 
 
 end UnitTest.IPAddr

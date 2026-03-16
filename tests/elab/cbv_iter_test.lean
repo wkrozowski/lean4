@@ -1,6 +1,11 @@
 import Lean.Meta.Tactic.Cbv.BuiltinCbvEval.Iter
 import Std.Data.Iterators.Combinators.Drop
 import Std.Data.Iterators.Lemmas.Combinators.Drop
+import Std.Data.Iterators.Combinators.TakeWhile
+import Std.Data.Iterators.Combinators.DropWhile
+import Std.Data.Iterators.Combinators.Zip
+import Std.Data.Iterators.Producers.Array
+import Init.Data.Iterators.Combinators.FlatMap
 
 set_option cbv.warning false
 
@@ -185,3 +190,76 @@ example : hasCloseElements #[1.0, 2.0, 5.9, 4.0, 5.0] 0.8 = false := by cbv
 example : hasCloseElements #[1.0, 2.0, 3.0, 4.0, 5.0, 2.0] 0.1 = true := by cbv
 example : hasCloseElements #[1.1, 2.2, 3.1, 4.1, 5.1] 1.0 = true := by cbv
 example : hasCloseElements #[1.1, 2.2, 3.1, 4.1, 5.1] 0.5 = false := by cbv
+
+/-! ### Array.iter producer tests -/
+
+example : #[1, 2, 3].iter.toList = [1, 2, 3] := by cbv
+example : #[1, 2, 3].iter.toArray = #[1, 2, 3] := by cbv
+example : (#[] : Array Nat).iter.toList = [] := by cbv
+example : (#[1, 2, 3].iter.map (· + 10)).toList = [11, 12, 13] := by cbv
+example : (#[1, 2, 3, 4].iter.filter (· % 2 == 0)).toArray = #[2, 4] := by cbv
+
+/-! ### FlatMap tests -/
+
+example : ([1, 2, 3].iter.flatMap (fun n => List.replicate n n |>.iter)).toList
+    = [1, 2, 2, 3, 3, 3] := by cbv
+example : ([1, 2].iter.flatMap (fun n => [n, n * 10].iter)).toList
+    = [1, 10, 2, 20] := by cbv
+example : (([] : List Nat).iter.flatMap (fun n => [n].iter)).toList = [] := by cbv
+
+/-! ### TakeWhile tests -/
+
+example : ([1, 2, 3, 4, 5].iter.takeWhile (· < 4)).toList = [1, 2, 3] := by cbv
+example : ([1, 2, 3, 4, 5].iter.takeWhile (· < 1)).toList = [] := by cbv
+example : ([1, 2, 3].iter.takeWhile (· < 10)).toList = [1, 2, 3] := by cbv
+
+/-! ### DropWhile tests -/
+
+example : ([1, 2, 3, 4, 5].iter.dropWhile (· < 4)).toList = [4, 5] := by cbv
+example : ([1, 2, 3, 4, 5].iter.dropWhile (· < 1)).toList = [1, 2, 3, 4, 5] := by cbv
+example : ([1, 2, 3].iter.dropWhile (· < 10)).toList = [] := by cbv
+
+/-! ### Zip tests -/
+
+example : ([1, 2, 3].iter.zip [10, 20, 30].iter).toList = [(1, 10), (2, 20), (3, 30)] := by cbv
+example : ([1, 2].iter.zip [10, 20, 30].iter).toList = [(1, 10), (2, 20)] := by cbv
+example : ([1, 2, 3].iter.zip ([] : List Nat).iter).toList = [] := by cbv
+
+/-! ### Composed new combinator tests -/
+
+def dotProduct (xs ys : List Int) : Int :=
+  (xs.iter.zip ys.iter |>.map (fun (a, b) => a * b) |>.fold (· + ·) 0)
+
+example : dotProduct [1, 2, 3] [4, 5, 6] = 32 := by cbv
+example : dotProduct [1, 0, -1] [1, 1, 1] = 0 := by cbv
+example : dotProduct [] [] = 0 := by cbv
+
+def runLengthEncode (xs : List Nat) : List (Nat × Nat) := Id.run do
+  let mut result : List (Nat × Nat) := []
+  let mut current := 0
+  let mut count := 0
+  for x in xs do
+    if count == 0 then
+      current := x
+      count := 1
+    else if x == current then
+      count := count + 1
+    else
+      result := (current, count) :: result
+      current := x
+      count := 1
+  if count > 0 then
+    result := (current, count) :: result
+  return result.reverse
+
+example : runLengthEncode [1, 1, 2, 3, 3, 3, 2, 2] = [(1, 2), (2, 1), (3, 3), (2, 2)] := by cbv
+example : runLengthEncode [] = [] := by cbv
+example : runLengthEncode [5] = [(5, 1)] := by cbv
+
+/-! ### String.split tests -/
+
+example : (("he llo".split (· == ' ')).map (·.copy)).toList = ["he", "llo"] := by cbv
+example : (("he llo".split (· == ' ')).map (·.toString)).toList = ["he", "llo"] := by cbv
+example : (("a,b,c".split (· == ',')).map (·.toString)).toList = ["a", "b", "c"] := by cbv
+example : (("hello".split (· == ' ')).map (·.toString)).toList = ["hello"] := by cbv
+example : (("".split (· == ' ')).map (·.toString)).toList = [""] := by cbv
