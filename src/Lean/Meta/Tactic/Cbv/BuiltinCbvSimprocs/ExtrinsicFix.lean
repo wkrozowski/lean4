@@ -12,6 +12,7 @@ import Init.CbvSimproc
 import Lean.Meta.Tactic.Cbv.CbvSimproc
 import Lean.Meta.AppBuilder
 import Lean.Meta.SynthInstance
+import Lean.Meta.WHNF
 import Init.WFExtrinsicFix
 public import Init.Data.Iterators.Basic
 public import Init.Data.Iterators.Consumers.Monadic.Loop
@@ -19,10 +20,15 @@ public import Init.Data.Iterators.Consumers.Monadic.Loop
 namespace Lean.Meta.Tactic.Cbv
 
 /-- Reduce `Shrink.inflate (Shrink.deflate x)` to `x`
-using the theorem `Shrink.inflate_deflate`. -/
+using the theorem `Shrink.inflate_deflate`.
+If the argument is not literally `Shrink.deflate x`, try whnf reduction first
+(e.g. to see through `liftM` in monadic iterator combinators). -/
 builtin_cbv_simproc cbv_eval simpShrinkInflate (Std.Shrink.inflate _) := fun e => do
   let arg := e.appArg!
-  match_expr arg with
+  let arg' ← match_expr arg with
+    | Std.Shrink.deflate _ _ => pure arg
+    | _ => Meta.whnf arg
+  match_expr arg' with
   | Std.Shrink.deflate α x =>
     let result ← Sym.share x
     let levels := e.getAppFn.constLevels!
@@ -49,7 +55,6 @@ private partial def proveWellFounded? (R : Expr) : MetaM (Option Expr) := do
       return none
   | _ => pure ()
   -- Case 2: R is `IteratorLoop.rel α m P` — prove via `wellFounded_of_finite`
-  trace[Meta.Tactic.cbv] "proveWellFounded? R head: {R.getAppFn}, numArgs: {R.getAppNumArgs}, isConst: {R.getAppFn.isConst}, name: {if R.getAppFn.isConst then toString R.getAppFn.constName! else "N/A"}"
   if R.getAppNumArgs ≥ 6 then
     let fn := R.getAppFn
     if fn.isConst && fn.constName! == ``Std.IteratorLoop.rel then
