@@ -53,6 +53,10 @@ theorem toList_map {f : Char → Char} {s : String} : (s.map f).toList = s.toLis
 theorem length_map {f : Char → Char} {s : String} : (s.map f).length = s.length := by
   simp [← length_toList]
 
+theorem map_eq {f : Char → Char} {s : String} : s.map f = .ofList (s.toList.map f) := by
+  apply String.toList_injective
+  simp [toList_map]
+
 @[simp]
 theorem map_eq_empty {f : Char → Char} {s : String} : s.map f = "" ↔ s = "" := by
   simp [← toList_eq_nil_iff]
