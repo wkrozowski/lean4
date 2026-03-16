@@ -318,16 +318,3 @@ theorem List.splitOnPTR_eq_splitOnPSR : @List.splitOnPTR = @List.splitOnPSR := b
 
 attribute [cbv_eval] List.splitOnP_eq_splitOnPSR
 attribute [cbv_eval] List.splitOnPTR_eq_splitOnPSR
-
-/-! ## String.splitOn deforestation
-
-`String.splitOn` (substring split) uses `splitOnAux` which operates on raw positions and causes
-O(n²) behavior in cbv. We rewrite it to the structurally recursive `List.splitOnSeq`. -/
-
-attribute [cbv_opaque] String.splitOnAux
-
-theorem String.splitOn_eq_splitOnSeq (s : String) (sep : String) :
-    s.splitOn sep = (s.toList.splitOnSeq sep.toList).map String.ofList := by
-  sorry
-
-attribute [cbv_eval] String.splitOn_eq_splitOnSeq
