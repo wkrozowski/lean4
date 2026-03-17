@@ -238,7 +238,7 @@ termination_by n => n
 
 end
 
-@[csimp] theorem mergeSort_eq_mergeSortTR₂ : @mergeSort = @mergeSortTR₂ := by
+@[cbv_eval, csimp] theorem mergeSort_eq_mergeSortTR₂ : @mergeSort = @mergeSortTR₂ := by
   funext
   rw [mergeSortTR₂, mergeSortTR₂_run_eq_mergeSort]
 

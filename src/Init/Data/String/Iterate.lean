@@ -27,6 +27,7 @@ deriving Inhabited
 /--
 Creates an iterator over the valid positions within {name}`s`, starting at {name}`p`.
 -/
+@[cbv_opaque]
 def positionsFrom {s : Slice} (p : s.Pos) :
     Std.Iter (α := PosIterator s) { p : s.Pos // p ≠ s.endPos } :=
   { internalState := { currPos := p } }
@@ -99,7 +100,7 @@ Examples:
  * {lean}`"abc".toSlice.chars.toList = ['a', 'b', 'c']`
  * {lean}`"ab∀c".toSlice.chars.toList = ['a', 'b', '∀', 'c']`
 -/
-@[expose, inline]
+@[cbv_opaque, expose, inline]
 def chars (s : Slice) :=
   Std.Iter.map (fun ⟨pos, h⟩ => pos.get h) (positions s)
 
@@ -188,7 +189,7 @@ Example:
  * {lean}`"abc".toSlice.revChars.toList = ['c', 'b', 'a']`
  * {lean}`"ab∀c".toSlice.revChars.toList = ['c', '∀', 'b', 'a']`
 -/
-@[expose, inline]
+@[cbv_opaque, expose, inline]
 def revChars (s : Slice) :=
   Std.Iter.map (fun ⟨pos, h⟩ => pos.get h) (revPositions s)
 
@@ -398,7 +399,7 @@ Examples:
  * {lean}`"abc".chars.toList = ['a', 'b', 'c']`
  * {lean}`"ab∀c".chars.toList = ['a', 'b', '∀', 'c']`
 -/
-@[inline]
+@[cbv_opaque, inline]
 def chars (s : String) :=
   (s.toSlice.chars : Std.Iter Char)
 
@@ -432,7 +433,7 @@ Example:
  * {lean}`"abc".revChars.toList = ['c', 'b', 'a']`
  * {lean}`"ab∀c".revChars.toList = ['c', '∀', 'b', 'a']`
 -/
-@[inline]
+@[cbv_opaque, inline]
 def revChars (s : String) :=
   (s.toSlice.revChars : Std.Iter Char)
 

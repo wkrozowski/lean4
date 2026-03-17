@@ -76,7 +76,7 @@ theorem Model.map_get_positionsFrom_startPos {s : Slice} :
     (Model.positionsFrom s.startPos).map (fun p => p.1.get p.2) = s.copy.toList :=
   Model.map_get_positionsFrom_of_splits (splits_startPos s)
 
-@[simp]
+@[cbv_eval, simp]
 theorem toList_positionsFrom {s : Slice} {p : s.Pos} :
     (s.positionsFrom p).toList = Model.positionsFrom p := by
   rw [positionsFrom]
@@ -91,7 +91,7 @@ theorem toList_positionsFrom {s : Slice} {p : s.Pos} :
 theorem toList_positions {s : Slice} : s.positions.toList = Model.positionsFrom s.startPos := by
   simp [positions]
 
-@[simp]
+@[cbv_eval, simp]
 theorem toList_chars {s : Slice} : s.chars.toList = s.copy.toList := by
   simp [chars, Model.map_get_positionsFrom_startPos]
 
@@ -177,7 +177,7 @@ theorem toList_revPositionsFrom {s : Slice} {p : s.Pos} :
 theorem toList_revPositions {s : Slice} : s.revPositions.toList = Model.revPositionsFrom s.endPos := by
   simp [revPositions]
 
-@[simp]
+@[cbv_eval, simp]
 theorem toList_revChars {s : Slice} : s.revChars.toList = s.copy.toList.reverse := by
   simp [revChars, Model.map_get_revPositionsFrom_endPos]
 
@@ -251,10 +251,11 @@ theorem toList_positionsFrom {s : String} {p : s.Pos} :
     (s.positionsFrom p).toList = Model.positionsFrom p := by
   simp [positionsFrom, Internal.ofToSliceWithProof, Model.positionsFrom_eq_map]
 
+@[cbv_eval]
 theorem toList_positions {s : String} : s.positions.toList = Model.positionsFrom s.startPos := by
   simp [positions]
 
-@[simp]
+@[cbv_eval, simp]
 theorem toList_chars {s : String} : s.chars.toList = s.toList := by
   simp [chars]
 
@@ -342,7 +343,7 @@ theorem toList_revPositions {s : String} :
     s.revPositions.toList = Model.revPositionsFrom s.endPos := by
   simp [revPositions]
 
-@[simp]
+@[cbv_eval, simp]
 theorem toList_revChars {s : String} : s.revChars.toList = s.toList.reverse := by
   simp [revChars]
 

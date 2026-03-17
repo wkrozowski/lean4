@@ -90,4 +90,9 @@ theorem contains_string_eq_false_iff {t s : String} :
     s.contains t = false ↔ ¬(t.toList <:+: s.toList) :=
   Bool.eq_false_iff.trans (not_congr contains_string_iff)
 
+@[cbv_eval]
+theorem contains_string_eq {t s : String} :
+    s.contains t = t.toList.isInfixOf s.toList := by
+  rw [Bool.eq_iff_iff, contains_string_iff, List.isInfixOf_iff_isInfix]
+
 end String

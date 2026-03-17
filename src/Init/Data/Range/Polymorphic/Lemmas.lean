@@ -608,6 +608,7 @@ namespace Rcc
 
 variable {r : Rcc α}
 
+@[cbv_eval]
 public theorem toList_eq_if_roc [LE α] [DecidableLE α] [UpwardEnumerable α]
     [LawfulUpwardEnumerable α] [LawfulUpwardEnumerableLE α] [Rxc.IsAlwaysFinite α] :
     r.toList = if r.lower ≤ r.upper then
@@ -755,6 +756,7 @@ public theorem ClosedOpen.toList_succ_succ_eq_map [LE α] [DecidableLE α] [Upwa
       (lo...=hi).toList.map succ :=
   Rcc.toList_succ_succ_eq_map
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [LE α] [DecidableLE α] [UpwardEnumerable α]
     [LawfulUpwardEnumerableLE α] [Rxc.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
     {γ : Type u} {init : γ} {m : Type u → Type w} [Monad m] [LawfulMonad m]
@@ -844,6 +846,7 @@ namespace Rco
 
 variable {r : Rco α}
 
+@[cbv_eval]
 public theorem toList_eq_if_roo [UpwardEnumerable α] [LT α] [DecidableLT α]
     [LawfulUpwardEnumerable α] [Rxo.IsAlwaysFinite α] [LawfulUpwardEnumerableLT α] :
     r.toList = if r.lower < r.upper then
@@ -1011,6 +1014,7 @@ public theorem toArray_succ_succ_eq_map [LE α] [DecidableLE α] [LT α] [Decida
       (lo...hi).toArray.map succ := by
   simp [← toArray_toList, toList_succ_succ_eq_map]
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [LE α] [LT α] [DecidableLT α]
     [UpwardEnumerable α] [LawfulUpwardEnumerableLE α] [LawfulUpwardEnumerableLT α]
     [Rxo.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
@@ -1224,6 +1228,7 @@ public theorem toArray_succ_succ_eq_map [LE α] [DecidableLE α]
     ((succ lo)...*).toArray = (lo...*).toArray.map succ := by
   simp [← toArray_toList, toList_succ_succ_eq_map]
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [LE α]
     [UpwardEnumerable α] [LawfulUpwardEnumerableLE α]
     [Rxi.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
@@ -1330,6 +1335,7 @@ public theorem toArray_eq_match [LE α] [DecidableLE α] [UpwardEnumerable α]
   rw [Internal.toArray_eq_toArray_iter, Rxc.Iterator.toArray_eq_match (it := Internal.iter r)]
   simp [Internal.iter, Internal.toArray_eq_toArray_iter]
 
+@[cbv_eval]
 public theorem toList_eq_match_rcc [LE α] [DecidableLE α] [UpwardEnumerable α]
     [LawfulUpwardEnumerable α] [LawfulUpwardEnumerableLE α] [Rxc.IsAlwaysFinite α] :
     r.toList = match UpwardEnumerable.succ? r.lower with
@@ -1473,6 +1479,7 @@ public theorem toArray_succ_succ_eq_map [LE α] [DecidableLE α] [LT α] [Decida
       (lo<...=hi).toArray.map succ := by
   simp [← toArray_toList, toList_succ_succ_eq_map]
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [LE α] [DecidableLE α] [LT α]
     [UpwardEnumerable α] [LawfulUpwardEnumerableLE α] [LawfulUpwardEnumerableLT α]
     [Rxc.IsAlwaysFinite α] [LawfulUpwardEnumerable α] {γ : Type u} {init : γ} {m : Type u → Type w}
@@ -1572,6 +1579,7 @@ public theorem toArray_eq_match [LE α] [LT α] [DecidableLT α] [UpwardEnumerab
           #[] := by
   rw [Internal.toArray_eq_toArray_iter, Rxo.Iterator.toArray_eq_match]; rfl
 
+@[cbv_eval]
 public theorem toList_eq_match_rco [UpwardEnumerable α] [LT α] [DecidableLT α]
     [LawfulUpwardEnumerable α] [LawfulUpwardEnumerableLT α] [Rxo.IsAlwaysFinite α] :
     r.toList = match UpwardEnumerable.succ? r.lower with
@@ -1705,6 +1713,7 @@ public theorem toArray_succ_succ_eq_map [LT α] [DecidableLT α]
       (lo<...hi).toArray.map succ := by
   simp [← toArray_toList, toList_succ_succ_eq_map]
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [LT α] [DecidableLT α]
     [UpwardEnumerable α] [LawfulUpwardEnumerableLT α]
     [Rxo.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
@@ -1939,6 +1948,7 @@ public theorem toArray_succ_succ_eq_map [LT α] [DecidableLT α]
     ((succ lo)<...*).toArray = (lo<...*).toArray.map succ := by
   simp [← toArray_toList, toList_succ_succ_eq_map]
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [LT α]
     [UpwardEnumerable α] [LawfulUpwardEnumerableLT α]
     [Rxi.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
@@ -2039,6 +2049,7 @@ public theorem toList_toArray [Least? α] [LE α] [DecidableLE α] [UpwardEnumer
     r.toArray.toList = r.toList := by
   simp [Internal.toList_eq_toList_iter, Internal.toArray_eq_toArray_iter]
 
+@[cbv_eval]
 public theorem toList_eq_match_rcc [LE α] [DecidableLE α] [Least? α] [UpwardEnumerable α]
     [LawfulUpwardEnumerable α] [LawfulUpwardEnumerableLE α]
     [Rxc.IsAlwaysFinite α] :
@@ -2231,6 +2242,7 @@ public theorem toArray_succ_eq_map [LE α] [DecidableLE α] [Least? α]
       #[UpwardEnumerable.least (hn := ⟨r.upper⟩)] ++ (*...=hi).toArray.map succ := by
   simp [← toArray_toList, toList_succ_eq_map]
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [LE α] [DecidableLE α] [Least? α]
     [UpwardEnumerable α] [LawfulUpwardEnumerableLE α] [LawfulUpwardEnumerableLeast? α]
     [Rxc.IsAlwaysFinite α] [LawfulUpwardEnumerable α] {γ : Type u} {init : γ} {m : Type u → Type w}
@@ -2340,6 +2352,7 @@ public theorem toList_toArray [Least? α] [LT α] [DecidableLT α] [UpwardEnumer
     r.toArray.toList = r.toList := by
   simp [Internal.toList_eq_toList_iter, Internal.toArray_eq_toArray_iter]
 
+@[cbv_eval]
 public theorem toList_eq_match_rco [LT α] [DecidableLT α] [Least? α] [UpwardEnumerable α]
     [LawfulUpwardEnumerable α] [LawfulUpwardEnumerableLT α]
     [Rxo.IsAlwaysFinite α] :
@@ -2550,6 +2563,7 @@ public theorem toArray_succ_eq_map [LT α] [DecidableLT α] [Least? α]
       #[UpwardEnumerable.least (hn := ⟨r.upper⟩)] ++ (*...hi).toArray.map succ := by
   simp [← toArray_toList, toList_succ_eq_map]
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [LT α] [DecidableLT α] [Least? α]
     [UpwardEnumerable α] [LawfulUpwardEnumerableLT α] [LawfulUpwardEnumerableLeast? α]
     [Rxo.IsAlwaysFinite α] [LawfulUpwardEnumerable α] {γ : Type u} {init : γ} {m : Type u → Type w}
@@ -2788,6 +2802,7 @@ public theorem pairwise_toList_le [LE α] [Least? α]
     |> List.Pairwise.imp UpwardEnumerable.le_of_lt
     |> List.Pairwise.imp (fun hle => (UpwardEnumerable.le_iff ..).mpr hle)
 
+@[cbv_eval]
 public theorem forIn'_eq_forIn'_toList [Least? α]
     [UpwardEnumerable α] [LawfulUpwardEnumerableLeast? α]
     [Rxi.IsAlwaysFinite α] [LawfulUpwardEnumerable α] {γ : Type u} {init : γ} {m : Type u → Type w}
