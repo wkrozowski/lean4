@@ -95,6 +95,7 @@ This is an intermediate step in the verification. The equivalence of
 the equivalence of {name}`splitFromSteps` and {name}`split` is the actual correctness proof for the
 splitting routine.
 -/
+@[cbv_opaque]
 def splitFromSteps {s : Slice} (currPos : s.Pos) (l : List (SearchStep s)) : List s.Subslice :=
   match l with
   | [] => [s.subsliceFrom currPos]
@@ -144,6 +145,7 @@ theorem SplitIterator.toList_eq_splitFromSteps {ρ : Type} {pat : ρ} {σ : Slic
     rw [Std.Iter.toList_eq_match_step, Std.Iter.step_eq]
     simp
 
+@[cbv_eval]
 theorem toList_splitToSubslice_eq_splitFromSteps {ρ : Type} {pat : ρ} {σ : Slice → Type} [ToForwardSearcher pat σ]
     [∀ s, Std.Iterator (σ s) Id (SearchStep s)] [∀ s, Std.Iterators.Finite (σ s) Id] (s : Slice) :
     (s.splitToSubslice pat).toList = splitFromSteps s.startPos (ToForwardSearcher.toSearcher pat s).toList := by
@@ -173,6 +175,7 @@ public theorem toList_splitToSubslice_of_isEmpty {ρ : Type} (pat : ρ)
     (s.splitToSubslice pat).toList = [s.subsliceFrom s.endPos] := by
   simp [toList_splitToSubslice_eq_modelSplit, Slice.startPos_eq_endPos_iff.2 h]
 
+@[cbv_eval]
 public theorem toList_split_eq_splitToSubslice {ρ : Type} (pat : ρ) {σ : Slice → Type}
     [ToForwardSearcher pat σ] [∀ s, Std.Iterator (σ s) Id (SearchStep s)]
     [∀ s, Std.Iterators.Finite (σ s) Id] {s : Slice} :
@@ -192,6 +195,7 @@ end Slice
 
 open Slice.Pattern
 
+@[cbv_eval]
 public theorem split_eq_split_toSlice {ρ : Type} {pat : ρ} {σ : Slice → Type}
     [ToForwardSearcher pat σ] [∀ s, Std.Iterator (σ s) Id (SearchStep s)] {s : String} :
   s.split pat = s.toSlice.split pat := (rfl)

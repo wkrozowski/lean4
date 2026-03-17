@@ -213,7 +213,7 @@ Examples:
  * {lean}`("ababababa".toSlice.splitToSubslice "aba").toStringList == ["coffee", "water"]`
  * {lean}`("baaab".toSlice.splitToSubslice "aa").toStringList == ["b", "ab"]`
 -/
-@[specialize pat]
+@[cbv_opaque, specialize pat]
 def splitToSubslice (s : Slice) (pat : ρ) [ToForwardSearcher pat σ] :
     Std.Iter (α := SplitIterator pat s) s.Subslice :=
   { internalState := .operating s.startPos (ToForwardSearcher.toSearcher pat s) }
@@ -233,7 +233,7 @@ Examples:
  * {lean}`("ababababa".toSlice.split "aba").toStringList == ["coffee", "water"]`
  * {lean}`("baaab".toSlice.split "aa").toStringList == ["b", "ab"]`
 -/
-@[inline]
+@[cbv_opaque, inline]
 def split (s : Slice) (pat : ρ) [ToForwardSearcher pat σ] :=
   (s.splitToSubslice pat |>.map Subslice.toSlice : Std.Iter Slice)
 

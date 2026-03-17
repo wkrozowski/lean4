@@ -254,7 +254,7 @@ Examples:
  * {lean}`("ababababa".split "aba").toList == ["coffee".toSlice, "water".toSlice]`
  * {lean}`("baaab".split "aa").toList == ["b".toSlice, "ab".toSlice]`
 -/
-@[inline]
+@[cbv_opaque, inline]
 def split (s : String) (pat : ρ) [ToForwardSearcher pat σ] :=
   (s.toSlice.split pat : Std.Iter String.Slice)
 
