@@ -316,3 +316,36 @@ example : sumRoo 0 5 = 10 := by cbv
 example : sumRoo 0 1 = 0 := by cbv
 example : sumRoo 3 3 = 0 := by cbv
 example : sumRoo 1 5 = 9 := by cbv
+
+-- Rco (closed-open): a...b
+example : (1...3).iter.toList = [1, 2] := by cbv
+example : (1...3).iter.toArray = #[1, 2] := by cbv
+example : (0...5).iter.toList = [0, 1, 2, 3, 4] := by cbv
+example : (3...3).iter.toList = [] := by cbv
+
+-- Rcc (closed-closed): a...=b
+example : (1...=3).iter.toList = [1, 2, 3] := by cbv
+example : (1...=3).iter.toArray = #[1, 2, 3] := by cbv
+example : (0...=4).iter.toList = [0, 1, 2, 3, 4] := by cbv
+example : (3...=3).iter.toList = [3] := by cbv
+example : (5...=3).iter.toList = [] := by cbv
+
+-- Rio (inclusive-open): *...b
+example : ((*...5 : Std.Rio Nat)).iter.toList = [0, 1, 2, 3, 4] := by cbv
+example : ((*...0 : Std.Rio Nat)).iter.toList = [] := by cbv
+
+-- Ric (inclusive-closed): *...=b
+example : ((*...=4 : Std.Ric Nat)).iter.toList = [0, 1, 2, 3, 4] := by cbv
+example : ((*...=0 : Std.Ric Nat)).iter.toList = [0] := by cbv
+
+-- Roc (open-closed): a<...=b
+example : (1<...=4).iter.toList = [2, 3, 4] := by cbv
+example : (1<...=4).iter.toArray = #[2, 3, 4] := by cbv
+example : (3<...=3).iter.toList = [] := by cbv
+example : (0<...=5).iter.toList = [1, 2, 3, 4, 5] := by cbv
+
+-- Roo (open-open): a<...b
+example : (1<...5).iter.toList = [2, 3, 4] := by cbv
+example : (1<...5).iter.toArray = #[2, 3, 4] := by cbv
+example : (3<...3).iter.toList = [] := by cbv
+example : (0<...5).iter.toList = [1, 2, 3, 4] := by cbv

@@ -411,6 +411,7 @@ private theorem Rii.Internal.toArray_eq_toArray_iter [Least? α]
     r.toArray = (Internal.iter r).toArray := by
   rfl
 
+@[cbv_eval]
 public theorem Rxc.Iterator.toList_eq_match [LE α] [DecidableLE α]
     [UpwardEnumerable α] [Rxc.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
     [LawfulUpwardEnumerableLE α]
@@ -428,6 +429,7 @@ public theorem Rxc.Iterator.toList_eq_match [LE α] [DecidableLE α]
   · simp [*]
   · split <;> rename_i heq' <;> simp [*]
 
+@[cbv_eval]
 public theorem Rxc.Iterator.toArray_eq_match [LE α] [DecidableLE α]
     [UpwardEnumerable α] [Rxc.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
     [LawfulUpwardEnumerableLE α]
@@ -443,6 +445,7 @@ public theorem Rxc.Iterator.toArray_eq_match [LE α] [DecidableLE α]
   · rfl
   · split <;> simp
 
+@[cbv_eval]
 public theorem Rxo.Iterator.toList_eq_match [LT α] [DecidableLT α]
     [UpwardEnumerable α] [Rxo.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
     [LawfulUpwardEnumerableLT α]
@@ -459,6 +462,7 @@ public theorem Rxo.Iterator.toList_eq_match [LT α] [DecidableLT α]
   · simp [*]
   · split <;> rename_i heq' <;> simp [*]
 
+@[cbv_eval]
 public theorem Rxo.Iterator.toArray_eq_match [LT α] [DecidableLT α]
     [UpwardEnumerable α] [Rxo.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
     [LawfulUpwardEnumerableLT α]
@@ -491,6 +495,7 @@ public theorem Rxc.Iterator.toList_eq_toList_rxoIterator [LE α] [DecidableLE α
       · simpa [UpwardEnumerable.lt_iff, UpwardEnumerable.le_iff, UpwardEnumerable.lt_succ_iff] using h
     · simpa [UpwardEnumerable.lt_iff, UpwardEnumerable.le_iff, UpwardEnumerable.lt_succ_iff] using h
 
+@[cbv_eval]
 public theorem Rxi.Iterator.toList_eq_match
     [UpwardEnumerable α] [Rxi.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
     {it : Iter (α := Rxi.Iterator α) α} :
@@ -502,6 +507,7 @@ public theorem Rxi.Iterator.toList_eq_match
   simp only [Iter.toList_eq_match_step (it := it), Rxi.Iterator.step_eq_step, Rxi.Iterator.step]
   split <;> rename_i heq <;> simp [*]
 
+@[cbv_eval]
 public theorem Rxi.Iterator.toArray_eq_match
     [UpwardEnumerable α] [Rxi.IsAlwaysFinite α] [LawfulUpwardEnumerable α]
     {it : Iter (α := Rxi.Iterator α) α} :
