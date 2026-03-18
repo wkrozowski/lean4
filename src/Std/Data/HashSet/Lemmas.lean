@@ -1535,7 +1535,7 @@ theorem filter_equiv_self_iff [EquivBEq α] [LawfulHashable α]
   ⟨fun h => HashMap.filter_equiv_self_iff.mp h.1,
     fun h => ⟨HashMap.filter_equiv_self_iff.mpr h⟩⟩
 
-@[simp, grind =]
+@[simp, grind =, cbv_eval]
 theorem get?_filter [EquivBEq α] [LawfulHashable α]
     {f : α → Bool} {k : α} :
     (m.filter f).get? k = (m.get? k).filter f :=
@@ -1547,13 +1547,13 @@ theorem get_filter [EquivBEq α] [LawfulHashable α]
     (m.filter f).get k h = m.get k (mem_of_mem_filter h) :=
   HashMap.getKey_filter
 
-@[grind =]
+@[grind =, cbv_eval]
 theorem get!_filter [EquivBEq α] [LawfulHashable α] [Inhabited α]
     {f : α → Bool} {k : α} :
     (m.filter f).get! k = ((m.get? k).filter f).get! :=
   HashMap.getKey!_filter_key
 
-@[grind =]
+@[grind =, cbv_eval]
 theorem getD_filter [EquivBEq α] [LawfulHashable α]
     {f : α → Bool} {k fallback : α} :
     (m.filter f).getD k fallback = ((m.get? k).filter f).getD fallback :=

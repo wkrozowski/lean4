@@ -213,7 +213,7 @@ instance [BEq α] [Hashable α] {m : Type v → Type w} [Monad m] : ForIn m (Has
   forIn m init f := m.forIn f init
 
 /-- Removes all elements from the hash set for which the given function returns `false`. -/
-@[inline] def filter (f : α → Bool) (m : HashSet α) : HashSet α :=
+@[cbv_opaque, inline] def filter (f : α → Bool) (m : HashSet α) : HashSet α :=
   ⟨m.inner.filter fun a _ => f a⟩
 
 /--

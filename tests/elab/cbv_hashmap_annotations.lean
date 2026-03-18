@@ -136,3 +136,85 @@ example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 1
 
 example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.erase 1).getD 1 999 = 999 := by cbv
 example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.erase 1).getD 2 999 = 20 := by cbv
+
+/-! ### HashMap.map + getD -/
+
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).getD 1 999 = 20 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).getD 2 999 = 40 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).getD 3 999 = 999 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).map (fun _ v => v + 1)).getD 1 999 = 999 := by cbv
+
+/-! ### HashMap.map + contains -/
+
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).contains 1 = true := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).contains 3 = false := by cbv
+
+/-! ### HashMap.filter + getD -/
+
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.insert 3 5 |>.filter (fun _ v => v > 8)).getD 1 999 = 10 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.insert 3 5 |>.filter (fun _ v => v > 8)).getD 3 999 = 999 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.insert 3 5 |>.filter (fun _ v => v > 8)).getD 4 999 = 999 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.filter (fun _ v => v > 15)).getD 2 999 = 20 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.filter (fun _ v => v > 15)).getD 1 999 = 999 := by cbv
+
+/-! ### HashMap.filterMap + getD -/
+
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).getD 2 999 = 40 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).getD 1 999 = 999 := by cbv
+example : ((HashMap.emptyWithCapacity : HashMap Nat Nat).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).getD 3 999 = 999 := by cbv
+
+/-! ### DHashMap.map + get? -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).get? 1 = .some 20 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).get? 2 = .some 40 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).get? 3 = .none := by cbv
+
+/-! ### DHashMap.map + get! -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v + 1)).get! 1 = 11 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v + 1)).get! 3 = 0 := by cbv
+
+/-! ### DHashMap.map + getD -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.map (fun _ v => v + 5)).getD 1 999 = 15 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.map (fun _ v => v + 5)).getD 2 999 = 999 := by cbv
+
+/-! ### DHashMap.map + contains -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).contains 1 = true := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.map (fun _ v => v * 2)).contains 3 = false := by cbv
+
+/-! ### DHashMap.filter + contains -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filter (fun _ v => v > 15)).contains 2 = true := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filter (fun _ v => v > 15)).contains 1 = false := by cbv
+
+/-! ### DHashMap.filter + get? -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.insert 3 5 |>.filter (fun _ v => v > 8)).get? 1 = .some 10 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.insert 3 5 |>.filter (fun _ v => v > 8)).get? 3 = .none := by cbv
+
+/-! ### DHashMap.filter + get! -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filter (fun _ v => v > 15)).get! 2 = 20 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filter (fun _ v => v > 15)).get! 1 = 0 := by cbv
+
+/-! ### DHashMap.filter + getD -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filter (fun _ v => v > 15)).getD 2 999 = 20 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filter (fun _ v => v > 15)).getD 1 999 = 999 := by cbv
+
+/-! ### DHashMap.filterMap + get? -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).get? 2 = .some 40 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).get? 1 = .none := by cbv
+
+/-! ### DHashMap.filterMap + get! -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).get! 2 = 40 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).get! 1 = 0 := by cbv
+
+/-! ### DHashMap.filterMap + getD -/
+
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).getD 2 999 = 40 := by cbv
+example : ((DHashMap.emptyWithCapacity : DHashMap Nat (fun _ => Nat)).insert 1 10 |>.insert 2 20 |>.filterMap (fun _ v => if v > 15 then some (v * 2) else none)).getD 1 999 = 999 := by cbv

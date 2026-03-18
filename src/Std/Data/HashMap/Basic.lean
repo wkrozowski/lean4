@@ -229,7 +229,7 @@ instance [BEq α] [Hashable α] {m : Type w → Type w'} [Monad m] : ForM m (Has
 instance [BEq α] [Hashable α] {m : Type w → Type w'} [Monad m] : ForIn m (HashMap α β) (α × β) where
   forIn m init f := m.forIn (fun a b acc => f (a, b) acc) init
 
-@[inline, inherit_doc DHashMap.filter] def filter (f : α → β → Bool)
+@[cbv_opaque, inline, inherit_doc DHashMap.filter] def filter (f : α → β → Bool)
     (m : HashMap α β) : HashMap α β :=
   ⟨m.inner.filter f⟩
 

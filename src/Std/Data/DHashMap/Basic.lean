@@ -261,7 +261,7 @@ define the `ForM` and `ForIn` instances for `HashMap`.
 
 end Const
 
-@[inline, inherit_doc Raw.filter] def filter (f : (a : α) → β a → Bool)
+@[cbv_opaque, inline, inherit_doc Raw.filter] def filter (f : (a : α) → β a → Bool)
     (m : DHashMap α β) : DHashMap α β :=
   ⟨Raw₀.filter f ⟨m.1, m.2.size_buckets_pos⟩, .filter₀ m.2⟩
 
