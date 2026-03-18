@@ -100,6 +100,51 @@ is marked done regardless of whether a rule fires. Otherwise it tries in order:
 namespace Lean.Meta.Tactic.Cbv
 open Lean.Meta.Sym.Simp
 
+/-- Like `Sym.unfoldReducibleStep` but skips `@[cbv_opaque]` declarations. -/
+private def unfoldReducibleStep (e : Expr) : MetaM TransformStep := do
+  let .const declName _ := e.getAppFn | return .continue
+  unless (← isReducible declName) do return .continue
+  if (← getEnv).isProjectionFn declName then return .continue
+  if (← isCbvOpaque declName) then return .continue
+  let some v ← unfoldDefinition? e | return .continue
+  return .visit v
+
+/-- Like `Sym.unfoldReducible` but skips `@[cbv_opaque]` declarations. -/
+private def unfoldReducible (e : Expr) : MetaM Expr := do
+  Meta.transform e (pre := unfoldReducibleStep)
+
+/-- Like `Sym.preprocessExpr` but skips `@[cbv_opaque]` declarations during unfolding. -/
+private def preprocessExpr (e : Expr) : Sym.SymM Expr := do
+  Sym.shareCommon (← unfoldReducible (← instantiateMVars e))
+
+/-- Like `Sym.preprocessMVar` but skips `@[cbv_opaque]` declarations during unfolding. -/
+private def preprocessMVar (mvarId : MVarId) : Sym.SymM MVarId := do
+  let mvarDecl ← mvarId.getDecl
+  let lctx ← preprocessLCtx mvarDecl.lctx
+  let type ← preprocessExpr mvarDecl.type
+  let mvarNew ← mkFreshExprMVarAt lctx mvarDecl.localInstances type .syntheticOpaque mvarDecl.userName
+  mvarId.assign mvarNew
+  return mvarNew.mvarId!
+where
+  preprocessLCtx (lctx : LocalContext) : Sym.SymM LocalContext := do
+    let auxDeclToFullName := lctx.auxDeclToFullName
+    let mut fvarIdToDecl := {}
+    let mut decls := {}
+    let mut index := 0
+    for decl in lctx do
+      let decl ← match decl with
+        | .cdecl _ fvarId userName type bi kind =>
+          let type ← preprocessExpr type
+          pure <| LocalDecl.cdecl index fvarId userName type bi kind
+        | .ldecl _ fvarId userName type value nondep kind =>
+          let type ← preprocessExpr type
+          let value ← preprocessExpr value
+          pure <| LocalDecl.ldecl index fvarId userName type value nondep kind
+      index := index + 1
+      decls := decls.push (some decl)
+      fvarIdToDecl := fvarIdToDecl.insert decl.fvarId decl
+    return { fvarIdToDecl, decls, auxDeclToFullName }
+
 public register_builtin_option cbv.warning : Bool := {
   defValue := true
   descr    := "disable `cbv` usage warning"
@@ -320,7 +365,7 @@ public def cbvEntry (e : Expr) : MetaM Result := do
   let simprocs ← getCbvSimprocs
   let config : Sym.Simp.Config := { maxSteps := cbv.maxSteps.get (← getOptions) }
   let methods := mkCbvMethods simprocs
-  let e ← Sym.unfoldReducible e
+  let e ← unfoldReducible e
   Sym.SymM.run do
     let e ← Sym.shareCommon e
     SimpM.run' (simp e) (methods := methods) (config := config)
@@ -342,7 +387,7 @@ After all reductions, attempts `refl` to close equation goals of the form `v = v
 public def cbvGoal (mvarId : MVarId) (simplifyTarget : Bool := true) (fvarIdsToSimp : Array FVarId := #[]) : MetaM (Option MVarId) := do
   let config : Sym.Simp.Config := { maxSteps := cbv.maxSteps.get (← getOptions) }
   Sym.SymM.run do
-    let mvarId ← Sym.preprocessMVar mvarId
+    let mvarId ← preprocessMVar mvarId
     mvarId.withContext do
       let mut mvarIdNew := mvarId
       let mut toAssert : Array Hypothesis := #[]
@@ -403,7 +448,7 @@ public def cbvDecideGoal (m : MVarId) : MetaM Unit := do
       | .error err => return m!"decide_cbv: {err.toMessageData}") do
   let config : Sym.Simp.Config := { maxSteps := cbv.maxSteps.get (← getOptions) }
   Sym.SymM.run do
-    let m ← Sym.preprocessMVar m
+    let m ← preprocessMVar m
     let mType ← m.getType
     let some (_, lhs, _) := mType.eq? |
       throwError "`decide_cbv`: expected goal of the form `decide _ = true`, got: {indentExpr mType}"
