@@ -1,5 +1,7 @@
 import Std
 
+set_option cbv.warning false
+
 example : ("hello world".split (· == ' ')).toList.map (·.toString) = ["hello", "world"] := by cbv
 
 example : ("hello world".split (· = ' ')).toList.map (·.toString) = ["hello", "world"] := by cbv
