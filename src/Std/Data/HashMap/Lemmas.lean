@@ -3533,6 +3533,7 @@ theorem getKey?_filter [EquivBEq α] [LawfulHashable α]
       (f x (m[x]'(mem_of_getKey?_eq_some h')))) :=
   DHashMap.Const.getKey?_filter
 
+@[cbv_eval]
 theorem getKey?_filter_key [EquivBEq α] [LawfulHashable α]
     {f : α → Bool} {k : α} :
     (m.filter fun k _ => f k).getKey? k = (m.getKey? k).filter f :=
@@ -3552,6 +3553,7 @@ theorem getKey!_filter [EquivBEq α] [LawfulHashable α] [Inhabited α]
       (f x (m[x]'(mem_of_getKey?_eq_some h'))))).get! :=
   DHashMap.Const.getKey!_filter
 
+@[cbv_eval]
 theorem getKey!_filter_key [EquivBEq α] [LawfulHashable α] [Inhabited α]
     {f : α → Bool} {k : α} :
     (m.filter fun k _ => f k).getKey! k = ((m.getKey? k).filter f).get! :=
@@ -3565,6 +3567,7 @@ theorem getKeyD_filter [EquivBEq α] [LawfulHashable α]
       (f x (m[x]'(mem_of_getKey?_eq_some h'))))).getD fallback :=
   DHashMap.Const.getKeyD_filter
 
+@[cbv_eval]
 theorem getKeyD_filter_key [EquivBEq α] [LawfulHashable α]
     {f : α → Bool} {k fallback : α} :
     (m.filter fun k _ => f k).getKeyD k fallback = ((m.getKey? k).filter f).getD fallback :=
@@ -3703,7 +3706,7 @@ theorem getD_map_of_getKey?_eq_some [EquivBEq α] [LawfulHashable α] [Inhabited
     (m.map f).getD k fallback = (m[k]?.map (f k')).getD fallback :=
   DHashMap.Const.getD_map_of_getKey?_eq_some h
 
-@[simp, grind =]
+@[simp, grind =, cbv_eval]
 theorem getKey?_map [EquivBEq α] [LawfulHashable α]
     {f : α → β → γ} {k : α} :
     (m.map f).getKey? k = m.getKey? k :=
@@ -3715,13 +3718,13 @@ theorem getKey_map [EquivBEq α] [LawfulHashable α]
     (m.map f).getKey k h' = m.getKey k (mem_of_mem_map h') :=
   DHashMap.getKey_map
 
-@[simp, grind =]
+@[simp, grind =, cbv_eval]
 theorem getKey!_map [EquivBEq α] [LawfulHashable α] [Inhabited α]
     {f : α → β → γ} {k : α} :
     (m.map f).getKey! k = m.getKey! k :=
   DHashMap.getKey!_map
 
-@[simp, grind =]
+@[simp, grind =, cbv_eval]
 theorem getKeyD_map [EquivBEq α] [LawfulHashable α]
     {f : α → β → γ} {k fallback : α} :
     (m.map f).getKeyD k fallback = m.getKeyD k fallback :=
