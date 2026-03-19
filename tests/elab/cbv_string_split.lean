@@ -28,3 +28,4 @@ example : sortNumbers "three" = "three" := by cbv
 example : sortNumbers "three five" = "three five" := by cbv
 example : sortNumbers "five three" = "three five" := by cbv
 example : sortNumbers "one one" = "one one" := by cbv
+example : sortNumbers "six one two" = "one two six" := by cbv
