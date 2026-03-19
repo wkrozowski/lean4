@@ -101,8 +101,8 @@ namespace Lean.Meta.Tactic.Cbv
 open Lean.Meta.Sym.Simp
 
 public register_builtin_option cbv.warning : Bool := {
-  defValue := true
-  descr    := "disable `cbv` usage warning"
+  defValue := false
+  descr    := "when enabled, display a warning that the `cbv` tactic is being used"
 }
 
 public register_builtin_option cbv.maxSteps : Nat := {
