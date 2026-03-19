@@ -13,6 +13,7 @@ public import Lean.Elab.Open
 import Init.Data.Nat.Order
 import Init.Data.Order.Lemmas
 import Init.System.Platform
+import Lean.DeprecatedModule
 
 public section
 
@@ -705,5 +706,18 @@ where
   fun _ => do
     let env ← getEnv
     IO.eprintln (← env.dbgFormatAsyncState)
+
+@[builtin_command_elab Parser.Command.deprecated_module]
+def elabDeprecatedModule : CommandElab := fun stx => do
+  -- stx[1]: optional (ppSpace >> strLit) — stx[1][0] is the strLit
+  -- stx[2]: optional (" (" >> "since" >> " := " >> strLit >> ")") — stx[2][3] is the strLit
+  let message? := if stx[1].isNone then none else stx[1][0].isStrLit?
+  let since? := if stx[2].isNone then none else stx[2][3].isStrLit?
+  if message?.isNone then
+    logWarning "`deprecated_module` should specify a deprecation message"
+  if since?.isNone then
+    logWarning "`deprecated_module` should specify when the deprecation was introduced, \
+      using `(since := \"...\")`"
+  modifyEnv fun env => env.setDeprecatedModule (some { message?, since? })
 
 end Lean.Elab.Command

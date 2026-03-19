@@ -1,0 +1,18 @@
+name = "deprecated_module"
+defaultTargets = ["Main"]
+
+[[lean_lib]]
+name = "Main"
+roots = [
+  "DeprecatedModule.New",
+  "DeprecatedModule.Old",
+  "DeprecatedModule.OldNoMessage",
+  "DeprecatedModule.Transitive",
+  "DeprecatedModule.Consumer",
+  "DeprecatedModule.TransitiveConsumer",
+]
+
+[[lean_lib]]
+name = "Disabled"
+leanOptions = { linter.deprecatedModule = false }
+roots = ["DeprecatedModule.ConsumerDisabled"]

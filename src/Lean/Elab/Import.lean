@@ -9,6 +9,7 @@ prelude
 public import Lean.Parser.Module
 meta import Lean.Parser.Module
 import Lean.Compiler.ModPkgExt
+import Lean.DeprecatedModule
 
 public section
 
@@ -66,6 +67,24 @@ def processHeaderCore
     let pos := inputCtx.fileMap.toPosition startPos
     pure (env, messages.add { fileName := inputCtx.fileName, data := toString e, pos := pos })
   let env := env.setMainModule mainModule |>.setModulePackage package?
+  -- Check for deprecated module imports
+  let messages := if linter.deprecatedModule.get opts then
+    imports.foldl (init := messages) fun messages imp =>
+      match env.getModuleIdx? imp.module with
+      | some idx =>
+        match env.getDeprecatedModuleByIdx? idx with
+        | some entry =>
+          let pos := inputCtx.fileMap.toPosition startPos
+          messages.add {
+            fileName := inputCtx.fileName
+            pos := pos
+            severity := .warning
+            data := formatDeprecatedModuleWarning imp.module entry
+          }
+        | none => messages
+      | none => messages
+  else
+    messages
   return (env, messages)
 
 /--

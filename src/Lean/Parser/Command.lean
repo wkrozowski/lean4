@@ -627,6 +627,20 @@ An internal bootstrapping command that reinterprets a Markdown docstring as Vers
 -/
 @[builtin_command_parser] def «docs_to_verso»    := leading_parser
   "docs_to_verso " >> sepBy1 ident ", "
+/--
+`deprecated_module` marks the current module as deprecated.
+When another module imports a deprecated module, a warning is emitted during elaboration.
+
+```
+deprecated_module "use NewModule instead" (since := "2026-03-19")
+```
+
+The warning message and `since` date are optional but recommended.
+The warning can be disabled with `set_option linter.deprecatedModule false` or
+`-Dlinter.deprecatedModule=false`.
+-/
+@[builtin_command_parser] def «deprecated_module» := leading_parser
+  "deprecated_module" >> optional (ppSpace >> strLit) >> optional (" (" >> nonReservedSymbol "since" >> " := " >> strLit >> ")")
 
 def optionValue := nonReservedSymbol "true" <|> nonReservedSymbol "false" <|> strLit <|> numLit
 /--
