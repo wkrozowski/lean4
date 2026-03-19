@@ -1,6 +1,5 @@
 import Std
 
-
 /-! ### Basic producer tests -/
 
 example : [1, 2, 3].iter.toList = [1, 2, 3] := by cbv

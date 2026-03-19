@@ -184,13 +184,13 @@ theorem toList_revChars {s : Slice} : s.revChars.toList = s.copy.toList.reverse 
 theorem forIn_eq_forIn_chars {m : Type u → Type v} [Monad m] {s : Slice} {b} {f : Char → β → m (ForInStep β)} :
     ForIn.forIn s b f = ForIn.forIn s.chars b f := rfl
 
-@[simp]
+@[cbv_eval, simp]
 theorem forIn_eq_forIn_toList {m : Type u → Type v} [Monad m] [LawfulMonad m] {s : Slice} {b}
     {f : Char → β → m (ForInStep β)} :
     ForIn.forIn s b f = ForIn.forIn s.copy.toList b f := by
   rw [forIn_eq_forIn_chars, ← Std.Iter.forIn_toList, toList_chars]
 
-@[simp]
+@[cbv_eval, simp]
 theorem foldl_eq_foldl_toList {α : Type u} {f : α → Char → α} {init : α} {s : Slice} :
     s.foldl f init = s.copy.toList.foldl f init := by
   rw [foldl, ← Std.Iter.foldl_toList, toList_chars]

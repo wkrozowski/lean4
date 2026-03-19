@@ -348,7 +348,7 @@ Examples:
  * {lean}`"coffee tea and water".toSlice.foldl (fun n c => if c.isWhitespace then n + 1 else n) 0 = 3`
  * {lean}`"coffee tea water".toSlice.foldl (·.push ·) "" = "coffee tea water"`
 -/
-@[inline]
+@[cbv_opaque, inline]
 def foldl {α : Type u} (f : α → Char → α) (init : α) (s : Slice) : α :=
   Std.Iter.fold f init (chars s)
 
