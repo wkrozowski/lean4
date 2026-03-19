@@ -146,13 +146,13 @@ where
     return { fvarIdToDecl, decls, auxDeclToFullName }
 
 public register_builtin_option cbv.warning : Bool := {
-  defValue := true
-  descr    := "disable `cbv` usage warning"
+  defValue := false
+  descr    := "When enabled, displays a warning that the `cbv` tactic is being used."
 }
 
 public register_builtin_option cbv.maxSteps : Nat := {
   defValue := 100_000
-  descr    := "maximum number of steps for the `cbv` tactic"
+  descr    := "Controls the maximum number of steps for the `cbv` tactic."
 }
 
 def tryEquations : Simproc := fun e => do
