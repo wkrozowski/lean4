@@ -75,12 +75,14 @@ extern "C" LEAN_EXPORT lean_obj_res lean_uv_signal_mk(uint32_t signum_obj, uint8
         case 1: signum = SIGHUP; break;
         case 2: signum = SIGINT; break;
         case 3: signum = SIGQUIT; break;
-        case 5: signum = SIGTRAP; break;
         case 6: signum = SIGABRT; break;
+        case 15: signum = SIGTERM; break;
+        case 28: signum = SIGWINCH; break;
+#ifndef LEAN_WINDOWS
+        case 5: signum = SIGTRAP; break;
         case 10: signum = SIGUSR1; break;
         case 12: signum = SIGUSR2; break;
         case 14: signum = SIGALRM; break;
-        case 15: signum = SIGTERM; break;
         case 17: signum = SIGCHLD; break;
         case 18: signum = SIGCONT; break;
         case 20: signum = SIGTSTP; break;
@@ -91,9 +93,10 @@ extern "C" LEAN_EXPORT lean_obj_res lean_uv_signal_mk(uint32_t signum_obj, uint8
         case 25: signum = SIGXFSZ; break;
         case 26: signum = SIGVTALRM; break;
         case 27: signum = SIGPROF; break;
-        case 28: signum = SIGWINCH; break;
         case 29: signum = SIGIO; break;
         case 31: signum = SIGSYS; break;
+#endif
+        default: signum = 0; break;
     }
 
     lean_uv_signal_object * signal = (lean_uv_signal_object*)malloc(sizeof(lean_uv_signal_object));
