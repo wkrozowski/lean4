@@ -1,6 +1,5 @@
 import Std
 
-set_option cbv.warning false
 
 /-! ### Basic producer tests -/
 

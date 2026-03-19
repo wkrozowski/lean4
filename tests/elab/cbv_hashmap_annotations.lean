@@ -1,8 +1,6 @@
 import Std
 open Std
 
-set_option cbv.warning false
-
 /-! ### HashSet.contains -/
 
 example : (HashSet.emptyWithCapacity.insert 3).contains 3 = true := by cbv

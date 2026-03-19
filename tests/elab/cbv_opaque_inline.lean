@@ -1,5 +1,3 @@
-set_option cbv.warning false
-
 /-! Test that `@[cbv_opaque]` is respected for `@[inline]` and `@[always_inline]` definitions.
 These are reducible, so the preprocessing stage must skip them when they are also `@[cbv_opaque]`. -/
 

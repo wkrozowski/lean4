@@ -1,5 +1,4 @@
 import Std
-set_option cbv.warning false
 -- Use opaque constants so that cbv_eval is the ONLY way cbv can reduce them.
 -- After erasure, cbv makes no progress and the goal must be closed manually.
 
