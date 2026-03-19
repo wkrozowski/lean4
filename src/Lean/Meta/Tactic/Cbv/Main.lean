@@ -102,12 +102,12 @@ open Lean.Meta.Sym.Simp
 
 public register_builtin_option cbv.warning : Bool := {
   defValue := false
-  descr    := "when enabled, display a warning that the `cbv` tactic is being used"
+  descr    := "When enabled, displays a warning that the `cbv` tactic is being used."
 }
 
 public register_builtin_option cbv.maxSteps : Nat := {
   defValue := 100_000
-  descr    := "maximum number of steps for the `cbv` tactic"
+  descr    := "Controls the maximum number of steps for the `cbv` tactic."
 }
 
 def tryEquations : Simproc := fun e => do
