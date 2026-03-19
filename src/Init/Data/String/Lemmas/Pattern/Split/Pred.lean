@@ -59,14 +59,14 @@ theorem toList_split_bool {s : Slice} {p : Char → Bool} :
   simp [toList_split_eq_splitToSubslice, ← toList_splitToSubslice_bool]
 
 @[cbv_eval]
-theorem Pattern.Model.split_bool {p : Char → Bool} {s : Slice} (f curr : s.Pos) (hle : f ≤ curr) :
+theorem Pattern.Model.split_bool_eq {p : Char → Bool} {s : Slice} (f curr : s.Pos) (hle : f ≤ curr) :
     Model.split p f curr hle =
       if h : curr = s.endPos then [s.subslice _ _ hle]
       else if p (curr.get h) then
         s.subslice _ _ hle :: Model.split p (curr.next h) (curr.next h) (by simp [Std.le_refl])
       else Model.split p f (curr.next h) (by simp [Std.le_trans hle _]) := by
   by_cases h : curr = s.endPos
-  · simp [Model.split, h]
+  · simp only [h, split_endPos, subslice_endPos, ↓reduceDIte]
   · simp only [h, ↓reduceDIte]
     by_cases hp : p (curr.get h)
     · simp only [hp, ↓reduceIte]
@@ -119,6 +119,5 @@ theorem toList_split_bool {s : String} {p : Char → Bool} :
 theorem toList_split_prop {s : String} {p : Char → Prop} [DecidablePred p] :
     (s.split p).toList.map Slice.copy = (s.toList.splitOnP p).map String.ofList := by
   simp [split_eq_split_toSlice, Slice.toList_split_prop]
-
 
 end String
