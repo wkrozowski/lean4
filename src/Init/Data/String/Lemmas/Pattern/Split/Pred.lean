@@ -58,8 +58,11 @@ theorem toList_split_bool {s : Slice} {p : Char → Bool} :
     (s.split p).toList.map Slice.copy = (s.copy.toList.splitOnP p).map String.ofList := by
   simp [toList_split_eq_splitToSubslice, ← toList_splitToSubslice_bool]
 
+/-
+  Used internally by the `cbv` tactic.
+-/
 @[cbv_eval]
-theorem Pattern.Model.split_bool_eq {p : Char → Bool} {s : Slice} (f curr : s.Pos) (hle : f ≤ curr) :
+theorem Pattern.Model.split_bool_eq_internal {p : Char → Bool} {s : Slice} (f curr : s.Pos) (hle : f ≤ curr) :
     Model.split p f curr hle =
       if h : curr = s.endPos then [s.subslice _ _ hle]
       else if p (curr.get h) then

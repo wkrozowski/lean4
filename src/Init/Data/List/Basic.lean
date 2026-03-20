@@ -1252,15 +1252,17 @@ Checks whether the first list is a contiguous sub-list of the second.
 The relation `List.IsInfixOf` expresses this property with respect to logical equality.
 
 Examples:
- * `[2, 3].isInfixOf [1, 2, 3, 4] = true`
- * `[2, 3].isInfixOf [1, 3, 2, 4] = false`
- * `[2, 3].isInfixOf [2, 3] = true`
- * `[2, 3].isInfixOf [1] = false`
+ * `[2, 3].isInfixOf_internal [1, 2, 3, 4] = true`
+ * `[2, 3].isInfixOf_internal [1, 3, 2, 4] = false`
+ * `[2, 3].isInfixOf_internal [2, 3] = true`
+ * `[2, 3].isInfixOf_internal [1] = false`
+
+  Used internally by the `cbv` tactic.
 -/
-def isInfixOf [BEq α] (l₁ l₂ : List α) : Bool :=
+def isInfixOf_internal [BEq α] (l₁ l₂ : List α) : Bool :=
   l₁.isPrefixOf l₂ || match l₂ with
     | []      => false
-    | _ :: l₂ => isInfixOf l₁ l₂
+    | _ :: l₂ => isInfixOf_internal l₁ l₂
 
 /-! ### splitAt -/
 

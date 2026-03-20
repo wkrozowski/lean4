@@ -49,8 +49,11 @@ theorem toList_mapAux {f : Char → Char} {s : String} {p : s.Pos}
 theorem toList_map {f : Char → Char} {s : String} : (s.map f).toList = s.toList.map f := by
   simp [map, toList_mapAux s.splits_startPos]
 
+/-
+  Used internally by the `cbv` tactic.
+-/
 @[cbv_eval]
-theorem map_eq {f : Char → Char} {s : String} : s.map f = .ofList (s.toList.map f) := by
+theorem map_eq_internal {f : Char → Char} {s : String} : s.map f = .ofList (s.toList.map f) := by
   apply String.toList_injective
   simp only [toList_map, toList_ofList]
 
