@@ -36,14 +36,11 @@ def Environment.getDeprecatedModuleByIdx? (env : Environment) (idx : ModuleIdx) 
 def Environment.setDeprecatedModule (entry : Option DeprecatedModuleEntry) (env : Environment) : Environment :=
   deprecatedModuleExt.setState env entry
 
-/-- Format a deprecation warning message for a module. -/
+/-- Format a deprecation warning for a module, consistent with `@[deprecated]`. -/
 def formatDeprecatedModuleWarning (modName : Name) (entry : DeprecatedModuleEntry) : String :=
   let base := s!"`{modName}` has been deprecated"
-  let withSince := match entry.since? with
-    | some since => base ++ s!" (since {since})"
-    | none => base
   match entry.message? with
-  | some text => withSince ++ s!": {text}"
-  | none => withSince
+  | some text => base ++ s!": {text}"
+  | none => base
 
 end Lean

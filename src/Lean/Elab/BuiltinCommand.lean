@@ -707,17 +707,20 @@ where
     let env ← getEnv
     IO.eprintln (← env.dbgFormatAsyncState)
 
+/-- Elaborate `deprecated_module`, marking the current module as deprecated. -/
 @[builtin_command_elab Parser.Command.deprecated_module]
-def elabDeprecatedModule : CommandElab := fun stx => do
-  -- stx[1]: optional (ppSpace >> strLit) — stx[1][0] is the strLit
-  -- stx[2]: optional (" (" >> "since" >> " := " >> strLit >> ")") — stx[2][3] is the strLit
-  let message? := if stx[1].isNone then none else stx[1][0].isStrLit?
-  let since? := if stx[2].isNone then none else stx[2][3].isStrLit?
-  if message?.isNone then
-    logWarning "`deprecated_module` should specify a deprecation message"
-  if since?.isNone then
-    logWarning "`deprecated_module` should specify when the deprecation was introduced, \
-      using `(since := \"...\")`"
-  modifyEnv fun env => env.setDeprecatedModule (some { message?, since? })
+def elabDeprecatedModule : CommandElab
+  | `(Parser.Command.deprecated_module| deprecated_module $[$msg?]? $[(since := $since?)]?) => do
+    let message? := msg?.map TSyntax.getString
+    let since? := since?.map TSyntax.getString
+    if (deprecatedModuleExt.getState (← getEnv)).isSome then
+      logWarning "module is already marked as deprecated"
+    if message?.isNone then
+      logWarning "`deprecated_module` should specify a deprecation message"
+    if since?.isNone then
+      logWarning "`deprecated_module` should specify the date or library version \
+        at which the deprecation was introduced, using `(since := \"...\")`"
+    modifyEnv fun env => env.setDeprecatedModule (some { message?, since? })
+  | _ => throwUnsupportedSyntax
 
 end Lean.Elab.Command

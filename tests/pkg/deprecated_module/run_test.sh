@@ -4,10 +4,9 @@ rm -rf .lake/build
 capture lake build Main
 check_out_contains "has been deprecated"
 check_out_contains "use DeprecatedModule.New instead"
-check_out_contains "since 2026-03-19"
+check_out_contains "module is already marked as deprecated"
 
 # TransitiveConsumer only imports Transitive (which imports Old) — no direct import warning
-# Verify it built without deprecation warnings by checking TransitiveConsumer didn't trigger any
 
 # Build Disabled library — linter.deprecatedModule is false, should produce no import-time deprecation warnings
 rm -rf .lake/build
