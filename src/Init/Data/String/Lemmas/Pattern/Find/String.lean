@@ -91,7 +91,7 @@ theorem contains_string_eq_false_iff {t s : String} :
   Bool.eq_false_iff.trans (not_congr contains_string_iff)
 
 /-
-  Used internally by `cbv` tactic.
+  Used internally by the `cbv` tactic.
 -/
 @[cbv_eval]
 theorem contains_string_eq_internal {t s : String} :
