@@ -79,7 +79,7 @@ def processHeaderCore
             fileName := inputCtx.fileName
             pos := pos
             severity := .warning
-            data := .tagged ``deprecatedModuleExt (formatDeprecatedModuleWarning imp.module entry)
+            data := .tagged ``deprecatedModuleExt <| formatDeprecatedModuleWarning imp.module entry
           }
         | none => messages
       | none => messages
