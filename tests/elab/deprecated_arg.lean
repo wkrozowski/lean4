@@ -142,3 +142,91 @@ info: f4 42 : Nat
 #guard_msgs in
 set_option linter.deprecatedArg false in
 #check f4 (new := 42)
+
+/-! ## Removed (no replacement) deprecated arguments -/
+
+-- `oldArg` is still a parameter of the declaration
+/--
+error: `removed` is still a parameter of `r1`; remove it before adding `@[deprecated_arg]`
+-/
+#guard_msgs in
+@[deprecated_arg removed]
+def r1 (removed : Nat) : Nat := removed
+
+-- Valid removed arg without `since`: warns about missing `since`
+/--
+warning: `[deprecated_arg]` attribute should specify the date or library version at which the deprecation was introduced, using `(since := "...")`
+-/
+#guard_msgs in
+@[deprecated_arg removed]
+def r2 (x : Nat) : Nat := x
+
+-- Valid removed arg with `since`: no warning
+#guard_msgs in
+@[deprecated_arg removed (since := "2026-03-23")]
+def r3 (x : Nat) : Nat := x
+
+-- Using a removed arg produces an error
+/--
+error: parameter `removed` of `r2` has been deprecated
+-/
+#guard_msgs in
+#check r2 (removed := 42)
+
+-- Using a removed arg with `since` produces an error
+/--
+error: parameter `removed` of `r3` has been deprecated
+-/
+#guard_msgs in
+#check r3 (removed := 42)
+
+-- Normal args still work alongside removed deprecated args
+/--
+info: r2 42 : Nat
+-/
+#guard_msgs in
+#check r2 (x := 42)
+
+-- Positional args work fine
+/--
+info: r3 42 : Nat
+-/
+#guard_msgs in
+#check r3 42
+
+-- Removed arg error even when linter is disabled (no replacement available)
+/--
+error: parameter `removed` of `r2` has been deprecated
+-/
+#guard_msgs in
+set_option linter.deprecatedArg false in
+#check r2 (removed := 42)
+
+-- Mix of renamed and removed on same declaration
+/--
+warning: `[deprecated_arg]` attribute should specify the date or library version at which the deprecation was introduced, using `(since := "...")`
+---
+warning: `[deprecated_arg]` attribute should specify the date or library version at which the deprecation was introduced, using `(since := "...")`
+-/
+#guard_msgs in
+@[deprecated_arg old new, deprecated_arg removed]
+def r4 (new : Nat) : Nat := new
+
+-- Renamed arg still warns
+/--
+warning: parameter `old` of `r4` has been deprecated, use `new` instead
+
+Hint: Rename this argument:
+  o̵l̵d̵n̲e̲w̲
+---
+info: r4 42 : Nat
+-/
+#guard_msgs in
+#check r4 (old := 42)
+
+-- Removed arg errors
+/--
+error: parameter `removed` of `r4` has been deprecated
+-/
+#guard_msgs in
+#check r4 (removed := 42)

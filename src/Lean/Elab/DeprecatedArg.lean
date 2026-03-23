@@ -20,11 +20,11 @@ register_builtin_option linter.deprecatedArg : Bool := {
   descr := "if true, generate deprecation warnings for renamed parameters"
 }
 
-/-- Entry mapping an old parameter name to a new one for a given declaration. -/
+/-- Entry mapping an old parameter name to a new (or no) parameter for a given declaration. -/
 structure DeprecatedArgEntry where
   declName : Name
   oldArg : Name
-  newArg : Name
+  newArg? : Option Name := none
   since? : Option String := none
   deriving Inhabited
 
@@ -49,32 +49,43 @@ def findDeprecatedArg? (env : Environment) (declName : Name) (argName : Name) :
 
 /-- Format the deprecation warning message for a deprecated argument. -/
 def formatDeprecatedArgMsg (entry : DeprecatedArgEntry) : MessageData :=
-  m!"parameter `{entry.oldArg}` of `{.ofConstName entry.declName}` has been deprecated, \
-    use `{entry.newArg}` instead"
+  match entry.newArg? with
+  | some newArg =>
+    m!"parameter `{entry.oldArg}` of `{.ofConstName entry.declName}` has been deprecated, \
+      use `{newArg}` instead"
+  | none =>
+    m!"parameter `{entry.oldArg}` of `{.ofConstName entry.declName}` has been deprecated"
 
 builtin_initialize registerBuiltinAttribute {
   name := `deprecated_arg
-  descr := "mark a parameter as renamed"
+  descr := "mark a parameter as deprecated"
   add := fun declName stx _kind => do
-    let `(attr| deprecated_arg $oldId $newId $[(since := $since?)]?) := stx
+    let `(attr| deprecated_arg $oldId $[$newId?]? $[(since := $since?)]?) := stx
       | throwError "Invalid `[deprecated_arg]` attribute syntax"
     let oldArg := oldId.getId
-    let newArg := newId.getId
+    let newArg? := newId?.map TSyntax.getId
     let since? := since?.map TSyntax.getString
     let info ← getConstInfo declName
     let paramNames ← MetaM.run' do
       forallTelescopeReducing info.type fun xs _ =>
         xs.mapM fun x => return (← x.fvarId!.getDecl).userName
-    unless Array.any paramNames (· == newArg) do
-      throwError "`{newArg}` is not a parameter of `{declName}`"
-    if Array.any paramNames (· == oldArg) then
-      throwError "`{oldArg}` is still a parameter of `{declName}`; \
-        rename it to `{newArg}` before adding `@[deprecated_arg]`"
+    if let some newArg := newArg? then
+      -- We have a replacement provided
+      unless Array.any paramNames (· == newArg) do
+        throwError "`{newArg}` is not a parameter of `{declName}`"
+      if Array.any paramNames (· == oldArg) then
+        throwError "`{oldArg}` is still a parameter of `{declName}`; \
+          rename it to `{newArg}` before adding `@[deprecated_arg]`"
+    else
+      -- We do not have a replacement provided
+      if Array.any paramNames (· == oldArg) then
+        throwError "`{oldArg}` is still a parameter of `{declName}`; \
+          remove it before adding `@[deprecated_arg]`"
     if since?.isNone then
       logWarning "`[deprecated_arg]` attribute should specify the date or library version \
         at which the deprecation was introduced, using `(since := \"...\")`"
     modifyEnv fun env => deprecatedArgExt.addEntry env {
-      declName, oldArg, newArg, since?
+      declName, oldArg, newArg?, since?
     }
 }
 

@@ -102,18 +102,18 @@ private def findDeprecatedBinderName? (namedArgs : List NamedArg) (f : Expr) (bi
   let env ← getEnv
   for namedArg in namedArgs do
     if let some entry := findDeprecatedArg? env declName namedArg.name then
-      if entry.newArg == binderName then
+      if entry.newArg? == some binderName then
         unless linter.deprecatedArg.get (← getOptions) do
           throwErrorAt namedArg.ref
             m!"parameter `{entry.oldArg}` of `{.ofConstName entry.declName}` has been renamed \
-              to `{entry.newArg}`"
+              to `{entry.newArg?.get!}`"
         let msg := formatDeprecatedArgMsg entry
         -- `namedArg.ref` is: atomic ("(" >> ident >> " := ") >> withoutPosition termParser >> ")"
         let span? := namedArg.ref[1]
         let hint ←
           if span?.getHeadInfo matches .original .. then
             MessageData.hint "Rename this argument:" #[{
-              suggestion := .string entry.newArg.toString
+              suggestion := .string entry.newArg?.get!.toString
               span?
               toCodeActionTitle? := some fun s =>
                 s!"Rename argument `{entry.oldArg}` to `{s}`"
@@ -274,6 +274,11 @@ private def synthesizePendingAndNormalizeFunType : M Unit := do
     else
       for namedArg in s.namedArgs do
         let f := s.f.getAppFn
+        if f.isConst then
+          let env ← getEnv
+          if let some entry := findDeprecatedArg? env f.constName! namedArg.name then
+            if entry.newArg?.isNone then
+              throwErrorAt namedArg.ref (formatDeprecatedArgMsg entry)
         let validNames ← getFoundNamedArgs
         let fnName? := if f.isConst then some f.constName! else none
         throwInvalidNamedArg namedArg fnName? validNames

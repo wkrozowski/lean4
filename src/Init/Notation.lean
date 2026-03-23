@@ -631,8 +631,9 @@ argument is silently forwarded to the new parameter.
 
 * `@[deprecated_arg old new]` marks `old` as a deprecated alias for `new`.
 * `@[deprecated_arg old new (since := "2026-03-18")]` records when the rename was introduced.
+* `@[deprecated_arg old]` marks `old` as a removed parameter (no replacement).
 -/
-syntax (name := deprecated_arg) "deprecated_arg" ppSpace ident ppSpace ident
+syntax (name := deprecated_arg) "deprecated_arg" ppSpace ident (ppSpace ident)?
     (" (" &"since" " := " str ")")? : attr
 
 /--
