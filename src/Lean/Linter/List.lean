@@ -6,7 +6,7 @@ Authors: Kim Morrison
 module
 
 prelude
-public import Lean.Elab.Command
+public import Lean.Linter.Basic
 public import Lean.Server.InfoUtils
 import Lean.Linter.Init
 
