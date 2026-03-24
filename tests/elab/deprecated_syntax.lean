@@ -29,5 +29,24 @@ deprecated_syntax tacticMyDepTac "use `trivial` instead" (since := "2026-03-24")
 
 example : True := by myDepTac
 
--- Test 6: missing since emits a warning
+-- Test 6: Quotation precheck warns at macro definition time
+-- Define a custom syntax, give it a macro expansion, then deprecate it
+syntax "oldThing" : term
+macro_rules | `(oldThing) => `(42)
+deprecated_syntax termOldThing "use `42` instead" (since := "2026-03-24")
+
+-- A macro whose RHS quotation uses the deprecated syntax → warning at definition site
+syntax "usesOld " : term
+macro_rules | `(usesOld) => ``(oldThing)
+
+-- Test 7: set_option linter.deprecatedSyntax false suppresses quotation precheck warning
+syntax "usesOld2 " : term
+set_option linter.deprecatedSyntax false in
+macro_rules | `(usesOld2) => ``(oldThing)
+
+-- Test 8: Quotation that does NOT use deprecated syntax → no warning
+syntax "usesNew " : term
+macro_rules | `(usesNew) => ``(42)
+
+-- Test 9: missing since emits a warning
 deprecated_syntax Lean.Parser.Term.show
