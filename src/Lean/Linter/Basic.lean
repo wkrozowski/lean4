@@ -20,6 +20,8 @@ public section
 
 namespace Lean
 
+open Elab Command
+
 /--
 Given a command elaborator `cmd`, returns a new command elaborator that
 first peels off and evaluates `set_option ... in ...` syntax recursively, updating the options
