@@ -620,6 +620,15 @@ declaration signatures.
 /-- Debugging command: Prints the result of `Environment.dumpAsyncEnvState`. -/
 @[builtin_command_parser] def dumpAsyncEnvState := leading_parser
   "#dump_async_env_state"
+/--
+Mark a syntax kind as deprecated. When this syntax is elaborated, a warning will be emitted.
+
+```
+deprecated_syntax Lean.Parser.Term.let_fun "use `have` instead" (since := "2026-03-18")
+```
+-/
+@[builtin_command_parser] def deprecatedSyntax := leading_parser
+  "deprecated_syntax " >> ident >> optional (ppSpace >> strLit) >> optional (" (" >> nonReservedSymbol "since" >> " := " >> strLit >> ")")
 @[builtin_command_parser] def «init_quot»    := leading_parser
   "init_quot"
 /--

@@ -1,0 +1,9 @@
+deprecated_syntax.lean:6:7-6:26: warning: macro 'Lean.Parser.Term.paren' produces deprecated syntax 'Lean.Parser.Term.let_fun' (since 2026-03-24): use `have` instead
+have x := 1;
+x : Nat
+deprecated_syntax.lean:12:8-12:18: warning: macro 'termMy_wrapper' produces deprecated syntax 'Lean.Parser.Term.let_fun' (since 2026-03-24): use `have` instead
+have x := 1;
+x : Nat
+42 : Nat
+deprecated_syntax.lean:23:21-23:29: warning: syntax 'tacticMyDepTac' has been deprecated (since 2026-03-24): use `trivial` instead
+deprecated_syntax.lean:26:0-26:39: warning: `deprecated_syntax` should specify the date or library version at which the deprecation was introduced, using `(since := "...")`

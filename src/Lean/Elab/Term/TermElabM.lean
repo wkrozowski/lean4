@@ -9,6 +9,7 @@ prelude
 public import Lean.Meta.Coe
 public import Lean.Util.CollectLevelMVars
 public import Lean.Linter.Deprecated
+import Lean.Elab.DeprecatedSyntax
 public import Lean.Elab.Attributes
 public import Lean.Elab.Level
 public import Lean.Elab.PreDefinition.TerminationHint
@@ -1794,6 +1795,7 @@ private partial def elabTermAux (expectedType? : Option Expr) (catchExPostpone :
     withTraceNode `Elab.step (fun _ => return m!"expected type: {expectedType?}, term\n{stx}")
       (tag := stx.getKind.toString) do
     checkSystem "elaborator"
+    checkDeprecatedSyntax stx (← read).macroStack
     let env ← getEnv
     let result ← match (← liftMacroM (expandMacroImpl? env stx)) with
     | some (decl, stxNew?) =>

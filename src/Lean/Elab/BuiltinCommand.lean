@@ -9,6 +9,7 @@ prelude
 public import Lean.Meta.Reduce
 public import Lean.Elab.Eval
 public import Lean.Elab.Command
+import Lean.Elab.DeprecatedSyntax
 public import Lean.Elab.Open
 import Init.Data.Nat.Order
 import Init.Data.Order.Lemmas
@@ -705,5 +706,16 @@ where
   fun _ => do
     let env ← getEnv
     IO.eprintln (← env.dbgFormatAsyncState)
+
+@[builtin_command_elab Parser.Command.deprecatedSyntax] def elabDeprecatedSyntax : CommandElab := fun stx => do
+  let id := stx[1]
+  let kind ← liftCoreM <| checkSyntaxNodeKindAtNamespaces id.getId (← getCurrNamespace)
+  let text? := if stx[2].isNone then none else stx[2][0].isStrLit?
+  let since? := if stx[3].isNone then none else stx[3][3].isStrLit?
+  if since?.isNone then
+    logWarning "`deprecated_syntax` should specify the date or library version at which the \
+      deprecation was introduced, using `(since := \"...\")`"
+  modifyEnv fun env =>
+    deprecatedSyntaxExt.addEntry env { kind, text?, since? }
 
 end Lean.Elab.Command
