@@ -1,9 +1,17 @@
-deprecated_syntax.lean:6:7-6:26: warning: macro 'Lean.Parser.Term.paren' produces deprecated syntax 'Lean.Parser.Term.let_fun' (since 2026-03-24): use `have` instead
+deprecated_syntax.lean:9:8-9:25: warning: macro 'Lean.Parser.Term.paren' produces deprecated syntax 'Lean.Parser.Term.let_fun': use `have` instead
+
+Note: This linter can be disabled with `set_option linter.deprecatedSyntax false`
 have x := 1;
 x : Nat
-deprecated_syntax.lean:12:8-12:18: warning: macro 'termMy_wrapper' produces deprecated syntax 'Lean.Parser.Term.let_fun' (since 2026-03-24): use `have` instead
+deprecated_syntax.lean:15:8-15:18: warning: macro 'termMy_wrapper' produces deprecated syntax 'Lean.Parser.Term.let_fun': use `have` instead
+
+Note: This linter can be disabled with `set_option linter.deprecatedSyntax false`
+have x := 1;
+x : Nat
 have x := 1;
 x : Nat
 42 : Nat
-deprecated_syntax.lean:23:21-23:29: warning: syntax 'tacticMyDepTac' has been deprecated (since 2026-03-24): use `trivial` instead
-deprecated_syntax.lean:26:0-26:39: warning: `deprecated_syntax` should specify the date or library version at which the deprecation was introduced, using `(since := "...")`
+deprecated_syntax.lean:30:21-30:29: warning: syntax 'tacticMyDepTac' has been deprecated: use `trivial` instead
+
+Note: This linter can be disabled with `set_option linter.deprecatedSyntax false`
+deprecated_syntax.lean:33:0-33:39: warning: `deprecated_syntax` should specify the date or library version at which the deprecation was introduced, using `(since := "...")`

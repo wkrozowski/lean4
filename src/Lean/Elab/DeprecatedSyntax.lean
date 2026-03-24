@@ -7,9 +7,19 @@ module
 
 prelude
 public import Lean.MonadEnv
+public import Lean.Linter.Basic
 public import Lean.Elab.Util
 
 public section
+
+namespace Lean.Linter
+
+register_builtin_option linter.deprecatedSyntax : Bool := {
+  defValue := true
+  descr := "if true, generate warnings when deprecated syntax is used"
+}
+
+end Lean.Linter
 
 namespace Lean.Elab
 
@@ -40,18 +50,16 @@ def checkDeprecatedSyntax [Monad m] [MonadEnv m] [MonadLog m] [MonadOptions m]
   let env ← getEnv
   let kind := stx.getKind
   if let some entry := (deprecatedSyntaxExt.getState env).find? kind then
-    let sinceMsg := match entry.since? with
-      | some since => m!" (since {since})"
-      | none => m!""
     let extraMsg := match entry.text? with
       | some text => m!": {text}"
       | none => m!""
     match macroStack with
     | { before := macroStx, .. } :: _ =>
-      logWarningAt macroStx
-        m!"macro '{macroStx.getKind}' produces deprecated syntax '{kind}'{sinceMsg}{extraMsg}"
+      withRef macroStx do
+        Linter.logLintIf Linter.linter.deprecatedSyntax stx
+          m!"macro '{macroStx.getKind}' produces deprecated syntax '{kind}'{extraMsg}"
     | [] =>
-      logWarningAt stx
-        m!"syntax '{kind}' has been deprecated{sinceMsg}{extraMsg}"
+      Linter.logLintIf Linter.linter.deprecatedSyntax stx
+        m!"syntax '{kind}' has been deprecated{extraMsg}"
 
 end Lean.Elab
