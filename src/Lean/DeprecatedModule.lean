@@ -12,11 +12,8 @@ public section
 
 namespace Lean
 
-/-- Entry storing deprecation metadata for a module. -/
 structure DeprecatedModuleEntry where
-  /-- Deprecation message (e.g., "use Lean.NewLocation.Foo instead"). -/
   message? : Option String := none
-  /-- Version or date when the deprecation was introduced. -/
   since? : Option String := none
   deriving Inhabited
 
@@ -35,9 +32,9 @@ def Environment.setDeprecatedModule (entry : Option DeprecatedModuleEntry) (env 
   deprecatedModuleExt.setState env entry
 
 def formatDeprecatedModuleWarning (modName : Name) (entry : DeprecatedModuleEntry) : String :=
-  let base := s!"`{modName}` has been deprecated"
-  match entry.message? with
-  | some text => base ++ s!": {text}"
-  | none => unreachable!
+  let extraMsg := match entry.message? with
+  | some text => s!": {text}"
+  | none => ""
+  s!"`{modName}` has been deprecated" ++ extraMsg
 
 end Lean

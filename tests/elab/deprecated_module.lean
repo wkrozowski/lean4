@@ -2,16 +2,14 @@
 Tests for the `deprecated_module` command.
 -/
 
--- Missing both message and since
+-- Missing since (message is optional)
 /--
-warning: `deprecated_module` should specify a deprecation message
----
 warning: `deprecated_module` should specify the date or library version at which the deprecation was introduced, using `(since := "...")`
 -/
 #guard_msgs in
 deprecated_module
 
--- Missing since only (also warns about duplicate since module is already marked above)
+-- Missing since with message (also warns about duplicate since module is already marked above)
 /--
 warning: module is already marked as deprecated
 ---
@@ -20,12 +18,8 @@ warning: `deprecated_module` should specify the date or library version at which
 #guard_msgs in
 deprecated_module "use NewModule instead"
 
--- Missing message only (also warns about duplicate)
-/--
-warning: module is already marked as deprecated
----
-warning: `deprecated_module` should specify a deprecation message
--/
+-- No message, with since (also warns about duplicate)
+/-- warning: module is already marked as deprecated -/
 #guard_msgs in
 deprecated_module (since := "2026-03-19")
 

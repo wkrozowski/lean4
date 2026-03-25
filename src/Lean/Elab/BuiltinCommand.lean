@@ -715,8 +715,6 @@ def elabDeprecatedModule : CommandElab
     let since? := since?.map TSyntax.getString
     if (deprecatedModuleExt.getState (← getEnv)).isSome then
       logWarning "module is already marked as deprecated"
-    if message?.isNone then
-      logWarning "`deprecated_module` should specify a deprecation message"
     if since?.isNone then
       logWarning "`deprecated_module` should specify the date or library version \
         at which the deprecation was introduced, using `(since := \"...\")`"

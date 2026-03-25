@@ -635,7 +635,7 @@ When another module imports a deprecated module, a warning is emitted during ela
 deprecated_module "use NewModule instead" (since := "2026-03-19")
 ```
 
-The warning message and `since` date are optional but recommended.
+The warning message is optional but recommended.
 The warning can be disabled with `set_option linter.deprecatedModule false` or
 `-Dlinter.deprecatedModule=false`.
 -/
