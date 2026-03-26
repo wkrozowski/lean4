@@ -996,6 +996,7 @@ goto v___jp_255_;
 v___jp_255_:
 {
 lean_object* v___x_257_; lean_object* v___x_258_; lean_object* v___x_259_; lean_object* v___x_260_; lean_object* v___x_261_; lean_object* v___x_262_; lean_object* v___x_263_; lean_object* v___x_264_; lean_object* v___x_265_; lean_object* v___x_266_; lean_object* v___x_267_; lean_object* v___x_268_; lean_object* v___x_269_; lean_object* v___x_270_; lean_object* v___x_271_; 
+lean_inc_ref(v___y_256_);
 v___x_257_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_257_, 0, v___y_256_);
 v___x_258_ = lean_alloc_ctor(5, 2, 0);
@@ -1969,6 +1970,7 @@ goto v___jp_593_;
 v___jp_593_:
 {
 lean_object* v___x_595_; lean_object* v___x_596_; lean_object* v___x_597_; lean_object* v___x_598_; lean_object* v___x_599_; lean_object* v___x_600_; 
+lean_inc_ref(v___y_594_);
 v___x_595_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_595_, 0, v___y_594_);
 v___x_596_ = lean_alloc_ctor(5, 2, 0);

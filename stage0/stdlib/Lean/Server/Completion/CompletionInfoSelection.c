@@ -47,7 +47,7 @@ uint8_t l_String_instDecidableLtRaw___aux__1(lean_object*, lean_object*);
 lean_object* l_Array_qpartition___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Info_size_x3f(lean_object*);
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 uint8_t l_Lean_Elab_Info_occursInOrOnBoundary(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_getRangeWithTrailing_x3f(lean_object*, uint8_t);
 uint8_t l_Lean_Syntax_Range_contains(lean_object*, lean_object*, uint8_t);
@@ -734,7 +734,7 @@ _start:
 {
 lean_object* v___x_153_; lean_object* v___x_154_; 
 v___x_153_ = lean_unsigned_to_nat(0u);
-v___x_154_ = lean_panic_fn(v___x_153_, v_msg_152_);
+v___x_154_ = lean_panic_fn_borrowed(v___x_153_, v_msg_152_);
 return v___x_154_;
 }
 }

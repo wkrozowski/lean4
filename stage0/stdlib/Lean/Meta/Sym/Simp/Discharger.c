@@ -2706,10 +2706,9 @@ _start:
 lean_object* v_lctx_840_; lean_object* v_decls_841_; lean_object* v___x_842_; lean_object* v___x_843_; 
 v_lctx_840_ = lean_ctor_get(v_a_835_, 2);
 v_decls_841_ = lean_ctor_get(v_lctx_840_, 1);
-lean_inc_ref(v_decls_841_);
 v___x_842_ = ((lean_object*)(l_Lean_Meta_Sym_Simp_dischargeAssumption___closed__0));
+lean_inc_ref(v_decls_841_);
 v___x_843_ = l_Lean_PersistentArray_forIn___at___00Lean_Meta_Sym_Simp_dischargeAssumption_spec__0(v_e_829_, v_decls_841_, v___x_842_, v_a_830_, v_a_831_, v_a_832_, v_a_833_, v_a_834_, v_a_835_, v_a_836_, v_a_837_, v_a_838_);
-lean_dec_ref(v_a_835_);
 if (lean_obj_tag(v___x_843_) == 0)
 {
 lean_object* v_a_844_; lean_object* v___x_846_; uint8_t v_isShared_847_; uint8_t v_isSharedCheck_857_; 
@@ -2836,6 +2835,7 @@ v_res_877_ = l_Lean_Meta_Sym_Simp_dischargeAssumption(v_e_866_, v_a_867_, v_a_86
 lean_dec(v_a_875_);
 lean_dec_ref(v_a_874_);
 lean_dec(v_a_873_);
+lean_dec_ref(v_a_872_);
 lean_dec(v_a_871_);
 lean_dec_ref(v_a_870_);
 lean_dec(v_a_869_);

@@ -63,7 +63,7 @@ lean_object* l_StateT_bind(lean_object*, lean_object*, lean_object*, lean_object
 lean_object* l_ReaderT_instMonad___redArg(lean_object*);
 extern lean_object* l_Lean_instInhabitedExpr;
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_Sym_Internal_mkBVarS___at___00Lean_Meta_Sym_lowerLooseBVarsS_x27_spec__0___redArg(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_Sym_Internal_mkBVarS___at___00Lean_Meta_Sym_lowerLooseBVarsS_x27_spec__0(lean_object*, uint8_t, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_Sym_Internal_mkBVarS___at___00Lean_Meta_Sym_lowerLooseBVarsS_x27_spec__0___boxed(lean_object*, lean_object*, lean_object*);
@@ -534,7 +534,8 @@ lean_ctor_set(v___x_158_, 0, v___x_156_);
 lean_ctor_set(v___x_158_, 1, v___x_157_);
 v___x_159_ = l_Lean_instInhabitedExpr;
 v___x_160_ = l_instInhabitedOfMonad___redArg(v___x_158_, v___x_159_);
-v___x_20767__overap_161_ = lean_panic_fn(v___x_160_, v_msg_124_);
+v___x_20767__overap_161_ = lean_panic_fn_borrowed(v___x_160_, v_msg_124_);
+lean_dec(v___x_160_);
 v___x_162_ = lean_box(v___y_126_);
 v___x_163_ = lean_apply_3(v___x_20767__overap_161_, v___y_125_, v___x_162_, v___y_127_);
 return v___x_163_;

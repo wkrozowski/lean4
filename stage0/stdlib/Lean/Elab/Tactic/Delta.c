@@ -318,7 +318,6 @@ lean_object* v_a_71_; lean_object* v___x_72_;
 v_a_71_ = lean_ctor_get(v___x_70_, 0);
 lean_inc(v_a_71_);
 lean_dec_ref(v___x_70_);
-lean_inc_ref(v_a_65_);
 lean_inc(v_fvarId_63_);
 v___x_72_ = l_Lean_FVarId_getDecl___redArg(v_fvarId_63_, v_a_65_, v_a_67_, v_a_68_);
 if (lean_obj_tag(v___x_72_) == 0)

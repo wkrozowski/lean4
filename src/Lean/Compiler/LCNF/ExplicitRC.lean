@@ -235,11 +235,6 @@ def withParams (ps : Array (Param .impure)) (x : RcM α) : RcM α := do
       { ctx with idx := ctx.idx + 1, varMap }
   withReader update x
 
-def LetValue.isPersistent (val : LetValue .impure) : Bool :=
-  match val with
-  | .fap _ xs => xs.isEmpty -- all global constants are persistent
-  | _ => false
-
 @[inline]
 def withLetDecl (decl : LetDecl .impure) (x : RcM α) : RcM α := do
   let update := fun ctx =>

@@ -38,7 +38,7 @@ lean_object* l_String_Slice_toString(lean_object*);
 lean_object* lean_string_append(lean_object*, lean_object*);
 uint8_t lean_string_validate_utf8(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_string_from_utf8_unchecked(lean_object*);
 lean_object* lean_st_ref_take(lean_object*);
 lean_object* lean_st_ref_set(lean_object*, lean_object*);
@@ -769,7 +769,7 @@ _start:
 {
 lean_object* v___x_205_; lean_object* v___x_206_; 
 v___x_205_ = ((lean_object*)(l_panic___at___00Lake_ensureJob_spec__0___closed__0));
-v___x_206_ = lean_panic_fn(v___x_205_, v_msg_204_);
+v___x_206_ = lean_panic_fn_borrowed(v___x_205_, v_msg_204_);
 return v___x_206_;
 }
 }

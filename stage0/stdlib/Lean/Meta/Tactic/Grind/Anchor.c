@@ -1375,7 +1375,6 @@ case 1:
 {
 lean_object* v_fvarId_424_; lean_object* v___x_425_; 
 v_fvarId_424_ = lean_ctor_get(v_e_352_, 0);
-lean_inc_ref(v_a_358_);
 lean_inc(v_fvarId_424_);
 v___x_425_ = l_Lean_FVarId_getDecl___redArg(v_fvarId_424_, v_a_358_, v_a_360_, v_a_361_);
 if (lean_obj_tag(v___x_425_) == 0)

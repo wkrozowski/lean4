@@ -63,7 +63,7 @@ lean_object* lean_mk_empty_array_with_capacity(lean_object*);
 lean_object* l_Lean_PersistentArray_push___redArg(lean_object*, lean_object*);
 lean_object* l_Lean_Expr_getAppFn(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_mkConstWithFreshMVarLevels(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_LocalContext_mkLocalDecl(lean_object*, lean_object*, lean_object*, lean_object*, uint8_t, uint8_t);
 lean_object* l_Lean_Expr_fvar___override(lean_object*);
@@ -2380,7 +2380,7 @@ _start:
 {
 lean_object* v___x_663_; lean_object* v___x_664_; 
 v___x_663_ = lean_box(0);
-v___x_664_ = lean_panic_fn(v___x_663_, v_msg_662_);
+v___x_664_ = lean_panic_fn_borrowed(v___x_663_, v_msg_662_);
 return v___x_664_;
 }
 }
@@ -2891,6 +2891,7 @@ lean_ctor_set(v___x_831_, 1, v_openDecls_818_);
 v___x_832_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_832_, 0, v___x_831_);
 lean_ctor_set(v___x_832_, 1, v___y_811_);
+lean_inc_ref(v___y_809_);
 lean_inc_ref(v___y_810_);
 v___x_833_ = lean_alloc_ctor(0, 5, 3);
 lean_ctor_set(v___x_833_, 0, v___y_810_);
@@ -6130,13 +6131,11 @@ v___x_1949_ = l_Lean_Expr_fvar___override(v_uniq_1943_);
 v___x_1950_ = lean_alloc_ctor(1, 1, 0);
 lean_ctor_set(v___x_1950_, 0, v___x_1945_);
 v___x_1951_ = l_Lean_Elab_Tactic_Do_ProofMode_addLocalVarInfo(v_stx_1929_, v___x_1948_, v___x_1949_, v___x_1950_, v_isBinder_1932_, v_a_1933_, v_a_1934_, v_a_1935_, v_a_1936_);
-lean_dec_ref(v_a_1933_);
 return v___x_1951_;
 }
 else
 {
 lean_object* v_a_1952_; lean_object* v___x_1954_; uint8_t v_isShared_1955_; uint8_t v_isSharedCheck_1959_; 
-lean_dec_ref(v_a_1933_);
 lean_dec_ref(v_hyp_1931_);
 lean_dec_ref(v_00_u03c3s_1930_);
 lean_dec(v_stx_1929_);
@@ -6189,6 +6188,7 @@ v_res_1970_ = l_Lean_Elab_Tactic_Do_ProofMode_addHypInfo(v_stx_1960_, v_00_u03c3
 lean_dec(v_a_1967_);
 lean_dec_ref(v_a_1966_);
 lean_dec(v_a_1965_);
+lean_dec_ref(v_a_1964_);
 return v_res_1970_;
 }
 }

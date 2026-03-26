@@ -943,8 +943,6 @@ v_a_271_ = lean_ctor_get(v___x_270_, 0);
 lean_inc(v_a_271_);
 lean_dec_ref(v___x_270_);
 v_macroStack_272_ = lean_ctor_get(v___y_267_, 4);
-lean_inc(v_macroStack_272_);
-lean_dec_ref(v___y_267_);
 v___x_273_ = l_Lean_addMessageContextPartial___at___00Lean_throwError___at___00__private_Lean_Elab_Tactic_Grind_Annotated_0__Lean_Elab_Tactic_Grind_elabGrindAnnotated_spec__1_spec__1___redArg(v_msg_266_, v___y_268_);
 v_a_274_ = lean_ctor_get(v___x_273_, 0);
 lean_inc(v_a_274_);
@@ -952,6 +950,7 @@ lean_dec_ref(v___x_273_);
 lean_inc(v_macroStack_272_);
 v___x_275_ = l_Lean_Elab_getBetterRef(v_a_271_, v_macroStack_272_);
 lean_dec(v_a_271_);
+lean_inc(v_macroStack_272_);
 v___x_276_ = l_Lean_Elab_addMacroStack___at___00Lean_throwError___at___00__private_Lean_Elab_Tactic_Grind_Annotated_0__Lean_Elab_Tactic_Grind_elabGrindAnnotated_spec__1_spec__2___redArg(v_a_274_, v_macroStack_272_, v___y_268_);
 v_a_277_ = lean_ctor_get(v___x_276_, 0);
 v_isSharedCheck_285_ = !lean_is_exclusive(v___x_276_);
@@ -999,7 +998,6 @@ return v___x_283_;
 else
 {
 lean_object* v_a_286_; lean_object* v___x_288_; uint8_t v_isShared_289_; uint8_t v_isSharedCheck_293_; 
-lean_dec_ref(v___y_267_);
 lean_dec_ref(v_msg_266_);
 v_a_286_ = lean_ctor_get(v___x_270_, 0);
 v_isSharedCheck_293_ = !lean_is_exclusive(v___x_270_);
@@ -1047,6 +1045,7 @@ _start:
 lean_object* v_res_298_; 
 v_res_298_ = l_Lean_throwError___at___00__private_Lean_Elab_Tactic_Grind_Annotated_0__Lean_Elab_Tactic_Grind_elabGrindAnnotated_spec__1___redArg(v_msg_294_, v___y_295_, v___y_296_);
 lean_dec(v___y_296_);
+lean_dec_ref(v___y_295_);
 return v_res_298_;
 }
 }
@@ -1106,7 +1105,6 @@ v___x_328_ = lean_obj_once(&l___private_Lean_Elab_Tactic_Grind_Annotated_0__Lean
 v___x_329_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_329_, 0, v___x_327_);
 lean_ctor_set(v___x_329_, 1, v___x_328_);
-lean_inc_ref(v_a_314_);
 v___x_330_ = l_Lean_throwError___at___00__private_Lean_Elab_Tactic_Grind_Annotated_0__Lean_Elab_Tactic_Grind_elabGrindAnnotated_spec__1___redArg(v___x_329_, v_a_314_, v_a_315_);
 return v___x_330_;
 }
@@ -1269,7 +1267,6 @@ LEAN_EXPORT lean_object* l_Lean_throwError___at___00__private_Lean_Elab_Tactic_G
 _start:
 {
 lean_object* v___x_386_; 
-lean_inc_ref(v___y_383_);
 v___x_386_ = l_Lean_throwError___at___00__private_Lean_Elab_Tactic_Grind_Annotated_0__Lean_Elab_Tactic_Grind_elabGrindAnnotated_spec__1___redArg(v_msg_382_, v___y_383_, v___y_384_);
 return v___x_386_;
 }

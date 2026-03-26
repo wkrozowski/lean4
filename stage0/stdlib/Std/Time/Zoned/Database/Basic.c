@@ -262,6 +262,7 @@ v___x_69_ = l_Std_Time_TimeZone_instInhabitedLocalTimeType_default;
 v_time_70_ = lean_array_get_borrowed(v___x_67_, v_transitionTimes_65_, v_index_63_);
 v___x_71_ = lean_box(v___x_68_);
 v_indice_72_ = lean_array_get_borrowed(v___x_71_, v_transitionIndices_66_, v_index_63_);
+lean_dec(v___x_71_);
 v___x_73_ = lean_unbox(v_indice_72_);
 v___x_74_ = lean_uint8_to_nat(v___x_73_);
 v___x_75_ = lean_array_get_borrowed(v___x_69_, v_times_62_, v___x_74_);

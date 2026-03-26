@@ -3236,8 +3236,6 @@ _start:
 {
 lean_object* v_currNamespace_1200_; lean_object* v___x_1201_; lean_object* v_env_1202_; lean_object* v_nextMacroScope_1203_; lean_object* v_ngen_1204_; lean_object* v_auxDeclNGen_1205_; lean_object* v_traceState_1206_; lean_object* v_messages_1207_; lean_object* v_infoState_1208_; lean_object* v_snapshotTasks_1209_; lean_object* v___x_1211_; uint8_t v_isShared_1212_; uint8_t v_isSharedCheck_1236_; 
 v_currNamespace_1200_ = lean_ctor_get(v___y_1197_, 6);
-lean_inc(v_currNamespace_1200_);
-lean_dec_ref(v___y_1197_);
 v___x_1201_ = lean_st_ref_take(v___y_1198_);
 v_env_1202_ = lean_ctor_get(v___x_1201_, 0);
 v_nextMacroScope_1203_ = lean_ctor_get(v___x_1201_, 1);
@@ -3275,6 +3273,7 @@ goto v_resetjp_1210_;
 v_resetjp_1210_:
 {
 lean_object* v___x_1213_; lean_object* v___x_1214_; lean_object* v___x_1216_; 
+lean_inc(v_currNamespace_1200_);
 v___x_1213_ = l_Lean_ScopedEnvExtension_addCore___redArg(v_env_1202_, v_ext_1193_, v_b_1194_, v_kind_1195_, v_currNamespace_1200_);
 v___x_1214_ = lean_obj_once(&l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_Grind_Extension_addInjectiveAttr_spec__0___redArg___closed__2, &l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_Grind_Extension_addInjectiveAttr_spec__0___redArg___closed__2_once, _init_l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_Grind_Extension_addInjectiveAttr_spec__0___redArg___closed__2);
 if (v_isShared_1212_ == 0)
@@ -3373,6 +3372,7 @@ uint8_t v_kind_boxed_1245_; lean_object* v_res_1246_;
 v_kind_boxed_1245_ = lean_unbox(v_kind_1240_);
 v_res_1246_ = l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_Grind_Extension_addInjectiveAttr_spec__0___redArg(v_ext_1238_, v_b_1239_, v_kind_boxed_1245_, v___y_1241_, v___y_1242_, v___y_1243_);
 lean_dec(v___y_1243_);
+lean_dec_ref(v___y_1242_);
 lean_dec(v___y_1241_);
 return v_res_1246_;
 }
@@ -3381,7 +3381,6 @@ LEAN_EXPORT lean_object* l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_Grind_
 _start:
 {
 lean_object* v___x_1258_; 
-lean_inc_ref(v___y_1255_);
 v___x_1258_ = l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_Grind_Extension_addInjectiveAttr_spec__0___redArg(v_ext_1250_, v_b_1251_, v_kind_1252_, v___y_1254_, v___y_1255_, v___y_1256_);
 return v___x_1258_;
 }
@@ -3412,7 +3411,6 @@ lean_inc(v_a_1281_);
 lean_dec_ref(v___x_1280_);
 v___x_1282_ = lean_alloc_ctor(4, 1, 0);
 lean_ctor_set(v___x_1282_, 0, v_a_1281_);
-lean_inc_ref(v_a_1277_);
 v___x_1283_ = l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_Grind_Extension_addInjectiveAttr_spec__0___redArg(v_ext_1272_, v___x_1282_, v_attrKind_1274_, v_a_1276_, v_a_1277_, v_a_1278_);
 return v___x_1283_;
 }

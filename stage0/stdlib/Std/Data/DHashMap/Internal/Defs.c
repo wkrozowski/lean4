@@ -3193,6 +3193,7 @@ _start:
 {
 lean_object* v_res_1343_; 
 v_res_1343_ = l_Std_DHashMap_Internal_Raw_u2080_get_x21___redArg(v_inst_1338_, v_inst_1339_, v_m_1340_, v_a_1341_, v_inst_1342_);
+lean_dec(v_inst_1342_);
 lean_dec_ref(v_m_1340_);
 return v_res_1343_;
 }
@@ -3210,6 +3211,7 @@ _start:
 {
 lean_object* v_res_1361_; 
 v_res_1361_ = l_Std_DHashMap_Internal_Raw_u2080_get_x21(v_00_u03b1_1353_, v_00_u03b2_1354_, v_inst_1355_, v_inst_1356_, v_inst_1357_, v_m_1358_, v_a_1359_, v_inst_1360_);
+lean_dec(v_inst_1360_);
 lean_dec_ref(v_m_1358_);
 return v_res_1361_;
 }
@@ -4725,6 +4727,7 @@ _start:
 lean_object* v_res_2126_; 
 v_res_2126_ = l_Std_DHashMap_Internal_Raw_u2080_Const_get_x21___redArg(v_inst_2121_, v_inst_2122_, v_inst_2123_, v_m_2124_, v_a_2125_);
 lean_dec_ref(v_m_2124_);
+lean_dec(v_inst_2123_);
 return v_res_2126_;
 }
 }
@@ -4742,6 +4745,7 @@ _start:
 lean_object* v_res_2142_; 
 v_res_2142_ = l_Std_DHashMap_Internal_Raw_u2080_Const_get_x21(v_00_u03b1_2135_, v_00_u03b2_2136_, v_inst_2137_, v_inst_2138_, v_inst_2139_, v_m_2140_, v_a_2141_);
 lean_dec_ref(v_m_2140_);
+lean_dec(v_inst_2139_);
 return v_res_2142_;
 }
 }
@@ -5297,6 +5301,7 @@ _start:
 lean_object* v_res_2448_; 
 v_res_2448_ = l_Std_DHashMap_Internal_Raw_u2080_getKey_x21___redArg(v_inst_2443_, v_inst_2444_, v_inst_2445_, v_m_2446_, v_a_2447_);
 lean_dec_ref(v_m_2446_);
+lean_dec(v_inst_2445_);
 return v_res_2448_;
 }
 }
@@ -5314,6 +5319,7 @@ _start:
 lean_object* v_res_2464_; 
 v_res_2464_ = l_Std_DHashMap_Internal_Raw_u2080_getKey_x21(v_00_u03b1_2457_, v_00_u03b2_2458_, v_inst_2459_, v_inst_2460_, v_inst_2461_, v_m_2462_, v_a_2463_);
 lean_dec_ref(v_m_2462_);
+lean_dec(v_inst_2461_);
 return v_res_2464_;
 }
 }

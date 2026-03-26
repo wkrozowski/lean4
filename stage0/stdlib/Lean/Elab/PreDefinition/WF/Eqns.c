@@ -3848,7 +3848,6 @@ v___x_1282_ = lean_box(v_hasTrace_1241_);
 v___f_1283_ = lean_alloc_closure((void*)(l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___lam__0___boxed), 7, 2);
 lean_closure_set(v___f_1283_, 0, v___x_1281_);
 lean_closure_set(v___f_1283_, 1, v___x_1282_);
-lean_inc_ref(v_a_1231_);
 lean_inc(v___x_1245_);
 v___x_1284_ = l_Lean_Meta_realizeConst(v_declName_1228_, v___x_1245_, v___f_1283_, v_a_1229_, v_a_1230_, v_a_1231_, v_a_1232_);
 if (lean_obj_tag(v___x_1284_) == 0)
@@ -4230,7 +4229,6 @@ v___x_1561_ = lean_box(v___x_1520_);
 v___f_1562_ = lean_alloc_closure((void*)(l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___lam__3___boxed), 7, 2);
 lean_closure_set(v___f_1562_, 0, v___x_1560_);
 lean_closure_set(v___f_1562_, 1, v___x_1561_);
-lean_inc_ref(v_a_1231_);
 lean_inc(v___x_1524_);
 v___x_1563_ = l_Lean_Meta_realizeConst(v_declName_1228_, v___x_1524_, v___f_1562_, v_a_1229_, v_a_1230_, v_a_1231_, v_a_1232_);
 if (lean_obj_tag(v___x_1563_) == 0)
@@ -4744,7 +4742,6 @@ v___x_1432_ = lean_box(v___x_1390_);
 v___f_1433_ = lean_alloc_closure((void*)(l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___lam__3___boxed), 7, 2);
 lean_closure_set(v___f_1433_, 0, v___x_1431_);
 lean_closure_set(v___f_1433_, 1, v___x_1432_);
-lean_inc_ref(v_a_1231_);
 lean_inc(v___x_1395_);
 v___x_1434_ = l_Lean_Meta_realizeConst(v_declName_1228_, v___x_1395_, v___f_1433_, v_a_1229_, v_a_1230_, v_a_1231_, v_a_1232_);
 if (lean_obj_tag(v___x_1434_) == 0)
@@ -5050,7 +5047,6 @@ v___x_1496_ = lean_box(v___x_1467_);
 v___f_1497_ = lean_alloc_closure((void*)(l___private_Lean_Elab_PreDefinition_WF_Eqns_0__Lean_Elab_WF_copyPrivateUnfoldTheorem___lam__3___boxed), 7, 2);
 lean_closure_set(v___f_1497_, 0, v___x_1495_);
 lean_closure_set(v___f_1497_, 1, v___x_1496_);
-lean_inc_ref(v_a_1231_);
 lean_inc(v___x_1458_);
 v___x_1498_ = l_Lean_Meta_realizeConst(v_declName_1228_, v___x_1458_, v___f_1497_, v_a_1229_, v_a_1230_, v_a_1231_, v_a_1232_);
 if (lean_obj_tag(v___x_1498_) == 0)

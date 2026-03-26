@@ -81,7 +81,7 @@ lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_obje
 lean_object* l_Lean_Elab_Term_instMonadTermElabM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Term_instMonadTermElabM___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr2(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr1(lean_object*);
 lean_object* l_Lean_Name_append(lean_object*, lean_object*);
@@ -773,7 +773,7 @@ _start:
 {
 lean_object* v___x_106_; lean_object* v___x_107_; 
 v___x_106_ = lean_box(0);
-v___x_107_ = lean_panic_fn(v___x_106_, v_msg_105_);
+v___x_107_ = lean_panic_fn_borrowed(v___x_106_, v_msg_105_);
 return v___x_107_;
 }
 }
@@ -5635,7 +5635,8 @@ v_reusejp_2015_:
 lean_object* v___x_2017_; lean_object* v___x_2018_; lean_object* v___x_3780__overap_2019_; lean_object* v___x_2020_; 
 v___x_2017_ = lean_box(0);
 v___x_2018_ = l_instInhabitedOfMonad___redArg(v___x_2016_, v___x_2017_);
-v___x_3780__overap_2019_ = lean_panic_fn(v___x_2018_, v_msg_1936_);
+v___x_3780__overap_2019_ = lean_panic_fn_borrowed(v___x_2018_, v_msg_1936_);
+lean_dec(v___x_2018_);
 lean_inc(v___y_1942_);
 lean_inc_ref(v___y_1941_);
 lean_inc(v___y_1940_);
@@ -5968,9 +5969,8 @@ lean_inc(v_a_2142_);
 lean_dec_ref(v___x_2141_);
 v_macroStack_2143_ = lean_ctor_get(v___y_2133_, 1);
 lean_inc(v_macroStack_2143_);
-lean_dec_ref(v___y_2133_);
-lean_inc(v_macroStack_2143_);
 v___x_2144_ = l_Lean_Elab_getBetterRef(v_ref_2140_, v_macroStack_2143_);
+lean_inc(v_macroStack_2143_);
 v___x_2145_ = l_Lean_Elab_addMacroStack___at___00Lean_throwError___at___00Lean_getConstInfoCtor___at___00__private_Lean_Elab_Coinductive_0__Lean_Elab_Command_generateCoinductiveConstructors_spec__0_spec__0_spec__1___redArg(v_a_2142_, v_macroStack_2143_, v___y_2137_);
 v_a_2146_ = lean_ctor_get(v___x_2145_, 0);
 v_isSharedCheck_2154_ = !lean_is_exclusive(v___x_2145_);
@@ -6026,6 +6026,7 @@ lean_dec_ref(v___y_2160_);
 lean_dec(v___y_2159_);
 lean_dec_ref(v___y_2158_);
 lean_dec(v___y_2157_);
+lean_dec_ref(v___y_2156_);
 return v_res_2163_;
 }
 }
@@ -6253,7 +6254,6 @@ v___x_2192_ = lean_obj_once(&l_Lean_getConstInfoCtor___at___00__private_Lean_Ela
 v___x_2193_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_2193_, 0, v___x_2191_);
 lean_ctor_set(v___x_2193_, 1, v___x_2192_);
-lean_inc_ref(v___y_2180_);
 v___x_2194_ = l_Lean_throwError___at___00Lean_getConstInfoCtor___at___00__private_Lean_Elab_Coinductive_0__Lean_Elab_Command_generateCoinductiveConstructors_spec__0_spec__0___redArg(v___x_2193_, v___y_2180_, v___y_2181_, v___y_2182_, v___y_2183_, v___y_2184_, v___y_2185_);
 return v___x_2194_;
 }
@@ -6820,7 +6820,6 @@ LEAN_EXPORT lean_object* l_Lean_throwError___at___00Lean_getConstInfoCtor___at__
 _start:
 {
 lean_object* v___x_2456_; 
-lean_inc_ref(v___y_2449_);
 v___x_2456_ = l_Lean_throwError___at___00Lean_getConstInfoCtor___at___00__private_Lean_Elab_Coinductive_0__Lean_Elab_Command_generateCoinductiveConstructors_spec__0_spec__0___redArg(v_msg_2448_, v___y_2449_, v___y_2450_, v___y_2451_, v___y_2452_, v___y_2453_, v___y_2454_);
 return v___x_2456_;
 }
@@ -8967,7 +8966,6 @@ lean_dec_ref(v___x_3283_);
 lean_dec_ref(v_params_3282_);
 lean_dec_ref(v___x_3281_);
 lean_dec_ref(v___x_3280_);
-lean_dec(v___x_3279_);
 lean_dec(v___x_3278_);
 lean_dec(v_numIndices_3277_);
 lean_dec(v___x_3275_);
@@ -9058,7 +9056,6 @@ lean_dec_ref(v___x_3283_);
 lean_dec_ref(v_params_3282_);
 lean_dec_ref(v___x_3281_);
 lean_dec_ref(v___x_3280_);
-lean_dec(v___x_3279_);
 lean_dec(v___x_3278_);
 lean_dec(v_numIndices_3277_);
 lean_dec(v___x_3275_);
@@ -9113,7 +9110,6 @@ lean_dec_ref(v___x_3283_);
 lean_dec_ref(v_params_3282_);
 lean_dec_ref(v___x_3281_);
 lean_dec_ref(v___x_3280_);
-lean_dec(v___x_3279_);
 lean_dec(v___x_3278_);
 lean_dec(v_numIndices_3277_);
 lean_dec(v___x_3275_);
@@ -9168,7 +9164,6 @@ lean_dec_ref(v___x_3283_);
 lean_dec_ref(v_params_3282_);
 lean_dec_ref(v___x_3281_);
 lean_dec_ref(v___x_3280_);
-lean_dec(v___x_3279_);
 lean_dec(v___x_3278_);
 lean_dec(v_numIndices_3277_);
 lean_dec(v___x_3275_);
@@ -9208,6 +9203,7 @@ lean_dec(v___y_3358_);
 lean_dec_ref(v___y_3357_);
 lean_dec(v___y_3356_);
 lean_dec_ref(v___y_3355_);
+lean_dec(v___x_3344_);
 lean_dec_ref(v_a_3341_);
 return v_res_3360_;
 }
@@ -10278,7 +10274,6 @@ v___x_3840_ = lean_obj_once(&l_Lean_getConstInfoInduct___at___00Lean_Elab_Comman
 v___x_3841_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_3841_, 0, v___x_3839_);
 lean_ctor_set(v___x_3841_, 1, v___x_3840_);
-lean_inc_ref(v___y_3826_);
 v___x_3842_ = l_Lean_throwError___at___00Lean_getConstInfoCtor___at___00__private_Lean_Elab_Coinductive_0__Lean_Elab_Command_generateCoinductiveConstructors_spec__0_spec__0___redArg(v___x_3841_, v___y_3826_, v___y_3827_, v___y_3828_, v___y_3829_, v___y_3830_, v___y_3831_);
 return v___x_3842_;
 }

@@ -768,6 +768,7 @@ lean_object* v_expr_229_; lean_object* v_proof_230_; lean_object* v___x_231_; le
 lean_inc_ref(v___y_228_);
 v_expr_229_ = l_Lean_mkAppB(v___x_225_, v___x_226_, v___y_228_);
 v_proof_230_ = ((lean_object*)(l_Lean_Elab_Tactic_BVDecide_Frontend_ReifiedBVLogical_mkBoolConst___redArg___closed__3));
+lean_inc_ref(v___y_228_);
 v___x_231_ = lean_alloc_ctor(0, 4, 0);
 lean_ctor_set(v___x_231_, 0, v_boolExpr_224_);
 lean_ctor_set(v___x_231_, 1, v___y_228_);
@@ -1413,6 +1414,7 @@ goto v___jp_477_;
 v___jp_477_:
 {
 lean_object* v_expr_479_; lean_object* v___x_480_; lean_object* v___x_481_; 
+lean_inc_ref(v___y_478_);
 v_expr_479_ = l_Lean_mkApp4(v___x_475_, v___x_476_, v___y_478_, v_expr_468_, v_expr_470_);
 v___x_480_ = lean_alloc_ctor(0, 4, 0);
 lean_ctor_set(v___x_480_, 0, v_boolExpr_472_);

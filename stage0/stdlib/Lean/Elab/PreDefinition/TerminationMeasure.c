@@ -20,7 +20,7 @@ uint8_t lean_expr_eqv(lean_object*, lean_object*);
 lean_object* lean_nat_add(lean_object*, lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_instInhabitedMetaM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_MessageData_ofFormat(lean_object*);
 size_t lean_usize_of_nat(lean_object*);
 uint8_t lean_usize_dec_eq(size_t, size_t);
@@ -546,7 +546,7 @@ _start:
 {
 lean_object* v___x_120_; lean_object* v___x_121_; 
 v___x_120_ = l_Lean_instInhabitedExpr;
-v___x_121_ = lean_panic_fn(v___x_120_, v_msg_119_);
+v___x_121_ = lean_panic_fn_borrowed(v___x_120_, v_msg_119_);
 return v___x_121_;
 }
 }
@@ -607,7 +607,7 @@ _start:
 {
 lean_object* v___x_169_; lean_object* v___x_3754__overap_170_; lean_object* v___x_171_; 
 v___x_169_ = lean_obj_once(&l_panic___at___00Lean_Elab_TerminationMeasure_elab_spec__6___closed__0, &l_panic___at___00Lean_Elab_TerminationMeasure_elab_spec__6___closed__0_once, _init_l_panic___at___00Lean_Elab_TerminationMeasure_elab_spec__6___closed__0);
-v___x_3754__overap_170_ = lean_panic_fn(v___x_169_, v_msg_161_);
+v___x_3754__overap_170_ = lean_panic_fn_borrowed(v___x_169_, v_msg_161_);
 lean_inc(v___y_167_);
 lean_inc_ref(v___y_166_);
 lean_inc(v___y_165_);
@@ -1000,9 +1000,8 @@ lean_inc(v_a_330_);
 lean_dec_ref(v___x_329_);
 v_macroStack_331_ = lean_ctor_get(v___y_321_, 1);
 lean_inc(v_macroStack_331_);
-lean_dec_ref(v___y_321_);
-lean_inc(v_macroStack_331_);
 v___x_332_ = l_Lean_Elab_getBetterRef(v_ref_328_, v_macroStack_331_);
+lean_inc(v_macroStack_331_);
 v___x_333_ = l_Lean_Elab_addMacroStack___at___00Lean_throwError___at___00Lean_throwErrorAt___at___00Lean_Elab_TerminationMeasure_elab_spec__4_spec__5_spec__9___redArg(v_a_330_, v_macroStack_331_, v___y_325_);
 v_a_334_ = lean_ctor_get(v___x_333_, 0);
 v_isSharedCheck_342_ = !lean_is_exclusive(v___x_333_);
@@ -1058,6 +1057,7 @@ lean_dec_ref(v___y_348_);
 lean_dec(v___y_347_);
 lean_dec_ref(v___y_346_);
 lean_dec(v___y_345_);
+lean_dec_ref(v___y_344_);
 return v_res_351_;
 }
 }
@@ -1112,7 +1112,6 @@ lean_ctor_set(v___x_378_, 12, v_cancelTk_x3f_374_);
 lean_ctor_set(v___x_378_, 13, v_inheritedTraceOptions_376_);
 lean_ctor_set_uint8(v___x_378_, sizeof(void*)*14, v_diag_373_);
 lean_ctor_set_uint8(v___x_378_, sizeof(void*)*14 + 1, v_suppressElabErrors_375_);
-lean_inc_ref(v___y_354_);
 v___x_379_ = l_Lean_throwError___at___00Lean_throwErrorAt___at___00Lean_Elab_TerminationMeasure_elab_spec__4_spec__5___redArg(v_msg_353_, v___y_354_, v___y_355_, v___y_356_, v___y_357_, v___x_378_, v___y_359_);
 lean_dec_ref(v___x_378_);
 return v___x_379_;
@@ -2096,7 +2095,6 @@ LEAN_EXPORT lean_object* l_Lean_throwError___at___00Lean_throwErrorAt___at___00L
 _start:
 {
 lean_object* v___x_800_; 
-lean_inc_ref(v___y_793_);
 v___x_800_ = l_Lean_throwError___at___00Lean_throwErrorAt___at___00Lean_Elab_TerminationMeasure_elab_spec__4_spec__5___redArg(v_msg_792_, v___y_793_, v___y_794_, v___y_795_, v___y_796_, v___y_797_, v___y_798_);
 return v___x_800_;
 }
@@ -2142,7 +2140,7 @@ _start:
 {
 lean_object* v___f_838_; lean_object* v___x_417__overap_839_; lean_object* v___x_840_; 
 v___f_838_ = ((lean_object*)(l_panic___at___00Lean_Elab_TerminationMeasure_structuralArg_spec__1___closed__0));
-v___x_417__overap_839_ = lean_panic_fn(v___f_838_, v_msg_832_);
+v___x_417__overap_839_ = lean_panic_fn_borrowed(v___f_838_, v_msg_832_);
 lean_inc(v___y_836_);
 lean_inc_ref(v___y_835_);
 lean_inc(v___y_834_);
@@ -2788,7 +2786,6 @@ v_isZero_1160_ = lean_nat_dec_eq(v_a_1150_, v_zero_1159_);
 if (v_isZero_1160_ == 1)
 {
 lean_object* v___x_1161_; 
-lean_inc_ref(v_a_1156_);
 v___x_1161_ = l_Lean_PrettyPrinter_Delaborator_delab(v_a_1152_, v_a_1153_, v_a_1154_, v_a_1155_, v_a_1156_, v_a_1157_);
 if (lean_obj_tag(v___x_1161_) == 0)
 {

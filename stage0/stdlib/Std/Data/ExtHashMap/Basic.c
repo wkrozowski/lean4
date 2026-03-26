@@ -1582,6 +1582,7 @@ _start:
 lean_object* v_res_634_; 
 v_res_634_ = l_Std_ExtHashMap_get_x21___redArg(v_x_629_, v_x_630_, v_inst_631_, v_m_632_, v_a_633_);
 lean_dec(v_m_632_);
+lean_dec(v_inst_631_);
 return v_res_634_;
 }
 }
@@ -1599,6 +1600,7 @@ _start:
 lean_object* v_res_654_; 
 v_res_654_ = l_Std_ExtHashMap_get_x21(v_00_u03b1_645_, v_00_u03b2_646_, v_x_647_, v_x_648_, v_inst_649_, v_inst_650_, v_inst_651_, v_m_652_, v_a_653_);
 lean_dec(v_m_652_);
+lean_dec(v_inst_651_);
 return v_res_654_;
 }
 }
@@ -1650,6 +1652,7 @@ _start:
 lean_object* v_res_688_; 
 v_res_688_ = l_Std_ExtHashMap_instGetElem_x3fMem___redArg___lam__2(v_inst_683_, v_inst_684_, v_inst_685_, v_m_686_, v_a_687_);
 lean_dec(v_m_686_);
+lean_dec(v_inst_685_);
 return v_res_688_;
 }
 }
@@ -1803,6 +1806,7 @@ _start:
 lean_object* v_res_803_; 
 v_res_803_ = l_Std_ExtHashMap_getKey_x21___redArg(v_x_798_, v_x_799_, v_inst_800_, v_m_801_, v_a_802_);
 lean_dec(v_m_801_);
+lean_dec(v_inst_800_);
 return v_res_803_;
 }
 }
@@ -1820,6 +1824,7 @@ _start:
 lean_object* v_res_823_; 
 v_res_823_ = l_Std_ExtHashMap_getKey_x21(v_00_u03b1_814_, v_00_u03b2_815_, v_x_816_, v_x_817_, v_inst_818_, v_inst_819_, v_inst_820_, v_m_821_, v_a_822_);
 lean_dec(v_m_821_);
+lean_dec(v_inst_820_);
 return v_res_823_;
 }
 }

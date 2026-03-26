@@ -2793,6 +2793,7 @@ lean_inc(v_asyncMode_938_);
 v___x_939_ = lean_box(0);
 v___x_940_ = l___private_Lean_Environment_0__Lean_EnvExtension_getStateUnsafe___redArg(v___x_934_, v___x_937_, v_env_936_, v_asyncMode_938_, v___x_939_);
 lean_dec(v_asyncMode_938_);
+lean_dec(v___x_934_);
 v___x_941_ = l___private_Lean_Meta_Tactic_LibrarySearch_0__Lean_Meta_LibrarySearch_ext;
 v___x_942_ = ((lean_object*)(l_Lean_Meta_LibrarySearch_libSearchFindDecls___closed__0));
 v___x_943_ = ((lean_object*)(l_Lean_Meta_LibrarySearch_droppedKeys));
@@ -2841,6 +2842,7 @@ lean_inc(v_asyncMode_972_);
 v___x_973_ = lean_box(0);
 v___x_974_ = l___private_Lean_Environment_0__Lean_EnvExtension_getStateUnsafe___redArg(v___x_968_, v___x_971_, v_env_970_, v_asyncMode_972_, v___x_973_);
 lean_dec(v_asyncMode_972_);
+lean_dec(v___x_968_);
 v___x_975_ = lean_st_ref_get(v___x_974_);
 if (lean_obj_tag(v___x_975_) == 0)
 {
@@ -5001,6 +5003,7 @@ goto v___jp_1732_;
 v___jp_1732_:
 {
 lean_object* v___x_1734_; lean_object* v___x_1735_; lean_object* v___x_1736_; lean_object* v___x_1737_; 
+lean_inc_ref(v___y_1733_);
 v___x_1734_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_1734_, 0, v___x_1731_);
 lean_ctor_set(v___x_1734_, 1, v___y_1733_);

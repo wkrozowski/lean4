@@ -21,7 +21,7 @@ lean_object* lean_array_uset(lean_object*, size_t, lean_object*);
 size_t lean_usize_add(size_t, size_t);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Compiler_LCNF_instInhabitedCodeDecl_default(uint8_t);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr1(lean_object*);
 lean_object* l_Lean_Expr_const___override(lean_object*, lean_object*);
 lean_object* l_Array_instInhabited(lean_object*);
@@ -472,7 +472,8 @@ lean_ctor_set(v___x_40_, 0, v___x_39_);
 v___x_41_ = l_instInhabitedOfMonad___redArg(v___x_36_, v___x_40_);
 v___f_42_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_42_, 0, v___x_41_);
-v___x_1671__overap_43_ = lean_panic_fn(v___f_42_, v_msg_5_);
+v___x_1671__overap_43_ = lean_panic_fn_borrowed(v___f_42_, v_msg_5_);
+lean_dec_ref(v___f_42_);
 lean_inc(v___y_9_);
 lean_inc_ref(v___y_8_);
 lean_inc(v___y_7_);
@@ -1349,7 +1350,7 @@ _start:
 {
 lean_object* v___x_333_; lean_object* v___x_334_; 
 v___x_333_ = lean_obj_once(&l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Compiler_LCNF_ExpandResetReuse_0__Lean_Compiler_LCNF_eraseProjIncFor_spec__1___closed__0, &l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Compiler_LCNF_ExpandResetReuse_0__Lean_Compiler_LCNF_eraseProjIncFor_spec__1___closed__0_once, _init_l___private_Init_While_0__Lean_Loop_forIn_loop___at___00__private_Lean_Compiler_LCNF_ExpandResetReuse_0__Lean_Compiler_LCNF_eraseProjIncFor_spec__1___closed__0);
-v___x_334_ = lean_panic_fn(v___x_333_, v_msg_332_);
+v___x_334_ = lean_panic_fn_borrowed(v___x_333_, v_msg_332_);
 return v___x_334_;
 }
 }
@@ -2446,7 +2447,8 @@ v___x_671_ = lean_box(v___x_670_);
 v___x_672_ = l_instInhabitedOfMonad___redArg(v___x_669_, v___x_671_);
 v___f_673_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_673_, 0, v___x_672_);
-v___x_994__overap_674_ = lean_panic_fn(v___f_673_, v_msg_638_);
+v___x_994__overap_674_ = lean_panic_fn_borrowed(v___f_673_, v_msg_638_);
+lean_dec_ref(v___f_673_);
 lean_inc(v___y_642_);
 lean_inc_ref(v___y_641_);
 lean_inc(v___y_640_);
@@ -4372,7 +4374,8 @@ v___x_1402_ = lean_obj_once(&l_panic___at___00__private_Lean_Compiler_LCNF_Expan
 v___x_1403_ = l_instInhabitedOfMonad___redArg(v___x_1401_, v___x_1402_);
 v___f_1404_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_1404_, 0, v___x_1403_);
-v___x_7079__overap_1405_ = lean_panic_fn(v___f_1404_, v_msg_1370_);
+v___x_7079__overap_1405_ = lean_panic_fn_borrowed(v___f_1404_, v_msg_1370_);
+lean_dec_ref(v___f_1404_);
 lean_inc(v___y_1374_);
 lean_inc_ref(v___y_1373_);
 lean_inc(v___y_1372_);

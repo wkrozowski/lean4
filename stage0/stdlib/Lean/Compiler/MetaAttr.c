@@ -49,7 +49,7 @@ lean_object* l_Id_instMonad___lam__3(lean_object*, lean_object*, lean_object*, l
 lean_object* l_Id_instMonad___lam__4___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Id_instMonad___lam__6(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_array_fget(lean_object*, lean_object*);
 lean_object* l_Lean_SimplePersistentEnvExtension_getState___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_PersistentEnvExtension_getModuleEntries___redArg(lean_object*, lean_object*, lean_object*, lean_object*, uint8_t);
@@ -730,7 +730,8 @@ lean_ctor_set(v___x_267_, 1, v___f_264_);
 v___x_268_ = 0;
 v___x_269_ = lean_box(v___x_268_);
 v___x_270_ = l_instInhabitedOfMonad___redArg(v___x_267_, v___x_269_);
-v___x_271_ = lean_panic_fn(v___x_270_, v_msg_257_);
+v___x_271_ = lean_panic_fn_borrowed(v___x_270_, v_msg_257_);
+lean_dec(v___x_270_);
 v___x_272_ = lean_unbox(v___x_271_);
 lean_dec(v___x_271_);
 return v___x_272_;

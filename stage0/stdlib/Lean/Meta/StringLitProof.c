@@ -231,12 +231,12 @@ v___x_21_ = lean_nat_dec_lt(v_i_18_, v_stop_19_);
 if (v___x_21_ == 0)
 {
 lean_dec(v_i_18_);
+lean_inc_ref(v_b_17_);
 return v_b_17_;
 }
 else
 {
 lean_object* v___x_22_; lean_object* v___x_23_; lean_object* v___x_27_; lean_object* v___x_28_; lean_object* v___x_29_; lean_object* v___x_30_; uint32_t v___x_31_; uint32_t v___x_32_; uint8_t v___x_33_; 
-lean_dec_ref(v_b_17_);
 v___x_22_ = lean_box(0);
 v___x_23_ = ((lean_object*)(l___private_Init_Data_Range_Basic_0__Std_Legacy_Range_forIn_x27_loop___at___00Lean_Meta_mkStringLitNeProof_spec__1___redArg___closed__0));
 v___x_27_ = l___private_Init_Data_Range_Basic_0__Std_Legacy_Range_forIn_x27_loop___at___00Lean_Meta_mkStringLitNeProof_spec__1___redArg___boxed__const__1;
@@ -273,12 +273,11 @@ goto v___jp_24_;
 }
 v___jp_24_:
 {
-lean_object* v___x_25_; 
+lean_object* v___x_25_; lean_object* v___x_26_; 
 v___x_25_ = lean_nat_add(v_i_18_, v_step_20_);
 lean_dec(v_i_18_);
-v_b_17_ = v___x_23_;
-v_i_18_ = v___x_25_;
-goto _start;
+v___x_26_ = l___private_Init_Data_Range_Basic_0__Std_Legacy_Range_forIn_x27_loop___at___00Lean_Meta_mkStringLitNeProof_spec__1___redArg(v_l_u2081_14_, v_l_u2082_15_, v_range_16_, v___x_23_, v___x_25_);
+return v___x_26_;
 }
 }
 }
@@ -288,6 +287,7 @@ _start:
 {
 lean_object* v_res_41_; 
 v_res_41_ = l___private_Init_Data_Range_Basic_0__Std_Legacy_Range_forIn_x27_loop___at___00Lean_Meta_mkStringLitNeProof_spec__1___redArg(v_l_u2081_36_, v_l_u2082_37_, v_range_38_, v_b_39_, v_i_40_);
+lean_dec_ref(v_b_39_);
 lean_dec_ref(v_range_38_);
 lean_dec(v_l_u2082_37_);
 lean_dec(v_l_u2081_36_);
@@ -660,7 +660,6 @@ if (v___x_268_ == 0)
 {
 lean_dec_ref(v_tlExpr_265_);
 lean_dec_ref(v_hdExpr_264_);
-lean_dec(v___y_255_);
 v___y_243_ = v___y_254_;
 v___y_244_ = v___y_256_;
 v___y_245_ = v___y_257_;
@@ -672,6 +671,7 @@ else
 {
 lean_object* v___x_269_; lean_object* v___x_270_; lean_object* v___x_271_; lean_object* v___x_272_; 
 v___x_269_ = ((lean_object*)(l_Lean_Meta_mkStringLitNeProof___closed__32));
+lean_inc(v___y_255_);
 v___x_270_ = l_Lean_mkConst(v___x_269_, v___y_255_);
 v___x_271_ = l_Lean_mkApp3(v___x_224_, v_type_222_, v_hdExpr_264_, v_tlExpr_265_);
 v___x_272_ = l_Lean_mkApp4(v___x_270_, v_listCharTy_250_, v___x_271_, v_nil_223_, v_consNeNil_267_);
@@ -883,6 +883,7 @@ _start:
 {
 lean_object* v_res_360_; 
 v_res_360_ = l___private_Init_Data_Range_Basic_0__Std_Legacy_Range_forIn_x27_loop___at___00Lean_Meta_mkStringLitNeProof_spec__1(v_l_u2081_353_, v_l_u2082_354_, v_range_355_, v_b_356_, v_i_357_, v_hs_358_, v_hl_359_);
+lean_dec_ref(v_b_356_);
 lean_dec_ref(v_range_355_);
 lean_dec(v_l_u2082_354_);
 lean_dec(v_l_u2081_353_);

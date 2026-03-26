@@ -317,6 +317,7 @@ lean_object* v___x_73_; lean_object* v___x_74_; uint8_t v___x_75_; lean_object* 
 v___x_73_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_73_, 0, v___x_69_);
 lean_ctor_set(v___x_73_, 1, v___x_72_);
+lean_inc(v___y_68_);
 v___x_74_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_74_, 0, v___y_68_);
 lean_ctor_set(v___x_74_, 1, v___x_73_);
@@ -403,6 +404,7 @@ v___x_98_ = l_Lean_Data_AC_instReprExpr_repr(v_rhs_85_, v___x_89_);
 v___x_99_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_99_, 0, v___x_97_);
 lean_ctor_set(v___x_99_, 1, v___x_98_);
+lean_inc(v___y_91_);
 v___x_100_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_100_, 0, v___y_91_);
 lean_ctor_set(v___x_100_, 1, v___x_99_);

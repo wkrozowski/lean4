@@ -1101,6 +1101,7 @@ v_a_347_ = lean_ctor_get(v___x_346_, 0);
 lean_inc(v_a_347_);
 lean_dec_ref(v___x_346_);
 v___x_348_ = ((lean_object*)(l_Lean_Compiler_LCNF_Decl_simp_x3f___closed__12));
+lean_inc_ref(v___y_338_);
 v___x_349_ = l_Lean_Name_mkStr4(v___x_280_, v___x_281_, v___y_338_, v___x_348_);
 lean_inc(v___x_349_);
 v___x_350_ = l_Lean_isTracingEnabledFor___at___00Lean_Compiler_LCNF_Decl_simp_x3f_spec__0___redArg(v___x_349_, v_a_207_);
@@ -1258,7 +1259,6 @@ lean_object* v_a_378_; lean_object* v___x_380_; uint8_t v_isShared_381_; uint8_t
 lean_dec(v_inlineLocal_345_);
 lean_dec(v_inline_344_);
 lean_dec(v_visited_343_);
-lean_dec_ref(v___y_338_);
 lean_del_object(v___x_276_);
 lean_dec(v_inlineAttr_x3f_213_);
 lean_dec_ref(v_toSignature_210_);
@@ -1304,7 +1304,6 @@ return v___x_383_;
 else
 {
 lean_object* v_a_386_; lean_object* v___x_388_; uint8_t v_isShared_389_; uint8_t v_isSharedCheck_393_; 
-lean_dec_ref(v___y_338_);
 lean_del_object(v___x_276_);
 lean_dec(v_inlineAttr_x3f_213_);
 lean_dec_ref(v_toSignature_210_);

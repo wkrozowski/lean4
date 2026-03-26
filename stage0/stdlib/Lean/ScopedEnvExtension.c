@@ -5544,7 +5544,6 @@ lean_dec(v___x_1863_);
 if (lean_obj_tag(v_stateStack_1864_) == 1)
 {
 lean_object* v_head_1865_; lean_object* v_state_1866_; 
-lean_dec(v_inst_1856_);
 v_head_1865_ = lean_ctor_get(v_stateStack_1864_, 0);
 lean_inc(v_head_1865_);
 lean_dec_ref(v_stateStack_1864_);
@@ -5570,6 +5569,7 @@ lean_object* v_res_1873_;
 v_res_1873_ = l_Lean_ScopedEnvExtension_getState___redArg(v_inst_1869_, v_ext_1870_, v_env_1871_, v_asyncMode_1872_);
 lean_dec(v_asyncMode_1872_);
 lean_dec_ref(v_ext_1870_);
+lean_dec(v_inst_1869_);
 return v_res_1873_;
 }
 }
@@ -5588,6 +5588,7 @@ lean_object* v_res_1889_;
 v_res_1889_ = l_Lean_ScopedEnvExtension_getState(v_00_u03c3_1882_, v_00_u03b1_1883_, v_00_u03b2_1884_, v_inst_1885_, v_ext_1886_, v_env_1887_, v_asyncMode_1888_);
 lean_dec(v_asyncMode_1888_);
 lean_dec_ref(v_ext_1886_);
+lean_dec(v_inst_1885_);
 return v_res_1889_;
 }
 }

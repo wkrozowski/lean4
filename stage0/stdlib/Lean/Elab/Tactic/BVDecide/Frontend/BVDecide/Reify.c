@@ -3413,6 +3413,7 @@ v___jp_937_:
 {
 lean_object* v___x_939_; lean_object* v___x_940_; lean_object* v___x_941_; lean_object* v___x_942_; lean_object* v___x_943_; lean_object* v___x_945_; 
 lean_inc_ref(v_expr_924_);
+lean_inc_ref(v___y_938_);
 lean_inc_ref(v_expr_927_);
 lean_inc_ref(v___x_936_);
 v___x_939_ = l_Lean_mkApp4(v___x_935_, v___x_936_, v_expr_927_, v___y_938_, v_expr_924_);

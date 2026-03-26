@@ -2010,7 +2010,6 @@ goto v___jp_824_;
 else
 {
 lean_object* v_val_833_; 
-lean_dec(v___x_820_);
 v_val_833_ = lean_ctor_get(v___x_830_, 0);
 lean_inc(v_val_833_);
 lean_dec_ref(v___x_830_);
@@ -2047,6 +2046,7 @@ _start:
 uint8_t v___x_668__boxed_848_; lean_object* v_res_849_; 
 v___x_668__boxed_848_ = lean_unbox(v___x_835_);
 v_res_849_ = l_Lean_Doc_parseStrLit_x27___redArg___lam__3(v_source_834_, v___x_668__boxed_848_, v___y_836_, v_env_837_, v_p_838_, v_toPure_839_, v_toBind_840_, v_inst_841_, v_inst_842_, v_inst_843_, v_inst_844_, v_s_845_, v___x_846_, v_____do__lift_847_);
+lean_dec(v___x_846_);
 lean_dec(v_s_845_);
 return v_res_849_;
 }
@@ -2061,7 +2061,6 @@ if (lean_obj_tag(v___x_874_) == 0)
 {
 lean_object* v___x_875_; lean_object* v___x_876_; 
 v___x_875_ = lean_obj_once(&l___private_Lean_Elab_DocString_Builtin_Parsing_0__Lean_Doc_strLitRange___redArg___closed__3, &l___private_Lean_Elab_DocString_Builtin_Parsing_0__Lean_Doc_strLitRange___redArg___closed__3_once, _init_l___private_Lean_Elab_DocString_Builtin_Parsing_0__Lean_Doc_strLitRange___redArg___closed__3);
-lean_inc(v___x_859_);
 v___x_876_ = l_panic___redArg(v___x_859_, v___x_875_);
 v___y_870_ = v___x_876_;
 goto v___jp_869_;

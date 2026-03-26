@@ -26,7 +26,7 @@ lean_object* l_Lean_Elab_Tactic_Do_ProofMode_parseEmptyHyp_x3f(lean_object*);
 lean_object* lean_expr_dbg_to_string(lean_object*);
 lean_object* lean_string_append(lean_object*, lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr5(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Tactic_Do_ProofMode_SPred_mkAnd_x21(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_st_ref_get(lean_object*);
@@ -182,7 +182,7 @@ _start:
 {
 lean_object* v___x_12_; lean_object* v___x_13_; 
 v___x_12_ = lean_box(0);
-v___x_13_ = lean_panic_fn(v___x_12_, v_msg_11_);
+v___x_13_ = lean_panic_fn_borrowed(v___x_12_, v_msg_11_);
 return v___x_13_;
 }
 }
@@ -1051,7 +1051,6 @@ v_00_u03c3s_320_ = lean_ctor_get(v_goal_307_, 1);
 lean_inc_ref(v_00_u03c3s_320_);
 lean_dec_ref(v_goal_307_);
 v___x_321_ = 0;
-lean_inc_ref(v_a_309_);
 v___x_322_ = l_Lean_Elab_Tactic_Do_ProofMode_addHypInfo(v_name_308_, v_00_u03c3s_320_, v_val_319_, v___x_321_, v_a_309_, v_a_310_, v_a_311_, v_a_312_);
 if (lean_obj_tag(v___x_322_) == 0)
 {

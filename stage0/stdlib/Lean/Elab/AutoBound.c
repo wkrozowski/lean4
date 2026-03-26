@@ -16,7 +16,7 @@ extern "C" {
 lean_object* lean_register_option(lean_object*, lean_object*);
 lean_object* l_Lean_instInhabitedPersistentArray_default(lean_object*);
 extern lean_object* l_String_instInhabitedSlice;
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr1(lean_object*);
 lean_object* lean_nat_add(lean_object*, lean_object*);
 lean_object* lean_string_utf8_next_fast(lean_object*, lean_object*);
@@ -331,7 +331,7 @@ _start:
 {
 lean_object* v___x_80_; lean_object* v___x_81_; 
 v___x_80_ = l_String_instInhabitedSlice;
-v___x_81_ = lean_panic_fn(v___x_80_, v_msg_79_);
+v___x_81_ = lean_panic_fn_borrowed(v___x_80_, v_msg_79_);
 return v___x_81_;
 }
 }

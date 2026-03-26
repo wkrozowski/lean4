@@ -521,6 +521,7 @@ lean_ctor_set(v___x_127_, 1, v_openDecls_114_);
 v___x_128_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_128_, 0, v___x_127_);
 lean_ctor_set(v___x_128_, 1, v___y_106_);
+lean_inc_ref(v___y_103_);
 lean_inc_ref(v___y_109_);
 v___x_129_ = lean_alloc_ctor(0, 5, 3);
 lean_ctor_set(v___x_129_, 0, v___y_109_);
@@ -954,120 +955,46 @@ return v___x_326_;
 LEAN_EXPORT lean_object* l___private_Lake_DSL_Attributes_0__Lake_initFn_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_(){
 _start:
 {
-lean_object* v___x_331_; lean_object* v_attr_332_; lean_object* v_toAttributeImplCore_333_; lean_object* v_add_334_; lean_object* v_erase_335_; lean_object* v___x_337_; uint8_t v_isShared_338_; uint8_t v_isSharedCheck_358_; 
+lean_object* v___x_331_; lean_object* v_attr_332_; lean_object* v_toAttributeImplCore_333_; lean_object* v_add_334_; lean_object* v_erase_335_; lean_object* v_descr_336_; uint8_t v_applicationTime_337_; lean_object* v___x_338_; lean_object* v___x_339_; lean_object* v___f_340_; lean_object* v___f_341_; lean_object* v___x_342_; lean_object* v___x_343_; lean_object* v___x_344_; 
 v___x_331_ = l_Lake_testDriverAttr;
 v_attr_332_ = lean_ctor_get(v___x_331_, 0);
 lean_inc_ref(v_attr_332_);
 v_toAttributeImplCore_333_ = lean_ctor_get(v_attr_332_, 0);
+lean_inc_ref(v_toAttributeImplCore_333_);
 v_add_334_ = lean_ctor_get(v_attr_332_, 1);
+lean_inc_ref(v_add_334_);
 v_erase_335_ = lean_ctor_get(v_attr_332_, 2);
-v_isSharedCheck_358_ = !lean_is_exclusive(v_attr_332_);
-if (v_isSharedCheck_358_ == 0)
-{
-v___x_337_ = v_attr_332_;
-v_isShared_338_ = v_isSharedCheck_358_;
-goto v_resetjp_336_;
-}
-else
-{
-lean_inc(v_erase_335_);
-lean_inc(v_add_334_);
-lean_inc(v_toAttributeImplCore_333_);
-lean_dec(v_attr_332_);
-v___x_337_ = lean_box(0);
-v_isShared_338_ = v_isSharedCheck_358_;
-goto v_resetjp_336_;
-}
-v_resetjp_336_:
-{
-lean_object* v_descr_339_; uint8_t v_applicationTime_340_; lean_object* v___x_342_; uint8_t v_isShared_343_; uint8_t v_isSharedCheck_355_; 
-v_descr_339_ = lean_ctor_get(v_toAttributeImplCore_333_, 2);
-v_applicationTime_340_ = lean_ctor_get_uint8(v_toAttributeImplCore_333_, sizeof(void*)*3);
-v_isSharedCheck_355_ = !lean_is_exclusive(v_toAttributeImplCore_333_);
-if (v_isSharedCheck_355_ == 0)
-{
-lean_object* v_unused_356_; lean_object* v_unused_357_; 
-v_unused_356_ = lean_ctor_get(v_toAttributeImplCore_333_, 1);
-lean_dec(v_unused_356_);
-v_unused_357_ = lean_ctor_get(v_toAttributeImplCore_333_, 0);
-lean_dec(v_unused_357_);
-v___x_342_ = v_toAttributeImplCore_333_;
-v_isShared_343_ = v_isSharedCheck_355_;
-goto v_resetjp_341_;
-}
-else
-{
-lean_inc(v_descr_339_);
-lean_dec(v_toAttributeImplCore_333_);
-v___x_342_ = lean_box(0);
-v_isShared_343_ = v_isSharedCheck_355_;
-goto v_resetjp_341_;
-}
-v_resetjp_341_:
-{
-lean_object* v___x_344_; lean_object* v___x_345_; lean_object* v___f_346_; lean_object* v___f_347_; lean_object* v___x_349_; 
-v___x_344_ = lean_obj_once(&l___private_Lake_DSL_Attributes_0__Lake_initFn___closed__22_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_, &l___private_Lake_DSL_Attributes_0__Lake_initFn___closed__22_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2__once, _init_l___private_Lake_DSL_Attributes_0__Lake_initFn___closed__22_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_);
-v___x_345_ = ((lean_object*)(l___private_Lake_DSL_Attributes_0__Lake_initFn___closed__24_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_));
-v___f_346_ = lean_alloc_closure((void*)(l___private_Lake_DSL_Attributes_0__Lake_initFn___lam__0_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2____boxed), 7, 1);
-lean_closure_set(v___f_346_, 0, v_add_334_);
-v___f_347_ = lean_alloc_closure((void*)(l___private_Lake_DSL_Attributes_0__Lake_initFn___lam__1_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2____boxed), 5, 1);
-lean_closure_set(v___f_347_, 0, v_erase_335_);
-if (v_isShared_343_ == 0)
-{
-lean_ctor_set(v___x_342_, 1, v___x_345_);
-lean_ctor_set(v___x_342_, 0, v___x_344_);
-v___x_349_ = v___x_342_;
-goto v_reusejp_348_;
-}
-else
-{
-lean_object* v_reuseFailAlloc_354_; 
-v_reuseFailAlloc_354_ = lean_alloc_ctor(0, 3, 1);
-lean_ctor_set(v_reuseFailAlloc_354_, 0, v___x_344_);
-lean_ctor_set(v_reuseFailAlloc_354_, 1, v___x_345_);
-lean_ctor_set(v_reuseFailAlloc_354_, 2, v_descr_339_);
-lean_ctor_set_uint8(v_reuseFailAlloc_354_, sizeof(void*)*3, v_applicationTime_340_);
-v___x_349_ = v_reuseFailAlloc_354_;
-goto v_reusejp_348_;
-}
-v_reusejp_348_:
-{
-lean_object* v___x_351_; 
-if (v_isShared_338_ == 0)
-{
-lean_ctor_set(v___x_337_, 2, v___f_347_);
-lean_ctor_set(v___x_337_, 1, v___f_346_);
-lean_ctor_set(v___x_337_, 0, v___x_349_);
-v___x_351_ = v___x_337_;
-goto v_reusejp_350_;
-}
-else
-{
-lean_object* v_reuseFailAlloc_353_; 
-v_reuseFailAlloc_353_ = lean_alloc_ctor(0, 3, 0);
-lean_ctor_set(v_reuseFailAlloc_353_, 0, v___x_349_);
-lean_ctor_set(v_reuseFailAlloc_353_, 1, v___f_346_);
-lean_ctor_set(v_reuseFailAlloc_353_, 2, v___f_347_);
-v___x_351_ = v_reuseFailAlloc_353_;
-goto v_reusejp_350_;
-}
-v_reusejp_350_:
-{
-lean_object* v___x_352_; 
-v___x_352_ = l_Lean_registerBuiltinAttribute(v___x_351_);
-return v___x_352_;
+lean_inc_ref(v_erase_335_);
+lean_dec_ref(v_attr_332_);
+v_descr_336_ = lean_ctor_get(v_toAttributeImplCore_333_, 2);
+lean_inc_ref(v_descr_336_);
+v_applicationTime_337_ = lean_ctor_get_uint8(v_toAttributeImplCore_333_, sizeof(void*)*3);
+lean_dec_ref(v_toAttributeImplCore_333_);
+v___x_338_ = lean_obj_once(&l___private_Lake_DSL_Attributes_0__Lake_initFn___closed__22_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_, &l___private_Lake_DSL_Attributes_0__Lake_initFn___closed__22_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2__once, _init_l___private_Lake_DSL_Attributes_0__Lake_initFn___closed__22_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_);
+v___x_339_ = ((lean_object*)(l___private_Lake_DSL_Attributes_0__Lake_initFn___closed__24_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_));
+v___f_340_ = lean_alloc_closure((void*)(l___private_Lake_DSL_Attributes_0__Lake_initFn___lam__0_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2____boxed), 7, 1);
+lean_closure_set(v___f_340_, 0, v_add_334_);
+v___f_341_ = lean_alloc_closure((void*)(l___private_Lake_DSL_Attributes_0__Lake_initFn___lam__1_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2____boxed), 5, 1);
+lean_closure_set(v___f_341_, 0, v_erase_335_);
+v___x_342_ = lean_alloc_ctor(0, 3, 1);
+lean_ctor_set(v___x_342_, 0, v___x_338_);
+lean_ctor_set(v___x_342_, 1, v___x_339_);
+lean_ctor_set(v___x_342_, 2, v_descr_336_);
+lean_ctor_set_uint8(v___x_342_, sizeof(void*)*3, v_applicationTime_337_);
+v___x_343_ = lean_alloc_ctor(0, 3, 0);
+lean_ctor_set(v___x_343_, 0, v___x_342_);
+lean_ctor_set(v___x_343_, 1, v___f_340_);
+lean_ctor_set(v___x_343_, 2, v___f_341_);
+v___x_344_ = l_Lean_registerBuiltinAttribute(v___x_343_);
+return v___x_344_;
 }
 }
-}
-}
-}
-}
-LEAN_EXPORT lean_object* l___private_Lake_DSL_Attributes_0__Lake_initFn_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2____boxed(lean_object* v_a_359_){
+LEAN_EXPORT lean_object* l___private_Lake_DSL_Attributes_0__Lake_initFn_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2____boxed(lean_object* v_a_345_){
 _start:
 {
-lean_object* v_res_360_; 
-v_res_360_ = l___private_Lake_DSL_Attributes_0__Lake_initFn_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_();
-return v_res_360_;
+lean_object* v_res_346_; 
+v_res_346_ = l___private_Lake_DSL_Attributes_0__Lake_initFn_00___x40_Lake_DSL_Attributes_4284851756____hygCtx___hyg_2_();
+return v_res_346_;
 }
 }
 lean_object* runtime_initialize_Lake_DSL_AttributesCore(uint8_t builtin);

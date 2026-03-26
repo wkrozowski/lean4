@@ -5214,13 +5214,11 @@ v_a_1666_ = lean_ctor_get(v___x_1665_, 0);
 lean_inc(v_a_1666_);
 lean_dec_ref(v___x_1665_);
 v___x_1667_ = l_Lean_Meta_FunInd_Collector_visit(v_a_1666_, v_a_1651_, v_a_1652_, v_a_1653_, v_a_1654_, v_a_1655_, v_a_1656_, v_a_1657_);
-lean_dec_ref(v_a_1654_);
 return v___x_1667_;
 }
 else
 {
 lean_object* v_a_1668_; lean_object* v___x_1670_; uint8_t v_isShared_1671_; uint8_t v_isSharedCheck_1675_; 
-lean_dec_ref(v_a_1654_);
 v_a_1668_ = lean_ctor_get(v___x_1665_, 0);
 v_isSharedCheck_1675_ = !lean_is_exclusive(v___x_1665_);
 if (v_isSharedCheck_1675_ == 0)
@@ -5263,7 +5261,6 @@ return v___x_1673_;
 else
 {
 lean_object* v_a_1676_; lean_object* v___x_1678_; uint8_t v_isShared_1679_; uint8_t v_isSharedCheck_1683_; 
-lean_dec_ref(v_a_1654_);
 v_a_1676_ = lean_ctor_get(v___x_1663_, 0);
 v_isSharedCheck_1683_ = !lean_is_exclusive(v___x_1663_);
 if (v_isSharedCheck_1683_ == 0)
@@ -5305,7 +5302,6 @@ return v___x_1681_;
 }
 else
 {
-lean_dec_ref(v_a_1654_);
 lean_dec(v_mvarId_1650_);
 return v___x_1662_;
 }
@@ -5319,6 +5315,7 @@ v_res_1693_ = l___private_Lean_Meta_Tactic_FunIndCollect_0__Lean_Meta_FunInd_Col
 lean_dec(v_a_1691_);
 lean_dec_ref(v_a_1690_);
 lean_dec(v_a_1689_);
+lean_dec_ref(v_a_1688_);
 lean_dec(v_a_1687_);
 lean_dec_ref(v_a_1686_);
 lean_dec(v_a_1685_);
@@ -5557,6 +5554,7 @@ v_res_1784_ = l_Lean_Meta_FunInd_Collector_main___lam__0(v___x_1775_, v___x_1776
 lean_dec(v___y_1782_);
 lean_dec_ref(v___y_1781_);
 lean_dec(v___y_1780_);
+lean_dec_ref(v___y_1779_);
 lean_dec_ref(v_needle_1778_);
 return v_res_1784_;
 }

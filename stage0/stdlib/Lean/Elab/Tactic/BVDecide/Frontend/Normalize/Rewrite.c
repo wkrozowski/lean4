@@ -371,7 +371,6 @@ LEAN_EXPORT lean_object* l___private_Lean_Elab_Tactic_BVDecide_Frontend_Normaliz
 _start:
 {
 lean_object* v___x_139_; 
-lean_inc_ref(v___y_134_);
 v___x_139_ = l_Lean_Meta_getPropHyps(v___y_134_, v___y_135_, v___y_136_, v___y_137_);
 if (lean_obj_tag(v___x_139_) == 0)
 {
@@ -917,7 +916,6 @@ LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_rewriteR
 _start:
 {
 lean_object* v___x_368_; 
-lean_inc_ref(v___y_363_);
 v___x_368_ = l_Lean_Meta_getPropHyps(v___y_363_, v___y_364_, v___y_365_, v___y_366_);
 if (lean_obj_tag(v___x_368_) == 0)
 {

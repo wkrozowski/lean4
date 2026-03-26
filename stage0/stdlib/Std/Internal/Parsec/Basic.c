@@ -396,6 +396,7 @@ lean_object* v___x_74_; lean_object* v___x_75_; uint8_t v___x_76_; lean_object* 
 v___x_74_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_74_, 0, v___x_70_);
 lean_ctor_set(v___x_74_, 1, v___x_73_);
+lean_inc(v___y_69_);
 v___x_75_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_75_, 0, v___y_69_);
 lean_ctor_set(v___x_75_, 1, v___x_74_);
@@ -413,6 +414,7 @@ v___jp_53_:
 {
 lean_object* v___x_55_; lean_object* v___x_56_; uint8_t v___x_57_; lean_object* v___x_58_; lean_object* v___x_59_; 
 v___x_55_ = ((lean_object*)(l_Std_Internal_Parsec_instReprError_repr___closed__1));
+lean_inc(v___y_54_);
 v___x_56_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_56_, 0, v___y_54_);
 lean_ctor_set(v___x_56_, 1, v___x_55_);
@@ -643,6 +645,7 @@ v___x_182_ = lean_apply_2(v_inst_164_, v_res_169_, v___x_177_);
 v___x_183_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_183_, 0, v___x_181_);
 lean_ctor_set(v___x_183_, 1, v___x_182_);
+lean_inc(v___y_174_);
 v___x_184_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_184_, 0, v___y_174_);
 lean_ctor_set(v___x_184_, 1, v___x_183_);
@@ -731,6 +734,7 @@ v___x_208_ = l_Std_Internal_Parsec_instReprError_repr(v_err_195_, v___x_203_);
 v___x_209_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_209_, 0, v___x_207_);
 lean_ctor_set(v___x_209_, 1, v___x_208_);
+lean_inc(v___y_200_);
 v___x_210_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_210_, 0, v___y_200_);
 lean_ctor_set(v___x_210_, 1, v___x_209_);

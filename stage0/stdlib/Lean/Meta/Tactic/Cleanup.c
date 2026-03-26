@@ -692,7 +692,6 @@ LEAN_EXPORT lean_object* l___private_Lean_Meta_Tactic_Cleanup_0__Lean_Meta_clean
 _start:
 {
 lean_object* v___x_155_; 
-lean_inc_ref(v_a_150_);
 v___x_155_ = l_Lean_FVarId_getDecl___redArg(v_fvarId_148_, v_a_150_, v_a_152_, v_a_153_);
 if (lean_obj_tag(v___x_155_) == 0)
 {
@@ -3736,10 +3735,9 @@ _start:
 lean_object* v_lctx_979_; lean_object* v_decls_980_; lean_object* v___x_981_; lean_object* v___x_982_; 
 v_lctx_979_ = lean_ctor_get(v_a_974_, 2);
 v_decls_980_ = lean_ctor_get(v_lctx_979_, 1);
-lean_inc_ref(v_decls_980_);
 v___x_981_ = lean_box(0);
+lean_inc_ref(v_decls_980_);
 v___x_982_ = l_Lean_PersistentArray_forIn___at___00__private_Lean_Meta_Tactic_Cleanup_0__Lean_Meta_cleanupCore_collectPropsStep_spec__1(v_decls_980_, v___x_981_, v_a_973_, v_a_974_, v_a_975_, v_a_976_, v_a_977_);
-lean_dec_ref(v_a_974_);
 if (lean_obj_tag(v___x_982_) == 0)
 {
 lean_object* v___x_984_; uint8_t v_isShared_985_; uint8_t v_isSharedCheck_989_; 
@@ -3797,6 +3795,7 @@ v_res_997_ = l___private_Lean_Meta_Tactic_Cleanup_0__Lean_Meta_cleanupCore_colle
 lean_dec(v_a_995_);
 lean_dec_ref(v_a_994_);
 lean_dec(v_a_993_);
+lean_dec_ref(v_a_992_);
 lean_dec(v_a_991_);
 return v_res_997_;
 }
@@ -3849,7 +3848,6 @@ v_reusejp_1011_:
 {
 lean_object* v___x_1013_; lean_object* v___x_1014_; 
 v___x_1013_ = lean_st_ref_set(v_a_998_, v___x_1012_);
-lean_inc_ref(v_a_999_);
 v___x_1014_ = l___private_Lean_Meta_Tactic_Cleanup_0__Lean_Meta_cleanupCore_collectPropsStep(v_a_998_, v_a_999_, v_a_1000_, v_a_1001_, v_a_1002_);
 if (lean_obj_tag(v___x_1014_) == 0)
 {

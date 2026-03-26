@@ -35,7 +35,7 @@ lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, 
 extern lean_object* l_Lean_Server_instInhabitedRequestError_default;
 lean_object* l_instInhabitedEIO___aux__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_instInhabitedForall___redArg___lam__0___boxed(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_getKind(lean_object*);
 lean_object* l_Std_DTreeMap_Internal_Impl_Const_get_x3f___at___00Lean_NameMap_find_x3f_spec__0___redArg(lean_object*, lean_object*);
 lean_object* lean_nat_add(lean_object*, lean_object*);
@@ -1078,12 +1078,12 @@ if (v___x_296_ == 0)
 {
 lean_dec(v_a_289_);
 lean_dec_ref(v_range_288_);
+lean_inc_ref(v_b_290_);
 return v_b_290_;
 }
 else
 {
 lean_object* v___x_297_; lean_object* v___x_298_; lean_object* v___x_299_; lean_object* v___x_300_; lean_object* v___x_301_; uint8_t v___x_302_; lean_object* v___x_303_; 
-lean_dec_ref(v_b_290_);
 v___x_297_ = lean_box(0);
 v___x_298_ = ((lean_object*)(l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Server_CodeActions_Provider_0__Lean_CodeAction_findTactic_x3f_go_spec__2___redArg___closed__0));
 v___x_299_ = lean_unsigned_to_nat(2u);
@@ -1215,6 +1215,7 @@ _start:
 {
 lean_object* v_res_328_; 
 v_res_328_ = l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Server_CodeActions_Provider_0__Lean_CodeAction_findTactic_x3f_go_spec__2___redArg(v_upperBound_323_, v___x_324_, v_range_325_, v_a_326_, v_b_327_);
+lean_dec_ref(v_b_327_);
 lean_dec(v___x_324_);
 lean_dec(v_upperBound_323_);
 return v_res_328_;
@@ -2230,6 +2231,7 @@ _start:
 {
 lean_object* v_res_661_; 
 v_res_661_ = l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Server_CodeActions_Provider_0__Lean_CodeAction_findTactic_x3f_go_spec__2(v_upperBound_653_, v___x_654_, v_range_655_, v_inst_656_, v_R_657_, v_a_658_, v_b_659_, v_c_660_);
+lean_dec_ref(v_b_659_);
 lean_dec(v___x_654_);
 lean_dec(v_upperBound_653_);
 return v_res_661_;
@@ -3691,7 +3693,8 @@ lean_object* v___x_1127_; lean_object* v___f_1128_; lean_object* v___x_4027__ove
 v___x_1127_ = lean_obj_once(&l_panic___at___00Lean_CodeAction_cmdCodeActionProvider_spec__0___closed__0, &l_panic___at___00Lean_CodeAction_cmdCodeActionProvider_spec__0___closed__0_once, _init_l_panic___at___00Lean_CodeAction_cmdCodeActionProvider_spec__0___closed__0);
 v___f_1128_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_1128_, 0, v___x_1127_);
-v___x_4027__overap_1129_ = lean_panic_fn(v___f_1128_, v_msg_1124_);
+v___x_4027__overap_1129_ = lean_panic_fn_borrowed(v___f_1128_, v_msg_1124_);
+lean_dec_ref(v___f_1128_);
 lean_inc_ref(v___y_1125_);
 v___x_1130_ = lean_apply_2(v___x_4027__overap_1129_, v___y_1125_, lean_box(0));
 return v___x_1130_;

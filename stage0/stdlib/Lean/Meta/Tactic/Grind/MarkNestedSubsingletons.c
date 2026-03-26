@@ -76,7 +76,7 @@ lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_obje
 lean_object* l_ReaderT_instMonad___redArg(lean_object*);
 extern lean_object* l_Lean_instInhabitedExpr;
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 uint8_t l_Lean_Expr_hasMVar(lean_object*);
 lean_object* l_Lean_instantiateMVarsCore(lean_object*, lean_object*);
 lean_object* l_Lean_Core_betaReduce(lean_object*, lean_object*, lean_object*);
@@ -735,7 +735,8 @@ v___x_161_ = l_ReaderT_instMonad___redArg(v___x_160_);
 v___x_162_ = l_StateRefT_x27_instMonad___redArg(v___x_161_);
 v___x_163_ = l_Lean_instInhabitedExpr;
 v___x_164_ = l_instInhabitedOfMonad___redArg(v___x_162_, v___x_163_);
-v___x_75598__overap_165_ = lean_panic_fn(v___x_164_, v_msg_96_);
+v___x_75598__overap_165_ = lean_panic_fn_borrowed(v___x_164_, v_msg_96_);
+lean_dec(v___x_164_);
 lean_inc(v___y_106_);
 lean_inc_ref(v___y_105_);
 lean_inc(v___y_104_);

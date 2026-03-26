@@ -752,6 +752,7 @@ v___x_180_ = l_Lean_instInhabitedExpr;
 v___x_181_ = l_instInhabitedOfMonad___redArg(v_inst_167_, v___x_180_);
 v___x_182_ = lean_obj_once(&l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3, &l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3_once, _init_l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3);
 v___x_183_ = l_panic___redArg(v___x_181_, v___x_182_);
+lean_dec(v___x_181_);
 return v___x_183_;
 }
 case 5:
@@ -856,6 +857,7 @@ v___x_211_ = l_Lean_instInhabitedExpr;
 v___x_212_ = l_instInhabitedOfMonad___redArg(v_inst_167_, v___x_211_);
 v___x_213_ = lean_obj_once(&l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3, &l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3_once, _init_l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3);
 v___x_214_ = l_panic___redArg(v___x_212_, v___x_213_);
+lean_dec(v___x_212_);
 return v___x_214_;
 }
 case 11:
@@ -867,6 +869,7 @@ v___x_215_ = l_Lean_instInhabitedExpr;
 v___x_216_ = l_instInhabitedOfMonad___redArg(v_inst_167_, v___x_215_);
 v___x_217_ = lean_obj_once(&l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3, &l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3_once, _init_l_Lean_Compiler_LCNF_Expr_mapFVarM___redArg___closed__3);
 v___x_218_ = l_panic___redArg(v___x_216_, v___x_217_);
+lean_dec(v___x_216_);
 return v___x_218_;
 }
 default: 
@@ -983,6 +986,7 @@ v___x_274_ = lean_box(0);
 v___x_275_ = l_instInhabitedOfMonad___redArg(v_inst_257_, v___x_274_);
 v___x_276_ = lean_obj_once(&l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1, &l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1_once, _init_l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1);
 v___x_277_ = l_panic___redArg(v___x_275_, v___x_276_);
+lean_dec(v___x_275_);
 return v___x_277_;
 }
 case 5:
@@ -1038,6 +1042,7 @@ v___x_288_ = lean_box(0);
 v___x_289_ = l_instInhabitedOfMonad___redArg(v_inst_257_, v___x_288_);
 v___x_290_ = lean_obj_once(&l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1, &l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1_once, _init_l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1);
 v___x_291_ = l_panic___redArg(v___x_289_, v___x_290_);
+lean_dec(v___x_289_);
 return v___x_291_;
 }
 case 11:
@@ -1049,6 +1054,7 @@ v___x_292_ = lean_box(0);
 v___x_293_ = l_instInhabitedOfMonad___redArg(v_inst_257_, v___x_292_);
 v___x_294_ = lean_obj_once(&l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1, &l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1_once, _init_l_Lean_Compiler_LCNF_Expr_forFVarM___redArg___closed__1);
 v___x_295_ = l_panic___redArg(v___x_293_, v___x_294_);
+lean_dec(v___x_293_);
 return v___x_295_;
 }
 default: 

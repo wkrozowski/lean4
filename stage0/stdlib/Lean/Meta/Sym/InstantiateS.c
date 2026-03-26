@@ -62,7 +62,7 @@ lean_object* l_StateT_bind(lean_object*, lean_object*, lean_object*, lean_object
 lean_object* l_ReaderT_instMonad___redArg(lean_object*);
 extern lean_object* l_Lean_instInhabitedExpr;
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_instInhabitedForall___redArg___lam__0___boxed(lean_object*, lean_object*);
 lean_object* lean_array_get_borrowed(lean_object*, lean_object*, lean_object*);
 lean_object* lean_st_ref_take(lean_object*);
@@ -309,7 +309,7 @@ _start:
 {
 lean_object* v___x_28_; lean_object* v___x_3187__overap_29_; lean_object* v___x_30_; 
 v___x_28_ = lean_obj_once(&l_panic___at___00Lean_Meta_Sym_instantiateRevRangeS_spec__3___closed__0, &l_panic___at___00Lean_Meta_Sym_instantiateRevRangeS_spec__3___closed__0_once, _init_l_panic___at___00Lean_Meta_Sym_instantiateRevRangeS_spec__3___closed__0);
-v___x_3187__overap_29_ = lean_panic_fn(v___x_28_, v_msg_20_);
+v___x_3187__overap_29_ = lean_panic_fn_borrowed(v___x_28_, v_msg_20_);
 lean_inc(v___y_26_);
 lean_inc_ref(v___y_25_);
 lean_inc(v___y_24_);
@@ -526,7 +526,8 @@ lean_ctor_set(v___x_117_, 0, v___x_115_);
 lean_ctor_set(v___x_117_, 1, v___x_116_);
 v___x_118_ = l_Lean_instInhabitedExpr;
 v___x_119_ = l_instInhabitedOfMonad___redArg(v___x_117_, v___x_118_);
-v___x_22613__overap_120_ = lean_panic_fn(v___x_119_, v_msg_83_);
+v___x_22613__overap_120_ = lean_panic_fn_borrowed(v___x_119_, v_msg_83_);
+lean_dec(v___x_119_);
 v___x_121_ = lean_box(v___y_85_);
 v___x_122_ = lean_apply_3(v___x_22613__overap_120_, v___y_84_, v___x_121_, v___y_86_);
 return v___x_122_;
@@ -2701,7 +2702,8 @@ v___x_802_ = l_Lean_instInhabitedExpr;
 v___x_803_ = l_instInhabitedOfMonad___redArg(v___x_801_, v___x_802_);
 v___f_804_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_804_, 0, v___x_803_);
-v___x_3111__overap_805_ = lean_panic_fn(v___f_804_, v_msg_779_);
+v___x_3111__overap_805_ = lean_panic_fn_borrowed(v___f_804_, v_msg_779_);
+lean_dec_ref(v___f_804_);
 v___x_806_ = lean_box(v___y_780_);
 v___x_807_ = lean_apply_2(v___x_3111__overap_805_, v___x_806_, v___y_781_);
 return v___x_807_;

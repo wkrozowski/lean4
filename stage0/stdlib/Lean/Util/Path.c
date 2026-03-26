@@ -23,7 +23,7 @@ uint8_t l_System_FilePath_isDir(lean_object*);
 lean_object* l_System_FilePath_addExtension(lean_object*, lean_object*);
 uint8_t l_System_FilePath_pathExists(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_string_append(lean_object*, lean_object*);
 lean_object* l_List_reverse___redArg(lean_object*);
 lean_object* l_String_intercalate(lean_object*, lean_object*);
@@ -503,7 +503,7 @@ _start:
 {
 lean_object* v___x_136_; lean_object* v___x_137_; 
 v___x_136_ = ((lean_object*)(l_Lean_forEachModuleInDir___redArg___lam__4___closed__3));
-v___x_137_ = lean_panic_fn(v___x_136_, v_msg_135_);
+v___x_137_ = lean_panic_fn_borrowed(v___x_136_, v_msg_135_);
 return v___x_137_;
 }
 }
@@ -2234,7 +2234,6 @@ v___jp_677_:
 {
 lean_object* v___x_680_; 
 v___x_680_ = lean_string_append(v___y_679_, v___y_678_);
-lean_dec_ref(v___y_678_);
 v_rootDir_659_ = v___x_680_;
 goto v___jp_658_;
 }

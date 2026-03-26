@@ -1165,8 +1165,6 @@ v_a_326_ = lean_ctor_get(v___x_325_, 0);
 lean_inc(v_a_326_);
 lean_dec_ref(v___x_325_);
 v_macroStack_327_ = lean_ctor_get(v___y_322_, 4);
-lean_inc(v_macroStack_327_);
-lean_dec_ref(v___y_322_);
 v___x_328_ = l_Lean_addMessageContextPartial___at___00Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lean_Elab_Tactic_Grind_RegisterSymSimp_0__Lean_Elab_Command_elabRegisterSymSimp_spec__0_spec__0_spec__1___redArg(v_msg_321_, v___y_323_);
 v_a_329_ = lean_ctor_get(v___x_328_, 0);
 lean_inc(v_a_329_);
@@ -1174,6 +1172,7 @@ lean_dec_ref(v___x_328_);
 lean_inc(v_macroStack_327_);
 v___x_330_ = l_Lean_Elab_getBetterRef(v_a_326_, v_macroStack_327_);
 lean_dec(v_a_326_);
+lean_inc(v_macroStack_327_);
 v___x_331_ = l_Lean_Elab_addMacroStack___at___00Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lean_Elab_Tactic_Grind_RegisterSymSimp_0__Lean_Elab_Command_elabRegisterSymSimp_spec__0_spec__0_spec__2___redArg(v_a_329_, v_macroStack_327_, v___y_323_);
 v_a_332_ = lean_ctor_get(v___x_331_, 0);
 v_isSharedCheck_340_ = !lean_is_exclusive(v___x_331_);
@@ -1221,7 +1220,6 @@ return v___x_338_;
 else
 {
 lean_object* v_a_341_; lean_object* v___x_343_; uint8_t v_isShared_344_; uint8_t v_isSharedCheck_348_; 
-lean_dec_ref(v___y_322_);
 lean_dec_ref(v_msg_321_);
 v_a_341_ = lean_ctor_get(v___x_325_, 0);
 v_isSharedCheck_348_ = !lean_is_exclusive(v___x_325_);
@@ -1269,6 +1267,7 @@ _start:
 lean_object* v_res_353_; 
 v_res_353_ = l_Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lean_Elab_Tactic_Grind_RegisterSymSimp_0__Lean_Elab_Command_elabRegisterSymSimp_spec__0_spec__0___redArg(v_msg_349_, v___y_350_, v___y_351_);
 lean_dec(v___y_351_);
+lean_dec_ref(v___y_350_);
 return v_res_353_;
 }
 }
@@ -1317,6 +1316,7 @@ lean_ctor_set(v___x_372_, 8, v_snap_x3f_368_);
 lean_ctor_set(v___x_372_, 9, v_cancelTk_x3f_369_);
 lean_ctor_set_uint8(v___x_372_, sizeof(void*)*10, v_suppressElabErrors_370_);
 v___x_373_ = l_Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lean_Elab_Tactic_Grind_RegisterSymSimp_0__Lean_Elab_Command_elabRegisterSymSimp_spec__0_spec__0___redArg(v_msg_355_, v___x_372_, v___y_357_);
+lean_dec_ref(v___x_372_);
 return v___x_373_;
 }
 else
@@ -2776,7 +2776,6 @@ LEAN_EXPORT lean_object* l_Lean_throwError___at___00Lean_throwErrorAt___at___00_
 _start:
 {
 lean_object* v___x_771_; 
-lean_inc_ref(v___y_768_);
 v___x_771_ = l_Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lean_Elab_Tactic_Grind_RegisterSymSimp_0__Lean_Elab_Command_elabRegisterSymSimp_spec__0_spec__0___redArg(v_msg_767_, v___y_768_, v___y_769_);
 return v___x_771_;
 }

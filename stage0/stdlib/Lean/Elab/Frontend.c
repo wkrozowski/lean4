@@ -3486,7 +3486,6 @@ lean_closure_set(v___x_1145_, 2, v___x_1144_);
 v___x_1146_ = lean_box(0);
 v___x_1147_ = l_Lean_profileitIOUnsafe___redArg(v___y_1140_, v___y_1137_, v___x_1145_, v___x_1146_);
 lean_dec_ref(v___y_1137_);
-lean_dec_ref(v___y_1140_);
 if (lean_obj_tag(v___x_1147_) == 0)
 {
 lean_dec_ref(v___x_1147_);

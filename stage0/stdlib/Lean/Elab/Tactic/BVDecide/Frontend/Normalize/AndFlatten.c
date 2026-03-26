@@ -1364,7 +1364,6 @@ if (v___x_408_ == 0)
 {
 lean_object* v___x_409_; 
 lean_del_object(v___x_404_);
-lean_inc_ref(v_a_397_);
 lean_inc(v_fvar_395_);
 v___x_409_ = l_Lean_FVarId_getDecl___redArg(v_fvar_395_, v_a_397_, v_a_398_, v_a_399_);
 if (lean_obj_tag(v___x_409_) == 0)
@@ -1899,7 +1898,6 @@ LEAN_EXPORT lean_object* l___private_Lean_Elab_Tactic_BVDecide_Frontend_Normaliz
 _start:
 {
 lean_object* v___x_608_; 
-lean_inc_ref(v___y_603_);
 v___x_608_ = l_Lean_Meta_getPropHyps(v___y_603_, v___y_604_, v___y_605_, v___y_606_);
 if (lean_obj_tag(v___x_608_) == 0)
 {

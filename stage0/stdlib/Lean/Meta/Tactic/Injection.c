@@ -2052,7 +2052,6 @@ if (lean_obj_tag(v___x_1014_) == 0)
 {
 lean_object* v___x_1015_; 
 lean_dec_ref(v___x_1014_);
-lean_inc_ref(v___y_671_);
 lean_inc(v_fvarId_669_);
 v___x_1015_ = l_Lean_FVarId_getDecl___redArg(v_fvarId_669_, v___y_671_, v___y_673_, v___y_674_);
 if (lean_obj_tag(v___x_1015_) == 0)

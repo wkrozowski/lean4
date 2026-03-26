@@ -3126,7 +3126,6 @@ lean_object* v_lctx_991_; lean_object* v___y_993_; lean_object* v___y_994_; lean
 lean_dec_ref(v___x_990_);
 v_lctx_991_ = lean_ctor_get(v___y_954_, 2);
 lean_inc_ref(v_lctx_991_);
-lean_inc_ref(v_lctx_991_);
 v___x_1075_ = l_Lean_LocalContext_contains(v_lctx_991_, v_fvarId_952_);
 if (v___x_1075_ == 0)
 {

@@ -170,12 +170,10 @@ lean_ctor_set(v___x_57_, 2, v___x_56_);
 lean_ctor_set_uint8(v___x_57_, sizeof(void*)*3, v_kind_40_);
 v___x_58_ = 1;
 v___x_59_ = l_Lean_Elab_Do_elabDoElem(v_rhs_38_, v___x_57_, v___x_58_, v_a_41_, v_a_42_, v_a_43_, v_a_44_, v_a_45_, v_a_46_, v_a_47_);
-lean_dec_ref(v_a_44_);
 return v___x_59_;
 }
 else
 {
-lean_dec_ref(v_a_44_);
 lean_dec_ref(v_k_39_);
 lean_dec(v_rhs_38_);
 lean_dec(v_x_36_);
@@ -193,6 +191,7 @@ v_res_77_ = l_Lean_Elab_Do_elabDoIdDecl(v_x_63_, v_xType_x3f_64_, v_rhs_65_, v_k
 lean_dec(v_a_74_);
 lean_dec_ref(v_a_73_);
 lean_dec(v_a_72_);
+lean_dec_ref(v_a_71_);
 lean_dec(v_a_70_);
 lean_dec_ref(v_a_69_);
 lean_dec_ref(v_a_68_);

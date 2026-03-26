@@ -40,7 +40,7 @@ lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, 
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
 uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_instInhabitedMetaM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 size_t lean_usize_of_nat(lean_object*);
 uint8_t lean_usize_dec_eq(size_t, size_t);
 lean_object* lean_array_uget_borrowed(lean_object*, size_t);
@@ -242,7 +242,7 @@ _start:
 {
 lean_object* v___f_29_; lean_object* v___x_2399__overap_30_; lean_object* v___x_31_; 
 v___f_29_ = ((lean_object*)(l_panic___at___00__private_Lean_Meta_Match_AltTelescopes_0__Lean_Meta_Match_forallAltVarsTelescope_go_spec__4___closed__0));
-v___x_2399__overap_30_ = lean_panic_fn(v___f_29_, v_msg_23_);
+v___x_2399__overap_30_ = lean_panic_fn_borrowed(v___f_29_, v_msg_23_);
 lean_inc(v___y_27_);
 lean_inc_ref(v___y_26_);
 lean_inc(v___y_25_);
@@ -985,7 +985,6 @@ lean_closure_set(v___x_351_, 0, lean_box(0));
 lean_closure_set(v___x_351_, 1, v___x_344_);
 lean_closure_set(v___x_351_, 2, v_a_334_);
 lean_closure_set(v___x_351_, 3, v___x_350_);
-lean_inc_ref(v___y_301_);
 v___x_352_ = l_Lean_Meta_withReplaceFVarId___redArg(v___x_343_, v_snd_324_, v___x_351_, v___y_301_, v___y_302_, v___y_303_, v___y_304_);
 return v___x_352_;
 }
@@ -1606,7 +1605,7 @@ _start:
 {
 lean_object* v___f_569_; lean_object* v___x_500__overap_570_; lean_object* v___x_571_; 
 v___f_569_ = ((lean_object*)(l_panic___at___00__private_Lean_Meta_Match_AltTelescopes_0__Lean_Meta_Match_forallAltVarsTelescope_go_spec__4___closed__0));
-v___x_500__overap_570_ = lean_panic_fn(v___f_569_, v_msg_563_);
+v___x_500__overap_570_ = lean_panic_fn_borrowed(v___f_569_, v_msg_563_);
 lean_inc(v___y_567_);
 lean_inc_ref(v___y_566_);
 lean_inc(v___y_565_);

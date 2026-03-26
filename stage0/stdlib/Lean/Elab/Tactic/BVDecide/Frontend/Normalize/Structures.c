@@ -70,7 +70,7 @@ lean_object* l_Lean_Meta_instMonadMetaM___lam__0___boxed(lean_object*, lean_obje
 lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_ReaderT_instMonad___redArg(lean_object*);
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_getStructureInfo(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_mkInjectiveEqTheoremNameFor(lean_object*);
 lean_object* l_Lean_Environment_find_x3f(lean_object*, lean_object*, uint8_t);
@@ -979,7 +979,8 @@ v___x_255_ = l_StateRefT_x27_instMonad___redArg(v___x_254_);
 v___x_256_ = l_ReaderT_instMonad___redArg(v___x_255_);
 v___x_257_ = lean_box(0);
 v___x_258_ = l_instInhabitedOfMonad___redArg(v___x_256_, v___x_257_);
-v___x_19415__overap_259_ = lean_panic_fn(v___x_258_, v_msg_198_);
+v___x_19415__overap_259_ = lean_panic_fn_borrowed(v___x_258_, v_msg_198_);
+lean_dec(v___x_258_);
 lean_inc(v___y_204_);
 lean_inc_ref(v___y_203_);
 lean_inc(v___y_202_);
@@ -2408,7 +2409,6 @@ lean_object* v_a_842_; lean_object* v___x_843_;
 v_a_842_ = lean_ctor_get(v___x_841_, 0);
 lean_inc(v_a_842_);
 lean_dec_ref(v___x_841_);
-lean_inc_ref(v___y_818_);
 v___x_843_ = l_Lean_Meta_getPropHyps(v___y_818_, v___y_819_, v___y_820_, v___y_821_);
 if (lean_obj_tag(v___x_843_) == 0)
 {

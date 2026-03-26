@@ -45,7 +45,7 @@ lean_object* lean_string_mk(lean_object*);
 lean_object* l_Nat_reprFast(lean_object*);
 lean_object* l_Lean_SourceInfo_getPos_x3f(lean_object*, uint8_t);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_nat_add(lean_object*, lean_object*);
 lean_object* lean_nat_sub(lean_object*, lean_object*);
 lean_object* l_Lean_Parser_SyntaxStack_get_x21(lean_object*, lean_object*);
@@ -4417,6 +4417,7 @@ v___jp_774_:
 {
 lean_object* v___x_776_; lean_object* v___x_777_; uint8_t v___x_778_; lean_object* v___x_779_; lean_object* v___x_780_; 
 v___x_776_ = ((lean_object*)(l_Lean_Doc_Parser_instReprOrderedListType_repr___closed__1));
+lean_inc(v___y_775_);
 v___x_777_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_777_, 0, v___y_775_);
 lean_ctor_set(v___x_777_, 1, v___x_776_);
@@ -4431,6 +4432,7 @@ v___jp_781_:
 {
 lean_object* v___x_783_; lean_object* v___x_784_; uint8_t v___x_785_; lean_object* v___x_786_; lean_object* v___x_787_; 
 v___x_783_ = ((lean_object*)(l_Lean_Doc_Parser_instReprOrderedListType_repr___closed__3));
+lean_inc(v___y_782_);
 v___x_784_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_784_, 0, v___y_782_);
 lean_ctor_set(v___x_784_, 1, v___x_783_);
@@ -4831,6 +4833,7 @@ v___jp_934_:
 {
 lean_object* v___x_936_; lean_object* v___x_937_; uint8_t v___x_938_; lean_object* v___x_939_; lean_object* v___x_940_; 
 v___x_936_ = ((lean_object*)(l_Lean_Doc_Parser_instReprUnorderedListType_repr___closed__1));
+lean_inc(v___y_935_);
 v___x_937_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_937_, 0, v___y_935_);
 lean_ctor_set(v___x_937_, 1, v___x_936_);
@@ -4845,6 +4848,7 @@ v___jp_941_:
 {
 lean_object* v___x_943_; lean_object* v___x_944_; uint8_t v___x_945_; lean_object* v___x_946_; lean_object* v___x_947_; 
 v___x_943_ = ((lean_object*)(l_Lean_Doc_Parser_instReprUnorderedListType_repr___closed__3));
+lean_inc(v___y_942_);
 v___x_944_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_944_, 0, v___y_942_);
 lean_ctor_set(v___x_944_, 1, v___x_943_);
@@ -4859,6 +4863,7 @@ v___jp_948_:
 {
 lean_object* v___x_950_; lean_object* v___x_951_; uint8_t v___x_952_; lean_object* v___x_953_; lean_object* v___x_954_; 
 v___x_950_ = ((lean_object*)(l_Lean_Doc_Parser_instReprUnorderedListType_repr___closed__5));
+lean_inc(v___y_949_);
 v___x_951_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_951_, 0, v___y_949_);
 lean_ctor_set(v___x_951_, 1, v___x_950_);
@@ -15522,7 +15527,7 @@ _start:
 {
 lean_object* v___x_5585_; lean_object* v___x_5586_; 
 v___x_5585_ = lean_unsigned_to_nat(0u);
-v___x_5586_ = lean_panic_fn(v___x_5585_, v_msg_5584_);
+v___x_5586_ = lean_panic_fn_borrowed(v___x_5585_, v_msg_5584_);
 return v___x_5586_;
 }
 }

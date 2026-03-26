@@ -49,7 +49,7 @@ lean_object* l_Lean_Meta_instMonadMetaM___lam__0___boxed(lean_object*, lean_obje
 lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 extern lean_object* l_Lean_Meta_Match_instInhabitedAltParamInfo_default;
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr1(lean_object*);
 uint8_t l_Lean_Expr_isForall(lean_object*);
 uint8_t l_Lean_Expr_hasLooseBVars(lean_object*);
@@ -2680,7 +2680,8 @@ v_reusejp_850_:
 lean_object* v___x_852_; lean_object* v___x_853_; lean_object* v___x_4008__overap_854_; lean_object* v___x_855_; 
 v___x_852_ = l_Lean_Meta_Match_instInhabitedAltParamInfo_default;
 v___x_853_ = l_instInhabitedOfMonad___redArg(v___x_851_, v___x_852_);
-v___x_4008__overap_854_ = lean_panic_fn(v___x_853_, v_msg_797_);
+v___x_4008__overap_854_ = lean_panic_fn_borrowed(v___x_853_, v_msg_797_);
+lean_dec(v___x_853_);
 lean_inc(v___y_801_);
 lean_inc_ref(v___y_800_);
 lean_inc(v___y_799_);

@@ -951,7 +951,6 @@ v___x_277_ = lean_nat_sub(v___x_266_, v_a_267_);
 v___x_278_ = lean_unsigned_to_nat(1u);
 v___x_279_ = lean_nat_sub(v___x_277_, v___x_278_);
 lean_dec(v___x_277_);
-lean_inc_ref(v_b_268_);
 v___x_280_ = l_Lean_LocalContext_getAt_x3f(v_b_268_, v___x_279_);
 lean_dec(v___x_279_);
 if (lean_obj_tag(v___x_280_) == 0)
@@ -1393,7 +1392,6 @@ else
 {
 lean_object* v_a_470_; lean_object* v___x_471_; 
 v_a_470_ = lean_array_uget_borrowed(v_as_460_, v_i_462_);
-lean_inc_ref(v___y_464_);
 lean_inc(v_a_470_);
 v___x_471_ = l_Lean_FVarId_getDecl___redArg(v_a_470_, v___y_464_, v___y_465_, v___y_466_);
 if (lean_obj_tag(v___x_471_) == 0)

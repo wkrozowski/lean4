@@ -28,7 +28,7 @@ lean_object* l_StateT_map(lean_object*, lean_object*, lean_object*, lean_object*
 lean_object* l_StateT_pure(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_StateT_bind(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
 lean_object* lean_mk_array(lean_object*, lean_object*);
 lean_object* l_Lean_CollectLevelParams_visitExpr(lean_object*, lean_object*);
@@ -236,7 +236,8 @@ lean_ctor_set(v___x_29_, 0, v___x_27_);
 lean_ctor_set(v___x_29_, 1, v___x_28_);
 v___x_30_ = lean_box(0);
 v___x_31_ = l_instInhabitedOfMonad___redArg(v___x_29_, v___x_30_);
-v___x_3193__overap_32_ = lean_panic_fn(v___x_31_, v_msg_8_);
+v___x_3193__overap_32_ = lean_panic_fn_borrowed(v___x_31_, v_msg_8_);
+lean_dec(v___x_31_);
 v___x_33_ = lean_apply_1(v___x_3193__overap_32_, v___y_9_);
 return v___x_33_;
 }
@@ -1363,7 +1364,8 @@ lean_ctor_set(v___x_389_, 0, v___x_387_);
 lean_ctor_set(v___x_389_, 1, v___x_388_);
 v___x_390_ = l_Lean_instInhabitedExpr;
 v___x_391_ = l_instInhabitedOfMonad___redArg(v___x_389_, v___x_390_);
-v___x_5181__overap_392_ = lean_panic_fn(v___x_391_, v_msg_368_);
+v___x_5181__overap_392_ = lean_panic_fn_borrowed(v___x_391_, v_msg_368_);
+lean_dec(v___x_391_);
 v___x_393_ = lean_apply_1(v___x_5181__overap_392_, v___y_369_);
 return v___x_393_;
 }

@@ -73,7 +73,7 @@ lean_object* l_ReaderT_instApplicativeOfMonad___redArg___lam__4(lean_object*, le
 lean_object* l_Lean_Meta_instMonadMetaM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Array_reverse___redArg(lean_object*);
 lean_object* l_Array_toSubarray___redArg(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_isProof(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -2114,7 +2114,8 @@ v_reusejp_516_:
 lean_object* v___x_518_; lean_object* v___x_519_; lean_object* v___x_3620__overap_520_; lean_object* v___x_521_; 
 v___x_518_ = lean_box(0);
 v___x_519_ = l_instInhabitedOfMonad___redArg(v___x_517_, v___x_518_);
-v___x_3620__overap_520_ = lean_panic_fn(v___x_519_, v_msg_463_);
+v___x_3620__overap_520_ = lean_panic_fn_borrowed(v___x_519_, v_msg_463_);
+lean_dec(v___x_519_);
 lean_inc(v___y_467_);
 lean_inc_ref(v___y_466_);
 lean_inc(v___y_465_);
@@ -3695,7 +3696,7 @@ _start:
 {
 lean_object* v___f_1231_; lean_object* v___x_13924__overap_1232_; lean_object* v___x_1233_; 
 v___f_1231_ = ((lean_object*)(l_panic___at___00__private_Lean_Meta_Constructions_NoConfusion_0__Lean_mkNoConfusionType_spec__8___closed__0));
-v___x_13924__overap_1232_ = lean_panic_fn(v___f_1231_, v_msg_1225_);
+v___x_13924__overap_1232_ = lean_panic_fn_borrowed(v___f_1231_, v_msg_1225_);
 lean_inc(v___y_1229_);
 lean_inc_ref(v___y_1228_);
 lean_inc(v___y_1227_);
@@ -8210,7 +8211,7 @@ _start:
 {
 lean_object* v___f_3255_; lean_object* v___x_4371__overap_3256_; lean_object* v___x_3257_; 
 v___f_3255_ = ((lean_object*)(l_panic___at___00__private_Lean_Meta_Constructions_NoConfusion_0__Lean_mkNoConfusionType_spec__8___closed__0));
-v___x_4371__overap_3256_ = lean_panic_fn(v___f_3255_, v_msg_3249_);
+v___x_4371__overap_3256_ = lean_panic_fn_borrowed(v___f_3255_, v_msg_3249_);
 lean_inc(v___y_3253_);
 lean_inc_ref(v___y_3252_);
 lean_inc(v___y_3251_);
@@ -11253,6 +11254,7 @@ lean_dec_ref(v___y_4457_);
 lean_dec(v___y_4456_);
 lean_dec_ref(v___y_4455_);
 lean_dec_ref(v_xs_4453_);
+lean_dec_ref(v___x_4447_);
 return v_res_4460_;
 }
 }

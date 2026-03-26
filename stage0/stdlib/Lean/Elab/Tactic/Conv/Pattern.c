@@ -3913,6 +3913,8 @@ lean_inc_ref(v___y_1434_);
 v___x_1438_ = lean_alloc_closure((void*)(l___private_Lean_Elab_Tactic_Conv_Pattern_0__Lean_Elab_Tactic_Conv_pre___boxed), 11, 2);
 lean_closure_set(v___x_1438_, 0, v___y_1434_);
 lean_closure_set(v___x_1438_, 1, v___y_1422_);
+lean_inc_ref(v___y_1429_);
+lean_inc_ref(v___y_1425_);
 v___x_1439_ = lean_alloc_ctor(0, 5, 1);
 lean_ctor_set(v___x_1439_, 0, v___x_1438_);
 lean_ctor_set(v___x_1439_, 1, v___y_1427_);
@@ -4395,8 +4397,6 @@ lean_object* v_a_1547_; lean_object* v___x_1549_; uint8_t v_isShared_1550_; uint
 lean_dec(v___x_1542_);
 lean_dec_ref(v_occs_1533_);
 lean_dec_ref(v___y_1532_);
-lean_dec_ref(v___y_1531_);
-lean_dec_ref(v___y_1530_);
 lean_dec_ref(v___y_1529_);
 lean_dec_ref(v___y_1528_);
 lean_dec_ref(v___f_1294_);
@@ -4473,9 +4473,7 @@ if (v___x_1588_ == 0)
 lean_object* v___x_1589_; lean_object* v___x_1590_; 
 lean_dec_ref(v___y_1587_);
 lean_dec_ref(v___y_1585_);
-lean_dec_ref(v___y_1583_);
 lean_dec_ref(v___y_1581_);
-lean_dec_ref(v___y_1578_);
 lean_dec_ref(v___y_1574_);
 lean_dec_ref(v___f_1294_);
 v___x_1589_ = lean_obj_once(&l_Lean_Elab_Tactic_Conv_evalPattern___lam__6___closed__17, &l_Lean_Elab_Tactic_Conv_evalPattern___lam__6___closed__17_once, _init_l_Lean_Elab_Tactic_Conv_evalPattern___lam__6___closed__17);

@@ -3116,6 +3116,7 @@ lean_ctor_set(v___x_1049_, 1, v___x_1036_);
 v___x_1050_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_1050_, 0, v___x_1045_);
 lean_ctor_set(v___x_1050_, 1, v___x_1049_);
+lean_inc(v___y_1022_);
 v___x_1051_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_1051_, 0, v___y_1022_);
 lean_ctor_set(v___x_1051_, 1, v___x_1050_);
@@ -3193,6 +3194,7 @@ v___x_1080_ = l_Bool_repr___redArg(v_canonical_1061_);
 v___x_1081_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_1081_, 0, v___x_1079_);
 lean_ctor_set(v___x_1081_, 1, v___x_1080_);
+lean_inc(v___y_1063_);
 v___x_1082_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_1082_, 0, v___y_1063_);
 lean_ctor_set(v___x_1082_, 1, v___x_1081_);
@@ -3229,6 +3231,7 @@ v___jp_1010_:
 {
 lean_object* v___x_1012_; lean_object* v___x_1013_; uint8_t v___x_1014_; lean_object* v___x_1015_; lean_object* v___x_1016_; 
 v___x_1012_ = ((lean_object*)(l_instReprSourceInfo_repr___closed__1));
+lean_inc(v___y_1011_);
 v___x_1013_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_1013_, 0, v___y_1011_);
 lean_ctor_set(v___x_1013_, 1, v___x_1012_);

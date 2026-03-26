@@ -939,6 +939,7 @@ _start:
 lean_object* v_res_401_; 
 v_res_401_ = l_Std_ExtHashSet_get_x21___redArg(v_x_396_, v_x_397_, v_inst_398_, v_m_399_, v_a_400_);
 lean_dec(v_m_399_);
+lean_dec(v_inst_398_);
 return v_res_401_;
 }
 }
@@ -956,6 +957,7 @@ _start:
 lean_object* v_res_419_; 
 v_res_419_ = l_Std_ExtHashSet_get_x21(v_00_u03b1_411_, v_x_412_, v_x_413_, v_inst_414_, v_inst_415_, v_inst_416_, v_m_417_, v_a_418_);
 lean_dec(v_m_417_);
+lean_dec(v_inst_416_);
 return v_res_419_;
 }
 }

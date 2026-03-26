@@ -1763,6 +1763,7 @@ else
 {
 lean_object* v___x_579_; 
 v___x_579_ = l_Lean_PersistentArray_get_x21___redArg(v___x_576_, v_vars_566_, v_x_544_);
+lean_dec_ref(v_vars_566_);
 v___y_571_ = v___x_579_;
 goto v___jp_570_;
 }
@@ -1936,6 +1937,7 @@ else
 {
 lean_object* v___x_610_; lean_object* v___x_612_; 
 v___x_610_ = l_Lean_PersistentArray_get_x21___redArg(v___x_604_, v_vars_602_, v_x_544_);
+lean_dec_ref(v_vars_602_);
 if (v_isShared_601_ == 0)
 {
 lean_ctor_set(v___x_600_, 0, v___x_610_);

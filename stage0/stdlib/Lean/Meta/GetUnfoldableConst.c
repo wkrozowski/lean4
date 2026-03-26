@@ -501,8 +501,6 @@ if (lean_obj_tag(v___x_118_) == 0)
 {
 lean_object* v_canUnfold_x3f_119_; 
 v_canUnfold_x3f_119_ = lean_ctor_get(v_a_114_, 6);
-lean_inc(v_canUnfold_x3f_119_);
-lean_dec_ref(v_a_114_);
 if (lean_obj_tag(v_canUnfold_x3f_119_) == 1)
 {
 lean_object* v_a_120_; lean_object* v_val_121_; lean_object* v___x_122_; 
@@ -511,7 +509,6 @@ lean_inc(v_a_120_);
 lean_dec_ref(v___x_118_);
 v_val_121_ = lean_ctor_get(v_canUnfold_x3f_119_, 0);
 lean_inc(v_val_121_);
-lean_dec_ref(v_canUnfold_x3f_119_);
 lean_inc(v_a_116_);
 lean_inc_ref(v_a_115_);
 v___x_122_ = lean_apply_5(v_val_121_, v_a_120_, v_info_113_, v_a_115_, v_a_116_, lean_box(0));
@@ -520,7 +517,6 @@ return v___x_122_;
 else
 {
 lean_object* v_a_123_; lean_object* v___x_124_; 
-lean_dec(v_canUnfold_x3f_119_);
 v_a_123_ = lean_ctor_get(v___x_118_, 0);
 lean_inc(v_a_123_);
 lean_dec_ref(v___x_118_);
@@ -533,7 +529,6 @@ return v___x_124_;
 else
 {
 lean_object* v_a_125_; lean_object* v___x_127_; uint8_t v_isShared_128_; uint8_t v_isSharedCheck_132_; 
-lean_dec_ref(v_a_114_);
 lean_dec_ref(v_info_113_);
 v_a_125_ = lean_ctor_get(v___x_118_, 0);
 v_isSharedCheck_132_ = !lean_is_exclusive(v___x_118_);
@@ -582,6 +577,7 @@ lean_object* v_res_138_;
 v_res_138_ = l_Lean_Meta_canUnfold___redArg(v_info_133_, v_a_134_, v_a_135_, v_a_136_);
 lean_dec(v_a_136_);
 lean_dec_ref(v_a_135_);
+lean_dec_ref(v_a_134_);
 return v_res_138_;
 }
 }
@@ -589,7 +585,6 @@ LEAN_EXPORT lean_object* l_Lean_Meta_canUnfold(lean_object* v_info_139_, lean_ob
 _start:
 {
 lean_object* v___x_145_; 
-lean_inc_ref(v_a_140_);
 v___x_145_ = l_Lean_Meta_canUnfold___redArg(v_info_139_, v_a_140_, v_a_142_, v_a_143_);
 return v___x_145_;
 }
@@ -1329,7 +1324,6 @@ case 0:
 {
 lean_object* v___x_432_; lean_object* v___x_433_; 
 v___x_432_ = l_Lean_AsyncConstantInfo_toConstantInfo(v_val_425_);
-lean_inc_ref(v_a_416_);
 lean_inc_ref(v___x_432_);
 v___x_433_ = l_Lean_Meta_canUnfold___redArg(v___x_432_, v_a_416_, v_a_418_, v_a_419_);
 if (lean_obj_tag(v___x_433_) == 0)
@@ -1674,7 +1668,6 @@ case 1:
 {
 lean_object* v___x_581_; 
 lean_dec(v_constName_558_);
-lean_inc_ref(v_a_559_);
 v___x_581_ = l_Lean_Meta_canUnfold___redArg(v_val_571_, v_a_559_, v_a_561_, v_a_562_);
 if (lean_obj_tag(v___x_581_) == 0)
 {

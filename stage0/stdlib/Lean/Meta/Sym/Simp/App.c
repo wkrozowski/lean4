@@ -17,7 +17,7 @@ lean_object* lean_st_ref_get(lean_object*);
 uint8_t lean_nat_dec_lt(lean_object*, lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Sym_Simp_instInhabitedSimpM(lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Expr_getAppNumArgs(lean_object*);
 lean_object* lean_nat_sub(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Sym_Simp_mkRflResultCD(uint8_t);
@@ -2013,7 +2013,7 @@ _start:
 {
 lean_object* v___x_541_; lean_object* v___x_9179__overap_542_; lean_object* v___x_543_; 
 v___x_541_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpOverApplied_visit_spec__0___closed__0, &l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpOverApplied_visit_spec__0___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpOverApplied_visit_spec__0___closed__0);
-v___x_9179__overap_542_ = lean_panic_fn(v___x_541_, v_msg_530_);
+v___x_9179__overap_542_ = lean_panic_fn_borrowed(v___x_541_, v_msg_530_);
 lean_inc(v___y_539_);
 lean_inc_ref(v___y_538_);
 lean_inc(v___y_537_);
@@ -2763,7 +2763,7 @@ _start:
 {
 lean_object* v___x_834_; lean_object* v___x_986__overap_835_; lean_object* v___x_836_; 
 v___x_834_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_getFnType_spec__0___closed__0, &l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_getFnType_spec__0___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_getFnType_spec__0___closed__0);
-v___x_986__overap_835_ = lean_panic_fn(v___x_834_, v_msg_826_);
+v___x_986__overap_835_ = lean_panic_fn_borrowed(v___x_834_, v_msg_826_);
 lean_inc(v___y_832_);
 lean_inc_ref(v___y_831_);
 lean_inc(v___y_830_);
@@ -3091,7 +3091,7 @@ _start:
 {
 lean_object* v___x_973_; lean_object* v___x_31792__overap_974_; lean_object* v___x_975_; 
 v___x_973_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpFixedPrefix_go_spec__1___closed__0, &l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpFixedPrefix_go_spec__1___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpFixedPrefix_go_spec__1___closed__0);
-v___x_31792__overap_974_ = lean_panic_fn(v___x_973_, v_msg_962_);
+v___x_31792__overap_974_ = lean_panic_fn_borrowed(v___x_973_, v_msg_962_);
 lean_inc(v___y_971_);
 lean_inc_ref(v___y_970_);
 lean_inc(v___y_969_);
@@ -5171,6 +5171,7 @@ lean_dec_ref(v_e_1582_);
 v___x_1612_ = 0;
 v___x_1613_ = lean_box(v___x_1612_);
 v___x_1614_ = lean_array_get_borrowed(v___x_1613_, v_argKinds_1580_, v_i_1583_);
+lean_dec(v___x_1613_);
 v___x_1615_ = lean_unbox(v___x_1614_);
 switch(v___x_1615_)
 {
@@ -5469,7 +5470,7 @@ _start:
 {
 lean_object* v___x_1675_; lean_object* v___x_21488__overap_1676_; lean_object* v___x_1677_; 
 v___x_1675_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpUsingCongrThm_spec__0___closed__0, &l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpUsingCongrThm_spec__0___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpUsingCongrThm_spec__0___closed__0);
-v___x_21488__overap_1676_ = lean_panic_fn(v___x_1675_, v_msg_1664_);
+v___x_21488__overap_1676_ = lean_panic_fn_borrowed(v___x_1675_, v_msg_1664_);
 lean_inc(v___y_1673_);
 lean_inc_ref(v___y_1672_);
 lean_inc(v___y_1671_);

@@ -838,14 +838,11 @@ if (lean_obj_tag(v_x_145_) == 0)
 {
 lean_object* v_cs_148_; lean_object* v___x_149_; size_t v___x_150_; lean_object* v___x_151_; lean_object* v___x_152_; size_t v___x_153_; size_t v___x_154_; size_t v___x_155_; size_t v___x_156_; size_t v___x_157_; size_t v___x_158_; 
 v_cs_148_ = lean_ctor_get(v_x_145_, 0);
-lean_inc_ref(v_cs_148_);
-lean_dec_ref(v_x_145_);
 v___x_149_ = lean_obj_once(&l_Lean_instInhabitedPersistentArrayNode___closed__0, &l_Lean_instInhabitedPersistentArrayNode___closed__0_once, _init_l_Lean_instInhabitedPersistentArrayNode___closed__0);
 v___x_150_ = lean_usize_shift_right(v_x_146_, v_x_147_);
 v___x_151_ = lean_usize_to_nat(v___x_150_);
-v___x_152_ = lean_array_get(v___x_149_, v_cs_148_, v___x_151_);
+v___x_152_ = lean_array_get_borrowed(v___x_149_, v_cs_148_, v___x_151_);
 lean_dec(v___x_151_);
-lean_dec_ref(v_cs_148_);
 v___x_153_ = ((size_t)1ULL);
 v___x_154_ = lean_usize_shift_left(v___x_153_, v_x_147_);
 v___x_155_ = lean_usize_sub(v___x_154_, v___x_153_);
@@ -861,12 +858,10 @@ else
 {
 lean_object* v_vs_160_; lean_object* v___x_161_; lean_object* v___x_162_; 
 v_vs_160_ = lean_ctor_get(v_x_145_, 0);
-lean_inc_ref(v_vs_160_);
-lean_dec_ref(v_x_145_);
 v___x_161_ = lean_usize_to_nat(v_x_146_);
-v___x_162_ = lean_array_get(v_inst_144_, v_vs_160_, v___x_161_);
+v___x_162_ = lean_array_get_borrowed(v_inst_144_, v_vs_160_, v___x_161_);
 lean_dec(v___x_161_);
-lean_dec_ref(v_vs_160_);
+lean_inc(v___x_162_);
 return v___x_162_;
 }
 }
@@ -880,6 +875,8 @@ lean_dec(v_x_165_);
 v_x_93__boxed_168_ = lean_unbox_usize(v_x_166_);
 lean_dec(v_x_166_);
 v_res_169_ = l_Lean_PersistentArray_getAux___redArg(v_inst_163_, v_x_164_, v_x_92__boxed_167_, v_x_93__boxed_168_);
+lean_dec_ref(v_x_164_);
+lean_dec(v_inst_163_);
 return v_res_169_;
 }
 }
@@ -900,6 +897,8 @@ lean_dec(v_x_179_);
 v_x_135__boxed_182_ = lean_unbox_usize(v_x_180_);
 lean_dec(v_x_180_);
 v_res_183_ = l_Lean_PersistentArray_getAux(v_00_u03b1_176_, v_inst_177_, v_x_178_, v_x_134__boxed_181_, v_x_135__boxed_182_);
+lean_dec_ref(v_x_178_);
+lean_dec(v_inst_177_);
 return v_res_183_;
 }
 }
@@ -908,19 +907,13 @@ _start:
 {
 lean_object* v_root_187_; lean_object* v_tail_188_; size_t v_shift_189_; lean_object* v_tailOff_190_; uint8_t v___x_191_; 
 v_root_187_ = lean_ctor_get(v_t_185_, 0);
-lean_inc_ref(v_root_187_);
 v_tail_188_ = lean_ctor_get(v_t_185_, 1);
-lean_inc_ref(v_tail_188_);
 v_shift_189_ = lean_ctor_get_usize(v_t_185_, 4);
 v_tailOff_190_ = lean_ctor_get(v_t_185_, 3);
-lean_inc(v_tailOff_190_);
-lean_dec_ref(v_t_185_);
 v___x_191_ = lean_nat_dec_le(v_tailOff_190_, v_i_186_);
 if (v___x_191_ == 0)
 {
 size_t v___x_192_; lean_object* v___x_193_; 
-lean_dec(v_tailOff_190_);
-lean_dec_ref(v_tail_188_);
 v___x_192_ = lean_usize_of_nat(v_i_186_);
 v___x_193_ = l_Lean_PersistentArray_getAux___redArg(v_inst_184_, v_root_187_, v___x_192_, v_shift_189_);
 return v___x_193_;
@@ -928,12 +921,10 @@ return v___x_193_;
 else
 {
 lean_object* v___x_194_; lean_object* v___x_195_; 
-lean_dec_ref(v_root_187_);
 v___x_194_ = lean_nat_sub(v_i_186_, v_tailOff_190_);
-lean_dec(v_tailOff_190_);
-v___x_195_ = lean_array_get(v_inst_184_, v_tail_188_, v___x_194_);
+v___x_195_ = lean_array_get_borrowed(v_inst_184_, v_tail_188_, v___x_194_);
 lean_dec(v___x_194_);
-lean_dec_ref(v_tail_188_);
+lean_inc(v___x_195_);
 return v___x_195_;
 }
 }
@@ -944,6 +935,8 @@ _start:
 lean_object* v_res_199_; 
 v_res_199_ = l_Lean_PersistentArray_get_x21___redArg(v_inst_196_, v_t_197_, v_i_198_);
 lean_dec(v_i_198_);
+lean_dec_ref(v_t_197_);
+lean_dec(v_inst_196_);
 return v_res_199_;
 }
 }
@@ -961,6 +954,8 @@ _start:
 lean_object* v_res_209_; 
 v_res_209_ = l_Lean_PersistentArray_get_x21(v_00_u03b1_205_, v_inst_206_, v_t_207_, v_i_208_);
 lean_dec(v_i_208_);
+lean_dec_ref(v_t_207_);
+lean_dec(v_inst_206_);
 return v_res_209_;
 }
 }
@@ -978,6 +973,8 @@ _start:
 lean_object* v_res_219_; 
 v_res_219_ = l_Lean_PersistentArray_instGetElemNatLtSizeOfInhabited___redArg___lam__0(v_inst_215_, v_xs_216_, v_i_217_, v_x_218_);
 lean_dec(v_i_217_);
+lean_dec_ref(v_xs_216_);
+lean_dec(v_inst_215_);
 return v_res_219_;
 }
 }

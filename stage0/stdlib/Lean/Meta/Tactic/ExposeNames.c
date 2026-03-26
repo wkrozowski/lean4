@@ -3584,7 +3584,6 @@ lean_ctor_set(v___x_1025_, 1, v___x_1024_);
 v_sz_1026_ = lean_array_size(v___y_1022_);
 v___x_1027_ = ((size_t)0ULL);
 v___x_1028_ = l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_Lean_Meta_Tactic_ExposeNames_0__Lean_Meta_getLCtxWithExposedNames_spec__6(v___x_1019_, v___y_1022_, v_sz_1026_, v___x_1027_, v___x_1025_, v_a_999_, v_a_1000_, v_a_1001_, v_a_1002_);
-lean_dec_ref(v_a_999_);
 lean_dec_ref(v___y_1022_);
 if (lean_obj_tag(v___x_1028_) == 0)
 {
@@ -3690,11 +3689,10 @@ goto v___jp_1021_;
 else
 {
 lean_object* v___x_1059_; 
-lean_inc_ref(v_lctx_1004_);
 lean_del_object(v___x_1017_);
 lean_dec(v_snd_1015_);
 lean_dec(v_fst_1014_);
-lean_dec_ref(v_a_999_);
+lean_inc_ref(v_lctx_1004_);
 if (v_isShared_1013_ == 0)
 {
 lean_ctor_set(v___x_1012_, 0, v_lctx_1004_);
@@ -3720,7 +3718,6 @@ return v___x_1059_;
 else
 {
 lean_object* v_a_1063_; lean_object* v___x_1065_; uint8_t v_isShared_1066_; uint8_t v_isSharedCheck_1070_; 
-lean_dec_ref(v_a_999_);
 v_a_1063_ = lean_ctor_get(v___x_1009_, 0);
 v_isSharedCheck_1070_ = !lean_is_exclusive(v___x_1009_);
 if (v_isSharedCheck_1070_ == 0)
@@ -3769,6 +3766,7 @@ v_res_1076_ = l___private_Lean_Meta_Tactic_ExposeNames_0__Lean_Meta_getLCtxWithE
 lean_dec(v_a_1074_);
 lean_dec_ref(v_a_1073_);
 lean_dec(v_a_1072_);
+lean_dec_ref(v_a_1071_);
 return v_res_1076_;
 }
 }
@@ -4785,7 +4783,6 @@ if (lean_obj_tag(v___x_1513_) == 0)
 {
 lean_object* v___x_1514_; 
 lean_dec_ref(v___x_1513_);
-lean_inc_ref(v___y_1508_);
 v___x_1514_ = l___private_Lean_Meta_Tactic_ExposeNames_0__Lean_Meta_getLCtxWithExposedNames(v___y_1508_, v___y_1509_, v___y_1510_, v___y_1511_);
 if (lean_obj_tag(v___x_1514_) == 0)
 {
@@ -4819,7 +4816,6 @@ lean_dec_ref(v___x_1520_);
 v___x_1522_ = 2;
 v___x_1523_ = lean_unsigned_to_nat(0u);
 v___x_1524_ = l_Lean_Meta_mkFreshExprMVarAt(v_a_1515_, v_a_1517_, v_a_1519_, v___x_1522_, v_a_1521_, v___x_1523_, v___y_1508_, v___y_1509_, v___y_1510_, v___y_1511_);
-lean_dec_ref(v___y_1508_);
 if (lean_obj_tag(v___x_1524_) == 0)
 {
 lean_object* v_a_1525_; lean_object* v___x_1526_; lean_object* v___x_1528_; uint8_t v_isShared_1529_; uint8_t v_isSharedCheck_1534_; 
@@ -4919,7 +4915,6 @@ lean_object* v_a_1544_; lean_object* v___x_1546_; uint8_t v_isShared_1547_; uint
 lean_dec(v_a_1519_);
 lean_dec(v_a_1517_);
 lean_dec(v_a_1515_);
-lean_dec_ref(v___y_1508_);
 lean_dec(v_mvarId_1506_);
 v_a_1544_ = lean_ctor_get(v___x_1520_, 0);
 v_isSharedCheck_1551_ = !lean_is_exclusive(v___x_1520_);
@@ -4965,7 +4960,6 @@ else
 lean_object* v_a_1552_; lean_object* v___x_1554_; uint8_t v_isShared_1555_; uint8_t v_isSharedCheck_1559_; 
 lean_dec(v_a_1517_);
 lean_dec(v_a_1515_);
-lean_dec_ref(v___y_1508_);
 lean_dec(v_mvarId_1506_);
 v_a_1552_ = lean_ctor_get(v___x_1518_, 0);
 v_isSharedCheck_1559_ = !lean_is_exclusive(v___x_1518_);
@@ -5010,7 +5004,6 @@ else
 {
 lean_object* v_a_1560_; lean_object* v___x_1562_; uint8_t v_isShared_1563_; uint8_t v_isSharedCheck_1567_; 
 lean_dec(v_a_1515_);
-lean_dec_ref(v___y_1508_);
 lean_dec(v_mvarId_1506_);
 v_a_1560_ = lean_ctor_get(v___x_1516_, 0);
 v_isSharedCheck_1567_ = !lean_is_exclusive(v___x_1516_);
@@ -5054,7 +5047,6 @@ return v___x_1565_;
 else
 {
 lean_object* v_a_1568_; lean_object* v___x_1570_; uint8_t v_isShared_1571_; uint8_t v_isSharedCheck_1575_; 
-lean_dec_ref(v___y_1508_);
 lean_dec(v_mvarId_1506_);
 v_a_1568_ = lean_ctor_get(v___x_1514_, 0);
 v_isSharedCheck_1575_ = !lean_is_exclusive(v___x_1514_);
@@ -5098,7 +5090,6 @@ return v___x_1573_;
 else
 {
 lean_object* v_a_1576_; lean_object* v___x_1578_; uint8_t v_isShared_1579_; uint8_t v_isSharedCheck_1583_; 
-lean_dec_ref(v___y_1508_);
 lean_dec(v_mvarId_1506_);
 v_a_1576_ = lean_ctor_get(v___x_1513_, 0);
 v_isSharedCheck_1583_ = !lean_is_exclusive(v___x_1513_);
@@ -5148,6 +5139,7 @@ v_res_1591_ = l_Lean_MVarId_exposeNames___lam__0(v_mvarId_1584_, v___x_1585_, v_
 lean_dec(v___y_1589_);
 lean_dec_ref(v___y_1588_);
 lean_dec(v___y_1587_);
+lean_dec_ref(v___y_1586_);
 return v_res_1591_;
 }
 }
@@ -5508,7 +5500,6 @@ LEAN_EXPORT lean_object* l_Lean_Meta_withExposedNames___redArg(lean_object* v_k_
 _start:
 {
 lean_object* v___x_1788_; 
-lean_inc_ref(v_a_1783_);
 v___x_1788_ = l___private_Lean_Meta_Tactic_ExposeNames_0__Lean_Meta_getLCtxWithExposedNames(v_a_1783_, v_a_1784_, v_a_1785_, v_a_1786_);
 if (lean_obj_tag(v___x_1788_) == 0)
 {

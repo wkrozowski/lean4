@@ -27,7 +27,7 @@ lean_object* l_Lean_mkApp3(lean_object*, lean_object*, lean_object*, lean_object
 lean_object* lean_uint64_to_nat(uint64_t);
 lean_object* l_Lean_mkNatLit(lean_object*);
 extern lean_object* l_Lean_instInhabitedExpr;
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_nat_to_int(lean_object*);
 uint8_t lean_int_dec_le(lean_object*, lean_object*);
 lean_object* lean_int_neg(lean_object*);
@@ -2525,7 +2525,7 @@ _start:
 {
 lean_object* v___x_761_; lean_object* v___x_762_; 
 v___x_761_ = l_Lean_instInhabitedExpr;
-v___x_762_ = lean_panic_fn(v___x_761_, v_msg_760_);
+v___x_762_ = lean_panic_fn_borrowed(v___x_761_, v_msg_760_);
 return v___x_762_;
 }
 }

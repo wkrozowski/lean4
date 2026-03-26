@@ -1282,6 +1282,7 @@ v___x_630_ = lean_alloc_ctor(0, 1, 1);
 lean_ctor_set(v___x_630_, 0, v_val_627_);
 lean_ctor_set_uint8(v___x_630_, sizeof(void*)*1, v___x_629_);
 v___x_631_ = l_Lean_Meta_Grind_Arith_CommRing_RingM_modifyCommRing___redArg(v___f_628_, v___x_630_, v___y_613_);
+lean_dec_ref(v___x_630_);
 return v___x_631_;
 }
 else

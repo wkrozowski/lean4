@@ -1196,7 +1196,6 @@ v___jp_300_:
 {
 uint8_t v___x_304_; 
 v___x_304_ = l_List_elem___at___00System_FilePath_normalize_spec__0(v___y_303_, v___y_301_);
-lean_dec(v___y_301_);
 if (v___x_304_ == 0)
 {
 lean_object* v___x_305_; 

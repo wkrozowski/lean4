@@ -1126,7 +1126,6 @@ if (v___x_306_ == 0)
 {
 lean_object* v___x_307_; lean_object* v___x_308_; 
 lean_dec_ref(v___y_303_);
-lean_dec_ref(v___y_296_);
 v___x_307_ = lean_box(0);
 v___x_308_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_308_, 0, v___x_307_);
@@ -1148,7 +1147,6 @@ v___x_313_ = lean_nat_sub(v___x_312_, v___x_305_);
 lean_dec(v___x_312_);
 v___x_314_ = l_Lean_Expr_getRevArg_x21(v_a_293_, v___x_313_);
 v___x_315_ = l_Lean_ParserCompiler_parserNodeKind_x3f(v___x_314_, v___y_296_, v___y_297_, v___y_298_, v___y_299_);
-lean_dec_ref(v___y_296_);
 return v___x_315_;
 }
 }
@@ -1162,6 +1160,7 @@ v_res_336_ = l_Lean_ParserCompiler_parserNodeKind_x3f___lam__1(v_a_328_, v_param
 lean_dec(v___y_334_);
 lean_dec_ref(v___y_333_);
 lean_dec(v___y_332_);
+lean_dec_ref(v___y_331_);
 lean_dec_ref(v_x_330_);
 lean_dec_ref(v_params_329_);
 lean_dec_ref(v_a_328_);

@@ -214,11 +214,6 @@ structure State where
   and implement the macro `trace_goal`.
   -/
   lastTag    : Name := .anonymous
-  /--
-  Issues found during the proof search. These issues are reported to
-  users when `grind` fails.
-  -/
-  issues     : List MessageData := []
   /-- Performance counters -/
   counters   : Counters := {}
   /-- Split diagnostic information. This information is only collected when `set_option diagnostics true` -/
@@ -401,35 +396,6 @@ def mkHCongrWithArity (f : Expr) (numArgs : Nat) : GrindM CongrTheorem := do
   modify fun s => { s with congrThms := s.congrThms.insert key result }
   return result
 
-def reportIssue (msg : MessageData) : GrindM Unit := do
-  let msg ← addMessageContext msg
-  modify fun s => { s with issues := .trace { cls := `issue } msg #[] :: s.issues }
-  /-
-  We also add a trace message because we may want to know when
-  an issue happened relative to other trace messages.
-  -/
-  trace[grind.issues] msg
-
-private meta def expandReportIssueMacro (s : Syntax) : MacroM (TSyntax `doElem) := do
-  let msg ← if s.getKind == interpolatedStrKind then `(m! $(⟨s⟩)) else `(($(⟨s⟩) : MessageData))
-  `(doElem| do
-    if (← getConfig).verbose then
-      reportIssue $msg)
-
-macro "reportIssue!" s:(interpolatedStr(term) <|> term) : doElem => do
-  expandReportIssueMacro s.raw
-
-/-- Similar to `expandReportIssueMacro`, but only reports issue if `grind.debug` is set to `true` -/
-meta def expandReportDbgIssueMacro (s : Syntax) : MacroM (TSyntax `doElem) := do
-  let msg ← if s.getKind == interpolatedStrKind then `(m! $(⟨s⟩)) else `(($(⟨s⟩) : MessageData))
-  `(doElem| do
-    if (← getConfig).verbose then
-      if grind.debug.get (← getOptions) then
-        reportIssue $msg)
-
-/-- Similar to `reportIssue!`, but only reports issue if `grind.debug` is set to `true` -/
-macro "reportDbgIssue!" s:(interpolatedStr(term) <|> term) : doElem => do
-  expandReportDbgIssueMacro s.raw
 
 /--
 Each E-node may have "solver terms" attached to them.

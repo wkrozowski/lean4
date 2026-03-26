@@ -4181,6 +4181,7 @@ v___x_1402_ = l_Lean_mkApp3(v___x_1401_, v___x_1383_, v___x_1388_, v_a_1397_);
 v___x_1403_ = lean_obj_once(&l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__58, &l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__58_once, _init_l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__58);
 v___x_1404_ = lean_obj_once(&l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__59, &l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__59_once, _init_l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__59);
 lean_inc_ref(v___x_1402_);
+lean_inc_ref(v___y_1394_);
 lean_inc(v___x_1226_);
 v___x_1405_ = l_Lean_mkApp3(v___x_1404_, v___x_1226_, v___y_1394_, v___x_1402_);
 lean_inc(v___x_1226_);
@@ -4253,7 +4254,6 @@ return v___x_1414_;
 else
 {
 lean_object* v_a_1419_; lean_object* v___x_1421_; uint8_t v_isShared_1422_; uint8_t v_isSharedCheck_1426_; 
-lean_dec_ref(v___y_1394_);
 lean_dec(v___x_1388_);
 lean_dec(v___x_1383_);
 lean_dec(v___x_1238_);
@@ -4651,6 +4651,7 @@ lean_dec_ref(v___x_1451_);
 v___x_1453_ = lean_obj_once(&l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__51, &l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__51_once, _init_l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__51);
 v___x_1454_ = lean_obj_once(&l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__54, &l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__54_once, _init_l_Lean_Elab_Tactic_Omega_analyzeAtom___redArg___closed__54);
 lean_inc(v___x_1438_);
+lean_inc_ref(v___y_1449_);
 v_pos_1455_ = l_Lean_mkApp4(v___x_1453_, v___x_1447_, v___x_1454_, v___y_1449_, v___x_1438_);
 v___x_1456_ = l_Lean_Meta_mkDecideProof(v_pos_1455_, v_a_1139_, v_a_1140_, v_a_1141_, v_a_1142_);
 if (lean_obj_tag(v___x_1456_) == 0)
@@ -4774,7 +4775,6 @@ return v___x_1478_;
 else
 {
 lean_object* v_a_1481_; lean_object* v___x_1483_; uint8_t v_isShared_1484_; uint8_t v_isSharedCheck_1488_; 
-lean_dec_ref(v___y_1449_);
 lean_dec(v___x_1444_);
 lean_dec(v___x_1438_);
 lean_del_object(v___x_1168_);

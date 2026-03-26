@@ -332,6 +332,7 @@ uint8_t v___x_79_; lean_object* v___x_80_; lean_object* v___x_81_; uint8_t v___x
 v___x_79_ = 0;
 v___x_80_ = lean_box(v___x_79_);
 v___x_81_ = lean_array_get_borrowed(v___x_80_, v___x_68_, v_a_71_);
+lean_dec(v___x_80_);
 v___x_82_ = lean_unbox(v___x_81_);
 if (v___x_82_ == 0)
 {
@@ -421,6 +422,7 @@ uint8_t v___x_114_; lean_object* v___x_115_; lean_object* v___x_116_; uint8_t v_
 v___x_114_ = 0;
 v___x_115_ = lean_box(v___x_114_);
 v___x_116_ = lean_array_get_borrowed(v___x_115_, v___x_97_, v_a_101_);
+lean_dec(v___x_115_);
 v___x_117_ = lean_unbox(v___x_116_);
 if (v___x_117_ == 0)
 {

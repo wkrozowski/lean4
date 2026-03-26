@@ -545,6 +545,7 @@ lean_object* v___x_120_; lean_object* v___x_121_; uint8_t v___x_122_; lean_objec
 v___x_120_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_120_, 0, v___x_116_);
 lean_ctor_set(v___x_120_, 1, v___x_119_);
+lean_inc(v___y_115_);
 v___x_121_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_121_, 0, v___y_115_);
 lean_ctor_set(v___x_121_, 1, v___x_120_);
@@ -563,6 +564,7 @@ v___jp_77_:
 {
 lean_object* v___x_79_; lean_object* v___x_80_; uint8_t v___x_81_; lean_object* v___x_82_; lean_object* v___x_83_; 
 v___x_79_ = ((lean_object*)(l_Std_instReprCancellationReason_repr___closed__1));
+lean_inc(v___y_78_);
 v___x_80_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_80_, 0, v___y_78_);
 lean_ctor_set(v___x_80_, 1, v___x_79_);
@@ -577,6 +579,7 @@ v___jp_84_:
 {
 lean_object* v___x_86_; lean_object* v___x_87_; uint8_t v___x_88_; lean_object* v___x_89_; lean_object* v___x_90_; 
 v___x_86_ = ((lean_object*)(l_Std_instReprCancellationReason_repr___closed__3));
+lean_inc(v___y_85_);
 v___x_87_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_87_, 0, v___y_85_);
 lean_ctor_set(v___x_87_, 1, v___x_86_);
@@ -591,6 +594,7 @@ v___jp_91_:
 {
 lean_object* v___x_93_; lean_object* v___x_94_; uint8_t v___x_95_; lean_object* v___x_96_; lean_object* v___x_97_; 
 v___x_93_ = ((lean_object*)(l_Std_instReprCancellationReason_repr___closed__5));
+lean_inc(v___y_92_);
 v___x_94_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_94_, 0, v___y_92_);
 lean_ctor_set(v___x_94_, 1, v___x_93_);

@@ -1648,25 +1648,24 @@ uint8_t v___x_512_;
 v___x_512_ = lean_usize_dec_lt(v_i_510_, v_sz_509_);
 if (v___x_512_ == 0)
 {
+lean_inc_ref(v_b_511_);
 return v_b_511_;
 }
 else
 {
 lean_object* v_a_513_; lean_object* v_baseName_514_; lean_object* v___x_515_; uint8_t v___x_516_; 
-lean_dec_ref(v_b_511_);
 v_a_513_ = lean_array_uget_borrowed(v_as_508_, v_i_510_);
 v_baseName_514_ = lean_ctor_get(v_a_513_, 1);
 v___x_515_ = lean_box(0);
 v___x_516_ = lean_name_eq(v_baseName_514_, v___x_507_);
 if (v___x_516_ == 0)
 {
-lean_object* v___x_517_; size_t v___x_518_; size_t v___x_519_; 
+lean_object* v___x_517_; size_t v___x_518_; size_t v___x_519_; lean_object* v___x_520_; 
 v___x_517_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lake_parsePackageSpec_spec__0___closed__0));
 v___x_518_ = ((size_t)1ULL);
 v___x_519_ = lean_usize_add(v_i_510_, v___x_518_);
-v_i_510_ = v___x_519_;
-v_b_511_ = v___x_517_;
-goto _start;
+v___x_520_ = l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lake_parsePackageSpec_spec__0(v___x_507_, v_as_508_, v_sz_509_, v___x_519_, v___x_517_);
+return v___x_520_;
 }
 else
 {
@@ -1693,6 +1692,7 @@ lean_dec(v_sz_526_);
 v_i_boxed_530_ = lean_unbox_usize(v_i_527_);
 lean_dec(v_i_527_);
 v_res_531_ = l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lake_parsePackageSpec_spec__0(v___x_524_, v_as_525_, v_sz_boxed_529_, v_i_boxed_530_, v_b_528_);
+lean_dec_ref(v_b_528_);
 lean_dec_ref(v_as_525_);
 lean_dec(v___x_524_);
 return v_res_531_;

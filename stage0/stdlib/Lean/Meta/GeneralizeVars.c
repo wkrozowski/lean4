@@ -428,7 +428,6 @@ LEAN_EXPORT lean_object* l___private_Lean_Meta_GeneralizeVars_0__Lean_Meta_mkGen
 _start:
 {
 lean_object* v_a_111_; lean_object* v_s_x27_123_; lean_object* v___y_124_; lean_object* v___y_125_; lean_object* v___y_126_; lean_object* v___y_127_; lean_object* v___x_133_; 
-lean_inc_ref(v_a_105_);
 v___x_133_ = l_Lean_FVarId_getDecl___redArg(v_fvarId_102_, v_a_105_, v_a_107_, v_a_108_);
 if (lean_obj_tag(v___x_133_) == 0)
 {
@@ -4770,12 +4769,11 @@ v___jp_1337_:
 lean_object* v_lctx_1339_; lean_object* v_decls_1340_; lean_object* v___x_1341_; lean_object* v___x_1342_; 
 v_lctx_1339_ = lean_ctor_get(v_a_1331_, 2);
 v_decls_1340_ = lean_ctor_get(v_lctx_1339_, 1);
-lean_inc_ref(v_decls_1340_);
 v___x_1341_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_1341_, 0, v___y_1338_);
 lean_ctor_set(v___x_1341_, 1, v_r_1336_);
+lean_inc_ref(v_decls_1340_);
 v___x_1342_ = l_Lean_PersistentArray_forIn___at___00Lean_Meta_getFVarSetToGeneralize_spec__0(v_ignoreLetDecls_1330_, v_forbidden_1329_, v_decls_1340_, v___x_1341_, v_a_1331_, v_a_1332_, v_a_1333_, v_a_1334_);
-lean_dec_ref(v_a_1331_);
 if (lean_obj_tag(v___x_1342_) == 0)
 {
 lean_object* v_a_1343_; lean_object* v___x_1345_; uint8_t v_isShared_1346_; uint8_t v_isSharedCheck_1351_; 
@@ -4874,6 +4872,7 @@ v_res_1379_ = l_Lean_Meta_getFVarSetToGeneralize(v_targets_1370_, v_forbidden_13
 lean_dec(v_a_1376_);
 lean_dec_ref(v_a_1375_);
 lean_dec(v_a_1374_);
+lean_dec_ref(v_a_1373_);
 lean_dec(v_forbidden_1371_);
 lean_dec_ref(v_targets_1370_);
 return v_res_1379_;
@@ -4969,7 +4968,6 @@ lean_object* v_a_1451_; lean_object* v___x_1452_;
 v_a_1451_ = lean_ctor_get(v___x_1450_, 0);
 lean_inc(v_a_1451_);
 lean_dec_ref(v___x_1450_);
-lean_inc_ref(v_a_1445_);
 v___x_1452_ = l_Lean_Meta_getFVarSetToGeneralize(v_targets_1442_, v_a_1451_, v_ignoreLetDecls_1444_, v_a_1445_, v_a_1446_, v_a_1447_, v_a_1448_);
 lean_dec(v_a_1451_);
 if (lean_obj_tag(v___x_1452_) == 0)
@@ -4999,7 +4997,6 @@ lean_object* v___x_1456_; lean_object* v___x_1457_; lean_object* v___x_1458_;
 v___x_1456_ = lean_mk_empty_array_with_capacity(v___y_1455_);
 lean_dec(v___y_1455_);
 v___x_1457_ = l_Std_DTreeMap_Internal_Impl_foldlM___at___00Std_DTreeMap_Internal_Impl_foldl___at___00Lean_Meta_getFVarsToGeneralize_spec__0_spec__0(v___x_1456_, v_a_1453_);
-lean_inc_ref(v_a_1445_);
 v___x_1458_ = l_Lean_Meta_sortFVarIds___redArg(v___x_1457_, v_a_1445_);
 return v___x_1458_;
 }

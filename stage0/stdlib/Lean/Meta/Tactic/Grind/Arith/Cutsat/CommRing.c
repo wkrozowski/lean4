@@ -1823,7 +1823,6 @@ lean_dec_ref(v___x_626_);
 lean_inc(v_a_627_);
 v___f_628_ = lean_alloc_closure((void*)(l_Lean_Meta_Grind_Arith_CommRing_getNegFn___at___00Lean_Meta_Grind_Arith_CommRing_denoteNum___at___00Lean_Grind_CommRing_Poly_denoteExpr___at___00Int_Linear_Poly_normCommRing_x3f_spec__0_spec__0_spec__2___lam__0), 2, 1);
 lean_closure_set(v___f_628_, 0, v_a_627_);
-lean_inc_ref(v___y_593_);
 v___x_629_ = l_Lean_Meta_Grind_Arith_CommRing_RingM_modifyCommRing___redArg(v___f_628_, v___y_593_, v___y_594_);
 if (lean_obj_tag(v___x_629_) == 0)
 {
@@ -2697,7 +2696,6 @@ lean_dec_ref(v___x_928_);
 lean_inc(v_a_929_);
 v___f_930_ = lean_alloc_closure((void*)(l_Lean_Meta_Grind_Arith_CommRing_getPowFn___at___00Lean_Grind_CommRing_Power_denoteExpr___at___00Lean_Grind_CommRing_Mon_denoteExpr___at___00__private_Lean_Meta_Tactic_Grind_Arith_CommRing_DenoteExpr_0__Lean_Grind_CommRing_Poly_denoteExpr_denoteTerm___at___00Lean_Grind_CommRing_Poly_denoteExpr___at___00Int_Linear_Poly_normCommRing_x3f_spec__0_spec__1_spec__5_spec__10_spec__13___lam__0), 2, 1);
 lean_closure_set(v___f_930_, 0, v_a_929_);
-lean_inc_ref(v___y_902_);
 v___x_931_ = l_Lean_Meta_Grind_Arith_CommRing_RingM_modifyCommRing___redArg(v___f_930_, v___y_902_, v___y_903_);
 if (lean_obj_tag(v___x_931_) == 0)
 {
@@ -2909,6 +2907,7 @@ else
 lean_object* v___x_1014_; 
 v___x_1014_ = l_Lean_PersistentArray_get_x21___redArg(v___x_1011_, v_vars_989_, v_x_990_);
 lean_dec(v_x_990_);
+lean_dec_ref(v_vars_989_);
 v___y_993_ = v___x_1014_;
 goto v___jp_992_;
 }
@@ -3490,7 +3489,6 @@ lean_dec_ref(v___x_1193_);
 lean_inc(v_a_1194_);
 v___f_1195_ = lean_alloc_closure((void*)(l_Lean_Meta_Grind_Arith_CommRing_getMulFn___at___00__private_Lean_Meta_Tactic_Grind_Arith_CommRing_DenoteExpr_0__Lean_Grind_CommRing_Poly_denoteExpr_denoteTerm___at___00Lean_Grind_CommRing_Poly_denoteExpr___at___00Int_Linear_Poly_normCommRing_x3f_spec__0_spec__1_spec__4___lam__0), 2, 1);
 lean_closure_set(v___f_1195_, 0, v_a_1194_);
-lean_inc_ref(v___y_1157_);
 v___x_1196_ = l_Lean_Meta_Grind_Arith_CommRing_RingM_modifyCommRing___redArg(v___f_1195_, v___y_1157_, v___y_1158_);
 if (lean_obj_tag(v___x_1196_) == 0)
 {
@@ -4174,7 +4172,6 @@ lean_dec_ref(v___x_1458_);
 lean_inc(v_a_1459_);
 v___f_1460_ = lean_alloc_closure((void*)(l_Lean_Meta_Grind_Arith_CommRing_getAddFn___at___00__private_Lean_Meta_Tactic_Grind_Arith_CommRing_DenoteExpr_0__Lean_Grind_CommRing_Poly_denoteExpr_go___at___00Lean_Grind_CommRing_Poly_denoteExpr___at___00Int_Linear_Poly_normCommRing_x3f_spec__0_spec__2_spec__7___lam__0), 2, 1);
 lean_closure_set(v___f_1460_, 0, v_a_1459_);
-lean_inc_ref(v___y_1422_);
 v___x_1461_ = l_Lean_Meta_Grind_Arith_CommRing_RingM_modifyCommRing___redArg(v___f_1460_, v___y_1422_, v___y_1423_);
 if (lean_obj_tag(v___x_1461_) == 0)
 {

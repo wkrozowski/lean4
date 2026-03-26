@@ -37,7 +37,7 @@ lean_object* lean_array_fget(lean_object*, lean_object*);
 lean_object* lean_float_to_string(double);
 lean_object* l_Lean_Syntax_decodeScientificLitVal_x3f(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_nat_pow(lean_object*, lean_object*);
 uint64_t lean_string_hash(lean_object*);
 uint8_t lean_nat_dec_le(lean_object*, lean_object*);
@@ -760,6 +760,7 @@ goto v_reusejp_118_;
 v_reusejp_118_:
 {
 lean_object* v___x_120_; 
+lean_inc(v___y_110_);
 v___x_120_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_120_, 0, v___y_110_);
 lean_ctor_set(v___x_120_, 1, v___x_119_);
@@ -1216,6 +1217,7 @@ return v___x_297_;
 v___jp_235_:
 {
 lean_object* v___x_240_; lean_object* v___x_241_; lean_object* v___x_242_; lean_object* v___x_243_; lean_object* v___x_244_; 
+lean_inc_ref(v___y_237_);
 v___x_240_ = lean_string_append(v___y_237_, v___y_236_);
 lean_dec_ref(v___y_236_);
 v___x_241_ = ((lean_object*)(l_Lean_JsonNumber_toString___closed__0));
@@ -1281,6 +1283,7 @@ lean_object* v___x_268_;
 lean_dec(v___y_254_);
 lean_dec(v___y_252_);
 lean_dec(v___y_251_);
+lean_inc_ref(v___y_250_);
 v___x_268_ = lean_string_append(v___y_250_, v___y_249_);
 lean_dec_ref(v___y_249_);
 return v___x_268_;
@@ -1720,7 +1723,7 @@ _start:
 {
 lean_object* v___x_445_; lean_object* v___x_446_; 
 v___x_445_ = l_Lean_JsonNumber_instInhabited;
-v___x_446_ = lean_panic_fn(v___x_445_, v_msg_444_);
+v___x_446_ = lean_panic_fn_borrowed(v___x_445_, v_msg_444_);
 return v___x_446_;
 }
 }
@@ -5188,7 +5191,7 @@ _start:
 {
 lean_object* v___x_1393_; lean_object* v___x_1394_; 
 v___x_1393_ = lean_box(0);
-v___x_1394_ = lean_panic_fn(v___x_1393_, v_msg_1392_);
+v___x_1394_ = lean_panic_fn_borrowed(v___x_1393_, v_msg_1392_);
 return v___x_1394_;
 }
 }
@@ -5197,7 +5200,7 @@ _start:
 {
 lean_object* v___x_1396_; lean_object* v___x_1397_; 
 v___x_1396_ = lean_box(1);
-v___x_1397_ = lean_panic_fn(v___x_1396_, v_msg_1395_);
+v___x_1397_ = lean_panic_fn_borrowed(v___x_1396_, v_msg_1395_);
 return v___x_1397_;
 }
 }

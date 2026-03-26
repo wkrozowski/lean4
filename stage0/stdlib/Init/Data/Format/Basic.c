@@ -50,7 +50,7 @@ lean_object* l_StateT_instMonad___redArg___lam__7(lean_object*, lean_object*, le
 lean_object* l_StateT_instMonad___redArg___lam__9(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_StateT_map(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_StateT_pure(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Std_Format_FlattenBehavior_ctorIdx(uint8_t);
 LEAN_EXPORT lean_object* l_Std_Format_FlattenBehavior_ctorIdx___boxed(lean_object*);
 LEAN_EXPORT lean_object* l_Std_Format_FlattenBehavior_toCtorIdx(uint8_t);
@@ -2244,6 +2244,7 @@ v___x_678_ = lean_box(0);
 v___x_679_ = l_instInhabitedOfMonad___redArg(v_inst_663_, v___x_678_);
 v___x_680_ = ((lean_object*)(l___private_Init_Data_Format_Basic_0__Std_Format_be___redArg___lam__6___closed__0));
 v___x_681_ = l_panic___redArg(v___x_679_, v___x_680_);
+lean_dec(v___x_679_);
 return v___x_681_;
 }
 }
@@ -3730,7 +3731,8 @@ lean_ctor_set(v___x_1196_, 0, v___x_1194_);
 lean_ctor_set(v___x_1196_, 1, v___x_1195_);
 v___x_1197_ = lean_box(0);
 v___x_1198_ = l_instInhabitedOfMonad___redArg(v___x_1196_, v___x_1197_);
-v___x_4858__overap_1199_ = lean_panic_fn(v___x_1198_, v_msg_1185_);
+v___x_4858__overap_1199_ = lean_panic_fn_borrowed(v___x_1198_, v_msg_1185_);
+lean_dec(v___x_1198_);
 v___x_1200_ = lean_apply_1(v___x_4858__overap_1199_, v___y_1186_);
 return v___x_1200_;
 }

@@ -3602,7 +3602,6 @@ else
 {
 lean_object* v___x_1154_; lean_object* v___x_1155_; 
 v___x_1154_ = l_Lean_Expr_fvarId_x21(v_e_1143_);
-lean_inc_ref(v___y_1145_);
 v___x_1155_ = l_Lean_FVarId_getDecl___redArg(v___x_1154_, v___y_1145_, v___y_1147_, v___y_1148_);
 if (lean_obj_tag(v___x_1155_) == 0)
 {
@@ -4693,7 +4692,6 @@ LEAN_EXPORT lean_object* l_Lean_MVarId_replace___lam__0(lean_object* v_hyp_1504_
 _start:
 {
 lean_object* v___x_1513_; 
-lean_inc_ref(v___y_1508_);
 lean_inc(v_hyp_1504_);
 v___x_1513_ = l_Lean_FVarId_getDecl___redArg(v_hyp_1504_, v___y_1508_, v___y_1510_, v___y_1511_);
 if (lean_obj_tag(v___x_1513_) == 0)

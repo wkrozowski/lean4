@@ -975,7 +975,6 @@ v___jp_276_:
 {
 lean_object* v___x_299_; lean_object* v___x_300_; lean_object* v___x_301_; 
 v___x_299_ = l_Lean_Option_get___at___00Lean_Meta_evalExprCore_spec__3(v___y_277_, v___y_279_);
-lean_dec_ref(v___y_279_);
 v___x_300_ = lean_alloc_ctor(0, 14, 2);
 lean_ctor_set(v___x_300_, 0, v_fileName_285_);
 lean_ctor_set(v___x_300_, 1, v_fileMap_286_);
@@ -1148,6 +1147,7 @@ v_resetjp_357_:
 {
 lean_object* v___x_360_; lean_object* v___x_362_; 
 v___x_360_ = l_Lean_Kernel_enableDiag(v_env_349_, v___y_341_);
+lean_inc_ref(v___y_339_);
 if (v_isShared_359_ == 0)
 {
 lean_ctor_set(v___x_358_, 5, v___y_339_);
@@ -1191,7 +1191,6 @@ goto v___jp_311_;
 }
 else
 {
-lean_dec_ref(v___y_339_);
 v___y_312_ = v___y_336_;
 v___y_313_ = v___y_338_;
 v___y_314_ = v___y_337_;
@@ -1309,7 +1308,6 @@ lean_ctor_set_uint8(v___x_400_, sizeof(void*)*14, v___y_370_);
 v___x_401_ = l_Lean_Compiler_compiler_relaxedMetaCheck;
 v___x_402_ = l_Lean_Option_set___at___00Lean_Meta_evalExprCore_spec__1(v___y_376_, v___x_401_, v___y_375_);
 v___x_403_ = l_Lean_Option_get___at___00Lean_Meta_evalExprCore_spec__2(v___x_402_, v___y_374_);
-lean_dec_ref(v___y_374_);
 v___x_404_ = l_Lean_Kernel_isDiagnosticsEnabled(v_env_397_);
 lean_dec_ref(v_env_397_);
 if (v___x_404_ == 0)
@@ -1317,7 +1315,6 @@ if (v___x_404_ == 0)
 if (v___x_403_ == 0)
 {
 lean_dec_ref(v___x_400_);
-lean_dec_ref(v___y_368_);
 v___y_277_ = v___x_402_;
 v___y_278_ = v___y_369_;
 v___y_279_ = v___y_371_;

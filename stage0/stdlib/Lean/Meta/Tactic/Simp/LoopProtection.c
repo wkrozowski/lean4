@@ -2038,7 +2038,6 @@ _start:
 lean_object* v_options_598_; lean_object* v___x_599_; 
 v_options_598_ = lean_ctor_get(v___y_595_, 2);
 lean_inc_ref(v_options_598_);
-lean_dec_ref(v___y_595_);
 v___x_599_ = l_Lean_Options_toLinterOptions___at___00Lean_Linter_getLinterOptions___at___00Lean_Meta_Simp_shouldCheckLoops_spec__0_spec__0___redArg(v_options_598_, v___y_596_);
 return v___x_599_;
 }
@@ -2049,6 +2048,7 @@ _start:
 lean_object* v_res_603_; 
 v_res_603_ = l_Lean_Linter_getLinterOptions___at___00Lean_Meta_Simp_shouldCheckLoops_spec__0(v___y_600_, v___y_601_);
 lean_dec(v___y_601_);
+lean_dec_ref(v___y_600_);
 return v_res_603_;
 }
 }
@@ -2063,7 +2063,6 @@ if (v_singlePass_610_ == 0)
 if (v_force_604_ == 0)
 {
 lean_object* v___x_611_; lean_object* v_a_612_; lean_object* v___x_614_; uint8_t v_isShared_615_; uint8_t v_isSharedCheck_622_; 
-lean_inc_ref(v_a_606_);
 v___x_611_ = l_Lean_Linter_getLinterOptions___at___00Lean_Meta_Simp_shouldCheckLoops_spec__0(v_a_606_, v_a_607_);
 v_a_612_ = lean_ctor_get(v___x_611_, 0);
 v_isSharedCheck_622_ = !lean_is_exclusive(v___x_611_);
@@ -2873,6 +2872,7 @@ lean_ctor_set(v___x_944_, 1, v_openDecls_931_);
 v___x_945_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_945_, 0, v___x_944_);
 lean_ctor_set(v___x_945_, 1, v___y_925_);
+lean_inc_ref(v___y_920_);
 lean_inc_ref(v___y_922_);
 v___x_946_ = lean_alloc_ctor(0, 5, 3);
 lean_ctor_set(v___x_946_, 0, v___y_922_);

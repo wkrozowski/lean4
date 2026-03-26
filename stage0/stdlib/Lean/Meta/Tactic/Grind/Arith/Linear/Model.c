@@ -520,6 +520,7 @@ lean_object* v___x_80_; lean_object* v___x_81_; lean_object* v___x_83_;
 v___x_80_ = l_instInhabitedRat;
 v___x_81_ = l_Lean_PersistentArray_get_x21___redArg(v___x_80_, v_assignment_71_, v_val_73_);
 lean_dec(v_val_73_);
+lean_dec_ref(v_assignment_71_);
 if (v_isShared_76_ == 0)
 {
 lean_ctor_set(v___x_75_, 0, v___x_81_);

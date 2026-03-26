@@ -2481,6 +2481,7 @@ goto v___jp_736_;
 v___jp_736_:
 {
 lean_object* v___x_738_; lean_object* v___x_739_; lean_object* v___x_741_; 
+lean_inc_ref(v___y_737_);
 v___x_738_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_738_, 0, v___y_737_);
 v___x_739_ = l_Lean_MessageData_ofFormat(v___x_738_);

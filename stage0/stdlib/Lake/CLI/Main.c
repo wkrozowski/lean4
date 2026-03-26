@@ -22870,7 +22870,6 @@ v___jp_6470_:
 {
 lean_object* v___x_6473_; lean_object* v___x_6474_; lean_object* v___x_6475_; 
 v___x_6473_ = lean_string_append(v___y_6471_, v___y_6472_);
-lean_dec_ref(v___y_6472_);
 v___x_6474_ = ((lean_object*)(l___private_Lake_CLI_Main_0__Lake_lake_cache_put_invalidEndpointConfig___closed__0));
 v___x_6475_ = lean_string_append(v___x_6473_, v___x_6474_);
 return v___x_6475_;
@@ -22879,7 +22878,6 @@ v___jp_6476_:
 {
 lean_object* v___x_6479_; lean_object* v___x_6480_; lean_object* v___x_6481_; 
 v___x_6479_ = lean_string_append(v___y_6477_, v___y_6478_);
-lean_dec_ref(v___y_6478_);
 v___x_6480_ = ((lean_object*)(l___private_Lake_CLI_Main_0__Lake_lake_cache_get_invalidEndpointConfig___closed__1));
 v___x_6481_ = lean_string_append(v___x_6479_, v___x_6480_);
 if (lean_obj_tag(v_revisionEndpoint_x3f_6469_) == 0)
@@ -22894,8 +22892,6 @@ else
 {
 lean_object* v_val_6483_; 
 v_val_6483_ = lean_ctor_get(v_revisionEndpoint_x3f_6469_, 0);
-lean_inc(v_val_6483_);
-lean_dec_ref(v_revisionEndpoint_x3f_6469_);
 v___y_6471_ = v___x_6481_;
 v___y_6472_ = v_val_6483_;
 goto v___jp_6470_;
@@ -22905,7 +22901,6 @@ v___jp_6485_:
 {
 lean_object* v___x_6487_; lean_object* v___x_6488_; lean_object* v___x_6489_; 
 v___x_6487_ = lean_string_append(v___x_6484_, v___y_6486_);
-lean_dec_ref(v___y_6486_);
 v___x_6488_ = ((lean_object*)(l___private_Lake_CLI_Main_0__Lake_lake_cache_put_invalidEndpointConfig___closed__2));
 v___x_6489_ = lean_string_append(v___x_6487_, v___x_6488_);
 if (lean_obj_tag(v_artifactEndpoint_x3f_6468_) == 0)
@@ -22920,8 +22915,6 @@ else
 {
 lean_object* v_val_6491_; 
 v_val_6491_ = lean_ctor_get(v_artifactEndpoint_x3f_6468_, 0);
-lean_inc(v_val_6491_);
-lean_dec_ref(v_artifactEndpoint_x3f_6468_);
 v___y_6477_ = v___x_6489_;
 v___y_6478_ = v_val_6491_;
 goto v___jp_6476_;
@@ -22934,6 +22927,8 @@ _start:
 {
 lean_object* v_res_6497_; 
 v_res_6497_ = l___private_Lake_CLI_Main_0__Lake_lake_cache_put_invalidEndpointConfig(v_key_x3f_6494_, v_artifactEndpoint_x3f_6495_, v_revisionEndpoint_x3f_6496_);
+lean_dec(v_revisionEndpoint_x3f_6496_);
+lean_dec(v_artifactEndpoint_x3f_6495_);
 lean_dec(v_key_x3f_6494_);
 return v_res_6497_;
 }
@@ -22966,6 +22961,8 @@ _start:
 lean_object* v_res_6519_; 
 v_res_6519_ = l___private_Lake_CLI_Main_0__Lake_lake_cache_put___lam__0(v_key_x3f_6514_, v_artifactEndpoint_x3f_6515_, v_revisionEndpoint_x3f_6516_, v___y_6517_);
 lean_dec_ref(v___y_6517_);
+lean_dec(v_revisionEndpoint_x3f_6516_);
+lean_dec(v_artifactEndpoint_x3f_6515_);
 lean_dec(v_key_x3f_6514_);
 return v_res_6519_;
 }
@@ -38507,25 +38504,24 @@ uint8_t v___x_10548_;
 v___x_10548_ = lean_usize_dec_lt(v_i_10546_, v_sz_10545_);
 if (v___x_10548_ == 0)
 {
+lean_inc_ref(v_b_10547_);
 return v_b_10547_;
 }
 else
 {
 lean_object* v_a_10549_; lean_object* v_baseName_10550_; lean_object* v___x_10551_; uint8_t v___x_10552_; 
-lean_dec_ref(v_b_10547_);
 v_a_10549_ = lean_array_uget_borrowed(v_as_10544_, v_i_10546_);
 v_baseName_10550_ = lean_ctor_get(v_a_10549_, 1);
 v___x_10551_ = lean_box(0);
 v___x_10552_ = lean_name_eq(v_baseName_10550_, v___x_10543_);
 if (v___x_10552_ == 0)
 {
-lean_object* v___x_10553_; size_t v___x_10554_; size_t v___x_10555_; 
+lean_object* v___x_10553_; size_t v___x_10554_; size_t v___x_10555_; lean_object* v___x_10556_; 
 v___x_10553_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_Lake_CLI_Main_0__Lake_lake_clean_spec__0___closed__0));
 v___x_10554_ = ((size_t)1ULL);
 v___x_10555_ = lean_usize_add(v_i_10546_, v___x_10554_);
-v_i_10546_ = v___x_10555_;
-v_b_10547_ = v___x_10553_;
-goto _start;
+v___x_10556_ = l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_Lake_CLI_Main_0__Lake_lake_clean_spec__0(v___x_10543_, v_as_10544_, v_sz_10545_, v___x_10555_, v___x_10553_);
+return v___x_10556_;
 }
 else
 {
@@ -38552,6 +38548,7 @@ lean_dec(v_sz_10562_);
 v_i_boxed_10566_ = lean_unbox_usize(v_i_10563_);
 lean_dec(v_i_10563_);
 v_res_10567_ = l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00__private_Lake_CLI_Main_0__Lake_lake_clean_spec__0(v___x_10560_, v_as_10561_, v_sz_boxed_10565_, v_i_boxed_10566_, v_b_10564_);
+lean_dec_ref(v_b_10564_);
 lean_dec_ref(v_as_10561_);
 lean_dec(v___x_10560_);
 return v_res_10567_;

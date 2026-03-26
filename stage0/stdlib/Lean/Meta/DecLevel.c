@@ -57,7 +57,7 @@ lean_object* l_Lean_MessageData_ofLevel(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_instInhabitedMetaM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_instInhabitedForall___redArg___lam__0___boxed(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Name_num___override(lean_object*, lean_object*);
 lean_object* l_Lean_registerTraceClass(lean_object*, uint8_t, lean_object*);
 static const lean_string_object l_Lean_isTracingEnabledFor___at___00__private_Lean_Meta_DecLevel_0__Lean_Meta_decAux_x3f_spec__2___redArg___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 6, .m_capacity = 6, .m_length = 5, .m_data = "trace"};
@@ -283,7 +283,8 @@ lean_object* v___f_46_; lean_object* v___f_47_; lean_object* v___x_7457__overap_
 v___f_46_ = ((lean_object*)(l_panic___at___00__private_Lean_Meta_DecLevel_0__Lean_Meta_decAux_x3f_spec__4___closed__0));
 v___f_47_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_47_, 0, v___f_46_);
-v___x_7457__overap_48_ = lean_panic_fn(v___f_47_, v_msg_39_);
+v___x_7457__overap_48_ = lean_panic_fn_borrowed(v___f_47_, v_msg_39_);
+lean_dec_ref(v___f_47_);
 v___x_49_ = lean_box(v___y_40_);
 lean_inc(v___y_44_);
 lean_inc_ref(v___y_43_);

@@ -611,9 +611,8 @@ lean_inc(v_a_117_);
 lean_dec_ref(v___x_116_);
 v_macroStack_118_ = lean_ctor_get(v___y_108_, 1);
 lean_inc(v_macroStack_118_);
-lean_dec_ref(v___y_108_);
-lean_inc(v_macroStack_118_);
 v___x_119_ = l_Lean_Elab_getBetterRef(v_ref_115_, v_macroStack_118_);
+lean_inc(v_macroStack_118_);
 v___x_120_ = l_Lean_Elab_addMacroStack___at___00Lean_throwError___at___00Lean_Elab_Tactic_BVDecide_Frontend_BVCheck_getSrcDir_spec__0_spec__1___redArg(v_a_117_, v_macroStack_118_, v___y_112_);
 v_a_121_ = lean_ctor_get(v___x_120_, 0);
 v_isSharedCheck_129_ = !lean_is_exclusive(v___x_120_);
@@ -669,6 +668,7 @@ lean_dec_ref(v___y_135_);
 lean_dec(v___y_134_);
 lean_dec_ref(v___y_133_);
 lean_dec(v___y_132_);
+lean_dec_ref(v___y_131_);
 return v_res_138_;
 }
 }
@@ -700,7 +700,6 @@ v___x_153_ = l_System_FilePath_parent(v_fileName_152_);
 if (lean_obj_tag(v___x_153_) == 1)
 {
 lean_object* v_val_154_; lean_object* v___x_156_; uint8_t v_isShared_157_; uint8_t v_isSharedCheck_161_; 
-lean_dec_ref(v_a_149_);
 v_val_154_ = lean_ctor_get(v___x_153_, 0);
 v_isSharedCheck_161_ = !lean_is_exclusive(v___x_153_);
 if (v_isSharedCheck_161_ == 0)
@@ -756,9 +755,7 @@ v___x_166_ = lean_obj_once(&l_Lean_Elab_Tactic_BVDecide_Frontend_BVCheck_getSrcD
 v___x_167_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_167_, 0, v___x_165_);
 lean_ctor_set(v___x_167_, 1, v___x_166_);
-lean_inc_ref(v_a_145_);
 v___x_168_ = l_Lean_throwError___at___00Lean_Elab_Tactic_BVDecide_Frontend_BVCheck_getSrcDir_spec__0___redArg(v___x_167_, v_a_145_, v_a_146_, v_a_147_, v_a_148_, v_a_149_, v_a_150_);
-lean_dec_ref(v_a_149_);
 return v___x_168_;
 }
 }
@@ -769,6 +766,7 @@ _start:
 lean_object* v_res_176_; 
 v_res_176_ = l_Lean_Elab_Tactic_BVDecide_Frontend_BVCheck_getSrcDir(v_a_169_, v_a_170_, v_a_171_, v_a_172_, v_a_173_, v_a_174_);
 lean_dec(v_a_174_);
+lean_dec_ref(v_a_173_);
 lean_dec(v_a_172_);
 lean_dec_ref(v_a_171_);
 lean_dec(v_a_170_);
@@ -780,7 +778,6 @@ LEAN_EXPORT lean_object* l_Lean_throwError___at___00Lean_Elab_Tactic_BVDecide_Fr
 _start:
 {
 lean_object* v___x_186_; 
-lean_inc_ref(v___y_179_);
 v___x_186_ = l_Lean_throwError___at___00Lean_Elab_Tactic_BVDecide_Frontend_BVCheck_getSrcDir_spec__0___redArg(v_msg_178_, v___y_179_, v___y_180_, v___y_181_, v___y_182_, v___y_183_, v___y_184_);
 return v___x_186_;
 }
@@ -825,7 +822,6 @@ LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_BVDecide_Frontend_BVCheck_mkContext(
 _start:
 {
 lean_object* v___x_226_; 
-lean_inc_ref(v_a_223_);
 v___x_226_ = l_Lean_Elab_Tactic_BVDecide_Frontend_BVCheck_getSrcDir(v_a_219_, v_a_220_, v_a_221_, v_a_222_, v_a_223_, v_a_224_);
 if (lean_obj_tag(v___x_226_) == 0)
 {
@@ -3131,6 +3127,7 @@ lean_ctor_set(v___x_992_, 1, v_openDecls_979_);
 v___x_993_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_993_, 0, v___x_992_);
 lean_ctor_set(v___x_993_, 1, v___y_972_);
+lean_inc_ref(v___y_968_);
 lean_inc_ref(v___y_970_);
 v___x_994_ = lean_alloc_ctor(0, 5, 3);
 lean_ctor_set(v___x_994_, 0, v___y_970_);

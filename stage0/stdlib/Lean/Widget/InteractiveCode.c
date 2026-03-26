@@ -2250,7 +2250,6 @@ if (v___x_703_ == 0)
 {
 lean_object* v___x_704_; lean_object* v___x_705_; 
 v___x_704_ = lean_box(1);
-lean_inc_ref(v_a_689_);
 v___x_705_ = l_Lean_PrettyPrinter_ppExprWithInfos(v_e_687_, v___x_704_, v_delab_688_, v_a_689_, v_a_690_, v_a_691_, v_a_692_);
 if (lean_obj_tag(v___x_705_) == 0)
 {

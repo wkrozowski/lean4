@@ -41,7 +41,7 @@ uint8_t l_Std_Http_Internal_instDecidableIsLowerCase(lean_object*);
 uint8_t l_Std_Http_Internal_isToken(lean_object*);
 lean_object* lean_string_append(lean_object*, lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_String_decEq___boxed(lean_object*, lean_object*);
 lean_object* l_String_hash___boxed(lean_object*);
 static const lean_string_object l_Std_Http_Header_Name_isValidHeaderValue___autoParam___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 5, .m_capacity = 5, .m_length = 4, .m_data = "Lean"};
@@ -653,7 +653,7 @@ _start:
 {
 lean_object* v___x_206_; lean_object* v___x_207_; 
 v___x_206_ = ((lean_object*)(l_Std_Http_Header_instReprName_repr___redArg___closed__12));
-v___x_207_ = lean_panic_fn(v___x_206_, v_msg_205_);
+v___x_207_ = lean_panic_fn_borrowed(v___x_206_, v_msg_205_);
 return v___x_207_;
 }
 }

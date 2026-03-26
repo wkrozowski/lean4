@@ -1412,7 +1412,6 @@ goto v_reusejp_460_;
 v_reusejp_460_:
 {
 lean_object* v___x_462_; 
-lean_inc_ref(v___y_437_);
 lean_inc_ref(v___x_461_);
 lean_inc_ref(v_00_u03c3s_452_);
 v___x_462_ = l_Lean_Elab_Tactic_Do_ProofMode_addHypInfo(v___x_429_, v_00_u03c3s_452_, v___x_461_, v___x_430_, v___y_437_, v___y_438_, v___y_439_, v___y_440_);
@@ -1878,7 +1877,6 @@ v___x_726_ = lean_alloc_ctor(0, 3, 0);
 lean_ctor_set(v___x_726_, 0, v___x_725_);
 lean_ctor_set(v___x_726_, 1, v_a_724_);
 lean_ctor_set(v___x_726_, 2, v_H_713_);
-lean_inc_ref(v___y_718_);
 lean_inc_ref(v___x_726_);
 lean_inc_ref(v_00_u03c3s_701_);
 v___x_727_ = l_Lean_Elab_Tactic_Do_ProofMode_addHypInfo(v___x_700_, v_00_u03c3s_701_, v___x_726_, v___x_702_, v___y_718_, v___y_719_, v___y_720_, v___y_721_);
@@ -2929,7 +2927,6 @@ goto v_reusejp_1023_;
 v_reusejp_1023_:
 {
 lean_object* v___x_1025_; 
-lean_inc_ref(v___y_1017_);
 lean_inc_ref(v___x_1024_);
 lean_inc_ref(v_00_u03c3s_978_);
 v___x_1025_ = l_Lean_Elab_Tactic_Do_ProofMode_addHypInfo(v___x_977_, v_00_u03c3s_978_, v___x_1024_, v___x_979_, v___y_1017_, v___y_1018_, v___y_1019_, v___y_1020_);

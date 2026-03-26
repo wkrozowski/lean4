@@ -53,7 +53,7 @@ lean_object* l_StateT_pure(lean_object*, lean_object*, lean_object*, lean_object
 lean_object* l_StateT_instMonad___redArg___lam__1(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_StateT_map(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_string_posof(lean_object*, uint32_t);
 lean_object* lean_string_utf8_byte_size(lean_object*);
 lean_object* lean_string_utf8_extract(lean_object*, lean_object*, lean_object*);
@@ -770,6 +770,7 @@ lean_object* v___x_153_; lean_object* v___x_154_; uint8_t v___x_155_; lean_objec
 v___x_153_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_153_, 0, v___x_149_);
 lean_ctor_set(v___x_153_, 1, v___x_152_);
+lean_inc(v___y_148_);
 v___x_154_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_154_, 0, v___y_148_);
 lean_ctor_set(v___x_154_, 1, v___x_153_);
@@ -815,6 +816,7 @@ v___x_169_ = l_Array_repr___redArg(v_localinst_165_, v_a_164_);
 v___x_170_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_170_, 0, v___x_168_);
 lean_ctor_set(v___x_170_, 1, v___x_169_);
+lean_inc(v___y_167_);
 v___x_171_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_171_, 0, v___y_167_);
 lean_ctor_set(v___x_171_, 1, v___x_170_);
@@ -900,6 +902,7 @@ v___x_193_ = l_Lean_Widget_instReprTaggedText_repr___redArg(v_inst_140_, v_a_180
 v___x_194_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_194_, 0, v___x_192_);
 lean_ctor_set(v___x_194_, 1, v___x_193_);
+lean_inc(v___y_186_);
 v___x_195_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_195_, 0, v___y_186_);
 lean_ctor_set(v___x_195_, 1, v___x_194_);
@@ -3749,7 +3752,7 @@ _start:
 {
 lean_object* v___x_1123_; lean_object* v___x_6132__overap_1124_; lean_object* v___x_1125_; 
 v___x_1123_ = lean_obj_once(&l_panic___at___00__private_Init_Data_Format_Basic_0__Std_Format_be___at___00Std_Format_prettyM___at___00Lean_Widget_TaggedText_prettyTagged_spec__0_spec__1_spec__5___closed__0, &l_panic___at___00__private_Init_Data_Format_Basic_0__Std_Format_be___at___00Std_Format_prettyM___at___00Lean_Widget_TaggedText_prettyTagged_spec__0_spec__1_spec__5___closed__0_once, _init_l_panic___at___00__private_Init_Data_Format_Basic_0__Std_Format_be___at___00Std_Format_prettyM___at___00Lean_Widget_TaggedText_prettyTagged_spec__0_spec__1_spec__5___closed__0);
-v___x_6132__overap_1124_ = lean_panic_fn(v___x_1123_, v_msg_1121_);
+v___x_6132__overap_1124_ = lean_panic_fn_borrowed(v___x_1123_, v_msg_1121_);
 v___x_1125_ = lean_apply_1(v___x_6132__overap_1124_, v___y_1122_);
 return v___x_1125_;
 }

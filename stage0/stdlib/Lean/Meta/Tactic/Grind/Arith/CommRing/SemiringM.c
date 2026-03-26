@@ -76,7 +76,7 @@ lean_object* l_Lean_PersistentArray_get_x21___redArg(lean_object*, lean_object*,
 lean_object* l_Lean_mkNatLit(lean_object*);
 lean_object* l_Lean_Meta_Grind_instInhabitedGoalM(lean_object*);
 lean_object* l_instInhabitedForall___redArg___lam__0___boxed(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l___private_Lean_Meta_Sym_ExprPtr_0__Lean_Meta_Sym_isSameExpr_unsafe__1___boxed(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Sym_hashPtrExpr_unsafe__1___boxed(lean_object*);
 lean_object* l_Lean_PersistentHashMap_find_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
@@ -5347,7 +5347,8 @@ lean_object* v___x_1950_; lean_object* v___f_1951_; lean_object* v___x_39892__ov
 v___x_1950_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_CommRing_SemiringM_0__Lean_Grind_CommRing_Expr_denoteAsRingExpr_go_spec__5___closed__0, &l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_CommRing_SemiringM_0__Lean_Grind_CommRing_Expr_denoteAsRingExpr_go_spec__5___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_CommRing_SemiringM_0__Lean_Grind_CommRing_Expr_denoteAsRingExpr_go_spec__5___closed__0);
 v___f_1951_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_1951_, 0, v___x_1950_);
-v___x_39892__overap_1952_ = lean_panic_fn(v___f_1951_, v_msg_1937_);
+v___x_39892__overap_1952_ = lean_panic_fn_borrowed(v___f_1951_, v_msg_1937_);
+lean_dec_ref(v___f_1951_);
 lean_inc(v___y_1948_);
 lean_inc_ref(v___y_1947_);
 lean_inc(v___y_1946_);
@@ -8070,6 +8071,7 @@ else
 lean_object* v___x_2868_; 
 v___x_2868_ = l_Lean_PersistentArray_get_x21___redArg(v___x_2865_, v_vars_2863_, v_i_2848_);
 lean_dec(v_i_2848_);
+lean_dec_ref(v_vars_2863_);
 v___y_2857_ = v___x_2868_;
 goto v___jp_2856_;
 }

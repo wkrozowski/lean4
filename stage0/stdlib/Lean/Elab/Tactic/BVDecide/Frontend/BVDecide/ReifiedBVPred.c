@@ -1208,6 +1208,7 @@ goto v___jp_360_;
 v___jp_360_:
 {
 lean_object* v_expr_362_; lean_object* v___x_363_; lean_object* v___x_364_; lean_object* v___x_365_; 
+lean_inc_ref(v___y_361_);
 v_expr_362_ = l_Lean_mkApp4(v___x_357_, v___x_358_, v_expr_347_, v___y_361_, v_expr_350_);
 v___x_363_ = lean_alloc_ctor(0, 4, 0);
 lean_ctor_set(v___x_363_, 0, v_bvExpr_355_);

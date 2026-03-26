@@ -111,7 +111,7 @@ lean_object* l_Lean_Meta_instMonadMetaM___lam__0___boxed(lean_object*, lean_obje
 lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 extern lean_object* l_Lean_Meta_Match_instInhabitedAltParamInfo_default;
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_List_lengthTR___redArg(lean_object*);
 lean_object* l_Lean_Meta_IndPredBelow_mkBelowMatcher(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t l_Lean_Elab_Structural_recArgHasLooseBVarsAt(lean_object*, lean_object*, lean_object*);
@@ -2954,7 +2954,8 @@ v___x_1051_ = l_StateRefT_x27_instMonad___redArg(v___x_1050_);
 v___x_1052_ = l_StateRefT_x27_instMonad___redArg(v___x_1051_);
 v___x_1053_ = l_Lean_Meta_Match_instInhabitedAltParamInfo_default;
 v___x_1054_ = l_instInhabitedOfMonad___redArg(v___x_1052_, v___x_1053_);
-v___x_26660__overap_1055_ = lean_panic_fn(v___x_1054_, v_msg_994_);
+v___x_26660__overap_1055_ = lean_panic_fn_borrowed(v___x_1054_, v_msg_994_);
+lean_dec(v___x_1054_);
 lean_inc(v___y_1000_);
 lean_inc_ref(v___y_999_);
 lean_inc(v___y_998_);
@@ -7034,7 +7035,6 @@ _start:
 {
 lean_object* v___x_2760_; lean_object* v___x_2761_; lean_object* v___x_2762_; 
 v___x_2760_ = lean_unsigned_to_nat(0u);
-lean_inc_ref(v___x_2745_);
 v___x_2761_ = lean_array_get_borrowed(v___x_2745_, v_below_2753_, v___x_2760_);
 lean_inc(v___y_2758_);
 lean_inc_ref(v___y_2757_);
@@ -7241,7 +7241,6 @@ lean_dec_ref(v_positions_2749_);
 lean_dec_ref(v_recArgInfos_2748_);
 lean_dec_ref(v_fst_2747_);
 lean_dec_ref(v_recArgInfo_2746_);
-lean_dec_ref(v___x_2745_);
 v_a_2816_ = lean_ctor_get(v___x_2762_, 0);
 v_isSharedCheck_2823_ = !lean_is_exclusive(v___x_2762_);
 if (v_isSharedCheck_2823_ == 0)
@@ -7294,6 +7293,7 @@ lean_dec_ref(v___y_2834_);
 lean_dec_ref(v_x_2833_);
 lean_dec_ref(v_below_2832_);
 lean_dec_ref(v_snd_2831_);
+lean_dec_ref(v___x_2824_);
 return v_res_2839_;
 }
 }

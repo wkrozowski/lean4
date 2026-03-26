@@ -54,7 +54,7 @@ uint8_t l_Lean_Expr_hasFVar(lean_object*);
 lean_object* l___private_Lean_MetavarContext_0__Lean_DependsOn_dep_visit(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_array_uget(lean_object*, size_t);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 uint8_t l_Lean_Expr_isFVar(lean_object*);
 lean_object* l___private_Lean_Meta_Basic_0__Lean_Meta_lambdaTelescopeImp(lean_object*, lean_object*, uint8_t, uint8_t, uint8_t, uint8_t, lean_object*, lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Array_findIdx_x3f_loop___redArg(lean_object*, lean_object*, lean_object*);
@@ -2237,6 +2237,7 @@ v___jp_588_:
 size_t v___x_590_; size_t v___x_591_; 
 v___x_590_ = ((size_t)1ULL);
 v___x_591_ = lean_usize_add(v_i_572_, v___x_590_);
+lean_inc_ref(v_a_589_);
 v_i_572_ = v___x_591_;
 v_b_573_ = v_a_589_;
 goto _start;
@@ -3315,7 +3316,7 @@ _start:
 {
 lean_object* v___x_960_; lean_object* v___x_961_; 
 v___x_960_ = lean_unsigned_to_nat(0u);
-v___x_961_ = lean_panic_fn(v___x_960_, v_msg_959_);
+v___x_961_ = lean_panic_fn_borrowed(v___x_960_, v_msg_959_);
 return v___x_961_;
 }
 }
@@ -3324,7 +3325,7 @@ _start:
 {
 lean_object* v___f_969_; lean_object* v___x_6886__overap_970_; lean_object* v___x_971_; 
 v___f_969_ = ((lean_object*)(l_panic___at___00Lean_Elab_Structural_getRecArgInfo_spec__5___closed__0));
-v___x_6886__overap_970_ = lean_panic_fn(v___f_969_, v_msg_963_);
+v___x_6886__overap_970_ = lean_panic_fn_borrowed(v___f_969_, v_msg_963_);
 lean_inc(v___y_967_);
 lean_inc_ref(v___y_966_);
 lean_inc(v___y_965_);

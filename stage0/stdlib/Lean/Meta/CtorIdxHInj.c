@@ -2704,7 +2704,6 @@ lean_inc_ref(v_name_946_);
 v___f_980_ = lean_alloc_closure((void*)(l___private_Lean_Meta_CtorIdxHInj_0__Lean_Meta_initFn___lam__0_00___x40_Lean_Meta_CtorIdxHInj_1686831688____hygCtx___hyg_2____boxed), 7, 2);
 lean_closure_set(v___f_980_, 0, v_name_946_);
 lean_closure_set(v___f_980_, 1, v_val_961_);
-lean_inc_ref(v___y_947_);
 v___x_981_ = l_Lean_Meta_realizeConst(v_pre_954_, v_name_946_, v___f_980_, v___x_974_, v___x_979_, v___y_947_, v___y_948_);
 lean_dec_ref(v___x_974_);
 if (lean_obj_tag(v___x_981_) == 0)

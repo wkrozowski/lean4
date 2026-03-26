@@ -26,7 +26,7 @@ lean_object* l_Lean_Meta_Grind_Arith_Linear_LinearM_getStruct(lean_object*, lean
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Grind_instInhabitedGoalM(lean_object*);
 lean_object* l_instInhabitedForall___redArg___lam__0___boxed(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 extern lean_object* l_Lean_instInhabitedExpr;
 lean_object* l_Lean_PersistentArray_get_x21___redArg(lean_object*, lean_object*, lean_object*);
 uint8_t l___private_Lean_Meta_Sym_ExprPtr_0__Lean_Meta_Sym_isSameExpr_unsafe__1(lean_object*, lean_object*);
@@ -428,7 +428,8 @@ lean_object* v___x_57_; lean_object* v___f_58_; lean_object* v___x_2201__overap_
 v___x_57_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Grind_Linarith_Poly_checkOccs_go_spec__1___closed__0, &l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Grind_Linarith_Poly_checkOccs_go_spec__1___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Grind_Linarith_Poly_checkOccs_go_spec__1___closed__0);
 v___f_58_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_58_, 0, v___x_57_);
-v___x_2201__overap_59_ = lean_panic_fn(v___f_58_, v_msg_44_);
+v___x_2201__overap_59_ = lean_panic_fn_borrowed(v___f_58_, v_msg_44_);
+lean_dec_ref(v___f_58_);
 lean_inc(v___y_55_);
 lean_inc_ref(v___y_54_);
 lean_inc(v___y_53_);
@@ -1053,7 +1054,8 @@ lean_object* v___x_350_; lean_object* v___f_351_; lean_object* v___x_4606__overa
 v___x_350_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkLeCnstrs_spec__0___closed__0, &l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkLeCnstrs_spec__0___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkLeCnstrs_spec__0___closed__0);
 v___f_351_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_351_, 0, v___x_350_);
-v___x_4606__overap_352_ = lean_panic_fn(v___f_351_, v_msg_337_);
+v___x_4606__overap_352_ = lean_panic_fn_borrowed(v___f_351_, v_msg_337_);
+lean_dec_ref(v___f_351_);
 lean_inc(v___y_348_);
 lean_inc_ref(v___y_347_);
 lean_inc(v___y_346_);
@@ -8357,7 +8359,8 @@ lean_object* v___x_2835_; lean_object* v___f_2836_; lean_object* v___x_5472__ove
 v___x_2835_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkVars_spec__0___closed__0, &l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkVars_spec__0___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkVars_spec__0___closed__0);
 v___f_2836_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_2836_, 0, v___x_2835_);
-v___x_5472__overap_2837_ = lean_panic_fn(v___f_2836_, v_msg_2822_);
+v___x_5472__overap_2837_ = lean_panic_fn_borrowed(v___f_2836_, v_msg_2822_);
+lean_dec_ref(v___f_2836_);
 lean_inc(v___y_2833_);
 lean_inc_ref(v___y_2832_);
 lean_inc(v___y_2831_);
@@ -8429,7 +8432,6 @@ v___x_2890_ = lean_nat_dec_lt(v_snd_2888_, v_size_2889_);
 if (v___x_2890_ == 0)
 {
 lean_object* v___x_2891_; lean_object* v___x_2892_; 
-lean_dec_ref(v_vars_2867_);
 v___x_2891_ = lean_obj_once(&l___private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkVars___lam__0___closed__1, &l___private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkVars___lam__0___closed__1_once, _init_l___private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Meta_Grind_Arith_Linear_checkVars___lam__0___closed__1);
 v___x_2892_ = l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Linear_Inv_0__Lean_Grind_Linarith_Poly_checkOccs_go_spec__1(v___x_2891_, v___y_2870_, v___y_2871_, v___y_2872_, v___y_2873_, v___y_2874_, v___y_2875_, v___y_2876_, v___y_2877_, v___y_2878_, v___y_2879_, v___y_2880_);
 if (lean_obj_tag(v___x_2892_) == 0)
@@ -8529,6 +8531,7 @@ lean_dec(v___y_2910_);
 lean_dec(v___y_2909_);
 lean_dec(v_____s_2908_);
 lean_dec_ref(v_x_2907_);
+lean_dec_ref(v_vars_2906_);
 return v_res_2921_;
 }
 }

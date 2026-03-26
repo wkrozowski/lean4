@@ -2669,7 +2669,6 @@ lean_object* v_a_1055_; lean_object* v___x_1056_;
 v_a_1055_ = lean_ctor_get(v___x_1054_, 0);
 lean_inc(v_a_1055_);
 lean_dec_ref(v___x_1054_);
-lean_inc_ref(v___y_1045_);
 v___x_1056_ = l_Lean_Meta_zetaReduce(v_a_1055_, v___x_1051_, v___x_1051_, v___x_1051_, v___y_1045_, v___y_1046_, v___y_1047_, v___y_1048_);
 if (lean_obj_tag(v___x_1056_) == 0)
 {
@@ -3184,7 +3183,6 @@ else
 lean_object* v_a_1242_; lean_object* v___x_1243_; lean_object* v_localDecl_1245_; lean_object* v___x_1253_; 
 v_a_1242_ = lean_array_uget_borrowed(v_as_1215_, v_i_1217_);
 v___x_1243_ = l_Lean_Expr_fvarId_x21(v_a_1242_);
-lean_inc_ref(v___y_1221_);
 lean_inc(v___x_1243_);
 v___x_1253_ = l_Lean_FVarId_getDecl___redArg(v___x_1243_, v___y_1221_, v___y_1223_, v___y_1224_);
 if (lean_obj_tag(v___x_1253_) == 0)
@@ -3444,14 +3442,12 @@ v_a_1303_ = lean_ctor_get(v___x_1302_, 0);
 lean_inc(v_a_1303_);
 lean_dec_ref(v___x_1302_);
 v___x_1304_ = l_Lean_Meta_withLCtx___at___00Lean_Meta_AbstractNestedProofs_visit_spec__6___redArg(v_a_1303_, v_a_1298_, v_k_1289_, v___y_1290_, v___y_1291_, v___y_1292_, v___y_1293_, v___y_1294_, v___y_1295_);
-lean_dec_ref(v___y_1292_);
 return v___x_1304_;
 }
 else
 {
 lean_object* v_a_1305_; lean_object* v___x_1307_; uint8_t v_isShared_1308_; uint8_t v_isSharedCheck_1312_; 
 lean_dec(v_a_1298_);
-lean_dec_ref(v___y_1292_);
 lean_dec_ref(v_k_1289_);
 v_a_1305_ = lean_ctor_get(v___x_1302_, 0);
 v_isSharedCheck_1312_ = !lean_is_exclusive(v___x_1302_);
@@ -3495,7 +3491,6 @@ return v___x_1310_;
 else
 {
 lean_object* v_a_1313_; lean_object* v___x_1315_; uint8_t v_isShared_1316_; uint8_t v_isSharedCheck_1320_; 
-lean_dec_ref(v___y_1292_);
 lean_dec_ref(v_k_1289_);
 v_a_1313_ = lean_ctor_get(v___x_1297_, 0);
 v_isSharedCheck_1320_ = !lean_is_exclusive(v___x_1297_);
@@ -3546,6 +3541,7 @@ v_res_1331_ = l_Lean_Meta_AbstractNestedProofs_visit___lam__0(v_xs_1321_, v_k_13
 lean_dec(v___y_1328_);
 lean_dec_ref(v___y_1327_);
 lean_dec(v___y_1326_);
+lean_dec_ref(v___y_1325_);
 lean_dec(v___y_1324_);
 lean_dec_ref(v_xs_1321_);
 return v_res_1331_;

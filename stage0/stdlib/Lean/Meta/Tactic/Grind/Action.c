@@ -4662,7 +4662,6 @@ lean_ctor_set(v___x_1844_, 6, v_extensions_1798_);
 lean_ctor_set_uint8(v___x_1844_, sizeof(void*)*7, v_cheapCases_1794_);
 lean_ctor_set_uint8(v___x_1844_, sizeof(void*)*7 + 1, v_reportMVarIssue_1795_);
 lean_ctor_set_uint8(v___x_1844_, sizeof(void*)*7 + 2, v_debug_1799_);
-lean_inc(v___y_1777_);
 v___x_1845_ = l_Lean_Meta_Grind_evalTactic(v_goal_1776_, v_a_1790_, v___y_1777_, v___x_1844_, v___y_1779_, v___y_1780_, v___y_1781_, v___y_1782_, v___y_1783_, v___y_1784_, v___y_1785_);
 lean_dec_ref(v___x_1844_);
 if (lean_obj_tag(v___x_1845_) == 0)
@@ -5279,6 +5278,7 @@ lean_ctor_set(v___x_2064_, 1, v_openDecls_2051_);
 v___x_2065_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_2065_, 0, v___x_2064_);
 lean_ctor_set(v___x_2065_, 1, v___y_2041_);
+lean_inc_ref(v___y_2046_);
 lean_inc_ref(v___y_2044_);
 v___x_2066_ = lean_alloc_ctor(0, 5, 3);
 lean_ctor_set(v___x_2066_, 0, v___y_2044_);

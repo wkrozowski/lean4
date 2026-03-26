@@ -961,6 +961,8 @@ v___x_366_ = lean_alloc_ctor(1, 3, 0);
 lean_ctor_set(v___x_366_, 0, v___y_353_);
 lean_ctor_set(v___x_366_, 1, v___y_362_);
 lean_ctor_set(v___x_366_, 2, v___x_365_);
+lean_inc_ref(v___y_352_);
+lean_inc(v___y_362_);
 lean_inc(v___y_353_);
 v___x_367_ = lean_alloc_ctor(1, 3, 0);
 lean_ctor_set(v___x_367_, 0, v___y_353_);
@@ -2342,8 +2344,10 @@ goto v___jp_1106_;
 v___jp_956_:
 {
 lean_object* v___x_975_; lean_object* v___x_976_; lean_object* v___x_977_; uint8_t v___x_978_; lean_object* v___x_979_; lean_object* v___x_980_; 
+lean_inc_ref(v___y_966_);
 v___x_975_ = l_Array_append___redArg(v___y_966_, v___y_974_);
 lean_dec_ref(v___y_974_);
+lean_inc(v___y_967_);
 lean_inc(v___y_973_);
 v___x_976_ = lean_alloc_ctor(1, 3, 0);
 lean_ctor_set(v___x_976_, 0, v___y_973_);

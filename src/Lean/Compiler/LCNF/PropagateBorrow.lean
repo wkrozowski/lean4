@@ -121,7 +121,10 @@ where
       if let .fvar parent := args[1]! then
         let parentVal ← getOwnedness parent
         join z parentVal
-    | .ctor .. | .fap .. | .fvar .. | .pap .. | .sproj .. | .uproj .. | .erased .. | .lit .. =>
+    | .fap _ args =>
+      let value := if args.isEmpty then .borrow else .own
+      join z value
+    | .ctor .. | .fvar .. | .pap .. | .sproj .. | .uproj .. | .erased .. | .lit .. =>
       join z .own
     | _ => unreachable!
 

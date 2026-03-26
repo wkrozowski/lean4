@@ -3838,8 +3838,6 @@ lean_inc(v_fst_932_);
 v_snd_933_ = lean_ctor_get(v_val_928_, 1);
 lean_inc(v_snd_933_);
 lean_dec(v_val_928_);
-lean_inc_ref(v___y_921_);
-lean_inc_ref(v___y_919_);
 lean_inc(v_snd_933_);
 v___x_934_ = l_Lean_Meta_checkWithKernel(v_snd_933_, v___y_919_, v___y_920_, v___y_921_, v___y_922_);
 if (lean_obj_tag(v___x_934_) == 0)

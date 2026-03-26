@@ -3193,6 +3193,8 @@ goto v___jp_832_;
 v___jp_812_:
 {
 lean_object* v___x_817_; lean_object* v___x_818_; lean_object* v___x_819_; lean_object* v___x_820_; lean_object* v___x_821_; lean_object* v___x_822_; lean_object* v___x_823_; lean_object* v___x_824_; lean_object* v___x_825_; lean_object* v___x_826_; lean_object* v___x_827_; lean_object* v___x_828_; lean_object* v___x_829_; lean_object* v___x_830_; 
+lean_inc(v___y_816_);
+lean_inc_ref(v___y_814_);
 v___x_817_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_817_, 0, v___y_814_);
 lean_ctor_set(v___x_817_, 1, v___y_816_);
@@ -3214,6 +3216,7 @@ v___x_825_ = l_Lean_Json_opt___at___00IO_FS_Stream_writeLspMessage_spec__1(v___x
 lean_dec(v_data_x3f_811_);
 v___x_826_ = l_List_appendTR___redArg(v___x_823_, v___x_825_);
 v___x_827_ = l_Lean_Json_mkObj(v___x_826_);
+lean_inc_ref(v___y_813_);
 v___x_828_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_828_, 0, v___y_813_);
 lean_ctor_set(v___x_828_, 1, v___x_827_);

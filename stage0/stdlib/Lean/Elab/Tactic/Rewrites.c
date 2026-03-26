@@ -837,7 +837,6 @@ LEAN_EXPORT lean_object* l_Lean_Elab_Rewrites_evalExact___lam__1(lean_object* v_
 _start:
 {
 lean_object* v___x_348_; 
-lean_inc_ref(v___y_343_);
 lean_inc(v_f_338_);
 v___x_348_ = l_Lean_FVarId_findDecl_x3f___redArg(v_f_338_, v___y_343_);
 if (lean_obj_tag(v___x_348_) == 0)
@@ -2598,7 +2597,6 @@ else
 lean_object* v_a_903_; lean_object* v___x_905_; uint8_t v_isShared_906_; uint8_t v_isSharedCheck_910_; 
 lean_dec(v___y_885_);
 lean_dec(v___y_876_);
-lean_dec_ref(v___y_875_);
 lean_dec(v___y_874_);
 lean_dec(v_tk_872_);
 v_a_903_ = lean_ctor_get(v___x_889_, 0);
@@ -2644,7 +2642,6 @@ else
 {
 lean_dec(v___y_885_);
 lean_dec(v___y_876_);
-lean_dec_ref(v___y_875_);
 lean_dec(v___y_874_);
 lean_dec(v_tk_872_);
 return v___x_888_;
@@ -2661,6 +2658,7 @@ v___x_929_ = lean_nat_dec_lt(v___x_871_, v___x_928_);
 if (v___x_929_ == 0)
 {
 lean_dec_ref(v___x_927_);
+lean_inc(v___y_917_);
 v___y_874_ = v___y_912_;
 v___y_875_ = v___y_913_;
 v___y_876_ = v___y_915_;
@@ -2684,6 +2682,7 @@ if (v___x_930_ == 0)
 if (v___x_929_ == 0)
 {
 lean_dec_ref(v___x_927_);
+lean_inc(v___y_917_);
 v___y_874_ = v___y_912_;
 v___y_875_ = v___y_913_;
 v___y_876_ = v___y_915_;
@@ -2702,6 +2701,7 @@ else
 {
 size_t v___x_931_; lean_object* v___x_932_; 
 v___x_931_ = lean_usize_of_nat(v___x_928_);
+lean_inc(v___y_917_);
 v___x_932_ = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___at___00Lean_Elab_Rewrites_evalExact_spec__7(v___x_927_, v___x_926_, v___x_931_, v___y_917_);
 lean_dec_ref(v___x_927_);
 v___y_874_ = v___y_912_;
@@ -2723,6 +2723,7 @@ else
 {
 size_t v___x_933_; lean_object* v___x_934_; 
 v___x_933_ = lean_usize_of_nat(v___x_928_);
+lean_inc(v___y_917_);
 v___x_934_ = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___at___00Lean_Elab_Rewrites_evalExact_spec__7(v___x_927_, v___x_926_, v___x_933_, v___y_917_);
 lean_dec_ref(v___x_927_);
 v___y_874_ = v___y_912_;
@@ -3030,6 +3031,7 @@ lean_object* v___x_861_; lean_object* v___x_862_; lean_object* v___x_863_;
 v___x_861_ = l_Lean_mkOptionalNode(v___y_860_);
 v___x_862_ = l_Lean_Elab_Tactic_expandOptLocation(v___x_861_);
 lean_dec(v___x_861_);
+lean_inc_ref(v___y_849_);
 v___x_863_ = l_Lean_Elab_Tactic_withLocation(v___x_862_, v___y_851_, v___y_859_, v___y_849_, v___y_852_, v___y_854_, v___y_858_, v___y_853_, v___y_850_, v___y_855_, v___y_857_, v___y_856_);
 lean_dec(v___x_862_);
 return v___x_863_;

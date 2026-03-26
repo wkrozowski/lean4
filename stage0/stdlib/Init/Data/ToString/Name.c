@@ -31,7 +31,7 @@ uint8_t l_Lean_isSubScriptAlnum(uint32_t);
 uint8_t lean_uint32_dec_le(uint32_t, uint32_t);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 extern lean_object* l_String_instInhabitedSlice;
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Substring_Raw_nextn(lean_object*, lean_object*, lean_object*);
 uint8_t lean_string_is_valid_pos(lean_object*, lean_object*);
 uint8_t lean_nat_dec_le(lean_object*, lean_object*);
@@ -630,6 +630,7 @@ goto v___jp_191_;
 v___jp_122_:
 {
 lean_object* v___x_128_; lean_object* v___x_129_; lean_object* v___x_130_; lean_object* v___x_131_; uint8_t v___x_132_; 
+lean_inc_ref(v___y_124_);
 v___x_128_ = l_String_Slice_Pattern_CharPred_instForwardPatternForallCharBool(v___y_124_);
 lean_inc(v___y_123_);
 v___x_129_ = l_String_Slice_Pos_skipWhile___redArg(v___y_125_, v___y_123_, v___x_128_);
@@ -944,6 +945,7 @@ goto v___jp_275_;
 v___jp_206_:
 {
 lean_object* v___x_212_; lean_object* v___x_213_; lean_object* v___x_214_; lean_object* v___x_215_; uint8_t v___x_216_; 
+lean_inc_ref(v___y_208_);
 v___x_212_ = l_String_Slice_Pattern_CharPred_instForwardPatternForallCharBool(v___y_208_);
 lean_inc(v___y_207_);
 v___x_213_ = l_String_Slice_Pos_skipWhile___redArg(v___y_209_, v___y_207_, v___x_212_);
@@ -1420,6 +1422,7 @@ return v___x_338_;
 v___jp_339_:
 {
 lean_object* v___x_345_; lean_object* v___x_346_; lean_object* v___x_347_; lean_object* v___x_348_; uint8_t v___x_349_; 
+lean_inc_ref(v___y_340_);
 v___x_345_ = l_String_Slice_Pattern_CharPred_instForwardPatternForallCharBool(v___y_340_);
 lean_inc(v___y_341_);
 v___x_346_ = l_String_Slice_Pos_skipWhile___redArg(v___y_342_, v___y_341_, v___x_345_);
@@ -1673,7 +1676,7 @@ _start:
 {
 lean_object* v___x_420_; lean_object* v___x_421_; 
 v___x_420_ = l_String_instInhabitedSlice;
-v___x_421_ = lean_panic_fn(v___x_420_, v_msg_419_);
+v___x_421_ = lean_panic_fn_borrowed(v___x_420_, v_msg_419_);
 return v___x_421_;
 }
 }

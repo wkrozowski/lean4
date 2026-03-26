@@ -74,7 +74,7 @@ lean_object* l_ReaderT_instApplicativeOfMonad___redArg___lam__4(lean_object*, le
 lean_object* l_Lean_Meta_instMonadMetaM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Expr_eqv___boxed(lean_object*, lean_object*);
 lean_object* l_Lean_Expr_hash___boxed(lean_object*);
@@ -1365,6 +1365,7 @@ v___jp_357_:
 {
 lean_object* v___x_359_; lean_object* v___x_360_; 
 v___x_359_ = l_Lean_Elab_Tactic_BVDecide_Frontend_instToExprBVExpr_go(v_w_328_, v_rhs_353_);
+lean_inc_ref(v___y_358_);
 v___x_360_ = l_Lean_mkApp4(v___x_354_, v___x_355_, v___x_356_, v___y_358_, v___x_359_);
 return v___x_360_;
 }
@@ -1846,6 +1847,7 @@ v___jp_589_:
 {
 lean_object* v___x_591_; lean_object* v___x_592_; 
 v___x_591_ = l_Lean_Elab_Tactic_BVDecide_Frontend_instToExprBVExpr_go(v_w_582_, v_rhs_585_);
+lean_inc_ref(v___y_590_);
 v___x_592_ = l_Lean_mkApp4(v___x_586_, v___x_587_, v___x_588_, v___y_590_, v___x_591_);
 return v___x_592_;
 }
@@ -2077,6 +2079,7 @@ lean_object* v___x_707_; lean_object* v___x_708_; lean_object* v___x_709_;
 lean_inc_ref(v_inst_680_);
 v___x_707_ = l_Lean_Elab_Tactic_BVDecide_Frontend_instToExprBoolExpr_go___redArg(v_inst_680_, v_a_701_);
 v___x_708_ = l_Lean_Elab_Tactic_BVDecide_Frontend_instToExprBoolExpr_go___redArg(v_inst_680_, v_a_702_);
+lean_inc_ref(v___y_706_);
 v___x_709_ = l_Lean_mkApp4(v___x_704_, v_toTypeExpr_703_, v___y_706_, v___x_707_, v___x_708_);
 return v___x_709_;
 }
@@ -4492,7 +4495,8 @@ lean_object* v___x_1583_; lean_object* v___x_1584_; lean_object* v___x_1585_; le
 v___x_1583_ = l_StateRefT_x27_instMonad___redArg(v___x_1582_);
 v___x_1584_ = lean_box(0);
 v___x_1585_ = l_instInhabitedOfMonad___redArg(v___x_1583_, v___x_1584_);
-v___x_4147__overap_1586_ = lean_panic_fn(v___x_1585_, v_msg_1527_);
+v___x_4147__overap_1586_ = lean_panic_fn_borrowed(v___x_1585_, v_msg_1527_);
+lean_dec(v___x_1585_);
 lean_inc(v___y_1532_);
 lean_inc_ref(v___y_1531_);
 lean_inc(v___y_1530_);
@@ -4847,6 +4851,7 @@ goto v___jp_1746_;
 v___jp_1746_:
 {
 lean_object* v___x_1748_; lean_object* v___x_1749_; lean_object* v___x_1750_; lean_object* v___x_1751_; lean_object* v___x_1752_; lean_object* v___x_1753_; lean_object* v___x_1754_; lean_object* v___x_1755_; 
+lean_inc_ref(v___y_1747_);
 v___x_1748_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_1748_, 0, v___y_1747_);
 v___x_1749_ = l_Lean_MessageData_ofFormat(v___x_1748_);

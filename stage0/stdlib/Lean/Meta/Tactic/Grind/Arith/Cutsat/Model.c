@@ -37,7 +37,7 @@ lean_object* l_Lean_Meta_Grind_Goal_getRoot(lean_object*, lean_object*, lean_obj
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 extern lean_object* l_instInhabitedError;
 lean_object* l_instInhabitedEIO___aux__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 extern lean_object* l_Lean_Meta_Grind_Arith_Cutsat_cutsatExt;
 lean_object* l_Lean_Meta_Grind_SolverExtension_getTerm___redArg(lean_object*, lean_object*);
 lean_object* l___private_Lean_Meta_Tactic_Grind_Types_0__Lean_Meta_Grind_SolverExtension_getStateCoreImpl___redArg(lean_object*, lean_object*);
@@ -433,7 +433,7 @@ _start:
 {
 lean_object* v___x_82_; lean_object* v___x_481__overap_83_; lean_object* v___x_84_; 
 v___x_82_ = lean_obj_once(&l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Cutsat_Model_0__Lean_Meta_Grind_Arith_Cutsat_getCutsatAssignment_x3f_spec__0___closed__0, &l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Cutsat_Model_0__Lean_Meta_Grind_Arith_Cutsat_getCutsatAssignment_x3f_spec__0___closed__0_once, _init_l_panic___at___00__private_Lean_Meta_Tactic_Grind_Arith_Cutsat_Model_0__Lean_Meta_Grind_Arith_Cutsat_getCutsatAssignment_x3f_spec__0___closed__0);
-v___x_481__overap_83_ = lean_panic_fn(v___x_82_, v_msg_80_);
+v___x_481__overap_83_ = lean_panic_fn_borrowed(v___x_82_, v_msg_80_);
 v___x_84_ = lean_apply_1(v___x_481__overap_83_, lean_box(0));
 return v___x_84_;
 }
@@ -786,6 +786,7 @@ lean_object* v___x_193_; lean_object* v___x_194_; lean_object* v___x_196_;
 v___x_193_ = l_instInhabitedRat;
 v___x_194_ = l_Lean_PersistentArray_get_x21___redArg(v___x_193_, v_assignment_181_, v_val_183_);
 lean_dec(v_val_183_);
+lean_dec_ref(v_assignment_181_);
 if (v_isShared_186_ == 0)
 {
 lean_ctor_set(v___x_185_, 0, v___x_194_);

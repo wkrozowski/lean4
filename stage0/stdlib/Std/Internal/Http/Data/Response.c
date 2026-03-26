@@ -597,6 +597,7 @@ v_entries_167_ = lean_ctor_get(v_headers_164_, 0);
 lean_inc_ref(v_entries_167_);
 lean_dec_ref(v_headers_164_);
 v___x_168_ = ((lean_object*)(l_Std_Http_Response_instToStringHead___lam__2___closed__0));
+lean_inc_ref(v___y_166_);
 v___x_169_ = lean_string_append(v___y_166_, v___x_168_);
 v___x_170_ = l_Std_Http_Status_toCode(v_status_162_);
 v___x_171_ = lean_uint16_to_nat(v___x_170_);
@@ -812,7 +813,6 @@ v_resetjp_254_:
 {
 lean_object* v___x_257_; lean_object* v___x_258_; lean_object* v___x_259_; lean_object* v___x_260_; lean_object* v___x_261_; lean_object* v___x_262_; lean_object* v___x_263_; lean_object* v___x_264_; uint16_t v___x_265_; lean_object* v___x_266_; lean_object* v___x_267_; lean_object* v___x_268_; lean_object* v___x_269_; lean_object* v___x_270_; lean_object* v___x_271_; lean_object* v___x_272_; lean_object* v___x_273_; lean_object* v___x_274_; lean_object* v___x_275_; lean_object* v___x_276_; lean_object* v___x_277_; lean_object* v___x_278_; lean_object* v___x_279_; lean_object* v___x_280_; lean_object* v___x_281_; lean_object* v___x_282_; lean_object* v_buffer_284_; 
 v___x_257_ = lean_string_to_utf8(v___y_251_);
-lean_dec_ref(v___y_251_);
 lean_inc_ref(v___x_257_);
 v___x_258_ = lean_array_push(v_data_252_, v___x_257_);
 v___x_259_ = lean_byte_array_size(v___x_257_);

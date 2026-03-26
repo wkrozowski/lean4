@@ -530,11 +530,7 @@ _start:
 {
 lean_object* v_toContext_139_; lean_object* v_lakeEnv_140_; lean_object* v_log_141_; uint8_t v_action_142_; uint8_t v_wantsRebuild_143_; lean_object* v_trace_144_; lean_object* v_buildTime_145_; lean_object* v___x_147_; uint8_t v_isShared_148_; uint8_t v_isSharedCheck_196_; 
 v_toContext_139_ = lean_ctor_get(v___y_136_, 1);
-lean_inc(v_toContext_139_);
-lean_dec_ref(v___y_136_);
 v_lakeEnv_140_ = lean_ctor_get(v_toContext_139_, 1);
-lean_inc_ref(v_lakeEnv_140_);
-lean_dec(v_toContext_139_);
 v_log_141_ = lean_ctor_get(v___y_137_, 0);
 v_action_142_ = lean_ctor_get_uint8(v___y_137_, sizeof(void*)*3);
 v_wantsRebuild_143_ = lean_ctor_get_uint8(v___y_137_, sizeof(void*)*3 + 1);
@@ -561,8 +557,6 @@ v_resetjp_146_:
 {
 lean_object* v_lean_149_; lean_object* v___y_151_; uint8_t v___x_186_; 
 v_lean_149_ = lean_ctor_get(v_lakeEnv_140_, 1);
-lean_inc_ref(v_lean_149_);
-lean_dec_ref(v_lakeEnv_140_);
 v___x_186_ = l_System_Platform_isOSX;
 if (v___x_186_ == 0)
 {
@@ -590,20 +584,17 @@ v___jp_150_:
 {
 lean_object* v_leanLibDir_152_; lean_object* v_cc_153_; lean_object* v_ccLinkSharedFlags_154_; lean_object* v___x_155_; lean_object* v___x_156_; lean_object* v___x_157_; lean_object* v___x_158_; lean_object* v___x_159_; lean_object* v___x_160_; lean_object* v___x_161_; 
 v_leanLibDir_152_ = lean_ctor_get(v_lean_149_, 3);
-lean_inc_ref(v_leanLibDir_152_);
 v_cc_153_ = lean_ctor_get(v_lean_149_, 14);
-lean_inc_ref(v_cc_153_);
 v_ccLinkSharedFlags_154_ = lean_ctor_get(v_lean_149_, 20);
-lean_inc_ref(v_ccLinkSharedFlags_154_);
-lean_dec_ref(v_lean_149_);
 v___x_155_ = l_Array_append___redArg(v___y_151_, v_weakArgs_128_);
 v___x_156_ = l_Array_append___redArg(v___x_155_, v_traceArgs_129_);
 v___x_157_ = lean_obj_once(&l_Lake_buildLeanSharedLibOfStatic___lam__0___closed__1, &l_Lake_buildLeanSharedLibOfStatic___lam__0___closed__1_once, _init_l_Lake_buildLeanSharedLibOfStatic___lam__0___closed__1);
+lean_inc_ref(v_leanLibDir_152_);
 v___x_158_ = lean_array_push(v___x_157_, v_leanLibDir_152_);
 v___x_159_ = l_Array_append___redArg(v___x_156_, v___x_158_);
 lean_dec_ref(v___x_158_);
 v___x_160_ = l_Array_append___redArg(v___x_159_, v_ccLinkSharedFlags_154_);
-lean_dec_ref(v_ccLinkSharedFlags_154_);
+lean_inc_ref(v_cc_153_);
 v___x_161_ = l_Lake_compileSharedLib(v___x_130_, v___x_160_, v_cc_153_, v_log_141_);
 lean_dec_ref(v___x_160_);
 if (lean_obj_tag(v___x_161_) == 0)
@@ -749,6 +740,7 @@ _start:
 {
 lean_object* v_res_208_; 
 v_res_208_ = l_Lake_buildLeanSharedLibOfStatic___lam__0(v_weakArgs_197_, v_traceArgs_198_, v___x_199_, v_staticLib_200_, v___y_201_, v___y_202_, v___y_203_, v___y_204_, v___y_205_, v___y_206_);
+lean_dec_ref(v___y_205_);
 lean_dec(v___y_204_);
 lean_dec(v___y_203_);
 lean_dec(v___y_202_);
@@ -1024,7 +1016,6 @@ lean_closure_set(v___f_309_, 3, v_staticLib_273_);
 v___x_310_ = 0;
 lean_inc_ref(v___x_308_);
 v___x_311_ = l_Lake_buildFileUnlessUpToDate_x27(v___x_308_, v___f_309_, v___x_310_, v___y_274_, v___y_275_, v___y_276_, v___y_277_, v___y_278_, v___x_306_);
-lean_dec_ref(v___y_278_);
 if (lean_obj_tag(v___x_311_) == 0)
 {
 lean_object* v_a_312_; lean_object* v___x_314_; uint8_t v_isShared_315_; uint8_t v_isSharedCheck_319_; 
@@ -1126,6 +1117,7 @@ _start:
 {
 lean_object* v_res_353_; 
 v_res_353_ = l_Lake_buildLeanSharedLibOfStatic___lam__1(v_traceArgs_343_, v_weakArgs_344_, v_staticLib_345_, v___y_346_, v___y_347_, v___y_348_, v___y_349_, v___y_350_, v___y_351_);
+lean_dec_ref(v___y_350_);
 lean_dec(v___y_349_);
 lean_dec(v___y_348_);
 lean_dec(v___y_347_);

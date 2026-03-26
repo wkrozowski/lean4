@@ -64,7 +64,7 @@ uint8_t lean_nat_dec_le(lean_object*, lean_object*);
 lean_object* l___private_Lean_Meta_Basic_0__Lean_Meta_forallTelescopeReducingImp(lean_object*, lean_object*, lean_object*, uint8_t, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Core_instInhabitedCoreM___lam__0___boxed(lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_nat_to_int(lean_object*);
 lean_object* l_Lean_Name_reprPrec(lean_object*, lean_object*);
 lean_object* l_Nat_reprFast(lean_object*);
@@ -482,7 +482,7 @@ _start:
 {
 lean_object* v___f_87_; lean_object* v___x_2549__overap_88_; lean_object* v___x_89_; 
 v___f_87_ = ((lean_object*)(l_panic___at___00__private_Lean_Compiler_LCNF_Irrelevant_0__Lean_Compiler_LCNF_getRelevantCtorFields_spec__3___closed__0));
-v___x_2549__overap_88_ = lean_panic_fn(v___f_87_, v_msg_83_);
+v___x_2549__overap_88_ = lean_panic_fn_borrowed(v___f_87_, v_msg_83_);
 lean_inc(v___y_85_);
 lean_inc_ref(v___y_84_);
 v___x_89_ = lean_apply_3(v___x_2549__overap_88_, v___y_84_, v___y_85_, lean_box(0));

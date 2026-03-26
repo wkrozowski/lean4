@@ -159,6 +159,7 @@ lean_closure_set(v___f_38_, 1, v_next_32_);
 lean_closure_set(v___f_38_, 2, v_G_35_);
 v___x_43_ = lean_box(v___x_29_);
 v___x_44_ = lean_array_get_borrowed(v___x_43_, v_fst_30_, v_next_32_);
+lean_dec(v___x_43_);
 v___x_45_ = lean_unbox(v___x_44_);
 if (v___x_45_ == 0)
 {
@@ -555,12 +556,14 @@ lean_closure_set(v___f_206_, 5, v_fst_195_);
 lean_closure_set(v___f_206_, 6, v_next_185_);
 v___x_218_ = lean_box(v___x_188_);
 v___x_219_ = lean_array_get_borrowed(v___x_218_, v_fst_195_, v_next_185_);
+lean_dec(v___x_218_);
 v___x_220_ = lean_unbox(v___x_219_);
 if (v___x_220_ == 0)
 {
 lean_object* v___x_221_; lean_object* v___x_222_; uint8_t v___x_223_; 
 v___x_221_ = lean_box(v___x_188_);
 v___x_222_ = lean_array_get_borrowed(v___x_221_, v_fst_195_, v_next_189_);
+lean_dec(v___x_221_);
 v___x_223_ = lean_unbox(v___x_222_);
 v___y_208_ = v___x_223_;
 goto v___jp_207_;

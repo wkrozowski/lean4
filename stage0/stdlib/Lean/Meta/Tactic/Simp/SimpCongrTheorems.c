@@ -8191,8 +8191,6 @@ _start:
 {
 lean_object* v_currNamespace_2799_; lean_object* v___x_2800_; lean_object* v_env_2801_; lean_object* v_nextMacroScope_2802_; lean_object* v_ngen_2803_; lean_object* v_auxDeclNGen_2804_; lean_object* v_traceState_2805_; lean_object* v_messages_2806_; lean_object* v_infoState_2807_; lean_object* v_snapshotTasks_2808_; lean_object* v___x_2810_; uint8_t v_isShared_2811_; uint8_t v_isSharedCheck_2835_; 
 v_currNamespace_2799_ = lean_ctor_get(v___y_2796_, 6);
-lean_inc(v_currNamespace_2799_);
-lean_dec_ref(v___y_2796_);
 v___x_2800_ = lean_st_ref_take(v___y_2797_);
 v_env_2801_ = lean_ctor_get(v___x_2800_, 0);
 v_nextMacroScope_2802_ = lean_ctor_get(v___x_2800_, 1);
@@ -8230,6 +8228,7 @@ goto v_resetjp_2809_;
 v_resetjp_2809_:
 {
 lean_object* v___x_2812_; lean_object* v___x_2813_; lean_object* v___x_2815_; 
+lean_inc(v_currNamespace_2799_);
 v___x_2812_ = l_Lean_ScopedEnvExtension_addCore___redArg(v_env_2801_, v_ext_2792_, v_b_2793_, v_kind_2794_, v_currNamespace_2799_);
 v___x_2813_ = lean_obj_once(&l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_addSimpCongrTheorem_spec__0___redArg___closed__2, &l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_addSimpCongrTheorem_spec__0___redArg___closed__2_once, _init_l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_addSimpCongrTheorem_spec__0___redArg___closed__2);
 if (v_isShared_2811_ == 0)
@@ -8328,6 +8327,7 @@ uint8_t v_kind_boxed_2844_; lean_object* v_res_2845_;
 v_kind_boxed_2844_ = lean_unbox(v_kind_2839_);
 v_res_2845_ = l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_addSimpCongrTheorem_spec__0___redArg(v_ext_2837_, v_b_2838_, v_kind_boxed_2844_, v___y_2840_, v___y_2841_, v___y_2842_);
 lean_dec(v___y_2842_);
+lean_dec_ref(v___y_2841_);
 lean_dec(v___y_2840_);
 return v_res_2845_;
 }
@@ -8336,7 +8336,6 @@ LEAN_EXPORT lean_object* l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_addSim
 _start:
 {
 lean_object* v___x_2857_; 
-lean_inc_ref(v___y_2854_);
 v___x_2857_ = l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_addSimpCongrTheorem_spec__0___redArg(v_ext_2849_, v_b_2850_, v_kind_2851_, v___y_2853_, v___y_2854_, v___y_2855_);
 return v___x_2857_;
 }
@@ -8366,7 +8365,6 @@ v_a_2880_ = lean_ctor_get(v___x_2879_, 0);
 lean_inc(v_a_2880_);
 lean_dec_ref(v___x_2879_);
 v___x_2881_ = l_Lean_Meta_congrExtension;
-lean_inc_ref(v_a_2876_);
 v___x_2882_ = l_Lean_ScopedEnvExtension_add___at___00Lean_Meta_addSimpCongrTheorem_spec__0___redArg(v___x_2881_, v_a_2880_, v_attrKind_2872_, v_a_2875_, v_a_2876_, v_a_2877_);
 return v___x_2882_;
 }

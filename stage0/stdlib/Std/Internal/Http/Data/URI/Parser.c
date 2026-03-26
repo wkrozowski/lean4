@@ -58,7 +58,7 @@ uint8_t l_List_all___redArg(lean_object*, lean_object*);
 lean_object* l_List_head_x3f___redArg(lean_object*);
 lean_object* lean_byte_array_copy_slice(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, uint8_t);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_nat_sub(lean_object*, lean_object*);
 lean_object* l_String_Slice_toNat_x3f(lean_object*);
 uint16_t lean_uint16_of_nat(lean_object*);
@@ -735,7 +735,7 @@ _start:
 {
 lean_object* v___x_76_; lean_object* v___x_77_; 
 v___x_76_ = ((lean_object*)(l_panic___at___00__private_Std_Internal_Http_Data_URI_Parser_0__Std_Http_URI_Parser_parseScheme_spec__1___closed__0));
-v___x_77_ = lean_panic_fn(v___x_76_, v_msg_75_);
+v___x_77_ = lean_panic_fn_borrowed(v___x_76_, v_msg_75_);
 return v___x_77_;
 }
 }

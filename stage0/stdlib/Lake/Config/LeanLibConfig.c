@@ -2746,6 +2746,7 @@ v___jp_725_:
 lean_object* v___x_727_; lean_object* v___x_728_; lean_object* v___x_729_; 
 v___x_727_ = lean_unsigned_to_nat(1u);
 v___x_728_ = lean_mk_empty_array_with_capacity(v___x_727_);
+lean_inc(v___y_726_);
 v___x_729_ = lean_array_push(v___x_728_, v___y_726_);
 return v___x_729_;
 }
@@ -3730,6 +3731,7 @@ v___jp_1080_:
 lean_object* v___x_1082_; lean_object* v___x_1083_; lean_object* v___x_1084_; 
 v___x_1082_ = lean_unsigned_to_nat(1u);
 v___x_1083_ = lean_mk_empty_array_with_capacity(v___x_1082_);
+lean_inc(v___y_1081_);
 v___x_1084_ = lean_array_push(v___x_1083_, v___y_1081_);
 return v___x_1084_;
 }

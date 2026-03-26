@@ -39,7 +39,7 @@ uint8_t lean_uint8_add(uint8_t, uint8_t);
 uint8_t lean_string_get_byte_fast(lean_object*, lean_object*);
 uint8_t lean_uint8_dec_le(uint8_t, uint8_t);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_String_Slice_Pos_prevn(lean_object*, lean_object*, lean_object*);
 lean_object* lean_nat_to_int(lean_object*);
 lean_object* l_Int_negOfNat(lean_object*);
@@ -9053,7 +9053,7 @@ _start:
 {
 lean_object* v___x_3177_; lean_object* v___x_3178_; 
 v___x_3177_ = lean_unsigned_to_nat(0u);
-v___x_3178_ = lean_panic_fn(v___x_3177_, v_msg_3176_);
+v___x_3178_ = lean_panic_fn_borrowed(v___x_3177_, v_msg_3176_);
 return v___x_3178_;
 }
 }

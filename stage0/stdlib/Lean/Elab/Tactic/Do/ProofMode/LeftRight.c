@@ -1349,6 +1349,7 @@ v___x_361_ = lean_box(0);
 v___x_362_ = lean_alloc_ctor(1, 2, 0);
 lean_ctor_set(v___x_362_, 0, v_u_339_);
 lean_ctor_set(v___x_362_, 1, v___x_361_);
+lean_inc(v_fst_354_);
 v___x_363_ = l_Lean_mkConst(v_fst_354_, v___x_362_);
 lean_inc(v_a_360_);
 v___x_364_ = l_Lean_mkApp5(v___x_363_, v_arg_347_, v_hyps_341_, v_arg_346_, v_arg_345_, v_a_360_);
@@ -1398,7 +1399,6 @@ return v___x_371_;
 else
 {
 lean_object* v_a_375_; lean_object* v___x_377_; uint8_t v_isShared_378_; uint8_t v_isSharedCheck_382_; 
-lean_dec(v_fst_354_);
 lean_dec_ref(v_arg_347_);
 lean_dec_ref(v_arg_346_);
 lean_dec_ref(v_arg_345_);

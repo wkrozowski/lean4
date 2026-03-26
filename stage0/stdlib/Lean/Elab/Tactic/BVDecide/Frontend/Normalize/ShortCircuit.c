@@ -303,7 +303,6 @@ lean_object* v_a_117_; lean_object* v___x_118_;
 v_a_117_ = lean_ctor_get(v___x_116_, 0);
 lean_inc(v_a_117_);
 lean_dec_ref(v___x_116_);
-lean_inc_ref(v___y_95_);
 v___x_118_ = l_Lean_Meta_getPropHyps(v___y_95_, v___y_96_, v___y_97_, v___y_98_);
 if (lean_obj_tag(v___x_118_) == 0)
 {

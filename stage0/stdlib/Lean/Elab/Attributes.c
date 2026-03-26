@@ -233,6 +233,7 @@ goto v___jp_24_;
 v___jp_24_:
 {
 lean_object* v___x_26_; uint8_t v___x_27_; lean_object* v___x_28_; lean_object* v___x_29_; lean_object* v___x_30_; lean_object* v___x_31_; uint8_t v___x_32_; lean_object* v___x_33_; lean_object* v___x_34_; lean_object* v___x_35_; lean_object* v___x_36_; lean_object* v___x_37_; lean_object* v___x_38_; lean_object* v___x_39_; lean_object* v___x_40_; lean_object* v___x_41_; lean_object* v___x_42_; lean_object* v___x_43_; lean_object* v___x_44_; uint8_t v___x_45_; lean_object* v___x_46_; 
+lean_inc_ref(v___y_25_);
 v___x_26_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_26_, 0, v___y_25_);
 v___x_27_ = 1;

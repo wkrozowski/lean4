@@ -365,6 +365,7 @@ v___jp_27_:
 {
 if (v_embeddedConstraintSubst_20_ == 0)
 {
+lean_inc(v_passPipeline_28_);
 v_passPipeline_22_ = v_passPipeline_28_;
 goto v___jp_21_;
 }
@@ -372,6 +373,7 @@ else
 {
 if (v_andFlattening_19_ == 0)
 {
+lean_inc(v_passPipeline_28_);
 v_passPipeline_22_ = v_passPipeline_28_;
 goto v___jp_21_;
 }
@@ -379,6 +381,7 @@ else
 {
 lean_object* v___x_29_; lean_object* v___x_30_; 
 v___x_29_ = lean_obj_once(&l_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_passPipeline___redArg___closed__1, &l_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_passPipeline___redArg___closed__1_once, _init_l_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_passPipeline___redArg___closed__1);
+lean_inc(v_passPipeline_28_);
 v___x_30_ = l_List_appendTR___redArg(v_passPipeline_28_, v___x_29_);
 v_passPipeline_22_ = v___x_30_;
 goto v___jp_21_;
@@ -2115,6 +2118,7 @@ lean_ctor_set(v___x_669_, 1, v___x_668_);
 v___x_670_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_670_, 0, v_a_663_);
 lean_ctor_set(v___x_670_, 1, v___x_669_);
+lean_inc_ref(v___y_653_);
 v___x_671_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_656_, v___y_653_, v___y_657_, v___y_654_, v___y_659_, v___y_652_, v___x_670_, v___y_658_, v___y_651_, v___y_661_, v___y_662_, v___y_655_, v___y_660_);
 return v___x_671_;
 }
@@ -2135,6 +2139,7 @@ lean_ctor_set(v___x_695_, 1, v___x_694_);
 v___x_696_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_696_, 0, v_a_686_);
 lean_ctor_set(v___x_696_, 1, v___x_695_);
+lean_inc_ref(v___y_675_);
 v___x_697_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_678_, v___y_675_, v___y_679_, v___y_676_, v___y_681_, v___y_674_, v___x_696_, v___y_680_, v___y_673_, v___y_684_, v___y_685_, v___y_677_, v___y_682_);
 return v___x_697_;
 }
@@ -2778,6 +2783,7 @@ lean_ctor_set(v___x_860_, 1, v___x_859_);
 v___x_861_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_861_, 0, v_a_854_);
 lean_ctor_set(v___x_861_, 1, v___x_860_);
+lean_inc_ref(v___y_841_);
 v___x_862_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_845_, v___y_841_, v___y_852_, v___y_849_, v___y_840_, v___y_842_, v___x_861_, v___y_847_, v___y_843_, v___y_850_, v___y_853_, v___y_846_, v___y_848_);
 v___y_822_ = v___y_850_;
 v___y_823_ = v___y_843_;
@@ -2806,6 +2812,7 @@ lean_ctor_set(v___x_887_, 1, v___x_886_);
 v___x_888_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_888_, 0, v_a_878_);
 lean_ctor_set(v___x_888_, 1, v___x_887_);
+lean_inc_ref(v___y_865_);
 v___x_889_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_869_, v___y_865_, v___y_876_, v___y_874_, v___y_864_, v___y_866_, v___x_888_, v___y_871_, v___y_867_, v___y_875_, v___y_877_, v___y_870_, v___y_872_);
 v___y_822_ = v___y_875_;
 v___y_823_ = v___y_867_;
@@ -3295,6 +3302,7 @@ lean_ctor_set(v___x_1011_, 1, v___x_1010_);
 v___x_1012_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_1012_, 0, v_a_1005_);
 lean_ctor_set(v___x_1012_, 1, v___x_1011_);
+lean_inc_ref(v___y_994_);
 v___x_1013_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_992_, v___y_994_, v___y_1002_, v___y_998_, v___y_991_, v___y_1001_, v___x_1012_, v___y_1003_, v___y_1000_, v___y_996_, v___y_995_, v___y_999_, v___y_1004_);
 v___y_972_ = v___y_999_;
 v___y_973_ = v___y_1000_;
@@ -3323,6 +3331,7 @@ lean_ctor_set(v___x_1038_, 1, v___x_1037_);
 v___x_1039_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_1039_, 0, v_a_1029_);
 lean_ctor_set(v___x_1039_, 1, v___x_1038_);
+lean_inc_ref(v___y_1018_);
 v___x_1040_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_1016_, v___y_1018_, v___y_1026_, v___y_1022_, v___y_1015_, v___y_1025_, v___x_1039_, v___y_1027_, v___y_1024_, v___y_1020_, v___y_1019_, v___y_1023_, v___y_1028_);
 v___y_972_ = v___y_1023_;
 v___y_973_ = v___y_1024_;
@@ -3815,6 +3824,7 @@ lean_ctor_set(v___x_1164_, 1, v___x_1163_);
 v___x_1165_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_1165_, 0, v_a_1158_);
 lean_ctor_set(v___x_1165_, 1, v___x_1164_);
+lean_inc_ref(v___y_1145_);
 v___x_1166_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_1153_, v___y_1145_, v___y_1154_, v___y_1149_, v___y_1150_, v___y_1144_, v___x_1165_, v___y_1151_, v___y_1156_, v___y_1155_, v___y_1152_, v___y_1148_, v___y_1157_);
 v___y_1124_ = v___y_1152_;
 v___y_1125_ = v___y_1151_;
@@ -3843,6 +3853,7 @@ lean_ctor_set(v___x_1191_, 1, v___x_1190_);
 v___x_1192_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_1192_, 0, v_a_1182_);
 lean_ctor_set(v___x_1192_, 1, v___x_1191_);
+lean_inc_ref(v___y_1169_);
 v___x_1193_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_1176_, v___y_1169_, v___y_1177_, v___y_1172_, v___y_1173_, v___y_1168_, v___x_1192_, v___y_1174_, v___y_1179_, v___y_1178_, v___y_1175_, v___y_1171_, v___y_1180_);
 v___y_1124_ = v___y_1175_;
 v___y_1125_ = v___y_1174_;
@@ -4327,6 +4338,7 @@ lean_ctor_set(v___x_1306_, 1, v___x_1305_);
 v___x_1307_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_1307_, 0, v_a_1300_);
 lean_ctor_set(v___x_1307_, 1, v___x_1306_);
+lean_inc_ref(v___y_1290_);
 v___x_1308_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_1287_, v___y_1290_, v___y_1288_, v___y_1296_, v___y_1297_, v___y_1292_, v___x_1307_, v___y_1294_, v___y_1298_, v___y_1293_, v___y_1291_, v___y_1295_, v___y_1299_);
 v___y_1250_ = v___y_1291_;
 v___y_1251_ = v___y_1293_;
@@ -4354,6 +4366,7 @@ lean_ctor_set(v___x_1332_, 1, v___x_1331_);
 v___x_1333_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_1333_, 0, v_a_1323_);
 lean_ctor_set(v___x_1333_, 1, v___x_1332_);
+lean_inc_ref(v___y_1312_);
 v___x_1334_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00__private_Lean_Elab_Tactic_BVDecide_Frontend_Normalize_0__Lean_Elab_Tactic_BVDecide_Frontend_Normalize_bvNormalize_go_spec__3(v___x_648_, v___y_1310_, v___y_1312_, v___y_1311_, v___y_1318_, v___y_1319_, v___y_1314_, v___x_1333_, v___y_1316_, v___y_1320_, v___y_1315_, v___y_1313_, v___y_1317_, v___y_1322_);
 v___y_1250_ = v___y_1313_;
 v___y_1251_ = v___y_1315_;

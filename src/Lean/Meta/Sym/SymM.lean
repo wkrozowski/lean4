@@ -15,6 +15,8 @@ register_builtin_option sym.debug : Bool := {
   descr    := "check invariants"
 }
 
+builtin_initialize registerTraceClass `sym.issues
+
 /-!
 ## Sym Extensions
 
@@ -134,9 +136,16 @@ structure SharedExprs where
   ordEqExpr  : Expr
   intExpr    : Expr
 
+/-- Configuration options for the symbolic computation framework. -/
+structure Config where
+  /-- When `true`, issues are collected during proof search and reported on failure. -/
+  verbose : Bool := true
+  deriving Inhabited
+
 /-- Readonly context for the symbolic computation framework. -/
 structure Context where
   sharedExprs : SharedExprs
+  config      : Config := {}
 
 /-- Mutable state for the symbolic computation framework. -/
 structure State where
@@ -177,6 +186,11 @@ structure State where
   defEqI : PHashMap (ExprPtr × ExprPtr) Bool := {}
   /-- State for registered `SymExtension`s, indexed by extension id. -/
   extensions : Array SymExtensionState := #[]
+  /--
+  Issues found during symbolic computation. Accumulated across operations
+  within a `sym =>` block and reported when a tactic fails.
+  -/
+  issues : List MessageData := []
   debug : Bool := false
 
 abbrev SymM := ReaderT Context <| StateRefT State MetaM
@@ -265,6 +279,55 @@ abbrev share (e : Expr) : SymM Expr :=
 /-- Returns `true` if `sym.debug` is set -/
 @[inline] def isDebugEnabled : SymM Bool :=
   return (← get).debug
+
+def getConfig : SymM Config :=
+  return (← readThe Context).config
+
+/-- Adds an issue message to the issue tracker. -/
+def reportIssue (msg : MessageData) : SymM Unit := do
+  let msg ← addMessageContext msg
+  modify fun s => { s with issues := .trace { cls := `issue } msg #[] :: s.issues }
+  trace[sym.issues] msg
+
+/-- Reports an issue if `verbose` mode is enabled. Does nothing if `verbose` is `false`. -/
+@[inline] def reportIssueIfVerbose (msg : MessageData) : SymM Unit := do
+  if (← getConfig).verbose then
+    reportIssue msg
+
+private meta def expandReportIssueMacro (s : Syntax) : MacroM (TSyntax `doElem) := do
+  let msg ← if s.getKind == interpolatedStrKind then `(m! $(⟨s⟩)) else `(($(⟨s⟩) : MessageData))
+  `(doElem| Sym.reportIssueIfVerbose $msg)
+
+/-- Reports an issue if `verbose` mode is enabled. -/
+macro "reportIssue!" s:(interpolatedStr(term) <|> term) : doElem => do
+  expandReportIssueMacro s.raw
+
+/-- Reports an issue if both `verbose` and `sym.debug` are enabled. Does nothing otherwise. -/
+@[inline] def reportDbgIssue (msg : MessageData) : SymM Unit := do
+  if (← getConfig).verbose then
+    if sym.debug.get (← getOptions) then
+      reportIssue msg
+
+meta def expandReportDbgIssueMacro (s : Syntax) : MacroM (TSyntax `doElem) := do
+  let msg ← if s.getKind == interpolatedStrKind then `(m! $(⟨s⟩)) else `(($(⟨s⟩) : MessageData))
+  `(doElem| Sym.reportDbgIssue $msg)
+
+/-- Similar to `reportIssue!`, but only reports issue if `sym.debug` is set to `true`. -/
+macro "reportDbgIssue!" s:(interpolatedStr(term) <|> term) : doElem => do
+  expandReportDbgIssueMacro s.raw
+
+/-- Returns all accumulated issues without clearing them. -/
+def getIssues : SymM (List MessageData) :=
+  return (← get).issues
+
+/--
+Runs `x` with a fresh issue context. Issues reported during `x` are
+prepended to the issues that existed before the call.
+-/
+def withNewIssueContext (x : SymM α) : SymM α := do
+  let saved := (← get).issues
+  modify fun s => { s with issues := [] }
+  try x finally modify fun s => { s with issues := s.issues ++ saved }
 
 /-- Similar to `Meta.isDefEqI`, but the result is cache using pointer equality. -/
 def isDefEqI (s t : Expr) : SymM Bool := do

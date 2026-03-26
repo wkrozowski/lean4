@@ -126,7 +126,7 @@ lean_object* l_Lean_Meta_instMonadMetaM___lam__0___boxed(lean_object*, lean_obje
 lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_ReaderT_instMonad___redArg(lean_object*);
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 uint8_t l_Lean_Expr_isApp(lean_object*);
 uint8_t l_Lean_Expr_isForall(lean_object*);
 LEAN_EXPORT lean_object* l___private_Lean_Meta_Tactic_Grind_Canon_0__Lean_Meta_Grind_Canon_get_x27___redArg(lean_object*);
@@ -8817,7 +8817,8 @@ v___x_2891_ = l_StateRefT_x27_instMonad___redArg(v___x_2890_);
 v___x_2892_ = l_StateRefT_x27_instMonad___redArg(v___x_2891_);
 v___x_2893_ = l_Lean_instInhabitedExpr;
 v___x_2894_ = l_instInhabitedOfMonad___redArg(v___x_2892_, v___x_2893_);
-v___x_142536__overap_2895_ = lean_panic_fn(v___x_2894_, v_msg_2824_);
+v___x_142536__overap_2895_ = lean_panic_fn_borrowed(v___x_2894_, v_msg_2824_);
+lean_dec(v___x_2894_);
 lean_inc(v___y_2835_);
 lean_inc_ref(v___y_2834_);
 lean_inc(v___y_2833_);
@@ -10819,6 +10820,7 @@ goto v___jp_3565_;
 v___jp_3565_:
 {
 lean_object* v___x_3567_; lean_object* v___x_3569_; 
+lean_inc(v___y_3566_);
 v___x_3567_ = l_Lean_MessageData_ofFormat(v___y_3566_);
 if (v_isShared_3553_ == 0)
 {

@@ -1701,6 +1701,7 @@ v___jp_422_:
 {
 lean_object* v___x_424_; lean_object* v___x_425_; 
 v___x_424_ = lean_box(0);
+lean_inc(v___y_423_);
 v___x_425_ = l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Server_FileWorker_SignatureHelp_0__Lean_Server_FileWorker_SignatureHelp_lineCommentPosition_x3f_spec__0___redArg(v_s_418_, v___x_421_, v___x_420_, v___y_423_, v___x_424_);
 lean_dec_ref(v___x_421_);
 lean_dec_ref(v_s_418_);

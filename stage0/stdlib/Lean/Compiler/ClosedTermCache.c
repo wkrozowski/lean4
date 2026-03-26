@@ -37,7 +37,7 @@ uint8_t lean_usize_dec_le(size_t, size_t);
 lean_object* l_Lean_PersistentHashMap_getCollisionNodeSize___redArg(lean_object*);
 lean_object* l_Lean_NameSet_insert(lean_object*, lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 extern lean_object* l_Lean_NameSet_empty;
 lean_object* l_Lean_PersistentHashMap_mkEmptyEntriesArray(lean_object*, lean_object*);
 lean_object* l_List_lengthTR___redArg(lean_object*);
@@ -172,7 +172,7 @@ _start:
 {
 lean_object* v___x_11_; lean_object* v___x_12_; 
 v___x_11_ = lean_box(0);
-v___x_12_ = lean_panic_fn(v___x_11_, v_msg_10_);
+v___x_12_ = lean_panic_fn_borrowed(v___x_11_, v_msg_10_);
 return v___x_12_;
 }
 }

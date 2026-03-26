@@ -1043,6 +1043,7 @@ v___jp_82_:
 {
 lean_object* v___x_84_; lean_object* v___x_85_; uint8_t v___x_86_; lean_object* v___x_87_; lean_object* v___x_88_; 
 v___x_84_ = ((lean_object*)(l_Lake_instReprBackend_repr___closed__1));
+lean_inc(v___y_83_);
 v___x_85_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_85_, 0, v___y_83_);
 lean_ctor_set(v___x_85_, 1, v___x_84_);
@@ -1057,6 +1058,7 @@ v___jp_89_:
 {
 lean_object* v___x_91_; lean_object* v___x_92_; uint8_t v___x_93_; lean_object* v___x_94_; lean_object* v___x_95_; 
 v___x_91_ = ((lean_object*)(l_Lake_instReprBackend_repr___closed__3));
+lean_inc(v___y_90_);
 v___x_92_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_92_, 0, v___y_90_);
 lean_ctor_set(v___x_92_, 1, v___x_91_);
@@ -1071,6 +1073,7 @@ v___jp_96_:
 {
 lean_object* v___x_98_; lean_object* v___x_99_; uint8_t v___x_100_; lean_object* v___x_101_; lean_object* v___x_102_; 
 v___x_98_ = ((lean_object*)(l_Lake_instReprBackend_repr___closed__5));
+lean_inc(v___y_97_);
 v___x_99_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_99_, 0, v___y_97_);
 lean_ctor_set(v___x_99_, 1, v___x_98_);
@@ -1609,6 +1612,7 @@ v___jp_282_:
 {
 lean_object* v___x_284_; lean_object* v___x_285_; uint8_t v___x_286_; lean_object* v___x_287_; lean_object* v___x_288_; 
 v___x_284_ = ((lean_object*)(l_Lake_instReprBuildType_repr___closed__1));
+lean_inc(v___y_283_);
 v___x_285_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_285_, 0, v___y_283_);
 lean_ctor_set(v___x_285_, 1, v___x_284_);
@@ -1623,6 +1627,7 @@ v___jp_289_:
 {
 lean_object* v___x_291_; lean_object* v___x_292_; uint8_t v___x_293_; lean_object* v___x_294_; lean_object* v___x_295_; 
 v___x_291_ = ((lean_object*)(l_Lake_instReprBuildType_repr___closed__3));
+lean_inc(v___y_290_);
 v___x_292_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_292_, 0, v___y_290_);
 lean_ctor_set(v___x_292_, 1, v___x_291_);
@@ -1637,6 +1642,7 @@ v___jp_296_:
 {
 lean_object* v___x_298_; lean_object* v___x_299_; uint8_t v___x_300_; lean_object* v___x_301_; lean_object* v___x_302_; 
 v___x_298_ = ((lean_object*)(l_Lake_instReprBuildType_repr___closed__5));
+lean_inc(v___y_297_);
 v___x_299_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_299_, 0, v___y_297_);
 lean_ctor_set(v___x_299_, 1, v___x_298_);
@@ -1651,6 +1657,7 @@ v___jp_303_:
 {
 lean_object* v___x_305_; lean_object* v___x_306_; uint8_t v___x_307_; lean_object* v___x_308_; lean_object* v___x_309_; 
 v___x_305_ = ((lean_object*)(l_Lake_instReprBuildType_repr___closed__7));
+lean_inc(v___y_304_);
 v___x_306_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_306_, 0, v___y_304_);
 lean_ctor_set(v___x_306_, 1, v___x_305_);

@@ -28,7 +28,7 @@ lean_object* lean_nat_to_int(lean_object*);
 lean_object* lean_int_neg(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 extern lean_object* l_ByteArray_empty;
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 uint64_t lean_uint64_of_nat(lean_object*);
 lean_object* lean_byte_array_push(lean_object*, uint8_t);
 uint64_t lean_uint64_shift_right(uint64_t, uint64_t);
@@ -9532,7 +9532,7 @@ _start:
 {
 lean_object* v___x_2385_; lean_object* v___x_2386_; 
 v___x_2385_ = l_ByteArray_empty;
-v___x_2386_ = lean_panic_fn(v___x_2385_, v_msg_2384_);
+v___x_2386_ = lean_panic_fn_borrowed(v___x_2385_, v_msg_2384_);
 return v___x_2386_;
 }
 }

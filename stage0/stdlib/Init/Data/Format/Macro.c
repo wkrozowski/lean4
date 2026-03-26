@@ -13,14 +13,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-lean_object* l_String_toRawSubstring_x27(lean_object*);
 lean_object* l_Lean_Name_mkStr2(lean_object*, lean_object*);
-lean_object* l_Lean_Name_mkStr1(lean_object*);
-lean_object* l_Lean_Name_mkStr3(lean_object*, lean_object*, lean_object*);
 uint8_t l_Lean_Syntax_isOfKind(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_getArg(lean_object*, lean_object*);
 lean_object* l_Lean_SourceInfo_fromRef(lean_object*, uint8_t);
+lean_object* l_String_toRawSubstring_x27(lean_object*);
+lean_object* l_Lean_Name_mkStr1(lean_object*);
 lean_object* l_Lean_addMacroScope(lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Name_mkStr3(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_TSyntax_expandInterpolatedStr(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 static const lean_string_object l_Std_termF_x21___00__closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 4, .m_capacity = 4, .m_length = 3, .m_data = "Std"};
 static const lean_object* l_Std_termF_x21___00__closed__0 = (const lean_object*)&l_Std_termF_x21___00__closed__0_value;
@@ -91,6 +91,7 @@ static const lean_object* l_Std___aux__Init__Data__Format__Macro______macroRules
 static const lean_ctor_object l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1___closed__15_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 0, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1___closed__14_value),((lean_object*)(((size_t)(0) << 1) | 1))}};
 static const lean_object* l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1___closed__15 = (const lean_object*)&l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1___closed__15_value;
 LEAN_EXPORT lean_object* l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1___boxed(lean_object*, lean_object*, lean_object*);
 static lean_object* _init_l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1___closed__1(void){
 _start:
 {
@@ -119,7 +120,6 @@ v___x_74_ = l_Lean_Syntax_isOfKind(v_x_70_, v___x_73_);
 if (v___x_74_ == 0)
 {
 lean_object* v___x_75_; lean_object* v___x_76_; 
-lean_dec_ref(v_a_71_);
 lean_dec(v_x_70_);
 v___x_75_ = lean_box(1);
 v___x_76_ = lean_alloc_ctor(1, 2, 0);
@@ -253,6 +253,15 @@ return v___x_110_;
 }
 }
 }
+}
+}
+LEAN_EXPORT lean_object* l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1___boxed(lean_object* v_x_113_, lean_object* v_a_114_, lean_object* v_a_115_){
+_start:
+{
+lean_object* v_res_116_; 
+v_res_116_ = l_Std___aux__Init__Data__Format__Macro______macroRules__Std__termF_x21____1(v_x_113_, v_a_114_, v_a_115_);
+lean_dec_ref(v_a_114_);
+return v_res_116_;
 }
 }
 lean_object* runtime_initialize_Init_Notation(uint8_t builtin);

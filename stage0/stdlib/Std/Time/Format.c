@@ -3231,7 +3231,6 @@ v___x_1419_ = lean_obj_once(&l_Std_Time_PlainDate_format___lam__0___closed__2, &
 v___x_1420_ = lean_int_mod(v___y_1417_, v___x_1419_);
 lean_dec(v___y_1417_);
 v___x_1421_ = lean_int_dec_eq(v___x_1420_, v___y_1416_);
-lean_dec(v___y_1416_);
 lean_dec(v___x_1420_);
 v___y_1404_ = v___y_1418_;
 v___y_1405_ = v___x_1421_;

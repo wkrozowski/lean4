@@ -138,6 +138,7 @@ v___x_26_ = l_Lean_Meta_Match_instInhabitedAltParamInfo_default;
 v___x_27_ = l_instInhabitedOfMonad___redArg(v_inst_17_, v___x_26_);
 v___x_28_ = lean_obj_once(&l_Lean_Meta_matchMatcherApp_x3f___redArg___lam__1___closed__3, &l_Lean_Meta_matchMatcherApp_x3f___redArg___lam__1___closed__3_once, _init_l_Lean_Meta_matchMatcherApp_x3f___redArg___lam__1___closed__3);
 v___x_29_ = l_panic___redArg(v___x_27_, v___x_28_);
+lean_dec(v___x_27_);
 return v___x_29_;
 }
 }

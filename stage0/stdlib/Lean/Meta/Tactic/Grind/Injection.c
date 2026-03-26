@@ -860,7 +860,6 @@ LEAN_EXPORT lean_object* l_Lean_Meta_Grind_injection_x3f___lam__0(lean_object* v
 _start:
 {
 lean_object* v___x_260_; 
-lean_inc_ref(v___y_255_);
 lean_inc(v_fvarId_253_);
 v___x_260_ = l_Lean_FVarId_getDecl___redArg(v_fvarId_253_, v___y_255_, v___y_257_, v___y_258_);
 if (lean_obj_tag(v___x_260_) == 0)

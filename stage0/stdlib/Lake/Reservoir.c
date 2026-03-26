@@ -1157,24 +1157,23 @@ uint8_t v___x_234_;
 v___x_234_ = lean_usize_dec_lt(v_i_232_, v_sz_231_);
 if (v___x_234_ == 0)
 {
+lean_inc_ref(v_b_233_);
 return v_b_233_;
 }
 else
 {
 lean_object* v___x_235_; lean_object* v_a_236_; uint8_t v___x_237_; 
-lean_dec_ref(v_b_233_);
 v___x_235_ = lean_box(0);
 v_a_236_ = lean_array_uget_borrowed(v_as_230_, v_i_232_);
 v___x_237_ = l_Lake_RegistrySrc_isGit(v_a_236_);
 if (v___x_237_ == 0)
 {
-lean_object* v___x_238_; size_t v___x_239_; size_t v___x_240_; 
+lean_object* v___x_238_; size_t v___x_239_; size_t v___x_240_; lean_object* v___x_241_; 
 v___x_238_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lake_RegistryPkg_gitSrc_x3f_spec__0___closed__0));
 v___x_239_ = ((size_t)1ULL);
 v___x_240_ = lean_usize_add(v_i_232_, v___x_239_);
-v_i_232_ = v___x_240_;
-v_b_233_ = v___x_238_;
-goto _start;
+v___x_241_ = l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lake_RegistryPkg_gitSrc_x3f_spec__0(v_as_230_, v_sz_231_, v___x_240_, v___x_238_);
+return v___x_241_;
 }
 else
 {
@@ -1201,6 +1200,7 @@ lean_dec(v_sz_246_);
 v_i_boxed_250_ = lean_unbox_usize(v_i_247_);
 lean_dec(v_i_247_);
 v_res_251_ = l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lake_RegistryPkg_gitSrc_x3f_spec__0(v_as_245_, v_sz_boxed_249_, v_i_boxed_250_, v_b_248_);
+lean_dec_ref(v_b_248_);
 lean_dec_ref(v_as_245_);
 return v_res_251_;
 }

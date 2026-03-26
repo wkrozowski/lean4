@@ -890,6 +890,7 @@ if (v___x_131_ == 0)
 {
 lean_object* v___x_132_; lean_object* v___x_133_; lean_object* v_ver_134_; 
 v___x_132_ = ((lean_object*)(l___private_Lean_Shell_0__Lean_versionHeader___closed__5));
+lean_inc_ref(v_ver_129_);
 v___x_133_ = lean_string_append(v_ver_129_, v___x_132_);
 v_ver_134_ = lean_string_append(v___x_133_, v___x_130_);
 v_ver_119_ = v_ver_134_;
@@ -897,6 +898,7 @@ goto v___jp_118_;
 }
 else
 {
+lean_inc_ref(v_ver_129_);
 v_ver_119_ = v_ver_129_;
 goto v___jp_118_;
 }

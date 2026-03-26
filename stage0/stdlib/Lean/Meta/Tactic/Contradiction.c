@@ -23,7 +23,7 @@ lean_object* l_Lean_LocalDecl_type(lean_object*);
 uint8_t l_Lean_Meta_Simp_isEqnThmHypothesis(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_instInhabitedMetaM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_forallMetaTelescope(lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
 lean_object* lean_array_push(lean_object*, lean_object*);
@@ -3529,6 +3529,7 @@ v___jp_972_:
 size_t v___x_974_; size_t v___x_975_; 
 v___x_974_ = ((size_t)1ULL);
 v___x_975_ = lean_usize_add(v_i_964_, v___x_974_);
+lean_inc_ref(v_a_973_);
 v_i_964_ = v___x_975_;
 v_b_965_ = v_a_973_;
 goto _start;
@@ -4456,7 +4457,7 @@ _start:
 {
 lean_object* v___f_1342_; lean_object* v___x_5507__overap_1343_; lean_object* v___x_1344_; 
 v___f_1342_ = ((lean_object*)(l_panic___at___00__private_Lean_Meta_Tactic_Contradiction_0__Lean_Meta_processGenDiseq_spec__0___closed__0));
-v___x_5507__overap_1343_ = lean_panic_fn(v___f_1342_, v_msg_1336_);
+v___x_5507__overap_1343_ = lean_panic_fn_borrowed(v___f_1342_, v_msg_1336_);
 lean_inc(v___y_1340_);
 lean_inc_ref(v___y_1339_);
 lean_inc(v___y_1338_);
@@ -5147,7 +5148,8 @@ uint8_t v___x_1568_; lean_object* v___x_1569_; lean_object* v___x_1570_; lean_ob
 v___x_1568_ = 0;
 v___x_1569_ = lean_box(v___x_1568_);
 v___x_1570_ = l_instInhabitedOfMonad___redArg(v___x_1567_, v___x_1569_);
-v___x_9109__overap_1571_ = lean_panic_fn(v___x_1570_, v_msg_1513_);
+v___x_9109__overap_1571_ = lean_panic_fn_borrowed(v___x_1570_, v_msg_1513_);
+lean_dec(v___x_1570_);
 lean_inc(v___y_1517_);
 lean_inc_ref(v___y_1516_);
 lean_inc(v___y_1515_);

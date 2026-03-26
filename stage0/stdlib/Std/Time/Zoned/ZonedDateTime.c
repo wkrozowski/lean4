@@ -897,7 +897,6 @@ v___jp_201_:
 lean_object* v_localTimeType_203_; 
 v_localTimeType_203_ = lean_ctor_get(v_val_202_, 1);
 lean_inc_ref(v_localTimeType_203_);
-lean_dec_ref(v_val_202_);
 v___y_184_ = v_localTimeType_203_;
 goto v___jp_183_;
 }

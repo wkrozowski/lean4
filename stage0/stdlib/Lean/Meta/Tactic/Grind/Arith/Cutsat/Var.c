@@ -1875,6 +1875,7 @@ else
 {
 lean_object* v___x_522_; 
 v___x_522_ = l_Lean_PersistentArray_get_x21___redArg(v___x_519_, v_elimEqs_517_, v_a_460_);
+lean_dec_ref(v_elimEqs_517_);
 v___y_497_ = v___x_522_;
 goto v___jp_496_;
 }
@@ -2058,6 +2059,7 @@ v___jp_464_:
 uint8_t v___x_468_; 
 lean_inc(v___y_467_);
 lean_inc(v_x_447_);
+lean_inc_ref(v___y_465_);
 v___x_468_ = l_List_elem___redArg(v___y_465_, v_x_447_, v___y_467_);
 if (v___x_468_ == 0)
 {

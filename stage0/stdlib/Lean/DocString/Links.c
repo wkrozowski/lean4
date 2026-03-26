@@ -313,7 +313,6 @@ v___jp_18_:
 {
 lean_object* v___x_21_; lean_object* v___x_22_; 
 v___x_21_ = lean_string_append(v___y_19_, v___y_20_);
-lean_dec_ref(v___y_20_);
 v___x_22_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_22_, 0, v___x_21_);
 return v___x_22_;
@@ -1810,7 +1809,6 @@ lean_object* v___x_520_; lean_object* v___x_521_; lean_object* v_acceptableKinds
 v___x_520_ = lean_box(0);
 v___x_521_ = l_List_mapTR_loop___at___00Lean_manualLink_spec__1(v___y_519_, v___x_520_);
 v_acceptableKinds_522_ = l_String_intercalate(v___y_517_, v___x_521_);
-lean_dec_ref(v___y_517_);
 v___x_523_ = ((lean_object*)(l_Lean_manualLink___closed__3));
 v___x_524_ = lean_string_append(v___x_523_, v___y_518_);
 lean_dec_ref(v___y_518_);

@@ -380,6 +380,7 @@ v___jp_90_:
 lean_object* v___x_94_; lean_object* v___x_95_; lean_object* v___x_96_; lean_object* v___x_97_; lean_object* v___x_98_; lean_object* v___x_99_; lean_object* v___x_100_; lean_object* v___x_101_; lean_object* v___x_102_; lean_object* v___x_103_; lean_object* v___x_104_; lean_object* v___x_105_; lean_object* v___x_106_; lean_object* v___x_107_; lean_object* v___x_108_; lean_object* v___x_109_; lean_object* v___x_110_; 
 v___x_94_ = l_Lean_MessageData_ofFormat(v___y_93_);
 v___x_95_ = l_Lean_indentD(v___x_94_);
+lean_inc_ref(v___y_92_);
 v___x_96_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_96_, 0, v___y_92_);
 lean_ctor_set(v___x_96_, 1, v___x_95_);

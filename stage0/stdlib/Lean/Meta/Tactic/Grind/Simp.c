@@ -415,10 +415,9 @@ v_reusejp_124_:
 lean_object* v___x_126_; lean_object* v_simp_127_; lean_object* v_simpMethods_128_; lean_object* v___x_129_; 
 v___x_126_ = lean_st_ref_set(v___y_101_, v___x_125_);
 v_simp_127_ = lean_ctor_get(v___y_100_, 0);
-lean_inc_ref(v_simp_127_);
 v_simpMethods_128_ = lean_ctor_get(v___y_100_, 1);
 lean_inc_ref(v_simpMethods_128_);
-lean_dec_ref(v___y_100_);
+lean_inc_ref(v_simp_127_);
 v___x_129_ = l_Lean_Meta_Simp_mainCore(v_e_98_, v_simp_127_, v_simp_111_, v_simpMethods_128_, v___y_104_, v___y_105_, v___y_106_, v___y_107_);
 if (lean_obj_tag(v___x_129_) == 0)
 {
@@ -592,6 +591,7 @@ lean_dec_ref(v___y_175_);
 lean_dec(v___y_174_);
 lean_dec_ref(v___y_173_);
 lean_dec(v___y_172_);
+lean_dec_ref(v___y_171_);
 lean_dec(v___y_170_);
 return v_res_180_;
 }
@@ -700,10 +700,9 @@ v_reusejp_238_:
 lean_object* v___x_240_; lean_object* v_simp_241_; lean_object* v_simpMethods_242_; lean_object* v___x_243_; 
 v___x_240_ = lean_st_ref_set(v___y_213_, v___x_239_);
 v_simp_241_ = lean_ctor_get(v___y_212_, 0);
-lean_inc_ref(v_simp_241_);
 v_simpMethods_242_ = lean_ctor_get(v___y_212_, 1);
 lean_inc_ref(v_simpMethods_242_);
-lean_dec_ref(v___y_212_);
+lean_inc_ref(v_simp_241_);
 v___x_243_ = l_Lean_Meta_Simp_dsimpMainCore(v_e_210_, v_simp_241_, v_simp_223_, v_simpMethods_242_, v___y_216_, v___y_217_, v___y_218_, v___y_219_);
 if (lean_obj_tag(v___x_243_) == 0)
 {
@@ -877,6 +876,7 @@ lean_dec_ref(v___y_289_);
 lean_dec(v___y_288_);
 lean_dec_ref(v___y_287_);
 lean_dec(v___y_286_);
+lean_dec_ref(v___y_285_);
 lean_dec(v___y_284_);
 return v_res_294_;
 }

@@ -35,7 +35,7 @@ lean_object* l_Lean_PersistentHashMap_mkEmptyEntries(lean_object*, lean_object*)
 uint8_t lean_usize_dec_le(size_t, size_t);
 lean_object* l_Lean_PersistentHashMap_getCollisionNodeSize___redArg(lean_object*);
 lean_object* l_Lean_Meta_Sym_instInhabitedSymM(lean_object*);
-lean_object* lean_panic_fn(lean_object*, lean_object*);
+lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_array_get(lean_object*, lean_object*, lean_object*);
 lean_object* lean_st_ref_take(lean_object*);
@@ -124,7 +124,6 @@ v___x_9_ = l_Lean_instBEqFVarId_beq(v_val_7_, v_val_8_);
 if (v___x_9_ == 0)
 {
 lean_object* v___x_10_; 
-lean_inc_ref(v_a_3_);
 lean_inc(v_val_7_);
 v___x_10_ = l_Lean_FVarId_getDecl___redArg(v_val_7_, v_a_3_, v_a_4_, v_a_5_);
 if (lean_obj_tag(v___x_10_) == 0)
@@ -133,7 +132,6 @@ lean_object* v_a_11_; lean_object* v___x_12_;
 v_a_11_ = lean_ctor_get(v___x_10_, 0);
 lean_inc(v_a_11_);
 lean_dec_ref(v___x_10_);
-lean_inc_ref(v_a_3_);
 lean_inc(v_val_8_);
 v___x_12_ = l_Lean_FVarId_getDecl___redArg(v_val_8_, v_a_3_, v_a_4_, v_a_5_);
 if (lean_obj_tag(v___x_12_) == 0)
@@ -635,7 +633,7 @@ _start:
 {
 lean_object* v___x_153_; lean_object* v___x_4694__overap_154_; lean_object* v___x_155_; 
 v___x_153_ = lean_obj_once(&l_panic___at___00Lean_Meta_Sym_getMaxFVar_x3f_spec__2___closed__0, &l_panic___at___00Lean_Meta_Sym_getMaxFVar_x3f_spec__2___closed__0_once, _init_l_panic___at___00Lean_Meta_Sym_getMaxFVar_x3f_spec__2___closed__0);
-v___x_4694__overap_154_ = lean_panic_fn(v___x_153_, v_msg_145_);
+v___x_4694__overap_154_ = lean_panic_fn_borrowed(v___x_153_, v_msg_145_);
 lean_inc(v___y_151_);
 lean_inc_ref(v___y_150_);
 lean_inc(v___y_149_);
@@ -1495,6 +1493,7 @@ if (v___x_572_ == 0)
 {
 lean_object* v___x_573_; 
 v___x_573_ = l_Lean_LocalContext_lastDecl(v_lctx_570_);
+lean_dec_ref(v_lctx_570_);
 if (lean_obj_tag(v___x_573_) == 1)
 {
 lean_object* v_val_574_; lean_object* v___x_576_; uint8_t v_isShared_577_; uint8_t v_isSharedCheck_582_; 

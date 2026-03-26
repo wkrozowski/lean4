@@ -537,7 +537,6 @@ LEAN_EXPORT lean_object* l___private_Lean_Meta_Tactic_Simp_SimpAll_0__Lean_Meta_
 _start:
 {
 lean_object* v___x_128_; 
-lean_inc_ref(v___y_123_);
 v___x_128_ = l_Lean_Meta_getPropHyps(v___y_123_, v___y_124_, v___y_125_, v___y_126_);
 return v___x_128_;
 }
@@ -663,7 +662,6 @@ v___x_187_ = l_Lean_Meta_SimpTheoremsArray_isErased(v_b_171_, v___x_186_);
 if (v___x_187_ == 0)
 {
 lean_object* v___x_188_; 
-lean_inc_ref(v___y_173_);
 lean_inc(v_a_185_);
 v___x_188_ = l_Lean_FVarId_getDecl___redArg(v_a_185_, v___y_173_, v___y_175_, v___y_176_);
 if (lean_obj_tag(v___x_188_) == 0)

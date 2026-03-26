@@ -1496,7 +1496,6 @@ v___x_669_ = lean_array_push(v___x_668_, v_h_641_);
 v___x_670_ = 1;
 v___x_671_ = 1;
 v___x_672_ = l_Lean_Meta_mkLambdaFVars(v___x_669_, v_snd_663_, v___x_653_, v___x_670_, v___x_653_, v___x_670_, v___x_671_, v___y_646_, v___y_647_, v___y_648_, v___y_649_);
-lean_dec_ref(v___y_646_);
 lean_dec_ref(v___x_669_);
 if (lean_obj_tag(v___x_672_) == 0)
 {
@@ -1696,7 +1695,6 @@ return v___x_709_;
 }
 else
 {
-lean_dec_ref(v___y_646_);
 lean_dec_ref(v_h_641_);
 lean_dec(v_a_640_);
 lean_dec_ref(v_a_639_);
@@ -1714,7 +1712,6 @@ return v___x_655_;
 else
 {
 lean_object* v_a_714_; lean_object* v___x_716_; uint8_t v_isShared_717_; uint8_t v_isSharedCheck_721_; 
-lean_dec_ref(v___y_646_);
 lean_dec_ref(v_h_641_);
 lean_dec(v_a_640_);
 lean_dec_ref(v_a_639_);
@@ -1797,6 +1794,7 @@ v_res_744_ = l_Lean_Elab_Tactic_Do_ProofMode_mPureCore___at___00Lean_Elab_Tactic
 lean_dec(v___y_742_);
 lean_dec_ref(v___y_741_);
 lean_dec(v___y_740_);
+lean_dec_ref(v___y_739_);
 lean_dec(v___y_738_);
 lean_dec_ref(v___y_737_);
 lean_dec(v___y_736_);

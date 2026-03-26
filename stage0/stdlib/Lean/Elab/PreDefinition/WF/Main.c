@@ -1095,9 +1095,8 @@ lean_inc(v_a_314_);
 lean_dec_ref(v___x_313_);
 v_macroStack_315_ = lean_ctor_get(v___y_305_, 1);
 lean_inc(v_macroStack_315_);
-lean_dec_ref(v___y_305_);
-lean_inc(v_macroStack_315_);
 v___x_316_ = l_Lean_Elab_getBetterRef(v_ref_312_, v_macroStack_315_);
+lean_inc(v_macroStack_315_);
 v___x_317_ = l_Lean_Elab_addMacroStack___at___00Lean_throwError___at___00Lean_Elab_wfRecursion_spec__0_spec__1___redArg(v_a_314_, v_macroStack_315_, v___y_309_);
 v_a_318_ = lean_ctor_get(v___x_317_, 0);
 v_isSharedCheck_326_ = !lean_is_exclusive(v___x_317_);
@@ -1153,6 +1152,7 @@ lean_dec_ref(v___y_332_);
 lean_dec(v___y_331_);
 lean_dec_ref(v___y_330_);
 lean_dec(v___y_329_);
+lean_dec_ref(v___y_328_);
 return v_res_335_;
 }
 }
@@ -1278,7 +1278,6 @@ v___x_381_ = lean_obj_once(&l___private_Init_Data_Array_Basic_0__Array_forIn_x27
 v___x_382_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_382_, 0, v___x_380_);
 lean_ctor_set(v___x_382_, 1, v___x_381_);
-lean_inc_ref(v___y_346_);
 v___x_383_ = l_Lean_throwError___at___00Lean_Elab_wfRecursion_spec__0___redArg(v___x_382_, v___y_346_, v___y_347_, v___y_348_, v___y_349_, v___y_350_, v___y_351_);
 if (lean_obj_tag(v___x_383_) == 0)
 {
@@ -1917,7 +1916,6 @@ else
 lean_object* v_a_606_; lean_object* v___x_608_; uint8_t v_isShared_609_; uint8_t v_isSharedCheck_613_; 
 lean_dec(v_a_571_);
 lean_dec(v_a_566_);
-lean_dec_ref(v___x_556_);
 lean_dec_ref(v_a_552_);
 v_a_606_ = lean_ctor_get(v___x_574_, 0);
 v_isSharedCheck_613_ = !lean_is_exclusive(v___x_574_);
@@ -1962,7 +1960,6 @@ else
 {
 lean_object* v_a_614_; lean_object* v___x_616_; uint8_t v_isShared_617_; uint8_t v_isSharedCheck_621_; 
 lean_dec(v_a_566_);
-lean_dec_ref(v___x_556_);
 lean_dec_ref(v_a_552_);
 v_a_614_ = lean_ctor_get(v___x_570_, 0);
 v_isSharedCheck_621_ = !lean_is_exclusive(v___x_570_);
@@ -2006,7 +2003,6 @@ return v___x_619_;
 else
 {
 lean_object* v_a_622_; lean_object* v___x_624_; uint8_t v_isShared_625_; uint8_t v_isSharedCheck_629_; 
-lean_dec_ref(v___x_556_);
 lean_dec_ref(v_a_552_);
 v_a_622_ = lean_ctor_get(v___x_565_, 0);
 v_isSharedCheck_629_ = !lean_is_exclusive(v___x_565_);
@@ -2050,7 +2046,6 @@ return v___x_627_;
 else
 {
 lean_object* v_a_630_; lean_object* v___x_632_; uint8_t v_isShared_633_; uint8_t v_isSharedCheck_637_; 
-lean_dec_ref(v___x_556_);
 lean_dec_ref(v_a_552_);
 v_a_630_ = lean_ctor_get(v___x_564_, 0);
 v_isSharedCheck_637_ = !lean_is_exclusive(v___x_564_);
@@ -2107,6 +2102,7 @@ lean_dec(v___y_646_);
 lean_dec_ref(v___y_645_);
 lean_dec(v___y_644_);
 lean_dec_ref(v___y_643_);
+lean_dec_ref(v___x_642_);
 return v_res_652_;
 }
 }
@@ -2792,6 +2788,7 @@ lean_ctor_set(v___x_877_, 1, v_openDecls_864_);
 v___x_878_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_878_, 0, v___x_877_);
 lean_ctor_set(v___x_878_, 1, v___y_857_);
+lean_inc_ref(v___y_858_);
 lean_inc_ref(v___y_859_);
 v___x_879_ = lean_alloc_ctor(0, 5, 3);
 lean_ctor_set(v___x_879_, 0, v___y_859_);
@@ -4122,7 +4119,6 @@ v___x_1359_ = l_Lean_MessageData_ofExpr(v_a_1343_);
 v___x_1360_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_1360_, 0, v___x_1358_);
 lean_ctor_set(v___x_1360_, 1, v___x_1359_);
-lean_inc_ref(v___y_1335_);
 v___x_1361_ = l_Lean_throwError___at___00Lean_Elab_wfRecursion_spec__0___redArg(v___x_1360_, v___y_1335_, v___y_1336_, v___y_1337_, v___y_1338_, v___y_1339_, v___y_1340_);
 v_a_1362_ = lean_ctor_get(v___x_1361_, 0);
 v_isSharedCheck_1369_ = !lean_is_exclusive(v___x_1361_);
@@ -5560,7 +5556,6 @@ lean_object* v_a_1869_; lean_object* v___x_1870_;
 v_a_1869_ = lean_ctor_get(v___x_1868_, 0);
 lean_inc(v_a_1869_);
 lean_dec_ref(v___x_1868_);
-lean_inc_ref(v___y_1866_);
 lean_inc_ref(v___y_1861_);
 lean_inc(v_a_1823_);
 lean_inc_ref(v_docCtx_1810_);
@@ -6409,7 +6404,6 @@ if (lean_obj_tag(v___x_1838_) == 0)
 {
 lean_object* v___x_1839_; 
 lean_dec_ref(v___x_1838_);
-lean_inc_ref(v___y_1835_);
 v___x_1839_ = l_Lean_enableRealizationsForConst(v___y_1829_, v___y_1835_, v___y_1836_);
 if (lean_obj_tag(v___x_1839_) == 0)
 {
@@ -6495,7 +6489,6 @@ LEAN_EXPORT lean_object* l_Lean_throwError___at___00Lean_Elab_wfRecursion_spec__
 _start:
 {
 lean_object* v___x_2073_; 
-lean_inc_ref(v___y_2066_);
 v___x_2073_ = l_Lean_throwError___at___00Lean_Elab_wfRecursion_spec__0___redArg(v_msg_2065_, v___y_2066_, v___y_2067_, v___y_2068_, v___y_2069_, v___y_2070_, v___y_2071_);
 return v___x_2073_;
 }

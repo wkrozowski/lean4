@@ -382,6 +382,7 @@ lean_dec_ref(v___x_133_);
 v___x_135_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_135_, 0, v_val_134_);
 lean_ctor_set(v___x_135_, 1, v_name_130_);
+lean_inc_ref(v_a_125_);
 lean_inc(v_a_124_);
 lean_inc(v_a_123_);
 lean_inc(v_a_122_);
@@ -392,7 +393,6 @@ else
 {
 lean_object* v___x_137_; uint8_t v___x_138_; lean_object* v___x_139_; lean_object* v___x_140_; lean_object* v___x_141_; lean_object* v___x_142_; lean_object* v___x_143_; lean_object* v___x_144_; lean_object* v___x_145_; lean_object* v___x_146_; uint8_t v___x_147_; lean_object* v___x_148_; lean_object* v___x_149_; lean_object* v___x_150_; lean_object* v___x_151_; 
 lean_dec(v___x_133_);
-lean_dec_ref(v_a_125_);
 lean_dec_ref(v_a_121_);
 v___x_137_ = ((lean_object*)(l_Lake_TargetDecl_fetch___redArg___closed__0));
 v___x_138_ = 1;
@@ -424,6 +424,7 @@ _start:
 {
 lean_object* v_res_160_; 
 v_res_160_ = l_Lake_TargetDecl_fetch___redArg(v_self_152_, v_a_153_, v_a_154_, v_a_155_, v_a_156_, v_a_157_, v_a_158_);
+lean_dec_ref(v_a_157_);
 lean_dec(v_a_156_);
 lean_dec(v_a_155_);
 lean_dec(v_a_154_);
@@ -434,7 +435,6 @@ LEAN_EXPORT lean_object* l_Lake_TargetDecl_fetch(lean_object* v_00_u03b1_161_, l
 _start:
 {
 lean_object* v___x_171_; 
-lean_inc_ref(v_a_168_);
 v___x_171_ = l_Lake_TargetDecl_fetch___redArg(v_self_162_, v_a_164_, v_a_165_, v_a_166_, v_a_167_, v_a_168_, v_a_169_);
 return v___x_171_;
 }
@@ -1247,6 +1247,7 @@ goto v_reusejp_547_;
 v_reusejp_547_:
 {
 lean_object* v___x_549_; 
+lean_inc_ref(v_a_528_);
 lean_inc(v_a_527_);
 lean_inc(v_a_526_);
 lean_inc(v_a_525_);
@@ -1260,7 +1261,6 @@ lean_object* v___x_551_; uint8_t v___x_552_; lean_object* v___x_553_; lean_objec
 lean_dec(v___x_540_);
 lean_del_object(v___x_536_);
 lean_dec(v_config_534_);
-lean_dec_ref(v_a_528_);
 lean_dec_ref(v_a_524_);
 v___x_551_ = ((lean_object*)(l_Lake_KConfigDecl_get___redArg___lam__1___closed__0));
 v___x_552_ = 1;
@@ -1293,6 +1293,7 @@ _start:
 {
 lean_object* v_res_576_; 
 v_res_576_ = l_Lake_LeanLibDecl_fetch(v_self_568_, v_a_569_, v_a_570_, v_a_571_, v_a_572_, v_a_573_, v_a_574_);
+lean_dec_ref(v_a_573_);
 lean_dec(v_a_572_);
 lean_dec(v_a_571_);
 lean_dec(v_a_570_);
@@ -1745,6 +1746,7 @@ goto v_reusejp_772_;
 v_reusejp_772_:
 {
 lean_object* v___x_774_; 
+lean_inc_ref(v_a_753_);
 lean_inc(v_a_752_);
 lean_inc(v_a_751_);
 lean_inc(v_a_750_);
@@ -1758,7 +1760,6 @@ lean_object* v___x_776_; uint8_t v___x_777_; lean_object* v___x_778_; lean_objec
 lean_dec(v___x_765_);
 lean_del_object(v___x_761_);
 lean_dec(v_config_759_);
-lean_dec_ref(v_a_753_);
 lean_dec_ref(v_a_749_);
 v___x_776_ = ((lean_object*)(l_Lake_KConfigDecl_get___redArg___lam__1___closed__0));
 v___x_777_ = 1;
@@ -1791,6 +1792,7 @@ _start:
 {
 lean_object* v_res_801_; 
 v_res_801_ = l_Lake_LeanExeDecl_fetch(v_self_793_, v_a_794_, v_a_795_, v_a_796_, v_a_797_, v_a_798_, v_a_799_);
+lean_dec_ref(v_a_798_);
 lean_dec(v_a_797_);
 lean_dec(v_a_796_);
 lean_dec(v_a_795_);
@@ -1997,6 +1999,7 @@ goto v_reusejp_888_;
 v_reusejp_888_:
 {
 lean_object* v___x_890_; 
+lean_inc_ref(v_a_869_);
 lean_inc(v_a_868_);
 lean_inc(v_a_867_);
 lean_inc(v_a_866_);
@@ -2010,7 +2013,6 @@ lean_object* v___x_892_; uint8_t v___x_893_; lean_object* v___x_894_; lean_objec
 lean_dec(v___x_881_);
 lean_del_object(v___x_877_);
 lean_dec(v_config_875_);
-lean_dec_ref(v_a_869_);
 lean_dec_ref(v_a_865_);
 v___x_892_ = ((lean_object*)(l_Lake_KConfigDecl_get___redArg___lam__1___closed__0));
 v___x_893_ = 1;
@@ -2043,6 +2045,7 @@ _start:
 {
 lean_object* v_res_917_; 
 v_res_917_ = l_Lake_InputFileDecl_fetch(v_self_909_, v_a_910_, v_a_911_, v_a_912_, v_a_913_, v_a_914_, v_a_915_);
+lean_dec_ref(v_a_914_);
 lean_dec(v_a_913_);
 lean_dec(v_a_912_);
 lean_dec(v_a_911_);
@@ -2249,6 +2252,7 @@ goto v_reusejp_1004_;
 v_reusejp_1004_:
 {
 lean_object* v___x_1006_; 
+lean_inc_ref(v_a_985_);
 lean_inc(v_a_984_);
 lean_inc(v_a_983_);
 lean_inc(v_a_982_);
@@ -2262,7 +2266,6 @@ lean_object* v___x_1008_; uint8_t v___x_1009_; lean_object* v___x_1010_; lean_ob
 lean_dec(v___x_997_);
 lean_del_object(v___x_993_);
 lean_dec(v_config_991_);
-lean_dec_ref(v_a_985_);
 lean_dec_ref(v_a_981_);
 v___x_1008_ = ((lean_object*)(l_Lake_KConfigDecl_get___redArg___lam__1___closed__0));
 v___x_1009_ = 1;
@@ -2295,6 +2298,7 @@ _start:
 {
 lean_object* v_res_1033_; 
 v_res_1033_ = l_Lake_InputDirDecl_fetch(v_self_1025_, v_a_1026_, v_a_1027_, v_a_1028_, v_a_1029_, v_a_1030_, v_a_1031_);
+lean_dec_ref(v_a_1030_);
 lean_dec(v_a_1029_);
 lean_dec(v_a_1028_);
 lean_dec(v_a_1027_);

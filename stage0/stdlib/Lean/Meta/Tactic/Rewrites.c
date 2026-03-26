@@ -3835,10 +3835,9 @@ _start:
 lean_object* v_lctx_1103_; lean_object* v_decls_1104_; lean_object* v_hs_1105_; lean_object* v___x_1106_; 
 v_lctx_1103_ = lean_ctor_get(v___y_1098_, 2);
 v_decls_1104_ = lean_ctor_get(v_lctx_1103_, 1);
-lean_inc_ref(v_decls_1104_);
 v_hs_1105_ = ((lean_object*)(l_Lean_getLocalHyps___at___00Lean_Meta_Rewrites_localHypotheses_spec__1___closed__0));
+lean_inc_ref(v_decls_1104_);
 v___x_1106_ = l_Lean_PersistentArray_forIn___at___00Lean_getLocalHyps___at___00Lean_Meta_Rewrites_localHypotheses_spec__1_spec__1(v_decls_1104_, v_hs_1105_, v___y_1098_, v___y_1099_, v___y_1100_, v___y_1101_);
-lean_dec_ref(v___y_1098_);
 return v___x_1106_;
 }
 }
@@ -3850,6 +3849,7 @@ v_res_1112_ = l_Lean_getLocalHyps___at___00Lean_Meta_Rewrites_localHypotheses_sp
 lean_dec(v___y_1110_);
 lean_dec_ref(v___y_1109_);
 lean_dec(v___y_1108_);
+lean_dec_ref(v___y_1107_);
 return v_res_1112_;
 }
 }
@@ -3857,7 +3857,6 @@ LEAN_EXPORT lean_object* l_Lean_Meta_Rewrites_localHypotheses(lean_object* v_exc
 _start:
 {
 lean_object* v___x_1121_; 
-lean_inc_ref(v_a_1116_);
 v___x_1121_ = l_Lean_getLocalHyps___at___00Lean_Meta_Rewrites_localHypotheses_spec__1(v_a_1116_, v_a_1117_, v_a_1118_, v_a_1119_);
 if (lean_obj_tag(v___x_1121_) == 0)
 {
@@ -7395,7 +7394,9 @@ return v___x_2252_;
 v___jp_2255_:
 {
 lean_object* v___x_2260_; lean_object* v___x_2261_; lean_object* v___x_2262_; lean_object* v___x_2263_; lean_object* v___x_2264_; 
+lean_inc_ref(v___y_2259_);
 v___x_2260_ = l_Lean_stringToMessageData(v___y_2259_);
+lean_inc_ref(v___y_2257_);
 v___x_2261_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_2261_, 0, v___y_2257_);
 lean_ctor_set(v___x_2261_, 1, v___x_2260_);
@@ -10218,6 +10219,7 @@ goto v___jp_3221_;
 v___jp_3221_:
 {
 lean_object* v___x_3223_; lean_object* v___x_3224_; lean_object* v___x_3225_; lean_object* v___x_3226_; lean_object* v___x_3227_; lean_object* v___x_3228_; lean_object* v___x_3229_; lean_object* v___x_3230_; lean_object* v___x_3231_; lean_object* v___x_3232_; lean_object* v___x_3233_; lean_object* v___x_3235_; 
+lean_inc_ref(v___y_3222_);
 v___x_3223_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_3223_, 0, v___y_3222_);
 v___x_3224_ = l_Lean_MessageData_ofFormat(v___x_3223_);

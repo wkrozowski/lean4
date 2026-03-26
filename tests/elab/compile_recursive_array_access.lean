@@ -10,7 +10,7 @@ inductive NAryTree where
   deriving Inhabited
 
 /--
-trace: [Compiler.explicitRc] size: 19
+trace: [Compiler.explicitRc] size: 20
     def followPath @&tree @&path : obj :=
       cases tree : obj
       | NAryTree.tip =>
@@ -30,6 +30,7 @@ trace: [Compiler.explicitRc] size: 19
           let tail.5 := oproj[1] path;
           let _x.6 := instInhabitedNAryTree.default;
           let _x.7 := Array.get!InternalBorrowed ◾ _x.6 ys.3 head.4;
+          dec[persistent][ref] _x.6;
           let _x.8 := followPath _x.7 tail.5;
           return _x.8
         | _ =>
