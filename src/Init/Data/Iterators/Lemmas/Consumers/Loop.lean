@@ -637,6 +637,7 @@ theorem Iter.any_eq_forIn {α β : Type w} [Iterator α Id β]
           return .yield false)).run := by
   simp [any_eq_anyM, anyM_eq_forIn]
 
+@[cbv_eval ←]
 theorem Iter.any_toList {α β : Type w} [Iterator α Id β]
     [Finite α Id] [IteratorLoop α Id Id] [LawfulIteratorLoop α Id Id]
     {it : Iter (α := α) β} {p : β → Bool} :
@@ -727,6 +728,7 @@ theorem Iter.all_eq_forIn {α β : Type w} [Iterator α Id β]
           return .done false)).run := by
   simp [all_eq_allM, allM_eq_forIn]
 
+@[cbv_eval ←]
 theorem Iter.all_toList {α β : Type w} [Iterator α Id β]
     [Finite α Id] [IteratorLoop α Id Id] [LawfulIteratorLoop α Id Id]
     {it : Iter (α := α) β} {p : β → Bool} :

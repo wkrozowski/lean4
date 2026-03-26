@@ -226,7 +226,7 @@ any element emitted by the iterator {name}`it`.
 {lit}`O(|xs|)`. Short-circuits upon encountering the first match. The elements in {name}`it` are
 examined in order of iteration.
 -/
-@[inline]
+@[inline, cbv_opaque]
 def Iter.any {α β : Type w}
     [Iterator α Id β] [IteratorLoop α Id Id]
     (p : β → Bool) (it : Iter (α := α) β) : Bool :=
@@ -292,7 +292,7 @@ all element emitted by the iterator {name}`it`.
 {lit}`O(|xs|)`. Short-circuits upon encountering the first match. The elements in {name}`it` are
 examined in order of iteration.
 -/
-@[inline]
+@[inline, cbv_opaque]
 def Iter.all {α β : Type w}
     [Iterator α Id β] [IteratorLoop α Id Id]
     (p : β → Bool) (it : Iter (α := α) β) : Bool :=
