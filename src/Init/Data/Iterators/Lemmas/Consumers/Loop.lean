@@ -956,7 +956,7 @@ theorem Iter.first?_eq_match_step {α β : Type w} [Iterator α Id β] [Iterator
   generalize it.toIterM.step.run.inflate = s
   rcases s with ⟨_|_|_, _⟩ <;> simp [Iter.first?_eq_first?_toIterM]
 
-@[simp, grind =]
+@[simp, grind =, cbv_eval ←]
 theorem Iter.head?_toList {α β : Type w} [Iterator α Id β] [IteratorLoop α Id Id]
     [Finite α Id] [LawfulIteratorLoop α Id Id] {it : Iter (α := α) β} :
     it.toList.head? = it.first? := by

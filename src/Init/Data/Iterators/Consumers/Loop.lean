@@ -644,7 +644,7 @@ Examples:
 * `[7, 6].iter.first? = some 7`
 * `[].iter.first? = none`
 -/
-@[inline]
+@[inline, cbv_opaque]
 def Iter.first? {α β : Type w} [Iterator α Id β] [IteratorLoop α Id Id]
     (it : Iter (α := α) β) : Option β :=
   it.toIterM.first?.run
