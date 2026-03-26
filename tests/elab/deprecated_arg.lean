@@ -171,16 +171,22 @@ def r2 (x : Nat) : Nat := x
 @[deprecated_arg removed (since := "2026-03-23")]
 def r3 (x : Nat) : Nat := x
 
--- Using a removed arg produces an error
+-- Using a removed arg produces an error with delete hint
 /--
 error: parameter `removed` of `r2` has been deprecated
+
+Hint: Delete this argument:
+  (̵r̵e̵m̵o̵v̵e̵d̵ ̵:̵=̵ ̵4̵2̵)̵
 -/
 #guard_msgs in
 #check r2 (removed := 42)
 
--- Using a removed arg with `since` produces an error
+-- Using a removed arg with `since` produces an error with delete hint
 /--
 error: parameter `removed` of `r3` has been deprecated
+
+Hint: Delete this argument:
+  (̵r̵e̵m̵o̵v̵e̵d̵ ̵:̵=̵ ̵4̵2̵)̵
 -/
 #guard_msgs in
 #check r3 (removed := 42)
@@ -235,6 +241,9 @@ info: r4 42 : Nat
 -- Removed arg errors
 /--
 error: parameter `removed` of `r4` has been deprecated
+
+Hint: Delete this argument:
+  (̵r̵e̵m̵o̵v̵e̵d̵ ̵:̵=̵ ̵4̵2̵)̵
 -/
 #guard_msgs in
 #check r4 (removed := 42)
@@ -242,7 +251,12 @@ error: parameter `removed` of `r4` has been deprecated
 @[deprecated_arg arg (since := "26.03.26")]
 def r5 (x : Nat) : Nat := x
 
-/-- error: parameter `arg` of `r5` has been deprecated -/
+/--
+error: parameter `arg` of `r5` has been deprecated
+
+Hint: Delete this argument:
+  (̵a̵r̵g̵ ̵:̵=̵ ̵6̵)̵
+-/
 #guard_msgs in
 #check r5 3 (arg := 6)
 
@@ -283,6 +297,9 @@ def m2 (x : Nat) : Nat := x
 -- Using removed arg with message shows the message in the error
 /--
 error: parameter `gone` of `m2` has been deprecated: no longer needed
+
+Hint: Delete this argument:
+  (̵g̵o̵n̵e̵ ̵:̵=̵ ̵4̵2̵)̵
 -/
 #guard_msgs in
 #check m2 (gone := 42)
@@ -290,6 +307,9 @@ error: parameter `gone` of `m2` has been deprecated: no longer needed
 -- Without custom message, behavior unchanged
 /--
 error: parameter `removed` of `r3` has been deprecated
+
+Hint: Delete this argument:
+  (̵r̵e̵m̵o̵v̵e̵d̵ ̵:̵=̵ ̵4̵2̵)̵
 -/
 #guard_msgs in
 #check r3 (removed := 42)

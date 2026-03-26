@@ -275,7 +275,18 @@ private def synthesizePendingAndNormalizeFunType : M Unit := do
           if linter.deprecatedArg.get (← getOptions) then
             if let some entry := findDeprecatedArg? env f.constName! namedArg.name then
               if entry.newArg?.isNone then
-                throwErrorAt namedArg.ref (formatDeprecatedArgMsg entry)
+                let msg := formatDeprecatedArgMsg entry
+                let hint ←
+                  if namedArg.ref.getHeadInfo matches .original .. then
+                    MessageData.hint "Delete this argument:" #[{
+                      suggestion := .string ""
+                      span? := namedArg.ref
+                      toCodeActionTitle? := some fun _ =>
+                        s!"Delete deprecated argument `{entry.oldArg}`"
+                    }]
+                  else
+                    pure .nil
+                throwErrorAt namedArg.ref (msg ++ hint)
         let validNames ← getFoundNamedArgs
         let fnName? := if f.isConst then some f.constName! else none
         throwInvalidNamedArg namedArg fnName? validNames
