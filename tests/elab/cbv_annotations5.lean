@@ -6,7 +6,6 @@ import Std.Data.Iterators
 def makeAPile₁ (n : Nat) : List Nat :=
   (*...n).iter.map (n + 2 * ·) |>.toList
 
-/-- An implementation that does not build up an intermediate array. -/
 @[grind =]
 def makeAPile₂ (n : Nat) : List Nat :=
   (*...n).iter.map (fun i => n + 2 * (n - 1 - i)) |>.toListRev
