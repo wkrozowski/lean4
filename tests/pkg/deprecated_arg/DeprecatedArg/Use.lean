@@ -45,7 +45,10 @@ info: g 1 2 : Nat
 
 -- Cross-file: disabling the linter rejects old names with a clean error
 /--
-error: parameter `arg` of `f` has been renamed to `foo`
+error: Invalid argument name `arg` for function `f`
+
+Hint: Perhaps you meant one of the following parameter names:
+  • `foo`: a̵r̵g̵f̲o̲o̲
 -/
 #guard_msgs in
 set_option linter.deprecatedArg false in

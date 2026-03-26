@@ -25,6 +25,7 @@ structure DeprecatedArgEntry where
   declName : Name
   oldArg : Name
   newArg? : Option Name := none
+  text? : Option String := none
   since? : Option String := none
   deriving Inhabited
 
@@ -49,21 +50,25 @@ def findDeprecatedArg? (env : Environment) (declName : Name) (argName : Name) :
 
 /-- Format the deprecation warning message for a deprecated argument. -/
 def formatDeprecatedArgMsg (entry : DeprecatedArgEntry) : MessageData :=
-  match entry.newArg? with
+  let base := match entry.newArg? with
   | some newArg =>
     m!"parameter `{entry.oldArg}` of `{.ofConstName entry.declName}` has been deprecated, \
       use `{newArg}` instead"
   | none =>
     m!"parameter `{entry.oldArg}` of `{.ofConstName entry.declName}` has been deprecated"
+  match entry.text? with
+  | some text => base ++ m!": {text}"
+  | none => base
 
 builtin_initialize registerBuiltinAttribute {
   name := `deprecated_arg
   descr := "mark a parameter as deprecated"
   add := fun declName stx _kind => do
-    let `(attr| deprecated_arg $oldId $[$newId?]? $[(since := $since?)]?) := stx
+    let `(attr| deprecated_arg $oldId $[$newId?]? $[$text?]? $[(since := $since?)]?) := stx
       | throwError "Invalid `[deprecated_arg]` attribute syntax"
     let oldArg := oldId.getId
     let newArg? := newId?.map TSyntax.getId
+    let text? := text?.map TSyntax.getString
     let since? := since?.map TSyntax.getString
     let info ← getConstInfo declName
     let paramNames ← MetaM.run' do
@@ -85,7 +90,7 @@ builtin_initialize registerBuiltinAttribute {
       logWarning "`[deprecated_arg]` attribute should specify the date or library version \
         at which the deprecation was introduced, using `(since := \"...\")`"
     modifyEnv fun env => deprecatedArgExt.addEntry env {
-      declName, oldArg, newArg?, since?
+      declName, oldArg, newArg?, text?, since?
     }
 }
 

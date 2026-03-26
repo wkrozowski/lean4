@@ -2,6 +2,8 @@
 Tests for the `deprecated_arg` attribute.
 -/
 
+set_option trace.Elab true
+
 -- `newArg` is not a parameter of the declaration
 /--
 error: `new` is not a parameter of `f1`
@@ -129,7 +131,10 @@ info: f6 1 2 : Nat
 
 -- When `linter.deprecatedArg` is false, old names produce a clean error
 /--
-error: parameter `old` of `f4` has been renamed to `new`
+error: Invalid argument name `old` for function `f4`
+
+Hint: Perhaps you meant one of the following parameter names:
+  • `new`: o̵l̵d̵n̲e̲w̲
 -/
 #guard_msgs in
 set_option linter.deprecatedArg false in
@@ -194,9 +199,12 @@ info: r3 42 : Nat
 #guard_msgs in
 #check r3 42
 
--- Removed arg error even when linter is disabled (no replacement available)
+-- Removed arg: when linter is disabled, falls through to normal "invalid arg" error
 /--
-error: parameter `removed` of `r2` has been deprecated
+error: Invalid argument name `removed` for function `r2`
+
+Hint: Perhaps you meant one of the following parameter names:
+  • `x`: r̵e̵m̵o̵v̵e̵d̵x̲
 -/
 #guard_msgs in
 set_option linter.deprecatedArg false in
@@ -230,3 +238,58 @@ error: parameter `removed` of `r4` has been deprecated
 -/
 #guard_msgs in
 #check r4 (removed := 42)
+
+@[deprecated_arg arg (since := "26.03.26")]
+def r5 (x : Nat) : Nat := x
+
+/-- error: parameter `arg` of `r5` has been deprecated -/
+#guard_msgs in
+#check r5 3 (arg := 6)
+
+/--
+error: Invalid argument name `arg` for function `r5`
+
+Hint: Perhaps you meant one of the following parameter names:
+  • `x`: a̵r̵g̵x̲
+-/
+#guard_msgs in
+set_option linter.deprecatedArg false in
+#check r5 3 (arg := 6)
+
+/-! ## Custom deprecation messages -/
+
+-- Renamed arg with custom message
+#guard_msgs in
+@[deprecated_arg old new "this parameter was split into two" (since := "2026-03-26")]
+def m1 (new : Nat) : Nat := new
+
+-- Using renamed arg with message shows the message in the warning
+/--
+warning: parameter `old` of `m1` has been deprecated, use `new` instead: this parameter was split into two
+
+Hint: Rename this argument:
+  o̵l̵d̵n̲e̲w̲
+---
+info: m1 42 : Nat
+-/
+#guard_msgs in
+#check m1 (old := 42)
+
+-- Removed arg with custom message
+#guard_msgs in
+@[deprecated_arg gone "no longer needed" (since := "2026-03-26")]
+def m2 (x : Nat) : Nat := x
+
+-- Using removed arg with message shows the message in the error
+/--
+error: parameter `gone` of `m2` has been deprecated: no longer needed
+-/
+#guard_msgs in
+#check m2 (gone := 42)
+
+-- Without custom message, behavior unchanged
+/--
+error: parameter `removed` of `r3` has been deprecated
+-/
+#guard_msgs in
+#check r3 (removed := 42)
