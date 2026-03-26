@@ -51,5 +51,5 @@ Hint: Perhaps you meant one of the following parameter names:
   • `foo`: a̵r̵g̵f̲o̲o̲
 -/
 #guard_msgs in
-set_option linter.deprecatedArg false in
+set_option linter.deprecated.arg false in
 #check f (arg := 42)

@@ -2,8 +2,6 @@
 Tests for the `deprecated_arg` attribute.
 -/
 
-set_option trace.Elab true
-
 -- `newArg` is not a parameter of the declaration
 /--
 error: `new` is not a parameter of `f1`
@@ -129,7 +127,7 @@ info: f6 1 2 : Nat
 
 /-! ## Disabling the linter rejects old names -/
 
--- When `linter.deprecatedArg` is false, old names produce a clean error
+-- When `linter.deprecated.arg` is false, old names produce a clean error
 /--
 error: Invalid argument name `old` for function `f4`
 
@@ -137,7 +135,7 @@ Hint: Perhaps you meant one of the following parameter names:
   • `new`: o̵l̵d̵n̲e̲w̲
 -/
 #guard_msgs in
-set_option linter.deprecatedArg false in
+set_option linter.deprecated.arg false in
 #check f4 (old := 42)
 
 -- New name still works when linter is disabled
@@ -145,7 +143,7 @@ set_option linter.deprecatedArg false in
 info: f4 42 : Nat
 -/
 #guard_msgs in
-set_option linter.deprecatedArg false in
+set_option linter.deprecated.arg false in
 #check f4 (new := 42)
 
 /-! ## Removed (no replacement) deprecated arguments -/
@@ -213,7 +211,7 @@ Hint: Perhaps you meant one of the following parameter names:
   • `x`: r̵e̵m̵o̵v̵e̵d̵x̲
 -/
 #guard_msgs in
-set_option linter.deprecatedArg false in
+set_option linter.deprecated.arg false in
 #check r2 (removed := 42)
 
 -- Mix of renamed and removed on same declaration
@@ -267,7 +265,7 @@ Hint: Perhaps you meant one of the following parameter names:
   • `x`: a̵r̵g̵x̲
 -/
 #guard_msgs in
-set_option linter.deprecatedArg false in
+set_option linter.deprecated.arg false in
 #check r5 3 (arg := 6)
 
 /-! ## Custom deprecation messages -/
@@ -313,3 +311,20 @@ Hint: Delete this argument:
 -/
 #guard_msgs in
 #check r3 (removed := 42)
+
+-- Removed arg with text but no `since`: warns about missing `since`
+/--
+warning: `[deprecated_arg]` attribute should specify the date or library version at which the deprecation was introduced, using `(since := "...")`
+-/
+#guard_msgs in
+@[deprecated_arg dropped "use positional args"]
+def m3 (x : Nat) : Nat := x
+
+/--
+error: parameter `dropped` of `m3` has been deprecated: use positional args
+
+Hint: Delete this argument:
+  (̵d̵r̵o̵p̵p̵e̵d̵ ̵:̵=̵ ̵4̵2̵)̵
+-/
+#guard_msgs in
+#check m3 (dropped := 42)

@@ -91,13 +91,14 @@ private def findBinderName? (namedArgs : List NamedArg) (binderName : Name) : Op
 
 /--
 If the function being applied is a constant, search `namedArgs` for an argument whose name is
-a deprecated alias of `binderName`. When `linter.deprecatedArg` is enabled (the default),
+a deprecated alias of `binderName`. When `linter.deprecated.arg` is enabled (the default),
 returns `some namedArg` after emitting a deprecation warning with a code action hint. When the
-option is disabled, throws an error. The returned `namedArg` retains its original (old) name.
+option is disabled, returns `none` (the old name falls through to the normal "invalid argument"
+error). The returned `namedArg` retains its original (old) name.
 -/
 private def findDeprecatedBinderName? (namedArgs : List NamedArg) (f : Expr) (binderName : Name) :
     TermElabM (Option NamedArg) := do
-  unless linter.deprecatedArg.get <| ← getOptions do return .none
+  unless linter.deprecated.arg.get <| ← getOptions do return .none
   unless f.getAppFn.isConst do return none
   let declName := f.getAppFn.constName!
   let env ← getEnv
@@ -272,7 +273,7 @@ private def synthesizePendingAndNormalizeFunType : M Unit := do
         let f := s.f.getAppFn
         if f.isConst then
           let env ← getEnv
-          if linter.deprecatedArg.get (← getOptions) then
+          if linter.deprecated.arg.get (← getOptions) then
             if let some entry := findDeprecatedArg? env f.constName! namedArg.name then
               if entry.newArg?.isNone then
                 let msg := formatDeprecatedArgMsg entry

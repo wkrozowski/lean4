@@ -15,9 +15,9 @@ public section
 namespace Lean.Elab
 open Meta
 
-register_builtin_option linter.deprecatedArg : Bool := {
+register_builtin_option linter.deprecated.arg : Bool := {
   defValue := true
-  descr := "if true, generate deprecation warnings for renamed parameters"
+  descr := "if true, generate deprecation warnings and errors for deprecated parameters"
 }
 
 /-- Entry mapping an old parameter name to a new (or no) parameter for a given declaration. -/
@@ -68,7 +68,7 @@ builtin_initialize registerBuiltinAttribute {
       | throwError "Invalid `[deprecated_arg]` attribute syntax"
     let oldArg := oldId.getId
     let newArg? := newId?.map TSyntax.getId
-    let text? := text?.map TSyntax.getString
+    let text? := text?.map TSyntax.getString |>.filter (!·.isEmpty)
     let since? := since?.map TSyntax.getString
     let info ← getConstInfo declName
     let paramNames ← MetaM.run' do
