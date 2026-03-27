@@ -17,7 +17,7 @@ structure DeprecatedModuleEntry where
   since? : Option String := none
   deriving Inhabited
 
-register_builtin_option linter.deprecatedModule : Bool := {
+register_builtin_option linter.deprecated.module : Bool := {
   defValue := true
   descr := "if true, generate warnings when importing deprecated modules"
 }
@@ -31,10 +31,15 @@ def Environment.getDeprecatedModuleByIdx? (env : Environment) (idx : ModuleIdx) 
 def Environment.setDeprecatedModule (entry : Option DeprecatedModuleEntry) (env : Environment) : Environment :=
   deprecatedModuleExt.setState env entry
 
-def formatDeprecatedModuleWarning (modName : Name) (entry : DeprecatedModuleEntry) : String :=
-  let extraMsg := match entry.message? with
-  | some text => s!": {text}"
-  | none => ""
-  s!"`{modName}` has been deprecated" ++ extraMsg
+def formatDeprecatedModuleWarning (env : Environment) (idx : ModuleIdx) (modName : Name)
+    (entry : DeprecatedModuleEntry) : String :=
+  let msg := entry.message?.getD ""
+  let replacements := env.header.moduleData[idx.toNat]!.imports.filter fun imp =>
+    imp.module != `Init
+  let lines := replacements.foldl (init := "") fun acc imp =>
+    acc ++ s!"import {imp.module}\n"
+  s!"{msg}\n\
+    '{modName}' has been deprecated: please replace this import by\n\n\
+    {lines}"
 
 end Lean

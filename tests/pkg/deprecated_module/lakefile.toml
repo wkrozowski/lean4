@@ -15,5 +15,5 @@ roots = [
 
 [[lean_lib]]
 name = "Disabled"
-leanOptions = { linter.deprecatedModule = false }
+leanOptions = { linter.deprecated.module = false }
 roots = ["DeprecatedModule.ConsumerDisabled"]

@@ -68,7 +68,7 @@ def processHeaderCore
     pure (env, messages.add { fileName := inputCtx.fileName, data := toString e, pos := pos })
   let env := env.setMainModule mainModule |>.setModulePackage package?
   -- Check for deprecated module imports
-  let messages := if linter.deprecatedModule.get opts then
+  let messages := if linter.deprecated.module.get opts then
     imports.foldl (init := messages) fun messages imp =>
       match env.getModuleIdx? imp.module with
       | some idx =>
@@ -79,7 +79,7 @@ def processHeaderCore
             fileName := inputCtx.fileName
             pos := pos
             severity := .warning
-            data := .tagged ``deprecatedModuleExt <| formatDeprecatedModuleWarning imp.module entry
+            data := .tagged ``deprecatedModuleExt <| formatDeprecatedModuleWarning env idx imp.module entry
           }
         | none => messages
       | none => messages

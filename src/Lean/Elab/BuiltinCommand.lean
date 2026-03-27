@@ -721,4 +721,20 @@ def elabDeprecatedModule : CommandElab
     modifyEnv fun env => env.setDeprecatedModule (some { message?, since? })
   | _ => throwUnsupportedSyntax
 
+/-- Elaborate `#show_deprecated_modules`, displaying all deprecated modules. -/
+@[builtin_command_elab Parser.Command.showDeprecatedModules]
+def elabShowDeprecatedModules : CommandElab := fun _ => do
+  let env ← getEnv
+  let mut parts : Array String := #["Deprecated modules\n"]
+  for h : idx in [:env.header.moduleNames.size] do
+    if let some entry := env.getDeprecatedModuleByIdx? idx then
+      let modName := env.header.moduleNames[idx]
+      let msg := match entry.message? with
+        | some str => s!"message '{str}'"
+        | none => "no message"
+      let replacements := env.header.moduleData[idx]!.imports.filter fun imp =>
+        imp.module != `Init
+      parts := parts.push s!"'{modName}' deprecates to\n{replacements.map (·.module)}\nwith {msg}\n"
+  logInfo (String.intercalate "\n" parts.toList)
+
 end Lean.Elab.Command

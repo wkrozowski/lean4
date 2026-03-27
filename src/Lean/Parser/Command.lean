@@ -636,11 +636,18 @@ deprecated_module "use NewModule instead" (since := "2026-03-19")
 ```
 
 The warning message is optional but recommended.
-The warning can be disabled with `set_option linter.deprecatedModule false` or
-`-Dlinter.deprecatedModule=false`.
+The warning can be disabled with `set_option linter.deprecated.module false` or
+`-Dlinter.deprecated.module=false`.
 -/
 @[builtin_command_parser] def «deprecated_module» := leading_parser
   "deprecated_module" >> optional (ppSpace >> strLit) >> optional (" (" >> nonReservedSymbol "since" >> " := " >> strLit >> ")")
+
+/--
+`#show_deprecated_modules` displays all modules in the current environment that have been
+marked with `deprecated_module`.
+-/
+@[builtin_command_parser] def showDeprecatedModules := leading_parser
+  "#show_deprecated_modules"
 
 def optionValue := nonReservedSymbol "true" <|> nonReservedSymbol "false" <|> strLit <|> numLit
 /--
