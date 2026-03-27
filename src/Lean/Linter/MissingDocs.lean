@@ -121,6 +121,14 @@ def lintField (parent stx : Syntax) (msg : String) : CommandElabM Unit :=
 def lintStructField (parent stx : Syntax) (msg : String) : CommandElabM Unit :=
   lint stx s!"{msg} {parent.getId}.{stx.getId}"
 
+def isEmptyDocString (docOpt : Syntax) : Bool :=
+  !docOpt.isNone &&
+    let docStx : TSyntax `Lean.Parser.Command.docComment := ⟨docOpt[0]⟩
+    docStx.getDocString.trimAscii.isEmpty
+
+def hasNoDoc (docOpt : Syntax) : Bool :=
+  docOpt.isNone || isEmptyDocString docOpt
+
 def hasInheritDoc (attrs : Syntax) : Bool :=
   attrs[0][1].getSepArgs.any fun attr =>
     attr[1].isOfKind ``Parser.Attr.simple &&
@@ -134,7 +142,7 @@ def declModifiersPubNoDoc (mods : Syntax) : CommandElabM Bool := do
   let isPublic := if (← getEnv).header.isModule && !(← getScope).isPublic then
     mods[2][0].getKind == ``Command.public else
     mods[2][0].getKind != ``Command.private
-  return isPublic && mods[0].isNone && !hasInheritDoc mods[1]
+  return isPublic && hasNoDoc mods[0] && !hasInheritDoc mods[1]
 
 def lintDeclHead (k : SyntaxNodeKind) (id : Syntax) : CommandElabM Unit := do
   if k == ``«abbrev» then lintNamed id "public abbrev"
@@ -155,7 +163,7 @@ def checkDecl : SimpleHandler := fun stx => do
   if k == ``«inductive» || k == ``classInductive then
     for stx in rest[4].getArgs do
       let head := stx[2]
-      if stx[0].isNone && (← declModifiersPubNoDoc head) then
+      if hasNoDoc stx[0] && (← declModifiersPubNoDoc head) then
         lintField rest[1][0] stx[3] "public constructor"
     unless rest[5].isNone do
       for stx in rest[5][0][1].getArgs do
@@ -193,24 +201,24 @@ def checkInit : SimpleHandler := fun stx => do
 
 @[builtin_missing_docs_handler «notation»]
 def checkNotation : SimpleHandler := fun stx => do
-  if stx[0].isNone && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] then
+  if hasNoDoc stx[0] && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] then
     if stx[5].isNone then lint stx[3] "notation"
     else lintNamed stx[5][0][3] "notation"
 
 @[builtin_missing_docs_handler «mixfix»]
 def checkMixfix : SimpleHandler := fun stx => do
-  if stx[0].isNone && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] then
+  if hasNoDoc stx[0] && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] then
     if stx[5].isNone then lint stx[3] stx[3][0].getAtomVal
     else lintNamed stx[5][0][3] stx[3][0].getAtomVal
 
 @[builtin_missing_docs_handler «syntax»]
 def checkSyntax : SimpleHandler := fun stx => do
-  if stx[0].isNone && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] && !hasTacticAlt stx[1] then
+  if hasNoDoc stx[0] && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] && !hasTacticAlt stx[1] then
     if stx[5].isNone then lint stx[3] "syntax"
     else lintNamed stx[5][0][3] "syntax"
 
 def mkSimpleHandler (name : String) (declNameStxIdx := 2) : SimpleHandler := fun stx => do
-  if stx[0].isNone then
+  if hasNoDoc stx[0] then
     lintNamed stx[declNameStxIdx] name
 
 @[builtin_missing_docs_handler syntaxAbbrev]
@@ -221,13 +229,13 @@ def checkSyntaxCat : SimpleHandler := mkSimpleHandler "syntax category"
 
 @[builtin_missing_docs_handler «macro»]
 def checkMacro : SimpleHandler := fun stx => do
-  if stx[0].isNone && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] && !hasTacticAlt stx[1] then
+  if hasNoDoc stx[0] && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] && !hasTacticAlt stx[1] then
     if stx[5].isNone then lint stx[3] "macro"
     else lintNamed stx[5][0][3] "macro"
 
 @[builtin_missing_docs_handler «elab»]
 def checkElab : SimpleHandler := fun stx => do
-  if stx[0].isNone && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] && !hasTacticAlt stx[1] then
+  if hasNoDoc stx[0] && stx[2][0][0].getKind != ``«local» && !hasInheritDoc stx[1] && !hasTacticAlt stx[1] then
     if stx[5].isNone then lint stx[3] "elab"
     else lintNamed stx[5][0][3] "elab"
 

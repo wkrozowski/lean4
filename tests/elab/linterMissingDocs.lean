@@ -105,3 +105,14 @@ def handleMyCmd : SimpleHandler := fun
 my_command y
 
 my_command z
+
+-- Test: empty doc strings should be treated as missing
+/---/
+def emptyDoc1 (x : Nat) := x
+
+/--
+-/
+def emptyDoc2 (x : Nat) := x
+
+/--   -/
+def emptyDoc3 (x : Nat) := x

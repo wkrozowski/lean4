@@ -109,3 +109,12 @@ Note: This linter can be disabled with `set_option linter.missingDocs false`
 linterMissingDocs.lean:107:11-107:12: warning: missing doc string for my_command z
 
 Note: This linter can be disabled with `set_option linter.missingDocs false`
+linterMissingDocs.lean:111:4-111:13: warning: missing doc string for public def emptyDoc1
+
+Note: This linter can be disabled with `set_option linter.missingDocs false`
+linterMissingDocs.lean:115:4-115:13: warning: missing doc string for public def emptyDoc2
+
+Note: This linter can be disabled with `set_option linter.missingDocs false`
+linterMissingDocs.lean:118:4-118:13: warning: missing doc string for public def emptyDoc3
+
+Note: This linter can be disabled with `set_option linter.missingDocs false`
