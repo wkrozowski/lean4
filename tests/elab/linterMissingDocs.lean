@@ -116,3 +116,22 @@ def emptyDoc2 (x : Nat) := x
 
 /--   -/
 def emptyDoc3 (x : Nat) := x
+
+-- Test: empty doc strings on other declaration kinds
+/---/
+inductive EmptyInd where
+  /---/ | emptyCtorDoc
+  | noCtorDoc
+
+/---/
+notation:20 "empty_nota" x y => Nat.add x y
+
+/---/
+macro "empty_macro" : term => `(my_elab)
+
+/---/
+elab "empty_elab" : term => return Lean.mkConst ``false
+
+-- Test: @[inherit_doc] suppresses even with empty doc
+@[inherit_doc hasDoc]
+def inheritedDoc (x : Nat) := x
