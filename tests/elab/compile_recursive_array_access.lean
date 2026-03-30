@@ -10,7 +10,7 @@ inductive NAryTree where
   deriving Inhabited
 
 /--
-trace: [Compiler.explicitRc] size: 19
+trace: [Compiler.explicitRc] size: 21
     def followPath @&tree @&path : obj :=
       cases tree : obj
       | NAryTree.tip =>
@@ -21,6 +21,7 @@ trace: [Compiler.explicitRc] size: 19
           return x.1
         | _ =>
           let _x.2 := instInhabitedNAryTree.default._closed_0;
+          inc[persistent][ref] _x.2;
           return _x.2
       | NAryTree.node =>
         cases path : obj
@@ -34,6 +35,7 @@ trace: [Compiler.explicitRc] size: 19
           return _x.8
         | _ =>
           let _x.9 := instInhabitedNAryTree.default._closed_0;
+          inc[persistent][ref] _x.9;
           return _x.9
 [Compiler.explicitRc] size: 3
     def followPath._boxed tree path : obj :=
