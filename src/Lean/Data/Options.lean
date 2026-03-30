@@ -83,9 +83,8 @@ def mergeBy (f : Name → DataValue → DataValue → DataValue) (o1 o2 : Option
 end Options
 
 structure OptionDeprecation where
-  newName? : Option Name := none
+  since    : String
   text?    : Option String := none
-  since?   : Option String := none
   deriving Inhabited
 
 structure OptionDecl where
