@@ -18,6 +18,16 @@ macro_rules | `(my_wrapper) => `(let_fun x := 1; x)
 
 #check (my_wrapper)
 
+-- Test 2b: Nested macros — A expands to B, B expands to deprecated syntax.
+-- Warning names immediate producer (innerMacro) and its caller (outerMacro).
+syntax "innerMacro " : term
+macro_rules | `(innerMacro) => `(let_fun x := 1; x)
+syntax "outerMacro " : term
+macro_rules | `(outerMacro) => `(innerMacro)
+
+-- Use `let` binding to avoid parens adding another macro layer
+def nested_test := outerMacro
+
 -- Test 3: set_option linter.deprecated.syntax false suppresses warnings
 set_option linter.deprecated.syntax false in
 #check (let_fun x := 1; x)

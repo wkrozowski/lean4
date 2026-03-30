@@ -54,10 +54,16 @@ def checkDeprecatedSyntax [Monad m] [MonadEnv m] [MonadLog m] [MonadOptions m]
       | some text => m!": {text}"
       | none => m!""
     match macroStack with
-    | { before := macroStx, .. } :: _ =>
-      withRef macroStx do
-        Linter.logLintIf Linter.linter.deprecated.syntax stx
-          m!"macro '{macroStx.getKind}' produces deprecated syntax '{kind}'{extraMsg}"
+    | { before := macroStx, .. } :: { before := callerStx, .. } :: _ =>
+      let expandedFrom :=
+        if callerStx.getKind != macroStx.getKind then
+          m!" (expanded from '{callerStx.getKind}')"
+        else m!""
+      Linter.logLintIf Linter.linter.deprecated.syntax macroStx
+        m!"macro '{macroStx.getKind}'{expandedFrom} produces deprecated syntax '{kind}'{extraMsg}"
+    | { before := macroStx, .. } :: [] =>
+      Linter.logLintIf Linter.linter.deprecated.syntax macroStx
+        m!"macro '{macroStx.getKind}' produces deprecated syntax '{kind}'{extraMsg}"
     | [] =>
       Linter.logLintIf Linter.linter.deprecated.syntax stx
         m!"syntax '{kind}' has been deprecated{extraMsg}"
