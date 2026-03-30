@@ -647,8 +647,8 @@ return v___x_223_;
 else
 {
 lean_object* v___x_225_; 
-lean_dec(v_a_224_);
 lean_dec_ref(v___x_223_);
+lean_dec(v_a_224_);
 lean_inc(v_a_157_);
 lean_inc_ref(v_a_156_);
 lean_inc(v_a_155_);
@@ -721,8 +721,8 @@ return v___x_240_;
 }
 else
 {
-lean_dec_ref(v___x_240_);
 lean_dec(v_a_241_);
+lean_dec_ref(v___x_240_);
 v___y_163_ = v_a_148_;
 v___y_164_ = v_a_154_;
 v___y_165_ = v_a_155_;

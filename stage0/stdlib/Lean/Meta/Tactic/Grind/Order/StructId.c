@@ -43,9 +43,9 @@ lean_object* l_Lean_PersistentHashMap_getCollisionNodeSize___redArg(lean_object*
 lean_object* l_Lean_Name_mkStr3(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr1(lean_object*);
 lean_object* l_Lean_Meta_getDecLevel_x3f(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Grind_mkIsPreorderInst_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Grind_mkIsPartialOrderInst_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Grind_mkIsLinearPreorderInst_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Grind_mkIsPreorderInst_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Grind_mkIsPartialOrderInst_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Grind_mkIsLinearPreorderInst_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr2(lean_object*, lean_object*);
 lean_object* l_Lean_mkAppB(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Grind_Order_get_x27___redArg(lean_object*, lean_object*);
@@ -53,7 +53,7 @@ lean_object* lean_mk_empty_array_with_capacity(lean_object*);
 lean_object* l_Lean_PersistentHashMap_mkEmptyEntriesArray(lean_object*, lean_object*);
 extern lean_object* l_Lean_Meta_Grind_Order_orderExt;
 lean_object* l___private_Lean_Meta_Tactic_Grind_Types_0__Lean_Meta_Grind_SolverExtension_modifyStateImpl___redArg(lean_object*, lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Grind_mkLawfulOrderLTInst_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Grind_mkLawfulOrderLTInst_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Grind_Arith_CommRing_getCommRingId_x3f(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Grind_Arith_CommRing_RingM_getCommRing(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_mkApp5(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -575,7 +575,7 @@ lean_inc(v_val_279_);
 lean_inc_ref(v_a_275_);
 lean_inc_ref(v_type_252_);
 lean_inc(v_val_269_);
-v___x_280_ = l_Lean_Meta_Grind_mkIsPreorderInst_x3f___redArg(v_val_269_, v_type_252_, v_a_275_, v_a_254_, v_a_255_, v_a_256_, v_a_257_, v_a_258_, v_a_259_, v_a_260_, v_a_261_, v_a_262_);
+v___x_280_ = l_Lean_Meta_Grind_mkIsPreorderInst_x3f___redArg(v_val_269_, v_type_252_, v_a_275_, v_a_257_, v_a_258_, v_a_259_, v_a_260_, v_a_261_, v_a_262_);
 if (lean_obj_tag(v___x_280_) == 0)
 {
 lean_object* v_a_281_; lean_object* v___x_283_; uint8_t v_isShared_284_; uint8_t v_isSharedCheck_515_; 
@@ -623,7 +623,7 @@ lean_object* v___x_289_;
 lean_inc_ref(v_a_275_);
 lean_inc_ref(v_type_252_);
 lean_inc(v_val_269_);
-v___x_289_ = l_Lean_Meta_Grind_mkIsPartialOrderInst_x3f___redArg(v_val_269_, v_type_252_, v_a_275_, v_a_254_, v_a_255_, v_a_256_, v_a_257_, v_a_258_, v_a_259_, v_a_260_, v_a_261_, v_a_262_);
+v___x_289_ = l_Lean_Meta_Grind_mkIsPartialOrderInst_x3f___redArg(v_val_269_, v_type_252_, v_a_275_, v_a_257_, v_a_258_, v_a_259_, v_a_260_, v_a_261_, v_a_262_);
 if (lean_obj_tag(v___x_289_) == 0)
 {
 lean_object* v_a_290_; lean_object* v___x_291_; 
@@ -633,7 +633,7 @@ lean_dec_ref(v___x_289_);
 lean_inc_ref(v_a_275_);
 lean_inc_ref(v_type_252_);
 lean_inc(v_val_269_);
-v___x_291_ = l_Lean_Meta_Grind_mkIsLinearPreorderInst_x3f___redArg(v_val_269_, v_type_252_, v_a_275_, v_a_254_, v_a_255_, v_a_256_, v_a_257_, v_a_258_, v_a_259_, v_a_260_, v_a_261_, v_a_262_);
+v___x_291_ = l_Lean_Meta_Grind_mkIsLinearPreorderInst_x3f___redArg(v_val_269_, v_type_252_, v_a_275_, v_a_257_, v_a_258_, v_a_259_, v_a_260_, v_a_261_, v_a_262_);
 if (lean_obj_tag(v___x_291_) == 0)
 {
 lean_object* v_a_292_; lean_object* v___x_293_; lean_object* v___x_294_; 
@@ -675,7 +675,7 @@ v_val_356_ = lean_ctor_get(v_a_295_, 0);
 lean_inc_ref(v_a_295_);
 lean_inc_ref(v_type_252_);
 lean_inc(v_val_269_);
-v___x_357_ = l_Lean_Meta_Grind_mkLawfulOrderLTInst_x3f___redArg(v_val_269_, v_type_252_, v_a_295_, v_a_275_, v_a_254_, v_a_255_, v_a_256_, v_a_257_, v_a_258_, v_a_259_, v_a_260_, v_a_261_, v_a_262_);
+v___x_357_ = l_Lean_Meta_Grind_mkLawfulOrderLTInst_x3f___redArg(v_val_269_, v_type_252_, v_a_295_, v_a_275_, v_a_257_, v_a_258_, v_a_259_, v_a_260_, v_a_261_, v_a_262_);
 if (lean_obj_tag(v___x_357_) == 0)
 {
 lean_object* v_a_358_; 

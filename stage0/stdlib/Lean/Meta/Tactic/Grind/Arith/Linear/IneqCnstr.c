@@ -2794,7 +2794,7 @@ return v___x_927_;
 v___jp_930_:
 {
 lean_object* v___x_946_; 
-v___x_946_ = l_Lean_Grind_Linarith_Poly_updateOccs(v___y_934_, v___y_935_, v___y_936_, v___y_937_, v___y_938_, v___y_939_, v___y_940_, v___y_941_, v___y_942_, v___y_943_, v___y_944_, v___y_945_);
+v___x_946_ = l_Lean_Grind_Linarith_Poly_updateOccs(v___y_933_, v___y_935_, v___y_936_, v___y_937_, v___y_938_, v___y_939_, v___y_940_, v___y_941_, v___y_942_, v___y_943_, v___y_944_, v___y_945_);
 if (lean_obj_tag(v___x_946_) == 0)
 {
 lean_object* v___x_947_; uint8_t v___x_948_; 
@@ -2816,7 +2816,7 @@ v___x_951_ = l___private_Lean_Meta_Tactic_Grind_Types_0__Lean_Meta_Grind_SolverE
 if (lean_obj_tag(v___x_951_) == 0)
 {
 lean_dec_ref(v___x_951_);
-v___y_896_ = v___y_933_;
+v___y_896_ = v___y_934_;
 v___y_897_ = v___y_935_;
 v___y_898_ = v___y_936_;
 v___y_899_ = v___y_937_;
@@ -2832,7 +2832,7 @@ goto v___jp_895_;
 }
 else
 {
-lean_dec(v___y_933_);
+lean_dec(v___y_934_);
 lean_dec_ref(v_c_868_);
 return v___x_951_;
 }
@@ -2851,7 +2851,7 @@ v___x_954_ = l___private_Lean_Meta_Tactic_Grind_Types_0__Lean_Meta_Grind_SolverE
 if (lean_obj_tag(v___x_954_) == 0)
 {
 lean_dec_ref(v___x_954_);
-v___y_896_ = v___y_933_;
+v___y_896_ = v___y_934_;
 v___y_897_ = v___y_935_;
 v___y_898_ = v___y_936_;
 v___y_899_ = v___y_937_;
@@ -2867,7 +2867,7 @@ goto v___jp_895_;
 }
 else
 {
-lean_dec(v___y_933_);
+lean_dec(v___y_934_);
 lean_dec_ref(v_c_868_);
 return v___x_954_;
 }
@@ -2875,7 +2875,7 @@ return v___x_954_;
 }
 else
 {
-lean_dec(v___y_933_);
+lean_dec(v___y_934_);
 lean_dec(v___y_932_);
 lean_dec(v___y_931_);
 lean_dec_ref(v_c_868_);
@@ -3123,8 +3123,8 @@ lean_inc(v_k_1009_);
 lean_inc_n(v_v_1010_, 2);
 v___y_931_ = v_v_1010_;
 v___y_932_ = v_k_1009_;
-v___y_933_ = v_v_1010_;
-v___y_934_ = v_p_967_;
+v___y_933_ = v_p_967_;
+v___y_934_ = v_v_1010_;
 v___y_935_ = v___y_956_;
 v___y_936_ = v___y_957_;
 v___y_937_ = v___y_958_;
@@ -3158,8 +3158,8 @@ lean_inc(v_k_1009_);
 lean_inc_n(v_v_1010_, 2);
 v___y_931_ = v_v_1010_;
 v___y_932_ = v_k_1009_;
-v___y_933_ = v_v_1010_;
-v___y_934_ = v_p_967_;
+v___y_933_ = v_p_967_;
+v___y_934_ = v_v_1010_;
 v___y_935_ = v___y_956_;
 v___y_936_ = v___y_957_;
 v___y_937_ = v___y_958_;
