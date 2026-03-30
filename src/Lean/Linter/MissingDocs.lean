@@ -133,6 +133,10 @@ def lintStructField (parent stx : Syntax) (msg : String) : CommandElabM Unit :=
 private def isEmptyDocString (docOpt : Syntax) : CommandElabM Bool := do
   if docOpt.isNone then return false
   let docStx : TSyntax `Lean.Parser.Command.docComment := ⟨docOpt[0]⟩
+  -- Verso doc comments with interpolated content cannot be extracted as plain text,
+  -- but they are clearly not empty.
+  if let .node _ `Lean.Parser.Command.versoCommentBody _ := docStx.raw[1] then
+    if !docStx.raw[1][0].isAtom then return false
   let text ← getDocStringText docStx
   return text.trimAscii.isEmpty
 

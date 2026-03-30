@@ -135,3 +135,7 @@ elab "empty_elab" : term => return Lean.mkConst ``false
 -- Test: @[inherit_doc] suppresses even with empty doc
 @[inherit_doc hasDoc]
 def inheritedDoc (x : Nat) := x
+
+-- Test: Verso doc comments with interpolated content are not empty
+/-- See {name}`hasDoc` for details. -/
+def versoDoc (x : Nat) := x
