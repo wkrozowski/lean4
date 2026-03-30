@@ -130,17 +130,12 @@ def lintEmptyField (parent stx : Syntax) (msg : String) : CommandElabM Unit :=
 def lintStructField (parent stx : Syntax) (msg : String) : CommandElabM Unit :=
   lint stx s!"{msg} {parent.getId}.{stx.getId}"
 
-/-- Returns `true` if the optional doc comment syntax node is present but has empty content. -/
 private def isEmptyDocString (docOpt : Syntax) : CommandElabM Bool := do
   if docOpt.isNone then return false
   let docStx : TSyntax `Lean.Parser.Command.docComment := ⟨docOpt[0]⟩
   let text ← getDocStringText docStx
   return text.trimAscii.isEmpty
 
-/--
-Returns `true` if the optional doc comment syntax node represents a missing or empty doc string.
-That is, returns `false` only when a non-empty doc comment is present.
--/
 def isMissingDoc (docOpt : Syntax) : CommandElabM Bool := do
   return docOpt.isNone || (← isEmptyDocString docOpt)
 
@@ -153,11 +148,6 @@ def hasTacticAlt (attrs : Syntax) : Bool :=
   attrs[0][1].getSepArgs.any fun attr =>
     attr[1].isOfKind ``Parser.Attr.tactic_alt
 
-/--
-Checks whether the declaration modifiers indicate a public declaration without a meaningful doc
-string. Returns `none` if the declaration is private, has a non-empty doc string, or has
-`@[inherit_doc]`. Returns `some false` for a missing doc string, `some true` for an empty one.
--/
 def declModifiersDocStatus (mods : Syntax) : CommandElabM (Option Bool) := do
   let isPublic := if (← getEnv).header.isModule && !(← getScope).isPublic then
     mods[2][0].getKind == ``Command.public else
@@ -190,12 +180,6 @@ def lintDeclHead (k : SyntaxNodeKind) (id : Syntax) (isEmpty : Bool := false) :
   else if k == ``classInductive then lintDocStatusNamed isEmpty id "public inductive"
   else if k == ``«structure» then lintDocStatusNamed isEmpty id "public structure"
 
-/--
-Checks whether the optional doc comment `docOpt` represents a missing or empty doc string for
-a command that also has `@[inherit_doc]` / `@[tactic_alt]` support via separate attrs.
-Returns `none` if doc is present and non-empty, or `@[inherit_doc]` is set.
-Returns `some false` for missing, `some true` for empty.
--/
 private def docOptStatus (docOpt attrs : Syntax) (checkTacticAlt := false) :
     CommandElabM (Option Bool) := do
   if hasInheritDoc attrs then return none
@@ -209,7 +193,7 @@ def checkDecl : SimpleHandler := fun stx => do
   let head := stx[0]; let rest := stx[1]
   if head[2][0].getKind == ``Command.private then return -- not private
   let k := rest.getKind
-  if let some isEmpty := (← declModifiersDocStatus head) then
+  if let some isEmpty ← declModifiersDocStatus head then
     lintDeclHead k rest[1][0] isEmpty
   if k == ``«inductive» || k == ``classInductive then
     for stx in rest[4].getArgs do
@@ -219,12 +203,12 @@ def checkDecl : SimpleHandler := fun stx => do
       let leadingEmpty ← isEmptyDocString stx[0]
       if !stx[0].isNone && !leadingEmpty then
         pure () -- constructor has a non-empty leading doc comment
-      else if let some modsEmpty := (← declModifiersDocStatus head) then
+      else if let some modsEmpty ← declModifiersDocStatus head then
         lintDocStatusField (leadingEmpty || modsEmpty) rest[1][0] stx[3] "public constructor"
     unless rest[5].isNone do
       for stx in rest[5][0][1].getArgs do
         let head := stx[0]
-        if let some isEmpty := (← declModifiersDocStatus head) then
+        if let some isEmpty ← declModifiersDocStatus head then
           lintDocStatusField isEmpty rest[1][0] stx[1] "computed field"
   else if rest.getKind == ``«structure» then
     unless rest[4][2].isNone do
@@ -243,7 +227,7 @@ def checkDecl : SimpleHandler := fun stx => do
         lintDocStatusField isEmpty parent stx "public field"
       for stx in rest[4][2][0].getArgs do
         let head := stx[0]
-        if let some isEmpty := (← declModifiersDocStatus head) then
+        if let some isEmpty ← declModifiersDocStatus head then
           if stx.getKind == ``structSimpleBinder then
             lint1 isEmpty stx[1]
           else
@@ -253,27 +237,27 @@ def checkDecl : SimpleHandler := fun stx => do
 @[builtin_missing_docs_handler «initialize»]
 def checkInit : SimpleHandler := fun stx => do
   if !stx[2].isNone then
-    if let some isEmpty := (← declModifiersDocStatus stx[0]) then
+    if let some isEmpty ← declModifiersDocStatus stx[0] then
       lintDocStatusNamed isEmpty stx[2][0] "initializer"
 
 @[builtin_missing_docs_handler «notation»]
 def checkNotation : SimpleHandler := fun stx => do
   if stx[2][0][0].getKind != ``«local» then
-    if let some isEmpty := (← docOptStatus stx[0] stx[1]) then
+    if let some isEmpty ← docOptStatus stx[0] stx[1] then
       if stx[5].isNone then lintDocStatus isEmpty stx[3] "notation"
       else lintDocStatusNamed isEmpty stx[5][0][3] "notation"
 
 @[builtin_missing_docs_handler «mixfix»]
 def checkMixfix : SimpleHandler := fun stx => do
   if stx[2][0][0].getKind != ``«local» then
-    if let some isEmpty := (← docOptStatus stx[0] stx[1]) then
+    if let some isEmpty ← docOptStatus stx[0] stx[1] then
       if stx[5].isNone then lintDocStatus isEmpty stx[3] stx[3][0].getAtomVal
       else lintDocStatusNamed isEmpty stx[5][0][3] stx[3][0].getAtomVal
 
 @[builtin_missing_docs_handler «syntax»]
 def checkSyntax : SimpleHandler := fun stx => do
   if stx[2][0][0].getKind != ``«local» then
-    if let some isEmpty := (← docOptStatus stx[0] stx[1] (checkTacticAlt := true)) then
+    if let some isEmpty ← docOptStatus stx[0] stx[1] (checkTacticAlt := true) then
       if stx[5].isNone then lintDocStatus isEmpty stx[3] "syntax"
       else lintDocStatusNamed isEmpty stx[5][0][3] "syntax"
 
@@ -293,20 +277,20 @@ def checkSyntaxCat : SimpleHandler := mkSimpleHandler "syntax category"
 @[builtin_missing_docs_handler «macro»]
 def checkMacro : SimpleHandler := fun stx => do
   if stx[2][0][0].getKind != ``«local» then
-    if let some isEmpty := (← docOptStatus stx[0] stx[1] (checkTacticAlt := true)) then
+    if let some isEmpty ← docOptStatus stx[0] stx[1] (checkTacticAlt := true) then
       if stx[5].isNone then lintDocStatus isEmpty stx[3] "macro"
       else lintDocStatusNamed isEmpty stx[5][0][3] "macro"
 
 @[builtin_missing_docs_handler «elab»]
 def checkElab : SimpleHandler := fun stx => do
   if stx[2][0][0].getKind != ``«local» then
-    if let some isEmpty := (← docOptStatus stx[0] stx[1] (checkTacticAlt := true)) then
+    if let some isEmpty ← docOptStatus stx[0] stx[1] (checkTacticAlt := true) then
       if stx[5].isNone then lintDocStatus isEmpty stx[3] "elab"
       else lintDocStatusNamed isEmpty stx[5][0][3] "elab"
 
 @[builtin_missing_docs_handler classAbbrev]
 def checkClassAbbrev : SimpleHandler := fun stx => do
-  if let some isEmpty := (← declModifiersDocStatus stx[0]) then
+  if let some isEmpty ← declModifiersDocStatus stx[0] then
     lintDocStatusNamed isEmpty stx[3] "class abbrev"
 
 @[builtin_missing_docs_handler Parser.Tactic.declareSimpLikeTactic]
@@ -317,7 +301,7 @@ def checkRegisterBuiltinOption : SimpleHandler := mkSimpleHandler (declNameStxId
 
 @[builtin_missing_docs_handler Option.registerOption]
 def checkRegisterOption : SimpleHandler := fun stx => do
-  if let some isEmpty := (← declModifiersDocStatus stx[0]) then
+  if let some isEmpty ← declModifiersDocStatus stx[0] then
     lintDocStatusNamed isEmpty stx[2] "option"
 
 @[builtin_missing_docs_handler registerSimpAttr]
