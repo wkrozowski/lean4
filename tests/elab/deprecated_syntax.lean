@@ -62,5 +62,23 @@ macro_rules | `(usesOld2) => ``(oldThing)
 syntax "usesNew " : term
 macro_rules | `(usesNew) => ``(42)
 
--- Test 9: missing since emits a warning
+-- Test 9: deprecated_syntax for a command — direct usage
+syntax "myDepCmd " : command
+macro_rules | `(myDepCmd) => `(#check 42)
+
+deprecated_syntax commandMyDepCmd "use `#check` instead" (since := "2026-03-24")
+
+myDepCmd
+
+-- Test 9b: Macro that expands to deprecated command → warning at macro call site
+syntax "myWrapperCmd " : command
+macro_rules | `(myWrapperCmd) => `(myDepCmd)
+
+myWrapperCmd
+
+-- Test 9c: set_option linter.deprecated.syntax false suppresses command warning
+set_option linter.deprecated.syntax false in
+myDepCmd
+
+-- Test 10: missing since emits a warning
 deprecated_syntax Lean.Parser.Term.show
