@@ -63,7 +63,7 @@ partial def precheck : Precheck := fun stx => do
       | some text => m!": {text}"
       | none => m!""
     withRef stx do
-      Linter.logLintIf Linter.linter.deprecatedSyntax stx
+      Linter.logLintIf Linter.linter.deprecated.syntax stx
         m!"quotation uses deprecated syntax '{stx.getKind}'{extraMsg}"
   if let p::_ := precheckAttribute.getValues (← getEnv) stx.getKind then
     if ← catchInternalId unsupportedSyntaxExceptionId (do withRef stx <| p stx; pure true) (fun _ => pure false) then

@@ -1,5 +1,5 @@
 -- Enable the deprecated syntax linter (test framework disables all linters)
-set_option linter.deprecatedSyntax true
+set_option linter.deprecated.syntax true
 
 -- Test 1: Direct usage of deprecated term syntax → warning
 deprecated_syntax Lean.Parser.Term.let_fun "use `have` instead" (since := "2026-03-24")
@@ -8,14 +8,18 @@ deprecated_syntax Lean.Parser.Term.let_fun "use `have` instead" (since := "2026-
 -- is attributed to the paren macro call site
 #check (let_fun x := 1; x)
 
--- Test 2: Macro that expands to deprecated syntax → warning at macro call site
+/--
+  Test 2: Macro that expands to deprecated syntax → warning at macro call site
+  It will not warn at macro definition, as it is defined via
+  single backtick and hence does not trigger a pre-check.
+-/
 syntax "my_wrapper " : term
 macro_rules | `(my_wrapper) => `(let_fun x := 1; x)
 
 #check (my_wrapper)
 
--- Test 3: set_option linter.deprecatedSyntax false suppresses warnings
-set_option linter.deprecatedSyntax false in
+-- Test 3: set_option linter.deprecated.syntax false suppresses warnings
+set_option linter.deprecated.syntax false in
 #check (let_fun x := 1; x)
 
 -- Test 4: Non-deprecated syntax → no warning
@@ -39,9 +43,9 @@ deprecated_syntax termOldThing "use `42` instead" (since := "2026-03-24")
 syntax "usesOld " : term
 macro_rules | `(usesOld) => ``(oldThing)
 
--- Test 7: set_option linter.deprecatedSyntax false suppresses quotation precheck warning
+-- Test 7: set_option linter.deprecated.syntax false suppresses quotation precheck warning
 syntax "usesOld2 " : term
-set_option linter.deprecatedSyntax false in
+set_option linter.deprecated.syntax false in
 macro_rules | `(usesOld2) => ``(oldThing)
 
 -- Test 8: Quotation that does NOT use deprecated syntax → no warning

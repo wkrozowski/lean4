@@ -14,7 +14,7 @@ public section
 
 namespace Lean.Linter
 
-register_builtin_option linter.deprecatedSyntax : Bool := {
+register_builtin_option linter.deprecated.syntax : Bool := {
   defValue := true
   descr := "if true, generate warnings when deprecated syntax is used"
 }
@@ -56,10 +56,10 @@ def checkDeprecatedSyntax [Monad m] [MonadEnv m] [MonadLog m] [MonadOptions m]
     match macroStack with
     | { before := macroStx, .. } :: _ =>
       withRef macroStx do
-        Linter.logLintIf Linter.linter.deprecatedSyntax stx
+        Linter.logLintIf Linter.linter.deprecated.syntax stx
           m!"macro '{macroStx.getKind}' produces deprecated syntax '{kind}'{extraMsg}"
     | [] =>
-      Linter.logLintIf Linter.linter.deprecatedSyntax stx
+      Linter.logLintIf Linter.linter.deprecated.syntax stx
         m!"syntax '{kind}' has been deprecated{extraMsg}"
 
 end Lean.Elab
