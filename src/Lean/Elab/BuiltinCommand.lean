@@ -735,6 +735,15 @@ def elabShowDeprecatedModules : CommandElab := fun _ => do
       let replacements := env.header.moduleData[idx]!.imports.filter fun imp =>
         imp.module != `Init
       parts := parts.push s!"'{modName}' deprecates to\n{replacements.map (·.module)}\nwith {msg}\n"
+  -- Also show the current module's deprecation if set.
+  if let some entry := deprecatedModuleExt.getState env then
+    let modName := env.mainModule
+    let msg := match entry.message? with
+      | some str => s!"message '{str}'"
+      | none => "no message"
+    let replacements := env.imports.filter fun imp =>
+      imp.module != `Init
+    parts := parts.push s!"'{modName}' deprecates to\n{replacements.map (·.module)}\nwith {msg}\n"
   logInfo (String.intercalate "\n" parts.toList)
 
 end Lean.Elab.Command
