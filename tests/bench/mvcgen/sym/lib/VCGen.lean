@@ -876,11 +876,10 @@ meta def emitVC (goal : Grind.Goal) : VCGenM Unit := do
 meta def work (goal : Grind.Goal) : VCGenM Unit := do
   let mvarId ← preprocessMVar goal.mvarId
   let goal := { goal with mvarId }
-  let mut worklist := Std.Queue.empty.enqueue goal
+  let mut worklist := #[goal]
   repeat do
-    let some (goal, worklist') := worklist.dequeue? | break
-    let mut goal := goal
-    worklist := worklist'
+    let mut some goal := worklist.back? | break
+    worklist := worklist.pop
     let res ← solve goal.mvarId
     match res with
     | .noEntailment .. | .noProgramFoundInTarget .. =>
@@ -896,7 +895,7 @@ meta def work (goal : Grind.Goal) : VCGenM Unit := do
       -- to share E-graph context before forking.
       if subgoals.length > 1 then
         goal ← (← read).preTac.processHypotheses goal
-      worklist := worklist.enqueueAll (subgoals.map ({ goal with mvarId := · }))
+      worklist := worklist ++ (subgoals |>.map ({ goal with mvarId := · }) |>.reverse)
 
 public structure Result where
   invariants : Array MVarId
