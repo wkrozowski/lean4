@@ -9,7 +9,7 @@ prelude
 public import Lean.Parser.Module
 meta import Lean.Parser.Module
 import Lean.Compiler.ModPkgExt
-import Lean.DeprecatedModule
+public import Lean.DeprecatedModule
 
 public section
 
@@ -49,6 +49,7 @@ def processHeaderCore
     (trustLevel : UInt32 := 0) (plugins : Array System.FilePath := #[]) (leakEnv := false)
     (mainModule := Name.anonymous) (package? : Option PkgId := none)
     (arts : NameMap ImportArtifacts := {})
+    (headerStx? : Option HeaderSyntax := none)
     : IO (Environment × MessageLog) := do
   let level := if isModule then
     if Elab.inServer.get opts then
@@ -67,9 +68,30 @@ def processHeaderCore
     let pos := inputCtx.fileMap.toPosition startPos
     pure (env, messages.add { fileName := inputCtx.fileName, data := toString e, pos := pos })
   let env := env.setMainModule mainModule |>.setModulePackage package?
-  -- Check for deprecated module imports
-  let messages := if linter.deprecated.module.get opts then
+  -- Check for deprecated module imports.
+  -- The "deprecated_module: ignore" comment can be placed on the `module` keyword to suppress
+  -- all warnings, or on individual `import` statements to suppress specific ones.
+  let messages := Id.run do
+    let mut opts := opts
+    let mut ignoreDeprecatedImports : NameSet := {}
+    if let some headerStx := headerStx? then
+      match headerStx with
+      | `(Parser.Module.header| $[module%$moduleTk]? $[prelude%$_]? $importsStx*) =>
+        if moduleTk.any (·.getTrailing?.any (·.toString.contains "deprecated_module: ignore")) then
+          opts := linter.deprecated.module.set opts false
+        for impStx in importsStx do
+          if impStx.raw.getTrailing?.any (·.toString.contains "deprecated_module: ignore") then
+            match impStx with
+            | `(Parser.Module.import| $[public%$_]? $[meta%$_]? import $[all%$_]? $n) =>
+              ignoreDeprecatedImports := ignoreDeprecatedImports.insert n.getId
+            | _ => pure ()
+      | _ => pure ()
+    if !linter.deprecated.module.get opts then
+      return messages
     imports.foldl (init := messages) fun messages imp =>
+      if ignoreDeprecatedImports.contains imp.module then
+        messages
+      else
       match env.getModuleIdx? imp.module with
       | some idx =>
         match env.getDeprecatedModuleByIdx? idx with
@@ -83,8 +105,6 @@ def processHeaderCore
           }
         | none => messages
       | none => messages
-  else
-    messages
   return (env, messages)
 
 /--
@@ -101,6 +121,7 @@ backwards compatibility measure not compatible with the module system.
     : IO (Environment × MessageLog) := do
   processHeaderCore header.startPos header.imports header.isModule
     opts messages inputCtx trustLevel plugins leakEnv mainModule
+    (headerStx? := header)
 
 def parseImports (input : String) (fileName : Option String := none) : IO (Array Import × Position × MessageLog) := do
   let fileName := fileName.getD "<input>"

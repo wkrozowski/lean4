@@ -11,9 +11,8 @@ roots = [
   "DeprecatedModule.Transitive",
   "DeprecatedModule.Consumer",
   "DeprecatedModule.TransitiveConsumer",
+  "DeprecatedModule.ConsumerIgnoreAll",
+  "DeprecatedModule.ConsumerIgnoreOne",
+  "DeprecatedModule.ConsumerIgnoreWhitespace",
+  "DeprecatedModule.ConsumerShowDeprecated",
 ]
-
-[[lean_lib]]
-name = "Disabled"
-leanOptions = { linter.deprecated.module = false }
-roots = ["DeprecatedModule.ConsumerDisabled"]

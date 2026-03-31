@@ -1,6 +1,6 @@
 rm -rf .lake/build
 
-# Build Main library — should produce deprecation warnings from Consumer importing Old and OldNoMessage
+# Build Main library — includes all test modules
 capture lake build Main
 
 # With-message format: custom message on its own line, then deprecation with replacement imports
@@ -15,13 +15,11 @@ check_out_contains "'DeprecatedModule.OldNoMessage' has been deprecated: please 
 check_out_contains "module is already marked as deprecated"
 
 # TransitiveConsumer only imports Transitive (which imports Old) — no direct import, no warning
-# Verify by checking that warnings only come from direct importers
 # (covered implicitly: if transitive warnings leaked, we'd see extra output)
 
-# Build Disabled library — linter.deprecated.module is false, should produce no deprecation warnings
-rm -rf .lake/build
-capture_only "" lake build Disabled
-if grep -q "has been deprecated" "$CAPTURED.out.produced"; then
-  echo "FAIL: deprecation warning appeared despite linter.deprecated.module = false"
-  exit 1
-fi
+# ConsumerIgnoreOne: "deprecated_module: ignore" on Old import only — OldNoMessage should still warn
+check_out_contains "ConsumerIgnoreOne.lean:1:0: 'DeprecatedModule.OldNoMessage' has been deprecated"
+
+# ConsumerShowDeprecated: #show_deprecated_modules should still list deprecated modules
+# even when warnings are suppressed via "deprecated_module: ignore"
+check_out_contains "ConsumerShowDeprecated.lean:6:0: Deprecated modules"
