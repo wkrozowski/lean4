@@ -6,7 +6,11 @@ structure Foo where
 class Bar where
   x : Nat
 
-/-- warning: instance `instFoo` target `Foo` is not a type class -/
+/--
+warning: instance `instFoo` target `Foo` is not a type class. ⏎
+
+Disable `warning.nonClassInstance` to silence this warning.
+-/
 #guard_msgs in
 instance instFoo : Foo := ⟨0⟩
 
@@ -14,7 +18,9 @@ instance instFoo : Foo := ⟨0⟩
 def instFoo2 : Foo := ⟨1⟩
 
 /--
-warning: instance `instFoo2` target `Foo` is not a type class
+warning: instance `instFoo2` target `Foo` is not a type class. ⏎
+
+Disable `warning.nonClassInstance` to silence this warning.
 ---
 warning: instance `instFoo2` must be marked with `@[reducible]` or `@[implicit_reducible]`
 -/
@@ -36,6 +42,10 @@ instance : Baz Nat := ⟨0⟩
 structure Qux (α : Type) where
   x : α
 
-/-- warning: instance `instQux` target `Qux Nat` is not a type class -/
+/--
+warning: instance `instQux` target `Qux Nat` is not a type class. ⏎
+
+Disable `warning.nonClassInstance` to silence this warning.
+-/
 #guard_msgs in
 instance instQux : Qux Nat := ⟨0⟩

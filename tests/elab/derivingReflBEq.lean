@@ -64,6 +64,7 @@ error: failed to synthesize instance of type class
 Hint: Adding the command `deriving instance BEq for RegularBEq.Foo` may allow Lean to derive the missing instance.
 -/
 #guard_msgs in
+set_option warning.nonClassInstance false in
 structure Foo where
   deriving ReflBEq
 
@@ -165,6 +166,7 @@ error: failed to synthesize instance of type class
 Hint: Adding the command `deriving instance BEq for LinearBEq.Foo` may allow Lean to derive the missing instance.
 -/
 #guard_msgs in
+set_option warning.nonClassInstance false in
 structure Foo where
   deriving ReflBEq
 

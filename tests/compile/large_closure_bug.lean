@@ -68,9 +68,11 @@ def ExtractNonDet.bind :
     dsimp [Bind.bind, NonDetT.bind]; constructor
     intro y; apply ExtractNonDet.bind <;> solve_by_elim
 
+set_option warning.nonClassInstance false in
 instance ExtractNonDet.pure' : ExtractNonDet (Pure.pure (f := NonDetT m) x) := by
   dsimp [Pure.pure, NonDetT.pure]; constructor
 
+set_option warning.nonClassInstance false in
 instance ExtractNonDet.liftM (x : m α) :
   ExtractNonDet (liftM (n := NonDetT m) x) := by
     dsimp [_root_.liftM, monadLift, MonadLift.monadLift]; constructor

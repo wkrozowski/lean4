@@ -2,10 +2,12 @@ structure Foo where
   x : Nat
   y : Nat := 10
 
+set_option warning.nonClassInstance false in
 @[instance]
 def f (x : Nat) : Foo :=
   { x := x + x }
 
+set_option warning.nonClassInstance false in
 @[instance]
 def g (x : Nat) : Foo :=
   { x := x + x }
