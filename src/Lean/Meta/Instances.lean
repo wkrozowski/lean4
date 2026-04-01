@@ -231,6 +231,10 @@ private partial def computeSynthOrder (inst : Expr) (projInfo? : Option Projecti
 
 def addInstance (declName : Name) (attrKind : AttributeKind) (prio : Nat) : MetaM Unit := do
   let c ← mkConstWithLevelParams declName
+  let type ← inferType c
+  forallTelescopeReducing type fun _ target => do
+    unless (← isClass? target).isSome do
+      logWarning m!"instance `{declName}` target `{target}` is not a type class"
   let keys ← mkInstanceKey c
   let status ← getReducibilityStatus declName
   unless status matches .reducible | .implicitReducible do
