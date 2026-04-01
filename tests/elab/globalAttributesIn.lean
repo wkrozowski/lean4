@@ -31,3 +31,26 @@ example : True := t'
 
 attribute [local simp] t in
 example : True := t
+
+section
+/--
+warning: Despite the `in`, the attribute simp is added globally to t
+please remove the `in` or make this a `local simp`
+-/
+#guard_msgs in
+attribute [simp] t in
+example : True := t
+end
+
+/--
+warning: Despite the `in`, the attribute simp is added globally to t
+please remove the `in` or make this a `local simp`
+---
+warning: Despite the `in`, the attribute simp is added globally to t'
+please remove the `in` or make this a `local simp`
+-/
+#guard_msgs in
+attribute [simp] t in
+set_option trace.Meta.Tactic true in
+attribute [simp] t' in
+example : True := t
