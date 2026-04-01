@@ -762,6 +762,7 @@ v___x_166_ = l_Lean_Grind_AC_instReprSeq_repr(v_s_161_, v___x_165_);
 v___x_167_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_167_, 0, v___x_164_);
 lean_ctor_set(v___x_167_, 1, v___x_166_);
+lean_inc(v___y_163_);
 v___x_168_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_168_, 0, v___y_163_);
 lean_ctor_set(v___x_168_, 1, v___x_167_);
@@ -778,6 +779,7 @@ v___jp_139_:
 {
 lean_object* v___x_141_; lean_object* v___x_142_; uint8_t v___x_143_; lean_object* v___x_144_; lean_object* v___x_145_; 
 v___x_141_ = ((lean_object*)(l___private_Lean_Meta_Tactic_Grind_AC_Seq_0__Lean_Grind_AC_instReprStartsWithResult_repr___closed__1));
+lean_inc(v___y_140_);
 v___x_142_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_142_, 0, v___y_140_);
 lean_ctor_set(v___x_142_, 1, v___x_141_);
@@ -792,6 +794,7 @@ v___jp_146_:
 {
 lean_object* v___x_148_; lean_object* v___x_149_; uint8_t v___x_150_; lean_object* v___x_151_; lean_object* v___x_152_; 
 v___x_148_ = ((lean_object*)(l___private_Lean_Meta_Tactic_Grind_AC_Seq_0__Lean_Grind_AC_instReprStartsWithResult_repr___closed__3));
+lean_inc(v___y_147_);
 v___x_149_ = lean_alloc_ctor(4, 2, 0);
 lean_ctor_set(v___x_149_, 0, v___y_147_);
 lean_ctor_set(v___x_149_, 1, v___x_148_);
@@ -1009,14 +1012,13 @@ lean_inc(v_currMacroScope_323_);
 lean_inc(v_quotContext_322_);
 v___x_333_ = l_Lean_addMacroScope(v_quotContext_322_, v___x_332_, v_currMacroScope_323_);
 v___x_334_ = ((lean_object*)(l___private_Lean_Meta_Tactic_Grind_AC_Seq_0__Lean_Grind_AC___aux__Lean__Meta__Tactic__Grind__AC__Seq______macroRules____private__Lean__Meta__Tactic__Grind__AC__Seq__0__Lean__Grind__AC__term___x3a_x3a____1___closed__12));
-lean_inc(v___x_329_);
+lean_inc_n(v___x_329_, 2);
 v___x_335_ = lean_alloc_ctor(3, 4, 0);
 lean_ctor_set(v___x_335_, 0, v___x_329_);
 lean_ctor_set(v___x_335_, 1, v___x_331_);
 lean_ctor_set(v___x_335_, 2, v___x_333_);
 lean_ctor_set(v___x_335_, 3, v___x_334_);
 v___x_336_ = ((lean_object*)(l___private_Lean_Meta_Tactic_Grind_AC_Seq_0__Lean_Grind_AC___aux__Lean__Meta__Tactic__Grind__AC__Seq______macroRules____private__Lean__Meta__Tactic__Grind__AC__Seq__0__Lean__Grind__AC__term___x3a_x3a____1___closed__14));
-lean_inc(v___x_329_);
 v___x_337_ = l_Lean_Syntax_node2(v___x_329_, v___x_336_, v___x_325_, v___x_327_);
 v___x_338_ = l_Lean_Syntax_node2(v___x_329_, v___x_330_, v___x_335_, v___x_337_);
 v___x_339_ = lean_alloc_ctor(0, 2, 0);

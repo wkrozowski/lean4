@@ -1523,11 +1523,10 @@ if (lean_obj_tag(v___x_529_) == 0)
 {
 lean_object* v_a_530_; lean_object* v___x_531_; lean_object* v___x_532_; 
 v_a_530_ = lean_ctor_get(v___x_529_, 0);
-lean_inc(v_a_530_);
+lean_inc_n(v_a_530_, 2);
 lean_dec_ref(v___x_529_);
 v___x_531_ = l_Lean_Expr_getAppNumArgs(v_a_527_);
 lean_inc(v___x_531_);
-lean_inc(v_a_530_);
 v___x_532_ = l_Lean_Meta_getFunInfoNArgs(v_a_530_, v___x_531_, v___y_495_, v___y_496_, v___y_497_, v___y_498_);
 if (lean_obj_tag(v___x_532_) == 0)
 {

@@ -2055,6 +2055,7 @@ return v___x_631_;
 v___jp_579_:
 {
 lean_object* v___x_583_; lean_object* v___x_585_; 
+lean_inc(v___y_580_);
 v___x_583_ = lean_alloc_ctor(0, 1, 1);
 lean_ctor_set(v___x_583_, 0, v___y_580_);
 lean_ctor_set_uint8(v___x_583_, sizeof(void*)*1, v___y_582_);
@@ -3122,6 +3123,7 @@ goto v___jp_1093_;
 v___jp_1116_:
 {
 lean_object* v___x_1118_; 
+lean_inc(v___y_1117_);
 v___x_1118_ = l_Lean_Meta_Grind_Order_mkOrdRingPrefix(v___y_1117_, v_a_1081_, v_a_1082_, v_a_1083_, v_a_1084_, v_a_1085_, v_a_1086_, v_a_1087_, v_a_1088_, v_a_1089_, v_a_1090_, v_a_1091_);
 if (lean_obj_tag(v___x_1118_) == 0)
 {
@@ -3347,6 +3349,7 @@ return v___x_1235_;
 v___jp_1238_:
 {
 lean_object* v___x_1240_; 
+lean_inc(v___y_1239_);
 v___x_1240_ = l_Lean_Meta_Grind_Order_mkOrdRingPrefix(v___y_1239_, v_a_1218_, v_a_1219_, v_a_1220_, v_a_1221_, v_a_1222_, v_a_1223_, v_a_1224_, v_a_1225_, v_a_1226_, v_a_1227_, v_a_1228_);
 if (lean_obj_tag(v___x_1240_) == 0)
 {
@@ -3849,6 +3852,7 @@ goto v___jp_1492_;
 v___jp_1515_:
 {
 lean_object* v___x_1517_; 
+lean_inc(v___y_1516_);
 v___x_1517_ = l_Lean_Meta_Grind_Order_mkOrdRingPrefix(v___y_1516_, v_a_1480_, v_a_1481_, v_a_1482_, v_a_1483_, v_a_1484_, v_a_1485_, v_a_1486_, v_a_1487_, v_a_1488_, v_a_1489_, v_a_1490_);
 if (lean_obj_tag(v___x_1517_) == 0)
 {
@@ -4074,6 +4078,7 @@ return v___x_1634_;
 v___jp_1637_:
 {
 lean_object* v___x_1639_; 
+lean_inc(v___y_1638_);
 v___x_1639_ = l_Lean_Meta_Grind_Order_mkOrdRingPrefix(v___y_1638_, v_a_1617_, v_a_1618_, v_a_1619_, v_a_1620_, v_a_1621_, v_a_1622_, v_a_1623_, v_a_1624_, v_a_1625_, v_a_1626_, v_a_1627_);
 if (lean_obj_tag(v___x_1639_) == 0)
 {
@@ -4435,6 +4440,7 @@ return v___x_1844_;
 v___jp_1847_:
 {
 lean_object* v___x_1849_; 
+lean_inc(v___y_1848_);
 v___x_1849_ = l_Lean_Meta_Grind_Order_mkOrdRingPrefix(v___y_1848_, v_a_1827_, v_a_1828_, v_a_1829_, v_a_1830_, v_a_1831_, v_a_1832_, v_a_1833_, v_a_1834_, v_a_1835_, v_a_1836_, v_a_1837_);
 if (lean_obj_tag(v___x_1849_) == 0)
 {
@@ -4815,6 +4821,7 @@ return v___x_2016_;
 v___jp_2020_:
 {
 lean_object* v___x_2022_; 
+lean_inc(v___y_2021_);
 v___x_2022_ = l_Lean_Meta_Grind_Order_mkOrdRingPrefix(v___y_2021_, v_a_1993_, v_a_1994_, v_a_1995_, v_a_1996_, v_a_1997_, v_a_1998_, v_a_1999_, v_a_2000_, v_a_2001_, v_a_2002_, v_a_2003_);
 if (lean_obj_tag(v___x_2022_) == 0)
 {

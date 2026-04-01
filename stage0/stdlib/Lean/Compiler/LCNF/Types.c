@@ -1414,8 +1414,7 @@ if (lean_obj_tag(v___x_369_) == 0)
 {
 lean_object* v_a_370_; lean_object* v___x_371_; uint8_t v___x_372_; 
 v_a_370_ = lean_ctor_get(v___x_369_, 0);
-lean_inc(v_a_370_);
-lean_inc(v_a_370_);
+lean_inc_n(v_a_370_, 2);
 v___x_371_ = l_Lean_Expr_eta(v_a_370_);
 v___x_372_ = lean_expr_eqv(v___x_371_, v_a_370_);
 lean_dec(v_a_370_);
@@ -2446,7 +2445,7 @@ if (lean_obj_tag(v_e_773_) == 7)
 {
 lean_object* v_binderName_780_; lean_object* v_binderType_781_; lean_object* v_body_782_; uint8_t v_binderInfo_783_; lean_object* v_d_784_; lean_object* v___x_785_; lean_object* v___f_786_; uint8_t v___x_787_; lean_object* v___x_788_; 
 v_binderName_780_ = lean_ctor_get(v_e_773_, 0);
-lean_inc(v_binderName_780_);
+lean_inc_n(v_binderName_780_, 2);
 v_binderType_781_ = lean_ctor_get(v_e_773_, 1);
 lean_inc_ref(v_binderType_781_);
 v_body_782_ = lean_ctor_get(v_e_773_, 2);
@@ -2456,7 +2455,6 @@ lean_dec_ref(v_e_773_);
 v_d_784_ = lean_expr_instantiate_rev(v_binderType_781_, v_xs_774_);
 lean_dec_ref(v_binderType_781_);
 v___x_785_ = lean_box(v_binderInfo_783_);
-lean_inc(v_binderName_780_);
 lean_inc_ref(v_d_784_);
 v___f_786_ = lean_alloc_closure((void*)(l___private_Lean_Compiler_LCNF_Types_0__Lean_Compiler_LCNF_toLCNFType_visitForall___lam__0___boxed), 11, 5);
 lean_closure_set(v___f_786_, 0, v_d_784_);
@@ -2598,16 +2596,14 @@ lean_object* v_binderName_826_; lean_object* v_binderType_827_; lean_object* v_b
 lean_dec_ref(v___x_817_);
 lean_del_object(v___x_814_);
 v_binderName_826_ = lean_ctor_get(v_a_818_, 0);
-lean_inc(v_binderName_826_);
+lean_inc_n(v_binderName_826_, 2);
 v_binderType_827_ = lean_ctor_get(v_a_818_, 1);
-lean_inc_ref(v_binderType_827_);
+lean_inc_ref_n(v_binderType_827_, 2);
 v_body_828_ = lean_ctor_get(v_a_818_, 2);
 lean_inc_ref(v_body_828_);
 v_binderInfo_829_ = lean_ctor_get_uint8(v_a_818_, sizeof(void*)*3 + 8);
 lean_dec_ref(v_a_818_);
 v___x_830_ = lean_box(v_binderInfo_829_);
-lean_inc(v_binderName_826_);
-lean_inc_ref(v_binderType_827_);
 v___f_831_ = lean_alloc_closure((void*)(l___private_Lean_Compiler_LCNF_Types_0__Lean_Compiler_LCNF_toLCNFType_go___lam__0___boxed), 10, 4);
 lean_closure_set(v___f_831_, 0, v_binderType_827_);
 lean_closure_set(v___f_831_, 1, v_body_828_);
@@ -6905,13 +6901,12 @@ if (lean_obj_tag(v___x_2202_) == 4)
 {
 lean_object* v_declName_2203_; lean_object* v___x_2204_; lean_object* v_env_2205_; uint8_t v___x_2206_; 
 v_declName_2203_ = lean_ctor_get(v___x_2202_, 0);
-lean_inc(v_declName_2203_);
+lean_inc_n(v_declName_2203_, 2);
 lean_dec_ref(v___x_2202_);
 v___x_2204_ = lean_st_ref_get(v_a_2200_);
 v_env_2205_ = lean_ctor_get(v___x_2204_, 0);
 lean_inc_ref(v_env_2205_);
 lean_dec(v___x_2204_);
-lean_inc(v_declName_2203_);
 v___x_2206_ = lean_is_class(v_env_2205_, v_declName_2203_);
 if (v___x_2206_ == 0)
 {

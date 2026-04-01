@@ -4668,7 +4668,7 @@ _start:
 lean_object* v___x_1471_; lean_object* v___x_1472_; lean_object* v___x_1473_; lean_object* v___x_1474_; lean_object* v___x_1475_; lean_object* v___x_1476_; 
 v___x_1471_ = ((lean_object*)(l_WellFounded_opaqueFix_u2083___at___00Lean_Compiler_LCNF_StructProjCases_mkFieldParamsForCtorType_spec__1___redArg___closed__2));
 v___x_1472_ = lean_unsigned_to_nat(9u);
-v___x_1473_ = lean_unsigned_to_nat(635u);
+v___x_1473_ = lean_unsigned_to_nat(640u);
 v___x_1474_ = ((lean_object*)(l_Lean_Compiler_LCNF_StructProjCases_visitCode___closed__1));
 v___x_1475_ = ((lean_object*)(l_Lean_Compiler_LCNF_StructProjCases_visitCode___closed__0));
 v___x_1476_ = l_mkPanicMessageWithDecl(v___x_1475_, v___x_1474_, v___x_1473_, v___x_1472_, v___x_1471_);

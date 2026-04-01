@@ -1572,12 +1572,12 @@ uint8_t v___x_459_;
 v___x_459_ = lean_usize_dec_lt(v_i_457_, v_sz_456_);
 if (v___x_459_ == 0)
 {
+lean_inc_ref(v_b_458_);
 return v_b_458_;
 }
 else
 {
 lean_object* v___x_460_; lean_object* v___x_461_; lean_object* v___y_463_; lean_object* v___x_469_; lean_object* v___x_470_; lean_object* v___x_471_; lean_object* v___x_472_; lean_object* v_a_473_; uint8_t v___x_474_; 
-lean_dec_ref(v_b_458_);
 v___x_460_ = lean_box(0);
 v___x_461_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00ImportCompletion_computePartialImportCompletions_spec__3___closed__0));
 v___x_469_ = ((lean_object*)(l_ImportCompletion_isImportNameCompletionRequest___closed__0));
@@ -1685,6 +1685,7 @@ lean_dec(v_sz_494_);
 v_i_boxed_498_ = lean_unbox_usize(v_i_495_);
 lean_dec(v_i_495_);
 v_res_499_ = l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00ImportCompletion_computePartialImportCompletions_spec__3(v_completionPos_492_, v_as_493_, v_sz_boxed_497_, v_i_boxed_498_, v_b_496_);
+lean_dec_ref(v_b_496_);
 lean_dec_ref(v_as_493_);
 lean_dec(v_completionPos_492_);
 return v_res_499_;

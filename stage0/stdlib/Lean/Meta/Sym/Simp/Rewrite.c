@@ -1514,9 +1514,8 @@ if (lean_obj_tag(v___x_545_) == 0)
 {
 lean_object* v_a_546_; lean_object* v___x_547_; 
 v_a_546_ = lean_ctor_get(v___x_545_, 0);
-lean_inc(v_a_546_);
+lean_inc_n(v_a_546_, 2);
 lean_dec_ref(v___x_545_);
-lean_inc(v_a_546_);
 lean_inc(v_mvarId_513_);
 v___x_547_ = l_Lean_MVarId_assign___at___00Lean_Meta_Sym_Simp_Theorem_rewrite_spec__3___redArg(v_mvarId_513_, v_a_546_, v___y_491_);
 if (lean_obj_tag(v___x_547_) == 0)

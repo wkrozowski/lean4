@@ -798,13 +798,12 @@ lean_object* v___x_145_; uint8_t v___x_146_; lean_object* v___x_147_; lean_objec
 v___x_145_ = lean_alloc_ctor(1, 0, 1);
 v___x_146_ = lean_unbox(v_defValue_140_);
 lean_ctor_set_uint8(v___x_145_, 0, v___x_146_);
-lean_inc(v_name_136_);
+lean_inc_n(v_name_136_, 2);
 v___x_147_ = lean_alloc_ctor(0, 4, 0);
 lean_ctor_set(v___x_147_, 0, v_name_136_);
 lean_ctor_set(v___x_147_, 1, v_ref_138_);
 lean_ctor_set(v___x_147_, 2, v___x_145_);
 lean_ctor_set(v___x_147_, 3, v_descr_141_);
-lean_inc(v_name_136_);
 v___x_148_ = lean_register_option(v_name_136_, v___x_147_);
 if (lean_obj_tag(v___x_148_) == 0)
 {
@@ -2131,7 +2130,6 @@ v___jp_606_:
 {
 lean_object* v___x_624_; lean_object* v___x_625_; lean_object* v___x_626_; 
 v___x_624_ = l_Lean_Option_get___at___00Lean_PrettyPrinter_ppExprLegacy_spec__0(v_opts_579_, v___y_609_);
-lean_dec_ref(v___y_609_);
 v___x_625_ = lean_alloc_ctor(0, 14, 2);
 lean_ctor_set(v___x_625_, 0, v_fileName_610_);
 lean_ctor_set(v___x_625_, 1, v_fileMap_611_);

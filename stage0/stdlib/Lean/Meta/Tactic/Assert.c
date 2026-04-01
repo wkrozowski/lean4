@@ -1020,9 +1020,8 @@ if (lean_obj_tag(v___x_267_) == 0)
 {
 lean_object* v_a_268_; lean_object* v___x_269_; lean_object* v___x_270_; lean_object* v___x_272_; uint8_t v_isShared_273_; uint8_t v_isSharedCheck_278_; 
 v_a_268_ = lean_ctor_get(v___x_267_, 0);
-lean_inc(v_a_268_);
+lean_inc_n(v_a_268_, 2);
 lean_dec_ref(v___x_267_);
-lean_inc(v_a_268_);
 v___x_269_ = l_Lean_Expr_app___override(v_a_268_, v_val_254_);
 v___x_270_ = l_Lean_MVarId_assign___at___00Lean_MVarId_assert_spec__0___redArg(v_mvarId_250_, v___x_269_, v___y_256_);
 v_isSharedCheck_278_ = !lean_is_exclusive(v___x_270_);
@@ -1554,9 +1553,8 @@ if (lean_obj_tag(v___x_474_) == 0)
 {
 lean_object* v_a_475_; lean_object* v___x_476_; lean_object* v___x_478_; uint8_t v_isShared_479_; uint8_t v_isSharedCheck_484_; 
 v_a_475_ = lean_ctor_get(v___x_474_, 0);
-lean_inc(v_a_475_);
+lean_inc_n(v_a_475_, 2);
 lean_dec_ref(v___x_474_);
-lean_inc(v_a_475_);
 v___x_476_ = l_Lean_MVarId_assign___at___00Lean_MVarId_assert_spec__0___redArg(v_mvarId_457_, v_a_475_, v___y_463_);
 v_isSharedCheck_484_ = !lean_is_exclusive(v___x_476_);
 if (v_isSharedCheck_484_ == 0)
@@ -4698,9 +4696,8 @@ if (lean_obj_tag(v___x_1513_) == 0)
 {
 lean_object* v_a_1514_; lean_object* v___x_1515_; lean_object* v___x_1516_; 
 v_a_1514_ = lean_ctor_get(v___x_1513_, 0);
-lean_inc(v_a_1514_);
+lean_inc_n(v_a_1514_, 2);
 lean_dec_ref(v___x_1513_);
-lean_inc(v_a_1514_);
 v___x_1515_ = lean_st_mk_ref(v_a_1514_);
 lean_inc_ref(v_typeNew_1507_);
 v___x_1516_ = l___private_Lean_Meta_Tactic_Assert_0__Lean_MVarId_replace_findMaxFVar(v_typeNew_1507_, v___x_1515_, v___y_1508_, v___y_1509_, v___y_1510_, v___y_1511_);

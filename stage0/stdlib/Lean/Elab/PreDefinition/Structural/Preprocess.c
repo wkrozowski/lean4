@@ -2121,9 +2121,8 @@ if (lean_obj_tag(v___x_618_) == 0)
 {
 lean_object* v_a_619_; lean_object* v___f_620_; lean_object* v___x_621_; 
 v_a_619_ = lean_ctor_get(v___x_618_, 0);
-lean_inc(v_a_619_);
+lean_inc_n(v_a_619_, 2);
 lean_dec_ref(v___x_618_);
-lean_inc(v_a_619_);
 lean_inc(v_a_606_);
 v___f_620_ = lean_alloc_closure((void*)(l___private_Lean_Meta_Transform_0__Lean_Core_transform_visit___at___00Lean_Core_transform___at___00Lean_Elab_Structural_preprocess_spec__1_spec__1___lam__2___boxed), 4, 3);
 lean_closure_set(v___f_620_, 0, v_a_606_);

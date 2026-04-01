@@ -2963,9 +2963,8 @@ if (lean_obj_tag(v___x_1025_) == 0)
 {
 lean_object* v_a_1026_; lean_object* v___x_1027_; 
 v_a_1026_ = lean_ctor_get(v___x_1025_, 0);
-lean_inc(v_a_1026_);
+lean_inc_n(v_a_1026_, 2);
 lean_dec_ref(v___x_1025_);
-lean_inc(v_a_1026_);
 lean_inc(v_attrName_1021_);
 v___x_1027_ = l_Lean_Meta_Sym_Simp_mkSymSimpAttr(v_attrName_1021_, v_attrDescr_1022_, v_a_1026_, v_ref_1023_);
 if (lean_obj_tag(v___x_1027_) == 0)

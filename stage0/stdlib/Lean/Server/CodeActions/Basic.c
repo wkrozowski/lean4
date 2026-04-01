@@ -2148,6 +2148,7 @@ goto v___jp_534_;
 v___jp_534_:
 {
 lean_object* v___x_536_; lean_object* v___x_537_; lean_object* v___x_538_; lean_object* v___x_539_; lean_object* v___x_540_; lean_object* v___x_541_; 
+lean_inc_ref(v___y_535_);
 v___x_536_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_536_, 0, v___y_535_);
 v___x_537_ = l_Lean_MessageData_ofFormat(v___x_536_);
@@ -2881,12 +2882,8 @@ lean_inc_ref(v_env_833_);
 lean_dec(v___x_832_);
 v___x_834_ = l_Lean_Server_codeActionProviderExt;
 v_toEnvExtension_835_ = lean_ctor_get(v___x_834_, 0);
-lean_inc_ref(v_toEnvExtension_835_);
 v_asyncMode_836_ = lean_ctor_get(v_toEnvExtension_835_, 2);
-lean_inc(v_asyncMode_836_);
-lean_dec_ref(v_toEnvExtension_835_);
 v___x_837_ = l_Lean_PersistentEnvExtension_addEntry___redArg(v___x_834_, v_env_833_, v_decl_823_, v_asyncMode_836_, v___x_819_);
-lean_dec(v_asyncMode_836_);
 v___x_838_ = l_Lean_setEnv___at___00__private_Lean_Server_CodeActions_Basic_0__Lean_Server_initFn_00___x40_Lean_Server_CodeActions_Basic_1656927832____hygCtx___hyg_2__spec__1___redArg(v___x_837_, v___y_831_);
 return v___x_838_;
 }
@@ -2896,12 +2893,11 @@ lean_object* v___x_839_; lean_object* v___x_840_; lean_object* v___x_841_; lean_
 lean_dec(v___x_832_);
 lean_dec(v___x_819_);
 v___x_839_ = lean_box(0);
-lean_inc(v_decl_823_);
+lean_inc_n(v_decl_823_, 2);
 v___x_840_ = l_Lean_mkConst(v_decl_823_, v___x_839_);
 v___x_841_ = ((lean_object*)(l___private_Lean_Server_CodeActions_Basic_0__Lean_Server_initFn___lam__1___closed__0_00___x40_Lean_Server_CodeActions_Basic_1656927832____hygCtx___hyg_2_));
 v___x_842_ = l_Lean_Name_mkStr3(v___x_820_, v___x_821_, v___x_841_);
 v___x_843_ = l_Lean_mkConst(v___x_842_, v___x_839_);
-lean_inc(v_decl_823_);
 v___x_844_ = l___private_Lean_ToExpr_0__Lean_Name_toExprAux(v_decl_823_);
 v___x_845_ = l_Lean_mkAppB(v___x_843_, v___x_844_, v___x_840_);
 v___x_846_ = l_Lean_declareBuiltin(v_decl_823_, v___x_845_, v___y_830_, v___y_831_);
@@ -3049,14 +3045,13 @@ LEAN_EXPORT lean_object* l___private_Lean_Server_CodeActions_Basic_0__Lean_Serve
 _start:
 {
 lean_object* v___f_954_; lean_object* v___x_955_; lean_object* v___x_956_; lean_object* v___x_957_; lean_object* v___x_958_; lean_object* v___f_959_; lean_object* v___x_960_; lean_object* v___y_962_; 
-lean_inc(v_name_952_);
+lean_inc_n(v_name_952_, 2);
 v___f_954_ = lean_alloc_closure((void*)(l___private_Lean_Server_CodeActions_Basic_0__Lean_Server_initFn___lam__0_00___x40_Lean_Server_CodeActions_Basic_1656927832____hygCtx___hyg_2____boxed), 5, 1);
 lean_closure_set(v___f_954_, 0, v_name_952_);
 v___x_955_ = lean_box(0);
 v___x_956_ = ((lean_object*)(l_Lean_Server_instFromJsonCodeActionResolveData_fromJson___closed__0));
 v___x_957_ = ((lean_object*)(l_Lean_Server_instFromJsonCodeActionResolveData_fromJson___closed__1));
 v___x_958_ = lean_box(v_builtin_951_);
-lean_inc(v_name_952_);
 v___f_959_ = lean_alloc_closure((void*)(l___private_Lean_Server_CodeActions_Basic_0__Lean_Server_initFn___lam__1_00___x40_Lean_Server_CodeActions_Basic_1656927832____hygCtx___hyg_2____boxed), 11, 5);
 lean_closure_set(v___f_959_, 0, v___x_958_);
 lean_closure_set(v___f_959_, 1, v___x_955_);
@@ -3082,6 +3077,7 @@ v___jp_961_:
 {
 lean_object* v___x_963_; lean_object* v___x_964_; uint8_t v___x_965_; lean_object* v___x_966_; lean_object* v___x_967_; lean_object* v___x_968_; 
 v___x_963_ = ((lean_object*)(l___private_Lean_Server_CodeActions_Basic_0__Lean_Server_initFn___lam__2___closed__25_00___x40_Lean_Server_CodeActions_Basic_1656927832____hygCtx___hyg_2_));
+lean_inc_ref(v___y_962_);
 v___x_964_ = lean_string_append(v___y_962_, v___x_963_);
 v___x_965_ = 1;
 v___x_966_ = lean_alloc_ctor(0, 3, 1);
@@ -4225,13 +4221,9 @@ lean_inc_ref(v_env_1383_);
 lean_dec(v___x_1382_);
 v___x_1384_ = l_Lean_Server_codeActionProviderExt;
 v_toEnvExtension_1385_ = lean_ctor_get(v___x_1384_, 0);
-lean_inc_ref(v_toEnvExtension_1385_);
 v_asyncMode_1386_ = lean_ctor_get(v_toEnvExtension_1385_, 2);
-lean_inc(v_asyncMode_1386_);
-lean_dec_ref(v_toEnvExtension_1385_);
 v___x_1387_ = lean_box(0);
 v___x_1388_ = l_Lean_SimplePersistentEnvExtension_getState___redArg(v___x_1377_, v___x_1384_, v_env_1383_, v_asyncMode_1386_, v___x_1387_);
-lean_dec(v_asyncMode_1386_);
 if (lean_obj_tag(v___x_1388_) == 0)
 {
 lean_object* v_size_1438_; 

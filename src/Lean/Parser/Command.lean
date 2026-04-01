@@ -592,6 +592,8 @@ See also: `#reduce e` for evaluation by term reduction.
   "#print " >> (ident <|> strLit)
 @[builtin_command_parser] def printSig       := leading_parser
   "#print " >> nonReservedSymbol "sig " >> ident
+/-- Prints the axioms used by a declaration, directly or indirectly.
+Please consult [the reference manual](lean-manual://section/validating-proofs) to understand the significance of the output. -/
 @[builtin_command_parser] def printAxioms    := leading_parser
   "#print " >> nonReservedSymbol "axioms " >> ident
 @[builtin_command_parser] def printEqns      := leading_parser
@@ -620,6 +622,15 @@ declaration signatures.
 /-- Debugging command: Prints the result of `Environment.dumpAsyncEnvState`. -/
 @[builtin_command_parser] def dumpAsyncEnvState := leading_parser
   "#dump_async_env_state"
+/--
+Mark a syntax kind as deprecated. When this syntax is elaborated, a warning will be emitted.
+
+```
+deprecated_syntax Lean.Parser.Term.let_fun "use `have` instead" (since := "2026-03-18")
+```
+-/
+@[builtin_command_parser] def deprecatedSyntax := leading_parser
+  "deprecated_syntax " >> ident >> optional (ppSpace >> strLit) >> optional (" (" >> nonReservedSymbol "since" >> " := " >> strLit >> ")")
 @[builtin_command_parser] def «init_quot»    := leading_parser
   "init_quot"
 /--
@@ -667,6 +678,12 @@ only in a single term or tactic.
 -/
 @[builtin_command_parser] def «set_option»   := leading_parser
   "set_option " >> identWithPartialTrailingDot >> ppSpace >> optionValue
+/--
+`unlock_limits` disables all built-in resource limit options (currently `maxRecDepth`,
+`maxHeartbeats`, and `synthInstance.maxHeartbeats`) in the current scope by setting them to 0.
+-/
+@[builtin_command_parser] def «unlock_limits» := leading_parser
+  "unlock_limits"
 def eraseAttr := leading_parser
   "-" >> rawIdent
 @[builtin_command_parser] def «attribute»    := leading_parser

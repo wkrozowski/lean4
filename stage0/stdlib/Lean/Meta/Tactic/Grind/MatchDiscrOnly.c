@@ -2578,9 +2578,8 @@ if (lean_obj_tag(v___x_786_) == 0)
 {
 lean_object* v_a_787_; lean_object* v___f_788_; lean_object* v___x_789_; 
 v_a_787_ = lean_ctor_get(v___x_786_, 0);
-lean_inc(v_a_787_);
+lean_inc_n(v_a_787_, 2);
 lean_dec_ref(v___x_786_);
-lean_inc(v_a_787_);
 lean_inc(v_a_772_);
 v___f_788_ = lean_alloc_closure((void*)(l___private_Lean_Meta_Transform_0__Lean_Core_transform_visit___at___00Lean_Core_transform___at___00Lean_Meta_Grind_eraseSimpMatchDiscrsOnly_spec__0_spec__0___lam__2___boxed), 4, 3);
 lean_closure_set(v___f_788_, 0, v_a_772_);
@@ -3153,9 +3152,8 @@ if (lean_obj_tag(v___x_961_) == 0)
 {
 lean_object* v_a_962_; lean_object* v___x_963_; 
 v_a_962_ = lean_ctor_get(v___x_961_, 0);
-lean_inc(v_a_962_);
+lean_inc_n(v_a_962_, 2);
 lean_dec_ref(v___x_961_);
-lean_inc(v_a_962_);
 v___x_963_ = l_Lean_Meta_mkEqRefl(v_a_962_, v_a_946_, v_a_947_, v_a_948_, v_a_949_);
 if (lean_obj_tag(v___x_963_) == 0)
 {

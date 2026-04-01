@@ -3574,13 +3574,12 @@ _start:
 {
 lean_object* v___f_1227_; lean_object* v___f_1228_; lean_object* v___f_1229_; lean_object* v___x_1230_; lean_object* v___x_1231_; lean_object* v___x_1232_; 
 lean_inc_ref(v_toApplicative_1220_);
-lean_inc_ref(v_env_1226_);
+lean_inc_ref_n(v_env_1226_, 2);
 v___f_1227_ = lean_alloc_closure((void*)(l_Lean_Server_Completion_forEligibleDeclsM___redArg___lam__2), 5, 3);
 lean_closure_set(v___f_1227_, 0, v_env_1226_);
 lean_closure_set(v___f_1227_, 1, v_toApplicative_1220_);
 lean_closure_set(v___f_1227_, 2, v_f_1221_);
 lean_inc_ref(v_inst_1222_);
-lean_inc_ref(v_env_1226_);
 v___f_1228_ = lean_alloc_closure((void*)(l_Lean_Server_Completion_forEligibleDeclsM___redArg___lam__3), 4, 3);
 lean_closure_set(v___f_1228_, 0, v_env_1226_);
 lean_closure_set(v___f_1228_, 1, v_inst_1222_);
@@ -3606,7 +3605,7 @@ lean_object* v_toApplicative_1237_; lean_object* v_toBind_1238_; lean_object* v_
 v_toApplicative_1237_ = lean_ctor_get(v_inst_1233_, 0);
 lean_inc_ref(v_toApplicative_1237_);
 v_toBind_1238_ = lean_ctor_get(v_inst_1233_, 1);
-lean_inc(v_toBind_1238_);
+lean_inc_n(v_toBind_1238_, 2);
 v_getEnv_1239_ = lean_ctor_get(v_inst_1234_, 0);
 lean_inc(v_getEnv_1239_);
 lean_dec_ref(v_inst_1234_);
@@ -3617,7 +3616,6 @@ lean_inc_ref(v_inst_1233_);
 v___f_1241_ = lean_alloc_closure((void*)(l_Lean_Server_Completion_forEligibleDeclsM___redArg___lam__1), 4, 2);
 lean_closure_set(v___f_1241_, 0, v_inst_1233_);
 lean_closure_set(v___f_1241_, 1, v___f_1240_);
-lean_inc(v_toBind_1238_);
 v___f_1242_ = lean_alloc_closure((void*)(l_Lean_Server_Completion_forEligibleDeclsM___redArg___lam__5), 7, 6);
 lean_closure_set(v___f_1242_, 0, v_toApplicative_1237_);
 lean_closure_set(v___f_1242_, 1, v_f_1236_);

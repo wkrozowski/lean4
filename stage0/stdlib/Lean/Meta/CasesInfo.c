@@ -1279,9 +1279,8 @@ if (lean_obj_tag(v___x_396_) == 1)
 {
 lean_object* v_val_397_; lean_object* v___x_398_; 
 v_val_397_ = lean_ctor_get(v___x_396_, 0);
-lean_inc(v_val_397_);
+lean_inc_n(v_val_397_, 2);
 lean_dec_ref(v___x_396_);
-lean_inc(v_val_397_);
 v___x_398_ = l_Lean_getConstInfoCtor___at___00getCasesInfo_x3f_spec__4(v_val_397_, v___y_385_, v___y_386_, v___y_387_, v___y_388_);
 if (lean_obj_tag(v___x_398_) == 0)
 {

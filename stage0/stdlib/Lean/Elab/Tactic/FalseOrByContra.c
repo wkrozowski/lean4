@@ -1337,6 +1337,7 @@ if (v___y_139_ == 0)
 lean_object* v___x_140_; lean_object* v___x_141_; lean_object* v___x_142_; 
 lean_dec_ref(v___y_136_);
 v___x_140_ = ((lean_object*)(l_Lean_MVarId_falseOrByContra___closed__9));
+lean_inc_ref(v___y_135_);
 v___x_141_ = l_Lean_Name_mkStr2(v___x_140_, v___y_135_);
 v___x_142_ = l_Lean_MVarId_applyConst(v_g_54_, v___x_141_, v___y_133_, v___y_134_, v___y_137_, v___y_138_, v___y_132_);
 if (lean_obj_tag(v___x_142_) == 0)
@@ -1397,7 +1398,6 @@ return v___x_149_;
 else
 {
 lean_object* v___x_152_; 
-lean_dec_ref(v___y_135_);
 lean_dec_ref(v___y_133_);
 lean_dec(v_g_54_);
 v___x_152_ = lean_alloc_ctor(1, 1, 0);

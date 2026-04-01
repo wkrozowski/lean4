@@ -748,8 +748,7 @@ if (lean_obj_tag(v___x_178_) == 0)
 {
 lean_object* v_a_179_; uint8_t v___x_180_; 
 v_a_179_ = lean_ctor_get(v___x_178_, 0);
-lean_inc(v_a_179_);
-lean_inc(v_a_179_);
+lean_inc_n(v_a_179_, 2);
 v___x_180_ = l___private_Lean_Compiler_ExportAttr_0__Lean_isValidCppName(v_a_179_);
 if (v___x_180_ == 0)
 {

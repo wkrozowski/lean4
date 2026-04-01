@@ -1012,9 +1012,8 @@ else
 {
 lean_object* v_val_264_; lean_object* v_keys_x27_265_; lean_object* v_vals_x27_266_; lean_object* v___x_268_; 
 v_val_264_ = lean_ctor_get(v___x_260_, 0);
-lean_inc(v_val_264_);
+lean_inc_n(v_val_264_, 2);
 lean_dec_ref(v___x_260_);
-lean_inc(v_val_264_);
 v_keys_x27_265_ = l_Array_eraseIdx___redArg(v_ks_255_, v_val_264_);
 v_vals_x27_266_ = l_Array_eraseIdx___redArg(v_vs_256_, v_val_264_);
 if (v_isShared_259_ == 0)

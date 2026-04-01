@@ -582,6 +582,7 @@ return v_positions_153_;
 v___jp_162_:
 {
 lean_object* v___x_168_; 
+lean_inc_ref(v___y_163_);
 v___x_168_ = l___private_Init_Data_Array_QSort_Basic_0__Array_qsort_sort(lean_box(0), v___y_163_, v___y_164_, v___y_165_, v___y_166_, v___y_167_, lean_box(0), lean_box(0), lean_box(0));
 lean_dec(v___y_167_);
 lean_dec(v___y_164_);

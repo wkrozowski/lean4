@@ -2911,6 +2911,7 @@ goto v___jp_901_;
 v___jp_901_:
 {
 lean_object* v___x_903_; lean_object* v___x_904_; lean_object* v___x_905_; lean_object* v___x_906_; lean_object* v___x_907_; lean_object* v___x_908_; lean_object* v___x_909_; lean_object* v___x_910_; lean_object* v___x_911_; lean_object* v___x_913_; 
+lean_inc(v___y_902_);
 v___x_903_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_903_, 0, v___x_900_);
 lean_ctor_set(v___x_903_, 1, v___y_902_);
@@ -3233,6 +3234,7 @@ uint8_t v___x_988_; lean_object* v___x_989_; lean_object* v___x_990_; lean_objec
 lean_dec_ref(v_type_981_);
 v___x_988_ = 1;
 v___x_989_ = l_Lean_Name_toStringWithToken___at___00Lean_Name_toString_spec__0(v_binderName_980_, v___x_988_);
+lean_inc_ref(v___y_984_);
 v___x_990_ = lean_string_append(v___y_984_, v___x_989_);
 lean_dec_ref(v___x_989_);
 v___x_991_ = lean_alloc_ctor(3, 1, 0);
@@ -3274,6 +3276,7 @@ v___x_1000_ = ((lean_object*)(l_Lean_Compiler_LCNF_PP_ppParam___redArg___closed_
 v___x_1001_ = lean_alloc_ctor(5, 2, 0);
 lean_ctor_set(v___x_1001_, 0, v___x_999_);
 lean_ctor_set(v___x_1001_, 1, v___x_1000_);
+lean_inc_ref(v___y_984_);
 v___x_1002_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_1002_, 0, v___y_984_);
 v___x_1003_ = lean_alloc_ctor(5, 2, 0);
@@ -3320,7 +3323,6 @@ return v___x_1014_;
 }
 else
 {
-lean_dec_ref(v___y_984_);
 lean_dec(v_binderName_980_);
 return v___x_993_;
 }
@@ -5710,8 +5712,8 @@ goto v___jp_1795_;
 v___jp_1728_:
 {
 lean_object* v_ann_1731_; lean_object* v___x_1732_; uint8_t v___x_1733_; 
+lean_inc_ref(v___y_1729_);
 v_ann_1731_ = lean_string_append(v___y_1729_, v___y_1730_);
-lean_dec_ref(v___y_1730_);
 v___x_1732_ = lean_unsigned_to_nat(1u);
 v___x_1733_ = lean_nat_dec_eq(v_n_1724_, v___x_1732_);
 if (v___x_1733_ == 0)
@@ -6029,8 +6031,8 @@ goto v___jp_1873_;
 v___jp_1806_:
 {
 lean_object* v_ann_1809_; lean_object* v___x_1810_; uint8_t v___x_1811_; 
+lean_inc_ref(v___y_1807_);
 v_ann_1809_ = lean_string_append(v___y_1807_, v___y_1808_);
-lean_dec_ref(v___y_1808_);
 v___x_1810_ = lean_unsigned_to_nat(1u);
 v___x_1811_ = lean_nat_dec_eq(v_n_1802_, v___x_1810_);
 if (v___x_1811_ == 0)

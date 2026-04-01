@@ -2858,9 +2858,8 @@ if (lean_obj_tag(v___x_979_) == 0)
 {
 lean_object* v_a_980_; lean_object* v___f_981_; lean_object* v___x_982_; 
 v_a_980_ = lean_ctor_get(v___x_979_, 0);
-lean_inc(v_a_980_);
+lean_inc_n(v_a_980_, 2);
 lean_dec_ref(v___x_979_);
-lean_inc(v_a_980_);
 lean_inc(v_a_962_);
 v___f_981_ = lean_alloc_closure((void*)(l___private_Lean_Meta_Transform_0__Lean_Meta_transformWithCache_visit___at___00Lean_Meta_transform___at___00Lean_Meta_Match_unfoldNamedPattern_spec__0_spec__0___lam__2___boxed), 4, 3);
 lean_closure_set(v___f_981_, 0, v_a_962_);
