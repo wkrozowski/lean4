@@ -14,5 +14,7 @@ roots = [
   "DeprecatedModule.ConsumerIgnoreAll",
   "DeprecatedModule.ConsumerIgnoreOne",
   "DeprecatedModule.ConsumerIgnoreWhitespace",
+  "DeprecatedModule.ConsumerIgnoreOnlyImport",
+  "DeprecatedModule.ConsumerIgnoreLastImport",
   "DeprecatedModule.ConsumerShowDeprecated",
 ]

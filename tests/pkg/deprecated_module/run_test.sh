@@ -20,6 +20,18 @@ check_out_contains "module is already marked as deprecated"
 # ConsumerIgnoreOne: "deprecated_module: ignore" on Old import only — OldNoMessage should still warn
 check_out_contains "ConsumerIgnoreOne.lean:1:0: 'DeprecatedModule.OldNoMessage' has been deprecated"
 
+# ConsumerIgnoreOnlyImport: single import with "deprecated_module: ignore" — no warning
+if grep -Fq "ConsumerIgnoreOnlyImport.lean" "$CAPTURED.out.produced"; then
+  fail "ConsumerIgnoreOnlyImport should not produce any deprecation warning"
+fi
+
+# ConsumerIgnoreLastImport: "deprecated_module: ignore" on last import (Old) — OldNoMessage should
+# still warn, but Old should be suppressed
+check_out_contains "ConsumerIgnoreLastImport.lean:1:0: 'DeprecatedModule.OldNoMessage' has been deprecated"
+if grep -Fq "ConsumerIgnoreLastImport.lean:1:0: 'DeprecatedModule.Old' has been deprecated" "$CAPTURED.out.produced"; then
+  fail "ConsumerIgnoreLastImport should not warn about Old (annotated with deprecated_module: ignore)"
+fi
+
 # ConsumerShowDeprecated: #show_deprecated_modules should still list deprecated modules
 # even when warnings are suppressed via "deprecated_module: ignore"
 check_out_contains "ConsumerShowDeprecated.lean:6:0: Deprecated modules"

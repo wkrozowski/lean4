@@ -50,6 +50,7 @@ def processHeaderCore
     (mainModule := Name.anonymous) (package? : Option PkgId := none)
     (arts : NameMap ImportArtifacts := {})
     (headerStx? : Option HeaderSyntax := none)
+    (origHeaderStx? : Option HeaderSyntax := none)
     : IO (Environment × MessageLog) := do
   let level := if isModule then
     if Elab.inServer.get opts then
@@ -71,10 +72,12 @@ def processHeaderCore
   -- Check for deprecated module imports.
   -- The "deprecated_module: ignore" comment can be placed on the `module` keyword to suppress
   -- all warnings, or on individual `import` statements to suppress specific ones.
+  -- We prefer `origHeaderStx?` (untrimmed) over `headerStx?` (possibly trimmed) so that
+  -- trailing comments on the last import are not lost to `unsetTrailing`.
   let messages := Id.run do
     let mut opts := opts
     let mut ignoreDeprecatedImports : NameSet := {}
-    if let some headerStx := headerStx? then
+    if let some headerStx := origHeaderStx? <|> headerStx? then
       match headerStx with
       | `(Parser.Module.header| $[module%$moduleTk]? $[prelude%$_]? $importsStx*) =>
         if moduleTk.any (·.getTrailing?.any (·.toString.contains "deprecated_module: ignore")) then
