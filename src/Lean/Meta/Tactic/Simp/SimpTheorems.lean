@@ -362,7 +362,15 @@ private def checkTypeIsProp (type : Expr) : MetaM Unit :=
   unless (← isProp type) do
     throwError "Invalid simp theorem: Expected a proposition, but found{indentExpr type}"
 
+private def checkSimpTheoremVarHead (type : Expr) : MetaM Unit := do
+  forallTelescopeReducing type fun _ body => do
+  let some (_, lhs, _) := body.eq? | throwError "Unexpected kind of simp theorem{indentExpr type}"
+  let headSym := lhs.getAppFn
+  if headSym.isFVar then
+    throwError "Invalid simp theorem: Left-hand side {lhs} has variable as head symbol"
+
 private def mkSimpTheoremKeys (type : Expr) (noIndexAtArgs : Bool) : MetaM (Array SimpTheoremKey × Bool) := do
+  checkSimpTheoremVarHead type
   withNewMCtxDepth do
     let (_, _, type) ← forallMetaTelescopeReducing type
     let type ← whnfR type
