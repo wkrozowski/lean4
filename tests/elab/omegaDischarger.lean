@@ -1,5 +1,7 @@
 -- https://github.com/leanprover/lean4/issues/3805
 
+set_option warning.simp.varHead false
+
 variable {x y: Nat} {p : Nat → Nat → Prop}
 theorem foo (h: ¬ y < x) : p x y := sorry
 

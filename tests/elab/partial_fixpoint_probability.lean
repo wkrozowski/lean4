@@ -133,6 +133,7 @@ info: geom.eq_1 :
 theorem geom_0 : geom 0 = .one_half := by
   rw [geom]; simp [bind, coin, pure]
 
+set_option warning.simp.varHead false in
 theorem geom_succ : geom (n+1) = .one_half * geom n := by
   conv => lhs; rw [geom]
   simp [bind, coin, pure, apply_ite]

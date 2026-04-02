@@ -2,6 +2,8 @@ namespace Option
 
 variable {α : Type _}
 
+set_option warning.simp.varHead false
+
 instance merge_isCommutative (f : α → α → α) [Std.Commutative f] :
     Std.Commutative (merge f) :=
   ⟨fun a b ↦ by cases a <;> cases b <;> simp [merge, Std.Commutative.comm]⟩
