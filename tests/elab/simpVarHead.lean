@@ -27,7 +27,11 @@ attribute [local simp ←] broken2
 end
 theorem broken3 (x : Nat → Nat) : x 0 = x 0 + 0 := by simp
 
-/-- error: Invalid simp theorem: Left-hand side x 0 has variable as head symbol -/
+/--
+warning: Left-hand side x 0 has variable as head symbol and such lemma might never fire. ⏎
+
+Disable `warning.simp.varHead` to silence this warning.
+-/
 #guard_msgs in
 attribute [simp] broken3
 
