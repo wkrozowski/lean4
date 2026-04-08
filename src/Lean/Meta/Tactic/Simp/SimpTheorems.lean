@@ -50,6 +50,12 @@ register_builtin_option debug.tactic.simp.checkDefEqAttr : Bool := {
     of the `defeq` attribute, and warn if it was. Note that this is a costly check."
 }
 
+register_builtin_option warning.simp.varHead : Bool := {
+  defValue := true
+  descr := "If true, checks whether the head symbol of the left-hand side of a `@[simp]` theorem \
+    is a variable."
+}
+
 /--
 An `Origin` is an identifier for simp theorems which indicates roughly
 what action the user took which lead to this theorem existing in the simp set.
@@ -369,8 +375,9 @@ private def mkSimpTheoremKeys (type : Expr) (noIndexAtArgs : Bool) (checkLhs : B
     match type.eq? with
     | some (_, lhs, rhs) =>
       let keys ← DiscrTree.mkPath lhs noIndexAtArgs
-      if checkLhs && keys[0]? == some .star then
-        logWarning m!"Left-hand side has variable as head symbol and such simp lemma will never fire"
+      if checkLhs && warning.simp.varHead.get (← getOptions) && keys[0]? == some .star then
+        logWarning m!"Left-hand side has variable as head symbol\n\
+          Use `set_option warning.simp.varHead false` to disable this warning."
       pure (keys, ← isPerm lhs rhs)
     | none => throwError "Unexpected kind of simp theorem{indentExpr type}"
 

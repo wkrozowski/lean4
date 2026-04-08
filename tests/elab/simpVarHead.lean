@@ -2,7 +2,8 @@ section
 theorem broken1 (x : Nat) : x = x + 0 := by simp
 
 /--
-warning: Left-hand side has variable as head symbol and such simp lemma will never fire
+warning: Left-hand side has variable as head symbol
+Use `set_option warning.simp.varHead false` to disable this warning.
 -/
 #guard_msgs in
 attribute [local simp] broken1
@@ -16,7 +17,8 @@ attribute [local simp] broken2
 
 -- Breaks in the other direction
 /--
-warning: Left-hand side has variable as head symbol and such simp lemma will never fire
+warning: Left-hand side has variable as head symbol
+Use `set_option warning.simp.varHead false` to disable this warning.
 -/
 #guard_msgs in
 attribute [local simp ←] broken2
@@ -25,7 +27,8 @@ end
 theorem broken3 (x : Nat → Nat) : x 0 = x 0 + 0 := by simp
 
 /--
-warning: Left-hand side has variable as head symbol and such simp lemma will never fire
+warning: Left-hand side has variable as head symbol
+Use `set_option warning.simp.varHead false` to disable this warning.
 -/
 #guard_msgs in
 attribute [simp] broken3
@@ -33,14 +36,16 @@ attribute [simp] broken3
 theorem broken4 (x : Nat → Nat) : x 0 + 0 = x 0 := by rfl
 
 /--
-warning: Left-hand side has variable as head symbol and such simp lemma will never fire
+warning: Left-hand side has variable as head symbol
+Use `set_option warning.simp.varHead false` to disable this warning.
 -/
 #guard_msgs in
 attribute [simp ←] broken4
 
 section
 /--
-warning: Left-hand side has variable as head symbol and such simp lemma will never fire
+warning: Left-hand side has variable as head symbol
+Use `set_option warning.simp.varHead false` to disable this warning.
 -/
 #guard_msgs in
 @[local simp] theorem broken5 (x : Prop) : x ↔ x ∧ True := by simp
@@ -49,7 +54,8 @@ end
 theorem broken6 (x : Prop → Prop) : x False ∧ True ↔ x False := by simp
 
 /--
-warning: Left-hand side has variable as head symbol and such simp lemma will never fire
+warning: Left-hand side has variable as head symbol
+Use `set_option warning.simp.varHead false` to disable this warning.
 -/
 #guard_msgs in
 attribute [simp ←] broken6
@@ -64,3 +70,12 @@ theorem Foo.get_mk (n : Nat) : (Foo.mk n).get = n := rfl
 
 #guard_msgs in
 attribute [simp] Foo.get_mk
+
+-- Option to disable the warning
+section
+theorem broken7 (x : Nat) : x = x + 0 := by omega
+
+#guard_msgs in
+set_option warning.simp.varHead false in
+attribute [local simp] broken7
+end
