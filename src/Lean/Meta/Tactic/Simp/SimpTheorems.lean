@@ -362,18 +362,22 @@ private def checkTypeIsProp (type : Expr) : MetaM Unit :=
   unless (← isProp type) do
     throwError "Invalid simp theorem: Expected a proposition, but found{indentExpr type}"
 
-private def mkSimpTheoremKeys (type : Expr) (noIndexAtArgs : Bool) : MetaM (Array SimpTheoremKey × Bool) := do
+private def mkSimpTheoremKeys (type : Expr) (noIndexAtArgs : Bool) (checkLhs : Bool := false) : MetaM (Array SimpTheoremKey × Bool) := do
   withNewMCtxDepth do
     let (_, _, type) ← forallMetaTelescopeReducing type
     let type ← whnfR type
     match type.eq? with
-    | some (_, lhs, rhs) => pure (← DiscrTree.mkPath lhs noIndexAtArgs, ← isPerm lhs rhs)
+    | some (_, lhs, rhs) =>
+      let keys ← DiscrTree.mkPath lhs noIndexAtArgs
+      if checkLhs && keys[0]? == some .star then
+        logWarning m!"Left-hand side has variable as head symbol and such simp lemma will never fire"
+      pure (keys, ← isPerm lhs rhs)
     | none => throwError "Unexpected kind of simp theorem{indentExpr type}"
 
-private def mkSimpTheoremCore (origin : Origin) (e : Expr) (levelParams : Array Name) (proof : Expr) (post : Bool) (prio : Nat) (noIndexAtArgs : Bool) : MetaM SimpTheorem := do
+private def mkSimpTheoremCore (origin : Origin) (e : Expr) (levelParams : Array Name) (proof : Expr) (post : Bool) (prio : Nat) (noIndexAtArgs : Bool) (checkLhs : Bool := false) : MetaM SimpTheorem := do
   assert! origin != .fvar ⟨.anonymous⟩
   let type ← instantiateMVars (← inferType e)
-  let (keys, perm) ← mkSimpTheoremKeys type noIndexAtArgs
+  let (keys, perm) ← mkSimpTheoremKeys type noIndexAtArgs checkLhs
   return { origin, keys, perm, post, levelParams, proof, priority := prio, rfl := (← isRflProof proof) }
 
 /--
@@ -381,7 +385,7 @@ Creates a `SimpTheorem` from a global theorem.
 Because some theorems lead to multiple `SimpTheorems` (in particular conjunctions), returns an array.
 -/
 def mkSimpTheoremFromConst (declName : Name) (post := true) (inv := false)
-    (prio : Nat := eval_prio default) : MetaM (Array SimpTheorem) := do
+    (prio : Nat := eval_prio default) (checkLhs : Bool := false) : MetaM (Array SimpTheorem) := do
   let cinfo ← getConstVal declName
   let us := cinfo.levelParams.map mkLevelParam
   let origin := .decl declName post inv
@@ -395,10 +399,10 @@ def mkSimpTheoremFromConst (declName : Name) (post := true) (inv := false)
         let auxName ← mkAuxLemma (kind? := `_simp) cinfo.levelParams type val (inferRfl := true)
           (forceExpose := true)  -- These kinds of theorems are small and `to_additive` may need to
                                  -- unfold them.
-        r := r.push <| (← do mkSimpTheoremCore origin (mkConst auxName us) #[] (mkConst auxName) post prio (noIndexAtArgs := false))
+        r := r.push <| (← do mkSimpTheoremCore origin (mkConst auxName us) #[] (mkConst auxName) post prio (noIndexAtArgs := false) (checkLhs := checkLhs))
       return r
     else
-      return #[← withoutExporting do mkSimpTheoremCore origin (mkConst declName us) #[] (mkConst declName) post prio (noIndexAtArgs := false)]
+      return #[← withoutExporting do mkSimpTheoremCore origin (mkConst declName us) #[] (mkConst declName) post prio (noIndexAtArgs := false) (checkLhs := checkLhs)]
 
 def SimpTheorem.getValue (simpThm : SimpTheorem) : MetaM Expr := do
   if simpThm.proof.isConst && simpThm.levelParams.isEmpty then
@@ -652,7 +656,7 @@ def SimpExtension.getTheorems (ext : SimpExtension) : CoreM SimpTheorems :=
 Adds a simp theorem to a simp extension
 -/
 def addSimpTheorem (ext : SimpExtension) (declName : Name) (post : Bool) (inv : Bool) (attrKind : AttributeKind) (prio : Nat) : MetaM Unit := do
-  let simpThms ← withExporting (isExporting := attrKind != .local && !isPrivateName declName) do mkSimpTheoremFromConst declName post inv prio
+  let simpThms ← withExporting (isExporting := attrKind != .local && !isPrivateName declName) do mkSimpTheoremFromConst declName post inv prio (checkLhs := true)
   for simpThm in simpThms do
     ext.add (SimpEntry.thm simpThm) attrKind
 
