@@ -53,3 +53,14 @@ warning: Left-hand side has variable as head symbol and such simp lemma will nev
 -/
 #guard_msgs in
 attribute [simp ←] broken6
+
+-- Abbrev as head symbol should not trigger the warning (mathlib false positive regression test)
+structure Foo where
+  val : Nat
+
+abbrev Foo.get (f : Foo) : Nat := f.val
+
+theorem Foo.get_mk (n : Nat) : (Foo.mk n).get = n := rfl
+
+#guard_msgs in
+attribute [simp] Foo.get_mk
