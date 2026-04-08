@@ -240,6 +240,7 @@ def addInstance (declName : Name) (attrKind : AttributeKind) (prio : Nat) : Meta
     let type ← inferType c
     forallTelescopeReducing type fun _ target => do
       unless (← isClass? target).isSome do
+        unless target.isSorry do
         logWarning m!"instance `{declName}` target `{target}` is not a type class. \n\n\
         Disable `warning.nonClassInstance` to silence this warning."
   let keys ← mkInstanceKey c

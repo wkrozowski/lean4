@@ -1,2 +1,4 @@
-simp_proj_transparency_issue.lean:6:2-6:10: warning: instance `f` must be marked with `@[reducible]` or `@[implicit_reducible]`
-simp_proj_transparency_issue.lean:11:2-11:10: warning: instance `g` must be marked with `@[reducible]` or `@[implicit_reducible]`
+simp_proj_transparency_issue.lean:5:2-5:10: warning: instance `f` must be marked with `@[reducible]` or `@[implicit_reducible]`
+simp_proj_transparency_issue.lean:5:0-7:16: warning: Definition `f` of class type must be marked with `@[reducible]` or `@[implicit_reducible]`
+simp_proj_transparency_issue.lean:9:2-9:10: warning: instance `g` must be marked with `@[reducible]` or `@[implicit_reducible]`
+simp_proj_transparency_issue.lean:9:0-11:16: warning: Definition `g` of class type must be marked with `@[reducible]` or `@[implicit_reducible]`
