@@ -75,7 +75,7 @@ attribute [simp] Foo.get_mk
 theorem broken8 : (fun x : Nat => x + 0) = (fun x => x) := by ext; omega
 
 /--
-warning: Left-hand side of simp theorem has an unrecognized head symbol (e.g. a lambda expression). This theorem is unlikely to ever be applied by `simp`.
+warning: Left-hand side of simp theorem is headed by a `.other` key in the discrimination tree (e.g. because it is a lambda expression). This theorem will be tried against all expressions that also have a `.other` key as head, which can cause slowdowns. This may be acceptable for `local` or `scoped` simp lemmas.
 Use `set_option warning.simp.otherHead false` to disable this warning.
 -/
 #guard_msgs in

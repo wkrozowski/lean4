@@ -58,8 +58,8 @@ register_builtin_option warning.simp.varHead : Bool := {
 
 register_builtin_option warning.simp.otherHead : Bool := {
   defValue := true
-  descr := "If true, warns when the left-hand side of a `@[simp]` theorem has an unrecognized \
-    head symbol (e.g. a lambda expression). Such lemmas are unlikely to ever be applied."
+  descr := "If true, warns when the left-hand side of a `@[simp]` theorem is headed by a \
+    `.other` key in the discrimination tree (e.g. a lambda expression). Such lemmas can cause slowdowns."
 }
 
 /--
@@ -388,8 +388,11 @@ private def mkSimpTheoremKeys (type : Expr) (noIndexAtArgs : Bool) (checkLhs : B
             This may be acceptable for `local` or `scoped` simp lemmas.\n\
             Use `set_option warning.simp.varHead false` to disable this warning."
         if warning.simp.otherHead.get (← getOptions) && keys[0]? == some .other then
-          logWarning m!"Left-hand side of simp theorem has an unrecognized head symbol \
-            (e.g. a lambda expression). This theorem is unlikely to ever be applied by `simp`.\n\
+          logWarning m!"Left-hand side of simp theorem is headed by a `.other` key in the \
+            discrimination tree (e.g. because it is a lambda expression). \
+            This theorem will be tried against all expressions that also have a `.other` key as head, \
+            which can cause slowdowns. \
+            This may be acceptable for `local` or `scoped` simp lemmas.\n\
             Use `set_option warning.simp.otherHead false` to disable this warning."
       pure (keys, ← isPerm lhs rhs)
     | none => throwError "Unexpected kind of simp theorem{indentExpr type}"
