@@ -141,7 +141,7 @@ where
         | some reason => messages.add {
             fileName := inputCtx.fileName
             pos := inputCtx.fileMap.toPosition startPos
-            severity := .warning
+            severity := .error
             data := s!"module name '{mainModule}' is not portable: {reason}"
           }
         | none => messages
