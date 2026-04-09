@@ -96,17 +96,9 @@ def checkDeprecatedImports
       | none => messages
     | none => messages
 
-/--
-Characters that are forbidden in module name components on some operating systems.
-Source: https://learn.microsoft.com/en-gb/windows/win32/fileio/naming-a-file
--/
 private def osForbiddenChars : Array Char :=
   #['<', '>', '"', '|', '?', '*', '!']
 
-/--
-File names that are reserved on some operating systems (case-insensitive).
-Source: https://learn.microsoft.com/en-gb/windows/win32/fileio/naming-a-file
--/
 private def osForbiddenNames : Array String :=
   #["CON", "PRN", "AUX", "NUL",
     "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
@@ -114,10 +106,6 @@ private def osForbiddenNames : Array String :=
     "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
     "LPT¹", "LPT²", "LPT³"]
 
-/--
-Check whether a module name component is portable across operating systems.
-Returns a reason string if the component is not portable, or `none` if it is.
--/
 private def checkComponentPortability (comp : String) : Option String :=
   if osForbiddenNames.contains comp.toUpper then
     some s!"'{comp}' is a reserved file name on some operating systems"
@@ -126,9 +114,6 @@ private def checkComponentPortability (comp : String) : Option String :=
   else
     none
 
-/--
-Check whether a module name is portable across operating systems and add a warning if not.
--/
 def checkModuleNamePortability
     (mainModule : Name) (inputCtx : Parser.InputContext) (startPos : String.Pos.Raw)
     (messages : MessageLog) : MessageLog :=
