@@ -77,10 +77,10 @@ class Foo where
   x : Nat
   y : Nat
 
-instance f (x : Nat) : Foo :=
+@[implicit_reducible] def f (x : Nat) : Foo :=
   { x, y := ack 10 10 }
 
-instance g (x : Nat) : Foo :=
+@[implicit_reducible] def g (x : Nat) : Foo :=
   { x, y := ack 10 11 }
 
 open Lean Meta

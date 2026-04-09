@@ -2,12 +2,10 @@ structure Foo where
   x : Nat
   y : Nat := 10
 
-@[instance]
-def f (x : Nat) : Foo :=
+@[implicit_reducible] def f (x : Nat) : Foo :=
   { x := x + x }
 
-@[instance]
-def g (x : Nat) : Foo :=
+@[implicit_reducible] def g (x : Nat) : Foo :=
   { x := x + x }
 
 opaque q : Nat → Prop
