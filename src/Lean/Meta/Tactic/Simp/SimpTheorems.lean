@@ -52,8 +52,14 @@ register_builtin_option debug.tactic.simp.checkDefEqAttr : Bool := {
 
 register_builtin_option warning.simp.varHead : Bool := {
   defValue := true
-  descr := "If true, checks whether the head symbol of the left-hand side of a `@[simp]` theorem \
-    is a variable."
+  descr := "If true, warns when the head symbol of the left-hand side of a `@[simp]` theorem \
+    is a variable. Such lemmas are tried on every simp step, which can be slow."
+}
+
+register_builtin_option warning.simp.otherHead : Bool := {
+  defValue := true
+  descr := "If true, warns when the left-hand side of a `@[simp]` theorem has an unrecognized \
+    head symbol (e.g. a lambda expression). Such lemmas are unlikely to ever be applied."
 }
 
 /--
@@ -375,9 +381,16 @@ private def mkSimpTheoremKeys (type : Expr) (noIndexAtArgs : Bool) (checkLhs : B
     match type.eq? with
     | some (_, lhs, rhs) =>
       let keys ← DiscrTree.mkPath lhs noIndexAtArgs
-      if checkLhs && warning.simp.varHead.get (← getOptions) && keys[0]? == some .star then
-        logWarning m!"Left-hand side has variable as head symbol\n\
-          Use `set_option warning.simp.varHead false` to disable this warning."
+      if checkLhs then
+        if warning.simp.varHead.get (← getOptions) && keys[0]? == some .star then
+          logWarning m!"Left-hand side of simp theorem has a variable as head symbol. \
+            This means the theorem will be tried on every simp step, which can be expensive. \
+            This may be acceptable for `local` or `scoped` simp lemmas.\n\
+            Use `set_option warning.simp.varHead false` to disable this warning."
+        if warning.simp.otherHead.get (← getOptions) && keys[0]? == some .other then
+          logWarning m!"Left-hand side of simp theorem has an unrecognized head symbol \
+            (e.g. a lambda expression). This theorem is unlikely to ever be applied by `simp`.\n\
+            Use `set_option warning.simp.otherHead false` to disable this warning."
       pure (keys, ← isPerm lhs rhs)
     | none => throwError "Unexpected kind of simp theorem{indentExpr type}"
 
