@@ -122,3 +122,105 @@ error: invalid attribute `builtin_env_linter`, linter `dummyBadName` has already
 /-- info: false -/
 #guard_msgs in
 #eval isAutoDecl `Nat.add
+
+/-! ## Test: getChecks -/
+
+-- Default mode: only isDefault=true linters
+def testGetChecksDefault : CoreM (Array Name) := do
+  let checks ← getChecks (clippy := false) (runOnly := none)
+  return checks.map (·.name)
+
+-- dummyBadName is default, dummyDisabledLinter is not
+/-- info: #[`dummyBadName] -/
+#guard_msgs in
+#eval testGetChecksDefault
+
+-- Clippy mode: all linters
+def testGetChecksClippy : CoreM (Array Name) := do
+  let checks ← getChecks (clippy := true) (runOnly := none)
+  return checks.map (·.name)
+
+/-- info: #[`dummyBadName, `dummyDisabledLinter] -/
+#guard_msgs in
+#eval testGetChecksClippy
+
+-- runOnly: only specified linters
+def testGetChecksRunOnly : CoreM (Array Name) := do
+  let checks ← getChecks (clippy := false) (runOnly := some [`dummyDisabledLinter])
+  return checks.map (·.name)
+
+/-- info: #[`dummyDisabledLinter] -/
+#guard_msgs in
+#eval testGetChecksRunOnly
+
+/-! ## Test: getDeclsInCurrModule -/
+
+def testDeclsInCurrModule : CoreM Bool := do
+  let decls ← getDeclsInCurrModule
+  -- Our test declarations should be in the current module
+  return decls.contains `badDef && decls.contains `goodDef && decls.contains `badButNolinted
+
+/-- info: true -/
+#guard_msgs in
+#eval testDeclsInCurrModule
+
+/-! ## Test: lintCore -/
+
+-- lintCore should find badDef but not goodDef or badButNolinted
+def testLintCore : CoreM (Array (Name × Nat)) := do
+  let linters ← getChecks (clippy := false) (runOnly := none)
+  let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
+  return results.map fun (linter, msgs) => (linter.name, msgs.size)
+
+/-- info: #[(`dummyBadName, 1)] -/
+#guard_msgs in
+#eval testLintCore
+
+-- Verify which declaration was flagged
+def testLintCoreDetail : CoreM (Array Name) := do
+  let linters ← getChecks (clippy := false) (runOnly := none)
+  let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
+  let mut flagged := #[]
+  for (_, msgs) in results do
+    for (name, _) in msgs.toArray do
+      flagged := flagged.push name
+  return flagged
+
+/-- info: #[`badDef] -/
+#guard_msgs in
+#eval testLintCoreDetail
+
+/-! ## Test: formatLinterResults -/
+
+def testFormatResults : CoreM Format := do
+  let linters ← getChecks (clippy := false) (runOnly := none)
+  let results ← lintCore #[`badDef, `goodDef] linters
+  let msg ← formatLinterResults results #[`badDef, `goodDef]
+    (groupByFilename := false) (whereDesc := "in test") (runClippyLinters := true)
+    (verbose := .medium) (numLinters := linters.size)
+  return (← msg.format)
+
+/--
+info: -- Found 1 error in 2 declarations (plus 0 automatically generated ones) in test with 1 linters
+
+/- The `dummyBadName` linter reports:
+found bad names -/
+#check badDef /- declaration name starts with 'bad' -/
+-/
+#guard_msgs in
+#eval testFormatResults
+
+-- No errors case
+def testFormatResultsClean : CoreM Format := do
+  let linters ← getChecks (clippy := false) (runOnly := none)
+  let results ← lintCore #[`goodDef] linters
+  let msg ← formatLinterResults results #[`goodDef]
+    (groupByFilename := false) (whereDesc := "in test") (runClippyLinters := true)
+    (verbose := .medium) (numLinters := linters.size)
+  return (← msg.format)
+
+/--
+info: -- Found 0 errors in 1 declarations (plus 0 automatically generated ones) in test with 1 linters
+-/
+#guard_msgs in
+#eval testFormatResultsClean

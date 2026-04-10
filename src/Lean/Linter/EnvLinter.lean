@@ -7,3 +7,4 @@ module
 
 prelude
 public import Lean.Linter.EnvLinter.Basic
+public import Lean.Linter.EnvLinter.Frontend
