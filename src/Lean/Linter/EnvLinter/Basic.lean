@@ -74,7 +74,7 @@ def isAutoDecl (decl : Name) : CoreM Bool := do
       if env.isConstructor (Name.str (Name.str n "_functor") s) then return true
   pure false
 
-/-- An environment linting test for the `#lint` / `lake lint` commands. -/
+/-- An environment linting test for the `lake builtin-lint` command. -/
 structure EnvLinter where
   /-- `test` defines a test to perform on every declaration. It should never fail. Returning `none`
   signifies a passing test. Returning `some msg` reports a failing test with error `msg`. -/
@@ -110,7 +110,7 @@ builtin_initialize envLinterExt :
 /--
 Defines the `@[builtin_env_linter]` attribute for adding a linter to the default set.
 The form `@[builtin_env_linter disabled]` will not add the linter to the default set,
-but it can be selected by `lake lint --clippy`.
+but it can be selected by `lake builtin-lint --clippy`.
 
 Linters are named using their declaration names, without the namespace. These must be distinct.
 -/
@@ -118,7 +118,7 @@ syntax (name := builtin_env_linter) "builtin_env_linter" &" disabled"? : attr
 
 builtin_initialize registerBuiltinAttribute {
   name := `builtin_env_linter
-  descr := "Use this declaration as a linting test in `lake lint`"
+  descr := "Use this declaration as a linting test in `lake builtin-lint`"
   add   := fun decl stx kind => do
     let dflt := stx[1].isNone
     unless kind == .global do throwError "invalid attribute `builtin_env_linter`, must be global"
@@ -148,7 +148,7 @@ syntax (name := builtin_nolint) "builtin_nolint" (ppSpace ident)+ : attr
 builtin_initialize builtinNolintAttr : ParametricAttribute (Array Name) ←
   registerParametricAttribute {
     name := `builtin_nolint
-    descr := "Do not report this declaration in any of the tests of `lake lint`"
+    descr := "Do not report this declaration in any of the tests of `lake builtin-lint`"
     getParam := fun _ => fun
       | `(attr| builtin_nolint $[$ids]*) => ids.mapM fun id => withRef id <| do
         let shortName := id.getId.eraseMacroScopes
