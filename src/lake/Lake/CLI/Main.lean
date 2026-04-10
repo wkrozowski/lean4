@@ -27,6 +27,7 @@ import Lake.CLI.Build
 import Lake.CLI.Actions
 import Lake.CLI.Translate
 import Lake.CLI.Serve
+public import Lake.CLI.BuiltinLint
 import Init.Data.String.Modify
 
 -- # CLI
@@ -72,6 +73,7 @@ public structure LakeOptions where
   rev? : Option String := none
   maxRevs : Nat := 100
   shake : Shake.Args := {}
+  builtinLint : BuiltinLint.Args := {}
 
 def LakeOptions.outLv (opts : LakeOptions) : LogLevel :=
   opts.outLv?.getD opts.verbosity.minLogLv
@@ -302,6 +304,8 @@ def lakeLongOption : (opt : String) → CliM PUnit
 | "--"            => do
   let subArgs ← takeArgs
   modifyThe LakeOptions ({· with subArgs})
+-- Builtin lint options
+| "--clippy" => modifyThe LakeOptions ({· with builtinLint.clippy := true})
 -- Shake options
 | "--keep-implied" => modifyThe LakeOptions ({· with shake.keepImplied := true})
 | "--keep-prefix" => modifyThe LakeOptions ({· with shake.keepPrefix := true})
@@ -958,6 +962,25 @@ protected def checkLint : CliM PUnit := do
   let pkg ← loadPackage (← mkLoadConfig (← getThe LakeOptions))
   noArgsRem do exit <| if pkg.lintDriver.isEmpty then 1 else 0
 
+/-- The `lake builtin-lint` command: run builtin environment linters. -/
+protected def builtinLint : CliM PUnit := do
+  processOptions lakeOption
+  let opts ← getThe LakeOptions
+  let config ← mkLoadConfig opts
+  let ws ← loadWorkspace config
+  -- Get remaining arguments as module names
+  let mods := (← takeArgs).toArray.map (·.toName)
+  -- Get default target modules from workspace if no modules specified
+  let mods := if mods.isEmpty then ws.defaultTargetRoots else mods
+  if mods.isEmpty then
+    error "no modules specified and there are no applicable default targets"
+  let args := {opts.builtinLint with mods}
+  -- Set the search path so importModules can find oleans
+  Lean.searchPathRef.set ws.augmentedLeanPath
+  let exitCode ← BuiltinLint.run args
+  if exitCode != 0 then
+    exit exitCode
+
 protected def clean : CliM PUnit := do
   processOptions lakeOption
   let config ← mkLoadConfig (← getThe LakeOptions)
@@ -1148,6 +1171,7 @@ def lakeCli : (cmd : String) → CliM PUnit
 | "test"                => lake.test
 | "check-test"          => lake.checkTest
 | "lint"                => lake.lint
+| "builtin-lint"        => lake.builtinLint
 | "check-lint"          => lake.checkLint
 | "clean"               => lake.clean
 | "shake"               => lake.shake
