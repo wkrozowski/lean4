@@ -54,7 +54,6 @@ uint32_t lean_string_utf8_get_fast(lean_object*, lean_object*);
 lean_object* lean_string_utf8_next_fast(lean_object*, lean_object*);
 uint8_t lean_uint32_dec_eq(uint32_t, uint32_t);
 lean_object* lean_string_utf8_next(lean_object*, lean_object*);
-uint8_t l_String_instDecidableLtRaw___aux__1(lean_object*, lean_object*);
 uint32_t lean_string_utf8_get(lean_object*, lean_object*);
 lean_object* l_Substring_Raw_nextn(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_isLit_x3f(lean_object*, lean_object*);
@@ -69,7 +68,6 @@ lean_object* lean_array_uset(lean_object*, size_t, lean_object*);
 lean_object* lean_array_get_size(lean_object*);
 lean_object* lean_array_get(lean_object*, lean_object*, lean_object*);
 lean_object* lean_array_pop(lean_object*);
-uint8_t lean_nat_dec_le(lean_object*, lean_object*);
 size_t lean_usize_of_nat(lean_object*);
 lean_object* l_Lake_Toml_RBDict_findEntry_x3f___redArg(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_getArgs(lean_object*);
@@ -683,16 +681,17 @@ _start:
 lean_object* v___x_62_; lean_object* v___x_63_; lean_object* v___x_64_; 
 v___x_62_ = lean_obj_once(&l_Lean_addMessageContextPartial___at___00Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lake_Toml_Elab_Value_0__Lake_Toml_elabBoolean_spec__0_spec__0_spec__1___closed__1, &l_Lean_addMessageContextPartial___at___00Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lake_Toml_Elab_Value_0__Lake_Toml_elabBoolean_spec__0_spec__0_spec__1___closed__1_once, _init_l_Lean_addMessageContextPartial___at___00Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lake_Toml_Elab_Value_0__Lake_Toml_elabBoolean_spec__0_spec__0_spec__1___closed__1);
 v___x_63_ = lean_unsigned_to_nat(0u);
-v___x_64_ = lean_alloc_ctor(0, 9, 0);
+v___x_64_ = lean_alloc_ctor(0, 10, 0);
 lean_ctor_set(v___x_64_, 0, v___x_63_);
 lean_ctor_set(v___x_64_, 1, v___x_63_);
 lean_ctor_set(v___x_64_, 2, v___x_63_);
-lean_ctor_set(v___x_64_, 3, v___x_62_);
+lean_ctor_set(v___x_64_, 3, v___x_63_);
 lean_ctor_set(v___x_64_, 4, v___x_62_);
 lean_ctor_set(v___x_64_, 5, v___x_62_);
 lean_ctor_set(v___x_64_, 6, v___x_62_);
 lean_ctor_set(v___x_64_, 7, v___x_62_);
 lean_ctor_set(v___x_64_, 8, v___x_62_);
+lean_ctor_set(v___x_64_, 9, v___x_62_);
 return v___x_64_;
 }
 }
@@ -3257,7 +3256,7 @@ LEAN_EXPORT lean_object* l_Substring_Raw_takeWhileAux___at___00__private_Lake_To
 _start:
 {
 uint8_t v___y_1099_; uint8_t v___x_1100_; 
-v___x_1100_ = l_String_instDecidableLtRaw___aux__1(v_i_1094_, v_stopPos_1093_);
+v___x_1100_ = lean_nat_dec_lt(v_i_1094_, v_stopPos_1093_);
 if (v___x_1100_ == 0)
 {
 return v_i_1094_;

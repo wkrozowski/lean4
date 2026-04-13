@@ -21,14 +21,12 @@ lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, 
 extern lean_object* l_String_instInhabitedSlice;
 lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_nat_sub(lean_object*, lean_object*);
-uint8_t l_String_instDecidableLtRaw___aux__1(lean_object*, lean_object*);
+uint8_t lean_nat_dec_lt(lean_object*, lean_object*);
 uint8_t lean_string_get_byte_fast(lean_object*, lean_object*);
 uint8_t l_UInt8_instDecidableIsUTF8FirstByte___aux__1(uint8_t);
 lean_object* lean_string_utf8_byte_size(lean_object*);
 lean_object* l_panic___redArg(lean_object*, lean_object*);
-uint8_t lean_nat_dec_lt(lean_object*, lean_object*);
 uint8_t lean_uint32_dec_eq(uint32_t, uint32_t);
-uint8_t lean_nat_dec_le(lean_object*, lean_object*);
 uint8_t lean_byte_array_fget(lean_object*, lean_object*);
 uint8_t lean_uint8_land(uint8_t, uint8_t);
 uint8_t lean_uint8_dec_eq(uint8_t, uint8_t);
@@ -1669,7 +1667,7 @@ v_str_431_ = lean_ctor_get(v_s_429_, 0);
 v_startInclusive_432_ = lean_ctor_get(v_s_429_, 1);
 v_endExclusive_433_ = lean_ctor_get(v_s_429_, 2);
 v___x_434_ = lean_nat_sub(v_endExclusive_433_, v_startInclusive_432_);
-v___x_435_ = l_String_instDecidableLtRaw___aux__1(v_p_430_, v___x_434_);
+v___x_435_ = lean_nat_dec_lt(v_p_430_, v___x_434_);
 if (v___x_435_ == 0)
 {
 uint8_t v___x_436_; 
@@ -3330,7 +3328,7 @@ _start:
 lean_object* v___x_1003_; lean_object* v___x_1004_; lean_object* v___x_1005_; lean_object* v___x_1006_; lean_object* v___x_1007_; lean_object* v___x_1008_; 
 v___x_1003_ = ((lean_object*)(l_String_Slice_Pos_next_x21___closed__1));
 v___x_1004_ = lean_unsigned_to_nat(29u);
-v___x_1005_ = lean_unsigned_to_nat(1598u);
+v___x_1005_ = lean_unsigned_to_nat(1603u);
 v___x_1006_ = ((lean_object*)(l_String_Slice_Pos_next_x21___closed__0));
 v___x_1007_ = ((lean_object*)(l_String_fromUTF8_x21___closed__1));
 v___x_1008_ = l_mkPanicMessageWithDecl(v___x_1007_, v___x_1006_, v___x_1005_, v___x_1004_, v___x_1003_);
@@ -3599,7 +3597,7 @@ _start:
 lean_object* v___x_1118_; lean_object* v___x_1119_; lean_object* v___x_1120_; lean_object* v___x_1121_; lean_object* v___x_1122_; lean_object* v___x_1123_; 
 v___x_1118_ = ((lean_object*)(l_String_Slice_pos_x21___closed__1));
 v___x_1119_ = lean_unsigned_to_nat(4u);
-v___x_1120_ = lean_unsigned_to_nat(1686u);
+v___x_1120_ = lean_unsigned_to_nat(1691u);
 v___x_1121_ = ((lean_object*)(l_String_Slice_pos_x21___closed__0));
 v___x_1122_ = ((lean_object*)(l_String_fromUTF8_x21___closed__1));
 v___x_1123_ = l_mkPanicMessageWithDecl(v___x_1122_, v___x_1121_, v___x_1120_, v___x_1119_, v___x_1118_);
@@ -4874,7 +4872,7 @@ _start:
 lean_object* v___x_1602_; lean_object* v___x_1603_; lean_object* v___x_1604_; lean_object* v___x_1605_; lean_object* v___x_1606_; lean_object* v___x_1607_; 
 v___x_1602_ = ((lean_object*)(l_String_Slice_Pos_sliceOrPanic___redArg___closed__1));
 v___x_1603_ = lean_unsigned_to_nat(4u);
-v___x_1604_ = lean_unsigned_to_nat(2615u);
+v___x_1604_ = lean_unsigned_to_nat(2706u);
 v___x_1605_ = ((lean_object*)(l_String_Slice_Pos_sliceOrPanic___redArg___closed__0));
 v___x_1606_ = ((lean_object*)(l_String_fromUTF8_x21___closed__1));
 v___x_1607_ = l_mkPanicMessageWithDecl(v___x_1606_, v___x_1605_, v___x_1604_, v___x_1603_, v___x_1602_);
@@ -5069,7 +5067,7 @@ _start:
 lean_object* v___x_1673_; lean_object* v___x_1674_; lean_object* v___x_1675_; lean_object* v___x_1676_; lean_object* v___x_1677_; lean_object* v___x_1678_; 
 v___x_1673_ = ((lean_object*)(l_String_Slice_slice_x21___closed__1));
 v___x_1674_ = lean_unsigned_to_nat(4u);
-v___x_1675_ = lean_unsigned_to_nat(2639u);
+v___x_1675_ = lean_unsigned_to_nat(2730u);
 v___x_1676_ = ((lean_object*)(l_String_Slice_Pos_ofSlice_x21___redArg___closed__0));
 v___x_1677_ = ((lean_object*)(l_String_fromUTF8_x21___closed__1));
 v___x_1678_ = l_mkPanicMessageWithDecl(v___x_1677_, v___x_1676_, v___x_1675_, v___x_1674_, v___x_1673_);
@@ -5212,7 +5210,7 @@ _start:
 lean_object* v___x_1733_; lean_object* v___x_1734_; lean_object* v___x_1735_; lean_object* v___x_1736_; lean_object* v___x_1737_; lean_object* v___x_1738_; 
 v___x_1733_ = ((lean_object*)(l_String_Slice_Pos_slice_x21___redArg___closed__1));
 v___x_1734_ = lean_unsigned_to_nat(4u);
-v___x_1735_ = lean_unsigned_to_nat(2657u);
+v___x_1735_ = lean_unsigned_to_nat(2748u);
 v___x_1736_ = ((lean_object*)(l_String_Slice_Pos_slice_x21___redArg___closed__0));
 v___x_1737_ = ((lean_object*)(l_String_fromUTF8_x21___closed__1));
 v___x_1738_ = l_mkPanicMessageWithDecl(v___x_1737_, v___x_1736_, v___x_1735_, v___x_1734_, v___x_1733_);
@@ -5792,7 +5790,7 @@ LEAN_EXPORT lean_object* l_String_firstDiffPos_loop(lean_object* v_a_1974_, lean
 _start:
 {
 uint8_t v___x_1978_; 
-v___x_1978_ = l_String_instDecidableLtRaw___aux__1(v_i_1977_, v_stopPos_1976_);
+v___x_1978_ = lean_nat_dec_lt(v_i_1977_, v_stopPos_1976_);
 if (v___x_1978_ == 0)
 {
 return v_i_1977_;
