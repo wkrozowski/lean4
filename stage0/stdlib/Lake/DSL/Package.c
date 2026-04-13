@@ -1057,9 +1057,9 @@ v___x_178_ = l_Lean_addMessageContextPartial___at___00Lean_throwError___at___00L
 v_a_179_ = lean_ctor_get(v___x_178_, 0);
 lean_inc(v_a_179_);
 lean_dec_ref(v___x_178_);
-lean_inc_n(v_macroStack_177_, 2);
 v___x_180_ = l_Lean_Elab_getBetterRef(v_a_176_, v_macroStack_177_);
 lean_dec(v_a_176_);
+lean_inc(v_macroStack_177_);
 v___x_181_ = l_Lean_Elab_addMacroStack___at___00Lean_throwError___at___00Lean_throwErrorAt___at___00__private_Lake_DSL_Package_0__Lake_DSL_elabPackageCommand_spec__0_spec__0_spec__3___redArg(v_a_179_, v_macroStack_177_, v___y_173_);
 v_a_182_ = lean_ctor_get(v___x_181_, 0);
 v_isSharedCheck_190_ = !lean_is_exclusive(v___x_181_);

@@ -27528,6 +27528,7 @@ lean_inc(v_val_9065_);
 lean_dec_ref(v___x_9064_);
 v___x_9066_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___at___00__private_Lean_Compiler_LCNF_EmitC_0__Lean_Compiler_LCNF_emitFnDecls_spec__1___closed__1));
 v___x_9067_ = l_Lean_getExternEntryFor(v_val_9065_, v___x_9066_);
+lean_dec(v_val_9065_);
 if (lean_obj_tag(v___x_9067_) == 0)
 {
 goto v___jp_9061_;

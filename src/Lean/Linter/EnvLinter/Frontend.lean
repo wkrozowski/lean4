@@ -2,8 +2,7 @@
 Copyright (c) 2026 Lean FRO, LLC. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Wojciech Różowski
--/
-/-
+
 Copyright (c) 2020 Floris van Doorn. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Floris van Doorn, Robert Y. Lewis, Gabriel Ebner
@@ -15,6 +14,7 @@ public import Lean.Linter.EnvLinter.Basic
 import Lean.DeclarationRange
 import Lean.Util.Path
 import Lean.CoreM
+import Lean.Elab.Command
 
 public section
 
@@ -49,12 +49,6 @@ def getChecks (clippy : Bool) (runOnly : Option (List Name)) :
       result := result.binInsert (·.name.lt ·.name) linter
   pure result
 
-/-- The `Meta.Context` used when running environment linter tests.
-Matches the context used by `Command.liftTermElabM`. -/
-private def mkLintMetaContext : Meta.Context := {
-  keyedConfig := Meta.Config.toConfigWithKey
-    { foApprox := true, ctxApprox := true, quasiPatternApprox := true }
-}
 
 /--
 Runs all the specified linters on all the specified declarations in parallel,
@@ -69,7 +63,7 @@ def lintCore (decls : Array Name) (linters : Array NamedEnvLinter) :
         let act : MetaM (Option MessageData) := do
           linter.test decl
         EIO.asTask <| (← Core.wrapAsync (fun _ =>
-          act |>.run' mkLintMetaContext
+          act |>.run' Elab.Command.mkMetaContext
         ) (cancelTk? := none)) ()
 
   let result ← tasks.mapM fun (linter, decls) => do
@@ -162,7 +156,7 @@ def formatLinterResults
       } in {decls.size - numAutoDecls} declarations (plus {
       numAutoDecls} automatically generated ones) {whereDesc
       } with {numLinters} linters\n\n{s}"
-  unless runClippyLinters do s := m!"{s}-- (non-default linters skipped)\n"
+  unless runClippyLinters do s := m!"{s}-- (non-clippy linters skipped)\n"
   pure s
 
 /-- Get the list of declarations in the current module. -/

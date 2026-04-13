@@ -2338,7 +2338,6 @@ goto v___jp_469_;
 else
 {
 lean_object* v___x_514_; 
-lean_inc_ref(v___y_512_);
 v___x_514_ = l_Lean_Compiler_LCNF_Decl_isCasesOnParam_x3f___redArg(v___y_512_);
 if (lean_obj_tag(v___x_514_) == 1)
 {

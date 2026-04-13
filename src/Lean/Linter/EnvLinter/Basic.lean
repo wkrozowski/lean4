@@ -2,8 +2,7 @@
 Copyright (c) 2026 Lean FRO, LLC. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Wojciech Różowski
--/
-/-
+
 Copyright (c) 2020 Floris van Doorn. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Floris van Doorn, Robert Y. Lewis, Gabriel Ebner
@@ -13,11 +12,7 @@ module
 prelude
 public import Lean.Structure
 public import Lean.Elab.InfoTree.Main
-import Lean.Elab.Exception
 import Lean.ExtraModUses
-import Lean.ResolveName
-import Lean.AuxRecursor
-import Lean.Compiler.MetaAttr
 
 public section
 
@@ -109,12 +104,12 @@ builtin_initialize envLinterExt :
 
 /--
 Defines the `@[builtin_env_linter]` attribute for adding a linter to the default set.
-The form `@[builtin_env_linter disabled]` will not add the linter to the default set,
+The form `@[builtin_env_linter clippy]` will not add the linter to the default set,
 but it can be selected by `lake builtin-lint --clippy`.
 
 Linters are named using their declaration names, without the namespace. These must be distinct.
 -/
-syntax (name := builtin_env_linter) "builtin_env_linter" &" disabled"? : attr
+syntax (name := builtin_env_linter) "builtin_env_linter" &" clippy"? : attr
 
 builtin_initialize registerBuiltinAttribute {
   name := `builtin_env_linter

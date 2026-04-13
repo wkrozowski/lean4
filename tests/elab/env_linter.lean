@@ -76,15 +76,15 @@ def testShouldBeLinted (linter decl : Name) : CoreM Bool := do
 #guard_msgs in
 #eval testShouldBeLinted `dummyBadName `badDef
 
-/-! ## Test: builtin_env_linter disabled -/
+/-! ## Test: builtin_env_linter clippy -/
 
-@[builtin_env_linter disabled]
-public meta def dummyDisabledLinter : EnvLinter where
+@[builtin_env_linter clippy]
+public meta def dummyClippyLinter : EnvLinter where
   test _ := return none
   noErrorsFound := "ok"
   errorsFound := "err"
 
--- The extension stores (declName, isDefault). Disabled means isDefault = false.
+-- The extension stores (declName, isDefault). Clippy-only means isDefault = false.
 
 def testIsDefault (name : Name) : CoreM (Option Bool) := do
   let ext := envLinterExt.getState (← getEnv)
@@ -94,7 +94,7 @@ def testIsDefault (name : Name) : CoreM (Option Bool) := do
 
 /-- info: some false -/
 #guard_msgs in
-#eval testIsDefault `dummyDisabledLinter
+#eval testIsDefault `dummyClippyLinter
 
 /-- info: some true -/
 #guard_msgs in
@@ -130,7 +130,7 @@ def testGetChecksDefault : CoreM (Array Name) := do
   let checks ← getChecks (clippy := false) (runOnly := none)
   return checks.map (·.name)
 
--- dummyBadName is default, dummyDisabledLinter is not
+-- dummyBadName is default, dummyClippyLinter is not
 /-- info: #[`dummyBadName] -/
 #guard_msgs in
 #eval testGetChecksDefault
@@ -140,16 +140,16 @@ def testGetChecksClippy : CoreM (Array Name) := do
   let checks ← getChecks (clippy := true) (runOnly := none)
   return checks.map (·.name)
 
-/-- info: #[`dummyBadName, `dummyDisabledLinter] -/
+/-- info: #[`dummyBadName, `dummyClippyLinter] -/
 #guard_msgs in
 #eval testGetChecksClippy
 
 -- runOnly: only specified linters
 def testGetChecksRunOnly : CoreM (Array Name) := do
-  let checks ← getChecks (clippy := false) (runOnly := some [`dummyDisabledLinter])
+  let checks ← getChecks (clippy := false) (runOnly := some [`dummyClippyLinter])
   return checks.map (·.name)
 
-/-- info: #[`dummyDisabledLinter] -/
+/-- info: #[`dummyClippyLinter] -/
 #guard_msgs in
 #eval testGetChecksRunOnly
 

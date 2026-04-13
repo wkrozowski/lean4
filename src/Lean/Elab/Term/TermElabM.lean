@@ -232,7 +232,10 @@ structure TacticFinishedSnapshot extends Language.Snapshot where
   state? : Option SavedState
   /-- Untyped snapshots from `logSnapshotTask`, saved at this level for cancellation. -/
   moreSnaps : Array (SnapshotTask SnapshotTree)
-deriving Inhabited
+
+instance : Inhabited TacticFinishedSnapshot where
+  default := { toSnapshot := default, state? := default, moreSnaps := default }
+
 instance : ToSnapshotTree TacticFinishedSnapshot where
   toSnapshotTree s := ⟨s.toSnapshot, s.moreSnaps⟩
 
@@ -246,7 +249,10 @@ structure TacticParsedSnapshot extends Language.Snapshot where
   finished : SnapshotTask TacticFinishedSnapshot
   /-- Tasks for subsequent, potentially parallel, tactic steps. -/
   next     : Array (SnapshotTask TacticParsedSnapshot) := #[]
-deriving Inhabited
+
+instance : Inhabited TacticParsedSnapshot where
+  default := { toSnapshot := default, stx := default, finished := default }
+
 partial instance : ToSnapshotTree TacticParsedSnapshot where
   toSnapshotTree := go where
     go := fun s => ⟨s.toSnapshot,

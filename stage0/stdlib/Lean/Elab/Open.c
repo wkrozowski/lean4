@@ -1050,6 +1050,7 @@ lean_closure_set(v___f_369_, 8, v_toPure_363_);
 lean_closure_set(v___f_369_, 9, v_nss_359_);
 lean_closure_set(v___f_369_, 10, v_inst_356_);
 v___x_370_ = l_List_forIn_x27_loop___redArg(v_inst_350_, v___f_368_, v_nss_359_, v___x_366_);
+lean_dec(v_nss_359_);
 v___x_371_ = lean_apply_4(v_toBind_362_, lean_box(0), lean_box(0), v___x_370_, v___f_369_);
 return v___x_371_;
 }
@@ -2247,6 +2248,7 @@ _start:
 {
 lean_object* v_res_1167_; 
 v_res_1167_ = l_Lean_Elab_OpenDecl_elabOpenDecl___redArg___lam__29(v___x_1160_, v___f_1161_, v___x_1162_, v___y_1163_, v_toBind_1164_, v___f_1165_, v_a_1166_);
+lean_dec(v_a_1166_);
 lean_dec(v___y_1163_);
 return v_res_1167_;
 }
