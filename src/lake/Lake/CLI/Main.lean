@@ -306,6 +306,10 @@ def lakeLongOption : (opt : String) → CliM PUnit
   modifyThe LakeOptions ({· with subArgs})
 -- Builtin lint options
 | "--clippy" => modifyThe LakeOptions ({· with builtinLint.clippy := true})
+| "--lint-only" => do
+  let name ← takeOptArg "--lint-only" "linter name"
+  modifyThe LakeOptions fun opts =>
+    {opts with builtinLint.only := opts.builtinLint.only.push name.toName}
 -- Shake options
 | "--keep-implied" => modifyThe LakeOptions ({· with shake.keepImplied := true})
 | "--keep-prefix" => modifyThe LakeOptions ({· with shake.keepPrefix := true})

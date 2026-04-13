@@ -145,13 +145,7 @@ builtin_initialize builtinNolintAttr : ParametricAttribute (Array Name) ←
     name := `builtin_nolint
     descr := "Do not report this declaration in any of the tests of `lake builtin-lint`"
     getParam := fun _ => fun
-      | `(attr| builtin_nolint $[$ids]*) => ids.mapM fun id => withRef id <| do
-        let shortName := id.getId.eraseMacroScopes
-        let some (declName, _) := (envLinterExt.getState (← getEnv)).find? shortName
-          | throwError "linter '{shortName}' not found"
-        Elab.addConstInfo id declName
-        recordExtraModUseFromDecl (isMeta := false) declName
-        pure shortName
+      | `(attr| builtin_nolint $[$ids]*) => pure <| ids.map (·.getId.eraseMacroScopes)
       | _ => Elab.throwUnsupportedSyntax
   }
 

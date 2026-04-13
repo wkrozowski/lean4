@@ -58,7 +58,7 @@ public def run (args : Args) : IO UInt32 := do
         let fmtResults ←
           Linter.EnvLinter.formatLinterResults results decls
             (groupByFilename := true) (useErrorFormat := true)
-            s!"in {mod}" (runClippyLinters := args.clippy) .medium linters.size
+            s!"in {mod}" (runClippyLinters := args.clippy || !args.only.isEmpty) .medium linters.size
         IO.print (← fmtResults.toString)
       else
         IO.println s!"-- Linting passed for {mod}."

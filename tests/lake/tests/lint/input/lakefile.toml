@@ -1,0 +1,9 @@
+name = "lint"
+version = "0.1.0"
+defaultTargets = ["Main", "Clean"]
+
+[[lean_lib]]
+name = "Main"
+
+[[lean_lib]]
+name = "Clean"
