@@ -382,10 +382,10 @@ private def mkSimpTheoremCore (origin : Origin) (e : Expr) (levelParams : Array 
     forallTelescopeReducing type fun _ type => do
       let checkDefEq (lhs rhs : Expr) := do
         unless (← withTransparency .instances <| isDefEq lhs rhs) do
-          logWarning m!"`{origin.key}` is a `rfl` simp theorem, but its left-hand side{indentExpr lhs}\n\
+          logWarning m!"`{origin.key}` is a `[defeq]` simp theorem, but its left-hand side{indentExpr lhs}\n\
             is not definitionally equal to the right-hand side{indentExpr rhs}\n\
             at `.instances` transparency. Possible solutions:\n\
-            1- use `id rfl` as the proof\n\
+            1- use `(rfl)` as the proof\n\
             2- mark constants occurring in the lhs and rhs as `[implicit_reducible]`"
       match_expr type with
       | Eq _ lhs rhs => checkDefEq lhs rhs
