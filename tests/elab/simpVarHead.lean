@@ -1,3 +1,5 @@
+set_option warning.simp.varHead true
+
 section
 theorem broken1 (x : Nat) : x = x + 0 := by simp
 
