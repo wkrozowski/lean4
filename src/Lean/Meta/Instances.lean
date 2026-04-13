@@ -19,11 +19,6 @@ register_builtin_option synthInstance.checkSynthOrder : Bool := {
   descr := "check that instances do not introduce metavariable in non-out-params"
 }
 
-register_builtin_option warning.nonClassInstance : Bool := {
-  defValue := true
-  descr := "checks if any declaration whose type is not a class is marked as an instance"
-}
-
 /-
 Note: we want to use iota reduction when indexing instances. Otherwise,
 we cannot elaborate examples such as
@@ -251,13 +246,12 @@ def checkImpossibleInstance (c : Expr) : MetaM Unit := do
       ++ " that are impossible to infer. Those arguments are not instance-implicit and do not appear in another instance-implicit argument or the return type."
 
 def checkNonClassInstance (declName : Name) (c : Expr) : MetaM Unit := do
- if warning.nonClassInstance.get (← getOptions) then
-    let type ← inferType c
-    forallTelescopeReducing type fun _ target => do
-      unless (← isClass? target).isSome do
-        unless target.isSorry do
-        logWarning m!"instance `{declName}` target `{target}` is not a type class. \n\n\
-        Disable `warning.nonClassInstance` to silence this warning."
+  let type ← inferType c
+  forallTelescopeReducing type fun _ target => do
+    unless (← isClass? target).isSome do
+      unless target.isSorry do
+      throwError m!"instance `{declName}` target `{target}` is not a type class. \n\n\
+      Disable `warning.nonClassInstance` to silence this warning."
 
 def addInstance (declName : Name) (attrKind : AttributeKind) (prio : Nat) : MetaM Unit := do
   let c ← mkConstWithLevelParams declName
