@@ -1,9 +1,15 @@
 name = "lint"
 version = "0.1.0"
-defaultTargets = ["Main", "Clean"]
+defaultTargets = ["Main", "Clean", "Linters", "ClippyViolations"]
 
 [[lean_lib]]
 name = "Main"
 
 [[lean_lib]]
 name = "Clean"
+
+[[lean_lib]]
+name = "Linters"
+
+[[lean_lib]]
+name = "ClippyViolations"

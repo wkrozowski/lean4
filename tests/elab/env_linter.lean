@@ -131,7 +131,7 @@ def testGetChecksDefault : CoreM (Array Name) := do
   return checks.map (·.name)
 
 -- dummyBadName is default, dummyClippyLinter is not
-/-- info: #[`dummyBadName] -/
+/-- info: #[`defLemma, `dummyBadName] -/
 #guard_msgs in
 #eval testGetChecksDefault
 
@@ -140,7 +140,7 @@ def testGetChecksClippy : CoreM (Array Name) := do
   let checks ← getChecks (clippy := true) (runOnly := none)
   return checks.map (·.name)
 
-/-- info: #[`dummyBadName, `dummyClippyLinter] -/
+/-- info: #[`defLemma, `dummyBadName, `dummyClippyLinter] -/
 #guard_msgs in
 #eval testGetChecksClippy
 
@@ -172,7 +172,7 @@ def testLintCore : CoreM (Array (Name × Nat)) := do
   let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
   return results.map fun (linter, msgs) => (linter.name, msgs.size)
 
-/-- info: #[(`dummyBadName, 1)] -/
+/-- info: #[(`defLemma, 0), (`dummyBadName, 1)] -/
 #guard_msgs in
 #eval testLintCore
 
@@ -201,7 +201,7 @@ def testFormatResults : CoreM Format := do
   return (← msg.format)
 
 /--
-info: -- Found 1 error in 2 declarations (plus 0 automatically generated ones) in test with 1 linters
+info: -- Found 1 error in 2 declarations (plus 0 automatically generated ones) in test with 2 linters
 
 /- The `dummyBadName` linter reports:
 found bad names -/
@@ -220,7 +220,7 @@ def testFormatResultsClean : CoreM Format := do
   return (← msg.format)
 
 /--
-info: -- Found 0 errors in 1 declarations (plus 0 automatically generated ones) in test with 1 linters
+info: -- Found 0 errors in 1 declarations (plus 0 automatically generated ones) in test with 2 linters
 -/
 #guard_msgs in
 #eval testFormatResultsClean

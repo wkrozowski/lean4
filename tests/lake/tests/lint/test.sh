@@ -17,3 +17,12 @@ match_pat 'shouldBeTheorem' produced.out
 
 # Clean module has no violations; exit code should be 0
 test_run builtin-lint Clean
+
+# Without --clippy, the clippy linter should not run
+lake_out builtin-lint ClippyViolations || true
+no_match_pat 'badNameClippy' produced.out
+
+# With --clippy, the clippy linter should flag badNameClippy
+lake_out builtin-lint --clippy ClippyViolations || true
+match_pat 'badNameClippy' produced.out
+match_pat "declaration name ends with 'Clippy'" produced.out
