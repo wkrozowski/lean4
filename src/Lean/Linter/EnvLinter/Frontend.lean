@@ -156,7 +156,7 @@ def formatLinterResults
       } in {decls.size - numAutoDecls} declarations (plus {
       numAutoDecls} automatically generated ones) {whereDesc
       } with {numLinters} linters\n\n{s}"
-  unless runClippyLinters do s := m!"{s}-- (non-default linters skipped)\n"
+  unless runClippyLinters do s := m!"{s}-- (non-clippy linters skipped)\n"
   pure s
 
 /-- Get the list of declarations in the current module. -/
