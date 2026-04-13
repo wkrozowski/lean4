@@ -19,6 +19,11 @@ register_builtin_option synthInstance.checkSynthOrder : Bool := {
   descr := "check that instances do not introduce metavariable in non-out-params"
 }
 
+register_builtin_option warning.nonClassInstance : Bool := {
+  defValue := true
+  descr := "checks if any declaration whose type is not a class is marked as an instance"
+}
+
 /-
 Note: we want to use iota reduction when indexing instances. Otherwise,
 we cannot elaborate examples such as
@@ -229,8 +234,35 @@ private partial def computeSynthOrder (inst : Expr) (projInfo? : Option Projecti
 
   return synthed
 
+def checkImpossibleInstance (c : Expr) : MetaM Unit := do
+  let cTy ← inferType c
+  forallTelescopeReducing cTy fun args ty => do
+    let argTys ← args.mapM inferType
+    let impossibleArgs ← args.zipIdx.filterMapM fun (arg, i) => do
+      let fv := arg.fvarId!
+      if (← fv.getDecl).binderInfo.isInstImplicit then return none
+      if ty.containsFVar fv then return none
+      if argTys[i+1:].any (·.containsFVar fv) then return none
+      return some m!"{arg} : {← inferType arg}"
+    if impossibleArgs.isEmpty then return
+    let impossibleArgs := MessageData.joinSep impossibleArgs.toList ", "
+    throwError m!"Instance {c} has arguments "
+      ++ impossibleArgs
+      ++ " that are impossible to infer. Those arguments are not instance-implicit and do not appear in another instance-implicit argument or the return type."
+
+def checkNonClassInstance (declName : Name) (c : Expr) : MetaM Unit := do
+ if warning.nonClassInstance.get (← getOptions) then
+    let type ← inferType c
+    forallTelescopeReducing type fun _ target => do
+      unless (← isClass? target).isSome do
+        unless target.isSorry do
+        logWarning m!"instance `{declName}` target `{target}` is not a type class. \n\n\
+        Disable `warning.nonClassInstance` to silence this warning."
+
 def addInstance (declName : Name) (attrKind : AttributeKind) (prio : Nat) : MetaM Unit := do
   let c ← mkConstWithLevelParams declName
+  checkImpossibleInstance c
+  checkNonClassInstance declName c
   let keys ← mkInstanceKey c
   let status ← getReducibilityStatus declName
   unless status matches .reducible | .implicitReducible do
