@@ -954,13 +954,36 @@ protected def checkTest : CliM PUnit := do
   let pkg ← loadPackage (← mkLoadConfig (← getThe LakeOptions))
   noArgsRem do exit <| if pkg.testDriver.isEmpty then 1 else 0
 
+/-- Run builtin environment linters on a loaded workspace. -/
+private def runBuiltinLint
+    (ws : Workspace) (args : BuiltinLint.Args) (mods : Array Lean.Name)
+: CliM PUnit := do
+  let mods := if mods.isEmpty then ws.defaultTargetRoots else mods
+  if mods.isEmpty then
+    error "no modules specified and there are no applicable default targets"
+  let args := {args with mods}
+  unless args.force do
+    let specs ← parseTargetSpecs ws []
+    let upToDate ← ws.checkNoBuild (buildSpecs specs)
+    unless upToDate do
+      error "there are out of date oleans; run `lake build` or fetch them from a cache first"
+  -- Set the search path so importModules can find oleans
+  Lean.searchPathRef.set ws.augmentedLeanPath
+  let exitCode ← BuiltinLint.run args
+  if exitCode != 0 then
+    exit exitCode
+
 protected def lint : CliM PUnit := do
   processOptions lakeOption
   let opts ← getThe LakeOptions
   let ws ← loadWorkspace (← mkLoadConfig opts)
-  noArgsRem do
-  let x := ws.root.lint opts.subArgs (mkBuildConfig opts)
-  exit <| ← x.run (mkLakeContext ws)
+  if ws.root.lintDriver.isEmpty then
+    let mods := (← takeArgs).toArray.map (·.toName)
+    runBuiltinLint ws opts.builtinLint mods
+  else
+    noArgsRem do
+    let x := ws.root.lint opts.subArgs (mkBuildConfig opts)
+    exit <| ← x.run (mkLakeContext ws)
 
 protected def checkLint : CliM PUnit := do
   processOptions lakeOption
@@ -973,23 +996,8 @@ protected def builtinLint : CliM PUnit := do
   let opts ← getThe LakeOptions
   let config ← mkLoadConfig opts
   let ws ← loadWorkspace config
-  -- Get remaining arguments as module names
   let mods := (← takeArgs).toArray.map (·.toName)
-  -- Get default target modules from workspace if no modules specified
-  let mods := if mods.isEmpty then ws.defaultTargetRoots else mods
-  if mods.isEmpty then
-    error "no modules specified and there are no applicable default targets"
-  let args := {opts.builtinLint with mods}
-  unless args.force do
-    let specs ← parseTargetSpecs ws []
-    let upToDate ← ws.checkNoBuild (buildSpecs specs)
-    unless upToDate do
-      error "there are out of date oleans; run `lake build` or fetch them from a cache first"
-  -- Set the search path so importModules can find oleans
-  Lean.searchPathRef.set ws.augmentedLeanPath
-  let exitCode ← BuiltinLint.run args
-  if exitCode != 0 then
-    exit exitCode
+  runBuiltinLint ws opts.builtinLint mods
 
 protected def clean : CliM PUnit := do
   processOptions lakeOption

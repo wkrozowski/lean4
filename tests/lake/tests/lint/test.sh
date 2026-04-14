@@ -30,3 +30,16 @@ no_match_pat 'badNameClippy' produced.out
 lake_out builtin-lint --clippy ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat "declaration name ends with 'Clippy'" produced.out
+
+# lake lint should fall back to builtin-lint when no lintDriver is configured
+lake_out lint || true
+match_pat 'shouldBeTheorem' produced.out
+match_pat 'is a def, should be lemma/theorem' produced.out
+
+# lake lint should accept builtin-lint flags like --clippy
+lake_out lint --clippy ClippyViolations || true
+match_pat 'badNameClippy' produced.out
+
+# lake lint should accept --lint-only
+lake_out lint --lint-only defLemma || true
+match_pat 'shouldBeTheorem' produced.out
