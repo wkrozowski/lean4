@@ -129,6 +129,9 @@ builtin_facet leanArts : Module => ModuleOutputArtifacts
 /-- A compressed archive (produced via `leantar`) of the module's build artifacts. -/
 builtin_facet ltar : Module => FilePath
 
+/-- Text linter diagnostics produced by re-elaborating the module without output flags. -/
+builtin_facet lint : Module => Log
+
 /-- The `olean` file produced by `lean`. -/
 builtin_facet olean : Module => FilePath
 

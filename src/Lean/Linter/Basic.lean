@@ -68,6 +68,14 @@ register_builtin_option linter.all : Bool := {
 def getLinterAll (o : LinterOptions) (defValue := linter.all.defValue) : Bool :=
     o.get linter.all.name defValue
 
+register_builtin_option linter.batchMode : Bool := {
+  defValue := false
+  descr := "set to true by `lake builtin-lint --clippy` to enable batch-only linters"
+}
+
+def getLinterBatchMode (o : LinterOptions) : Bool :=
+    o.get linter.batchMode.name linter.batchMode.defValue
+
 def getLinterValue (opt : Lean.Option Bool) (o : LinterOptions) : Bool :=
   o.get opt.name (getLinterAll o <| (o.getSet opt).any (o.get? · == some true) || opt.defValue)
 

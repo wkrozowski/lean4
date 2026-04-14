@@ -4,16 +4,15 @@ source ../common.sh
 ./clean.sh
 cp -r input/* .
 
-# builtin-lint should fail with a clear message when oleans are not built
-lake_out builtin-lint || true
-match_pat 'out of date oleans' produced.out
-
-test_run build
-
-# builtin-lint should detect the defLemma violation in Main (the default target)
+# builtin-lint should build if needed and detect violations
+# (no separate `lake build` required)
 lake_out builtin-lint || true
 match_pat 'shouldBeTheorem' produced.out
 match_pat 'is a def, should be lemma/theorem' produced.out
+
+# builtin-lint should also detect text linter violations (unused variable)
+match_pat 'Text linter diagnostics' produced.out
+match_pat 'unused variable' produced.out
 
 # builtin-lint should also detect the checkUnivs violation
 match_pat 'badUnivDecl' produced.out

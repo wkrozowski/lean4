@@ -1173,6 +1173,38 @@ public def Module.dynlibFacetConfig : ModuleFacetConfig dynlibFacet :=
   mkFacetJobConfig recBuildDynlib
 
 /--
+Re-elaborate a module to collect text linter diagnostics.
+Reuses `mod.setup` and `mod.lean`, invokes `lean` without output flags.
+Diagnostics are cached via the trace system and replayed on subsequent runs.
+Returns the `Log` of linter-tagged messages produced (or replayed from cache).
+-/
+def Module.recBuildLint (mod : Module) : FetchM (Job Log) := do
+  withRegisterJob s!"{mod.name}:lint" do
+  let setupJob ← mod.setup.fetch
+  let leanJob ← mod.lean.fetch
+  setupJob.mapM fun setup => do
+    addLeanTrace
+    let srcFile ← leanJob.await
+    let srcTrace := leanJob.getTrace
+    addTrace srcTrace
+    addTrace <| traceOptions setup.options "options"
+    setTraceCaption s!"{mod.name.toString}:lint"
+    let lintTraceFile := mod.irPath "lint.trace"
+    let iniPos ← getLogPos
+    buildUnlessUpToDate lintTraceFile (← getTrace) lintTraceFile do
+      let args := mod.weakLeanArgs ++ mod.leanArgs
+      let relSrcFile := relPathFrom mod.pkg.dir srcFile
+      let setupFile := mod.irPath "lint.setup.json"
+      lintLeanModule srcFile relSrcFile setup setupFile args
+        (← getLeanPath) (← getLean)
+    let log ← getLog
+    return log.takeFrom iniPos
+
+/-- The `ModuleFacetConfig` for the builtin `lintFacet`. -/
+public def Module.lintFacetConfig : ModuleFacetConfig lintFacet :=
+  mkFacetJobConfig recBuildLint
+
+/--
 A name-configuration map for the initial set of
 Lake module facets (e.g., `imports`, `c`, `o`, `dynlib`).
 -/
@@ -1207,6 +1239,7 @@ public def Module.initFacetConfigs : DNameMap ModuleFacetConfig :=
   |>.insert oExportFacet oExportFacetConfig
   |>.insert oNoExportFacet oNoExportFacetConfig
   |>.insert dynlibFacet dynlibFacetConfig
+  |>.insert lintFacet lintFacetConfig
 
 @[inherit_doc Module.initFacetConfigs]
 public abbrev initModuleFacetConfigs := Module.initFacetConfigs

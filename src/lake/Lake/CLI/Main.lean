@@ -24,6 +24,7 @@ import Lake.Util.Cli
 import Lake.CLI.Init
 import Lake.CLI.Help
 import Lake.CLI.Build
+import Lake.Build.Infos
 import Lake.CLI.Actions
 import Lake.CLI.Translate
 import Lake.CLI.Serve
@@ -956,22 +957,42 @@ protected def checkTest : CliM PUnit := do
 
 /-- Run builtin environment linters on a loaded workspace. -/
 private def runBuiltinLint
-    (ws : Workspace) (args : BuiltinLint.Args) (mods : Array Lean.Name)
+    (ws : Workspace) (opts : LakeOptions)
+    (args : BuiltinLint.Args) (mods : Array Lean.Name)
 : CliM PUnit := do
   let mods := if mods.isEmpty then ws.defaultTargetRoots else mods
   if mods.isEmpty then
     error "no modules specified and there are no applicable default targets"
   let args := {args with mods}
-  unless args.force do
-    let specs ← parseTargetSpecs ws []
-    let upToDate ← ws.checkNoBuild (buildSpecs specs)
-    unless upToDate do
-      error "there are out of date oleans; run `lake build` or fetch them from a cache first"
-  -- Set the search path so importModules can find oleans
+  -- Phase 1: build (if needed) and run text linters via the lint facet
+  let resolvedMods := mods.filterMap ws.findModule?
+  let textLintLogs : Array Log ←
+    if resolvedMods.isEmpty then pure #[]
+    else
+      let buildConfig := { mkBuildConfig opts with outLv := .error }
+      ws.runBuild (cfg := buildConfig) do
+        -- Fetch oleans (needed by declaration linters) and lint facets together.
+        -- Lake's trace system ensures oleans are only rebuilt if out of date.
+        for mod in resolvedMods do discard <| mod.leanArts.fetch
+        let lintJobs ← resolvedMods.mapM (·.lintDiag.fetch)
+        return Job.collectArray lintJobs
+  -- Process text linter results
+  let mut textLintFailed := false
+  let textEntries := textLintLogs.foldl (init := #[]) fun acc log =>
+    acc ++ log.entries.filter fun e => e.level ≥ .warning
+  let textEntries :=
+    if args.only.isEmpty then textEntries
+    else textEntries.filter fun e => args.only.any (e.kind.isSuffixOf ·)
+  unless textEntries.isEmpty do
+    textLintFailed := true
+    IO.println "/- Text linter diagnostics: -/"
+    for e in textEntries do
+      IO.println e.message
+  -- Phase 2: declaration linters
   Lean.searchPathRef.set ws.augmentedLeanPath
   let exitCode ← BuiltinLint.run args
-  if exitCode != 0 then
-    exit exitCode
+  if exitCode != 0 || textLintFailed then
+    exit 1
 
 protected def lint : CliM PUnit := do
   processOptions lakeOption
@@ -979,7 +1000,7 @@ protected def lint : CliM PUnit := do
   let ws ← loadWorkspace (← mkLoadConfig opts)
   if ws.root.lintDriver.isEmpty then
     let mods := (← takeArgs).toArray.map (·.toName)
-    runBuiltinLint ws opts.builtinLint mods
+    runBuiltinLint ws opts opts.builtinLint mods
   else
     noArgsRem do
     let x := ws.root.lint opts.subArgs (mkBuildConfig opts)
@@ -997,7 +1018,7 @@ protected def builtinLint : CliM PUnit := do
   let config ← mkLoadConfig opts
   let ws ← loadWorkspace config
   let mods := (← takeArgs).toArray.map (·.toName)
-  runBuiltinLint ws opts.builtinLint mods
+  runBuiltinLint ws opts opts.builtinLint mods
 
 protected def clean : CliM PUnit := do
   processOptions lakeOption

@@ -159,6 +159,9 @@ namespace Module
 @[inherit_doc leanArtsFacet] public abbrev leanArts (self : Module) :=
   self.facetCore leanArtsFacet
 
+@[inherit_doc lintFacet] public abbrev lintDiag (self : Module) :=
+  self.facetCore lintFacet
+
 @[inherit_doc oleanFacet] public abbrev olean (self : Module) :=
   self.facetCore oleanFacet
 

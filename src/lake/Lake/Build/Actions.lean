@@ -98,6 +98,38 @@ public def compileLeanModule
           removeFileIfExists oleanFile
         throw e
 
+/--
+Re-elaborate a Lean module to collect text linter diagnostics.
+Unlike `compileLeanModule`, no output flags (`-o`, `-i`, `-c`, `-b`) are passed,
+so no artifacts are produced. Only messages tagged with a `linter.*` kind are logged.
+-/
+public def lintLeanModule
+  (leanFile relLeanFile : FilePath)
+  (setup : ModuleSetup) (setupFile : FilePath)
+  (leanArgs : Array String := #[])
+  (leanPath : SearchPath := [])
+  (lean : FilePath := "lean")
+: LogIO Unit := do
+  let args := leanArgs.push leanFile.toString
+    ++ #["--setup", setupFile.toString, "--json"]
+  createParentDirs setupFile
+  IO.FS.writeFile setupFile (toJson setup).pretty
+  withLogErrorPos do
+  let out ← rawProc {
+    args
+    cmd := lean.toString
+    env := #[("LEAN_PATH", leanPath.toString)]
+  }
+  unless out.stdout.isEmpty do
+    for ln in out.stdout.split '\n' do
+      let ln := ln.copy
+      if let .ok (msg : SerialMessage) := Json.parse ln >>= fromJson? then
+        if msg.kind.getRoot == `linter then
+          let msg := {msg with fileName := mkRelPathString relLeanFile}
+          logSerialMessage msg
+  if out.exitCode ≠ 0 then
+    logVerbose s!"Lean exited with code {out.exitCode}"
+
 public def compileO
   (oFile srcFile : FilePath)
   (moreArgs : Array String := #[]) (compiler : FilePath := "cc")

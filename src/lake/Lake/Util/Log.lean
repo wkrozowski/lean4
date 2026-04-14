@@ -130,11 +130,12 @@ public def Verbosity.minLogLv : Verbosity → LogLevel
 public structure LogEntry where
   level : LogLevel
   message : String
+  kind : Name := .anonymous
   deriving Inhabited, ToJson, FromJson
 
 public protected def LogEntry.toString (self : LogEntry) (useAnsi := false) : String :=
   if useAnsi then
-    let {level := lv, message := msg} := self
+    let {level := lv, message := msg, ..} := self
     let pre := Ansi.chalk lv.ansiColor s!"{lv.toString}:"
     s!"{pre} {msg}"
   else
@@ -160,6 +161,7 @@ public def LogEntry.ofSerialMessage (msg : SerialMessage) : LogEntry :=
   {
     level := .ofMessageSeverity msg.severity
     message := mkErrorStringWithPos msg.fileName msg.pos str none
+    kind := msg.kind
   }
 
 public def LogEntry.ofMessage (msg : Message) : BaseIO LogEntry := do

@@ -385,10 +385,12 @@ Returns whether a build is needed to validate `build`. Does not report on the at
 This is equivalent to checking whether `lake build --no-build` exits with code 0.
 -/
 public def Workspace.checkNoBuild
-  (ws : Workspace) (build : FetchM (Job α))
+  (ws : Workspace) (build : FetchM (Job α)) (quiet := false)
 : BaseIO Bool := do
   let jobs ← mkJobQueue
-  let cfg := {noBuild := true}
+  let cfg : BuildConfig :=
+    if quiet then {noBuild := true, verbosity := .quiet, outLv := .error}
+    else {noBuild := true}
   let mctx ← mkMonitorContext cfg jobs
   let bctx ← mkBuildContext' ws cfg jobs
   let job ← startBuild bctx build
