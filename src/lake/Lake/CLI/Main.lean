@@ -310,12 +310,13 @@ def lakeLongOption : (opt : String) → CliM PUnit
   let name ← takeOptArg "--lint-only" "linter name"
   modifyThe LakeOptions fun opts =>
     {opts with builtinLint.only := opts.builtinLint.only.push name.toName}
+-- Shared options
+| "--force" => modifyThe LakeOptions ({· with shake.force := true, builtinLint.force := true})
 -- Shake options
 | "--keep-implied" => modifyThe LakeOptions ({· with shake.keepImplied := true})
 | "--keep-prefix" => modifyThe LakeOptions ({· with shake.keepPrefix := true})
 | "--keep-public" => modifyThe LakeOptions ({· with shake.keepPublic := true})
 | "--add-public" => modifyThe LakeOptions ({· with shake.addPublic := true})
-| "--force" => modifyThe LakeOptions ({· with shake.force := true})
 | "--gh-style" => modifyThe LakeOptions ({· with shake.githubStyle := true})
 | "--explain" => modifyThe LakeOptions ({· with shake.explain := true})
 | "--trace" => modifyThe LakeOptions ({· with shake.trace := true})
@@ -979,6 +980,11 @@ protected def builtinLint : CliM PUnit := do
   if mods.isEmpty then
     error "no modules specified and there are no applicable default targets"
   let args := {opts.builtinLint with mods}
+  unless args.force do
+    let specs ← parseTargetSpecs ws []
+    let upToDate ← ws.checkNoBuild (buildSpecs specs)
+    unless upToDate do
+      error "there are out of date oleans; run `lake build` or fetch them from a cache first"
   -- Set the search path so importModules can find oleans
   Lean.searchPathRef.set ws.augmentedLeanPath
   let exitCode ← BuiltinLint.run args

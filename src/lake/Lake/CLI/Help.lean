@@ -28,6 +28,7 @@ COMMANDS:
   check-test            check if there is a properly configured test driver
   lint                  lint the package using the configured lint driver
   check-lint            check if there is a properly configured lint driver
+  builtin-lint          run builtin environment linters
   clean                 remove build outputs
   shake                 minimize imports in source files
   env <cmd> <args>...   execute a command in Lake's environment
@@ -268,6 +269,25 @@ configured lint driver. Errors (with code 1) otherwise.
 
 Does NOT verify that the configured lint driver actually exists in the
 package or its dependencies. It merely verifies that one is specified.
+"
+
+def helpBuiltinLint :=
+"Run builtin environment linters on the workspace
+
+USAGE:
+  lake builtin-lint [OPTIONS] [<MODULE>...]
+
+Runs the builtin environment linters registered via `@[builtin_env_linter]`
+on the specified modules. If no modules are specified, lints the workspace's
+default target roots.
+
+Modules must be built before linting. The linters operate on the elaborated
+environment from `.olean` files.
+
+OPTIONS:
+  --clippy              run all linters including non-default ones
+  --lint-only <name>    run only the specified linter (repeatable)
+  --force               skip the up-to-date build check
 "
 
 def helpPack :=
@@ -710,6 +730,7 @@ public def help : (cmd : String) → String
 | "check-test"          => helpCheckTest
 | "lint"                => helpLint
 | "check-lint"          => helpCheckLint
+| "builtin-lint"        => helpBuiltinLint
 | "clean"               => helpClean
 | "shake"               => helpShake
 | "script"              => helpScriptCli

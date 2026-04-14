@@ -4,6 +4,10 @@ source ../common.sh
 ./clean.sh
 cp -r input/* .
 
+# builtin-lint should fail with a clear message when oleans are not built
+lake_out builtin-lint || true
+match_pat 'out of date oleans' produced.out
+
 test_run build
 
 # builtin-lint should detect the defLemma violation in Main (the default target)

@@ -20,6 +20,8 @@ public structure Args where
   clippy : Bool := false
   /-- Run only the specified linters. -/
   only : Array Name := #[]
+  /-- Skip the up-to-date build check. -/
+  force : Bool := false
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
 
