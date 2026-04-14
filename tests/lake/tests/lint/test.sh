@@ -31,6 +31,9 @@ lake_out builtin-lint --clippy ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat "declaration name ends with 'Clippy'" produced.out
 
+# check-lint should return 1 when no lintDriver is configured
+test_fails check-lint
+
 # lake lint should fall back to builtin-lint when no lintDriver is configured
 lake_out lint || true
 match_pat 'shouldBeTheorem' produced.out
