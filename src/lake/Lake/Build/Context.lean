@@ -27,6 +27,10 @@ public structure BuildConfig extends LogConfig where
   showSuccess : Bool := false
   /-- File to save input-to-output mappings from the build of the workspace's root -/
   outputsFile? : Option FilePath := none
+  /-- Whether to run batch-only linters (set by `--clippy`). -/
+  clippy : Bool := false
+  /-- Run only the specified linters (set by `--lint-only`). -/
+  onlyLinters : Array Lean.Name := #[]
 
 /--
 Whether the build should show progress information.
@@ -82,6 +86,12 @@ public instance [Pure m] : MonadLift LakeM (BuildT m) where
 
 @[inline] public def getNoBuild [Functor m] [MonadBuild m] : m Bool :=
   (·.noBuild) <$> getBuildConfig
+
+@[inline] public def getClippy [Functor m] [MonadBuild m] : m Bool :=
+  (·.clippy) <$> getBuildConfig
+
+@[inline] public def getOnlyLinters [Functor m] [MonadBuild m] : m (Array Lean.Name) :=
+  (·.onlyLinters) <$> getBuildConfig
 
 @[inline] public def getVerbosity [Functor m] [MonadBuild m] : m Verbosity :=
   (·.verbosity) <$> getBuildConfig

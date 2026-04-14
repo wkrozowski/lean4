@@ -969,10 +969,14 @@ private def runBuiltinLint
   let textLintLogs : Array Log ←
     if resolvedMods.isEmpty then pure #[]
     else
-      let buildConfig := { mkBuildConfig opts with outLv := .error }
+      let buildConfig :=
+        { mkBuildConfig opts with
+          outLv := .error, clippy := args.clippy, onlyLinters := args.only }
       ws.runBuild (cfg := buildConfig) do
-        -- Fetch oleans (needed by declaration linters) and lint facets together.
-        -- Lake's trace system ensures oleans are only rebuilt if out of date.
+        -- The lint facet depends on `setup` but not `leanArts`, so oleans are
+        -- not built transitively. Fetch them explicitly here because Phase 2
+        -- (declaration linters) uses `importModules` which needs oleans on disk.
+        -- Fetches are memoized, so this is a no-op if oleans are already built.
         for mod in resolvedMods do discard <| mod.leanArts.fetch
         let lintJobs ← resolvedMods.mapM (·.lintDiag.fetch)
         return Job.collectArray lintJobs
@@ -982,7 +986,7 @@ private def runBuiltinLint
     acc ++ log.entries.filter fun e => e.level ≥ .warning
   let textEntries :=
     if args.only.isEmpty then textEntries
-    else textEntries.filter fun e => args.only.any (e.kind.isSuffixOf ·)
+    else textEntries.filter fun e => args.only.any (·.isSuffixOf e.kind)
   unless textEntries.isEmpty do
     textLintFailed := true
     IO.println "/- Text linter diagnostics: -/"

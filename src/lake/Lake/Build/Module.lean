@@ -1183,11 +1183,23 @@ def Module.recBuildLint (mod : Module) : FetchM (Job Log) := do
   let setupJob ← mod.setup.fetch
   let leanJob ← mod.lean.fetch
   setupJob.mapM fun setup => do
+    let clippy ← getClippy
+    let onlyLinters ← getOnlyLinters
+    -- When --clippy or --lint-only is set, enable all linters so that
+    -- disabled-by-default text linters can be selected/run.
+    let enableAll := clippy || !onlyLinters.isEmpty
+    let setup :=
+      if enableAll then
+        let batchOpt : Lean.LeanOption := ⟨`linter.batchMode, true⟩
+        let allOpt : Lean.LeanOption := ⟨`linter.all, true⟩
+        {setup with options := setup.options ++ #[batchOpt, allOpt]}
+      else setup
     addLeanTrace
     let srcFile ← leanJob.await
     let srcTrace := leanJob.getTrace
     addTrace srcTrace
     addTrace <| traceOptions setup.options "options"
+    addPureTrace enableAll "enableAll"
     setTraceCaption s!"{mod.name.toString}:lint"
     let lintTraceFile := mod.irPath "lint.trace"
     let iniPos ← getLogPos
