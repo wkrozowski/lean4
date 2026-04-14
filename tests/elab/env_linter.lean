@@ -130,8 +130,8 @@ def testGetChecksDefault : CoreM (Array Name) := do
   let checks ← getChecks (clippy := false) (runOnly := none)
   return checks.map (·.name)
 
--- dummyBadName is default, dummyClippyLinter is not
-/-- info: #[`defLemma, `dummyBadName] -/
+-- dummyBadName and checkUnivs are default, dummyClippyLinter is not
+/-- info: #[`checkUnivs, `defLemma, `dummyBadName] -/
 #guard_msgs in
 #eval testGetChecksDefault
 
@@ -140,7 +140,7 @@ def testGetChecksClippy : CoreM (Array Name) := do
   let checks ← getChecks (clippy := true) (runOnly := none)
   return checks.map (·.name)
 
-/-- info: #[`defLemma, `dummyBadName, `dummyClippyLinter] -/
+/-- info: #[`checkUnivs, `defLemma, `dummyBadName, `dummyClippyLinter] -/
 #guard_msgs in
 #eval testGetChecksClippy
 
@@ -172,7 +172,7 @@ def testLintCore : CoreM (Array (Name × Nat)) := do
   let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
   return results.map fun (linter, msgs) => (linter.name, msgs.size)
 
-/-- info: #[(`defLemma, 0), (`dummyBadName, 1)] -/
+/-- info: #[(`checkUnivs, 0), (`defLemma, 0), (`dummyBadName, 1)] -/
 #guard_msgs in
 #eval testLintCore
 
@@ -201,7 +201,7 @@ def testFormatResults : CoreM Format := do
   return (← msg.format)
 
 /--
-info: -- Found 1 error in 2 declarations (plus 0 automatically generated ones) in test with 2 linters
+info: -- Found 1 error in 2 declarations (plus 0 automatically generated ones) in test with 3 linters
 
 /- The `dummyBadName` linter reports:
 found bad names -/
@@ -220,7 +220,39 @@ def testFormatResultsClean : CoreM Format := do
   return (← msg.format)
 
 /--
-info: -- Found 0 errors in 1 declarations (plus 0 automatically generated ones) in test with 2 linters
+info: -- Found 0 errors in 1 declarations (plus 0 automatically generated ones) in test with 3 linters
 -/
 #guard_msgs in
 #eval testFormatResultsClean
+
+/-! ## Test: checkUnivs -/
+
+-- Good: each universe parameter occurs alone somewhere
+universe u v in
+def goodUnivs (α : Type u) (β : Type v) : Type (max u v) := α × β
+
+-- Good: one universe dominates the other (max u v where u occurs alone)
+universe u v in
+def goodUnivsDominated (α : Type u) (β : Type (max u v)) : Type (max u v) := α × β
+
+-- Bad: neither u nor v occur alone
+universe u v in
+def badUnivs (α : Type (max u v)) : Type (max u v) := α
+
+def testCheckUnivs (declName : Name) : MetaM Bool := do
+  let some (linterDeclName, _) := (envLinterExt.getState (← getEnv)).find? `checkUnivs
+    | throwError "not found"
+  let linter ← getEnvLinter `checkUnivs linterDeclName
+  return (← linter.test declName).isSome
+
+/-- info: false -/
+#guard_msgs in
+#eval testCheckUnivs `goodUnivs
+
+/-- info: false -/
+#guard_msgs in
+#eval testCheckUnivs `goodUnivsDominated
+
+/-- info: true -/
+#guard_msgs in
+#eval testCheckUnivs `badUnivs

@@ -15,9 +15,16 @@ lake_out builtin-lint || true
 match_pat 'shouldBeTheorem' produced.out
 match_pat 'is a def, should be lemma/theorem' produced.out
 
+# builtin-lint should also detect the checkUnivs violation
+match_pat 'badUnivDecl' produced.out
+match_pat 'only occur together' produced.out
+# builtin_nolint checkUnivs should suppress the warning
+no_match_pat 'badUnivSkipped' produced.out
+
 # --lint-only defLemma should run only the defLemma linter
 lake_out builtin-lint --lint-only defLemma || true
 match_pat 'shouldBeTheorem' produced.out
+no_match_pat 'badUnivDecl' produced.out
 
 # Clean module has no violations; exit code should be 0
 test_run builtin-lint Clean
