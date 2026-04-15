@@ -53,6 +53,11 @@ theorem isEmpty_insert [EquivBEq α] [LawfulHashable α] {k : α} {v : β} :
 theorem mem_iff_contains {a : α} : a ∈ m ↔ m.contains a :=
   DHashMap.mem_iff_contains
 
+/- Used internally by the `cbv` tactic. -/
+@[cbv_eval] theorem mem_eq_contains_eq_true_internal {a : α} :
+    (a ∈ m) = (m.contains a = true) :=
+  propext mem_iff_contains
+
 @[simp, grind _=_]
 theorem contains_iff_mem {a : α} : m.contains a ↔ a ∈ m :=
   DHashMap.contains_iff_mem
@@ -324,7 +329,7 @@ theorem get?_erase [EquivBEq α] [LawfulHashable α] {k a : α} :
 theorem getElem?_congr [EquivBEq α] [LawfulHashable α] {a b : α} (hab : a == b) : m[a]? = m[b]? :=
   DHashMap.Const.get?_congr hab
 
-@[grind =] theorem getElem_insert [EquivBEq α] [LawfulHashable α] {k a : α} {v : β} {h₁} :
+@[grind =, cbv_eval] theorem getElem_insert [EquivBEq α] [LawfulHashable α] {k a : α} {v : β} {h₁} :
     (m.insert k v)[a]'h₁ =
       if h₂ : k == a then v else m[a]'(mem_of_mem_insert h₁ (Bool.eq_false_iff.2 h₂)) :=
   DHashMap.Const.get_insert (h₁ := h₁)
