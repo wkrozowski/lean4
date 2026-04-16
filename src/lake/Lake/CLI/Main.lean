@@ -982,11 +982,8 @@ protected def lint : CliM PUnit := do
   if doBuiltinLint then
     let mods := (← takeArgs).toArray.map (·.toName)
     builtinExitCode ← runBuiltinLint ws opts.builtinLint mods
-  let driverExitCode ← if hasDriver then
-    noArgsRem do
+  let driverExitCode ← noArgsRem do
     ws.root.lint opts.subArgs (mkBuildConfig opts) |>.run (mkLakeContext ws)
-  else
-    pure 0
   unless doBuiltinLint || hasDriver do
     error s!"{ws.root.prettyName}: no lint driver configured and builtin linting is disabled"
   exit <| if builtinExitCode == 0 && driverExitCode == 0 then 0 else 1

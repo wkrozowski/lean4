@@ -45,7 +45,7 @@ test_fails check-lint
 
 # Default: lake lint errors when no lintDriver and builtinLint is unset
 lake_out lint || true
-match_pat 'no lint driver configured and builtin linting is disabled' produced.out
+match_pat 'no lint driver configured' produced.out
 
 # Default: lake lint --builtin-lint overrides and runs builtin lints
 lake_out lint --builtin-lint || true
@@ -65,7 +65,7 @@ test_fails check-lint
 
 # builtinLint = false: lake lint errors
 lake_out lint || true
-match_pat 'builtin linting is disabled' produced.out
+match_pat 'no lint driver configured' produced.out
 
 # builtinLint = false with --builtin-lint flag: overrides and runs builtin lints
 lake_out lint --builtin-lint || true
