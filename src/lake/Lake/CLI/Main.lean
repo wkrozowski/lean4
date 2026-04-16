@@ -992,11 +992,9 @@ protected def checkLint : CliM PUnit := do
   processOptions lakeOption
   let pkg ← loadPackage (← mkLoadConfig (← getThe LakeOptions))
   noArgsRem do
-  -- Lint is available if a lint driver is configured or builtinLint is explicitly `true`.
   let hasLint := !pkg.lintDriver.isEmpty || pkg.config.builtinLint == some true
   exit <| if hasLint then 0 else 1
 
-/-- The `lake builtin-lint` command: run builtin environment linters. -/
 protected def builtinLint : CliM PUnit := do
   processOptions lakeOption
   let opts ← getThe LakeOptions
