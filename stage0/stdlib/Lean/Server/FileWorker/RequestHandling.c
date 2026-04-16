@@ -9548,9 +9548,9 @@ return v___x_2624_;
 LEAN_EXPORT lean_object* l___private_Lean_Server_FileWorker_RequestHandling_0__Lean_Server_FileWorker_handleDocumentSymbol_toDocumentSymbols___lam__0___boxed(lean_object* v___x_2625_, lean_object* v___x_2626_, lean_object* v_x_2627_, lean_object* v_ls_2628_){
 _start:
 {
-uint8_t v___x_139300__boxed_2629_; lean_object* v_res_2630_; 
-v___x_139300__boxed_2629_ = lean_unbox(v___x_2626_);
-v_res_2630_ = l___private_Lean_Server_FileWorker_RequestHandling_0__Lean_Server_FileWorker_handleDocumentSymbol_toDocumentSymbols___lam__0(v___x_2625_, v___x_139300__boxed_2629_, v_x_2627_, v_ls_2628_);
+uint8_t v___x_139324__boxed_2629_; lean_object* v_res_2630_; 
+v___x_139324__boxed_2629_ = lean_unbox(v___x_2626_);
+v_res_2630_ = l___private_Lean_Server_FileWorker_RequestHandling_0__Lean_Server_FileWorker_handleDocumentSymbol_toDocumentSymbols___lam__0(v___x_2625_, v___x_139324__boxed_2629_, v_x_2627_, v_ls_2628_);
 lean_dec(v_ls_2628_);
 return v_res_2630_;
 }
@@ -10115,9 +10115,9 @@ return v___x_2695_;
 LEAN_EXPORT lean_object* l___private_Lean_Server_FileWorker_RequestHandling_0__Lean_Server_FileWorker_handleDocumentSymbol_toDocumentSymbols___lam__4___boxed(lean_object* v___x_2778_, lean_object* v___x_2779_, lean_object* v___x_2780_, lean_object* v___x_2781_, lean_object* v___x_2782_, lean_object* v___x_2783_, lean_object* v___x_2784_, lean_object* v_x_2785_, lean_object* v_np_2786_){
 _start:
 {
-uint8_t v___x_139346__boxed_2787_; lean_object* v_res_2788_; 
-v___x_139346__boxed_2787_ = lean_unbox(v___x_2778_);
-v_res_2788_ = l___private_Lean_Server_FileWorker_RequestHandling_0__Lean_Server_FileWorker_handleDocumentSymbol_toDocumentSymbols___lam__4(v___x_139346__boxed_2787_, v___x_2779_, v___x_2780_, v___x_2781_, v___x_2782_, v___x_2783_, v___x_2784_, v_x_2785_, v_np_2786_);
+uint8_t v___x_139370__boxed_2787_; lean_object* v_res_2788_; 
+v___x_139370__boxed_2787_ = lean_unbox(v___x_2778_);
+v_res_2788_ = l___private_Lean_Server_FileWorker_RequestHandling_0__Lean_Server_FileWorker_handleDocumentSymbol_toDocumentSymbols___lam__4(v___x_139370__boxed_2787_, v___x_2779_, v___x_2780_, v___x_2781_, v___x_2782_, v___x_2783_, v___x_2784_, v_x_2785_, v_np_2786_);
 lean_dec(v_np_2786_);
 lean_dec(v___x_2784_);
 lean_dec(v___x_2783_);
@@ -15223,8 +15223,8 @@ goto v___jp_4027_;
 }
 else
 {
-lean_dec_ref(v___x_4031_);
 lean_dec(v_pre_4032_);
+lean_dec_ref(v___x_4031_);
 v___y_4028_ = v_a_4025_;
 goto v___jp_4027_;
 }

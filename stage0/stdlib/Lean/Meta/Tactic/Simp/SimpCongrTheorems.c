@@ -4324,9 +4324,9 @@ return v___x_1329_;
 LEAN_EXPORT lean_object* l___private_Lean_Meta_Tactic_Simp_SimpCongrTheorems_0__Lean_Meta_initFn___lam__0_00___x40_Lean_Meta_Tactic_Simp_SimpCongrTheorems_3898756595____hygCtx___hyg_2____boxed(lean_object* v_x_1330_, lean_object* v___y_1331_){
 _start:
 {
-uint8_t v_x_80__boxed_1332_; lean_object* v_res_1333_; 
-v_x_80__boxed_1332_ = lean_unbox(v_x_1330_);
-v_res_1333_ = l___private_Lean_Meta_Tactic_Simp_SimpCongrTheorems_0__Lean_Meta_initFn___lam__0_00___x40_Lean_Meta_Tactic_Simp_SimpCongrTheorems_3898756595____hygCtx___hyg_2_(v_x_80__boxed_1332_, v___y_1331_);
+uint8_t v_x_82__boxed_1332_; lean_object* v_res_1333_; 
+v_x_82__boxed_1332_ = lean_unbox(v_x_1330_);
+v_res_1333_ = l___private_Lean_Meta_Tactic_Simp_SimpCongrTheorems_0__Lean_Meta_initFn___lam__0_00___x40_Lean_Meta_Tactic_Simp_SimpCongrTheorems_3898756595____hygCtx___hyg_2_(v_x_82__boxed_1332_, v___y_1331_);
 return v_res_1333_;
 }
 }

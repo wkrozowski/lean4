@@ -375,10 +375,10 @@ return v___x_74_;
 LEAN_EXPORT lean_object* l_Lean_PersistentHashMap_findEntryAux___at___00Lean_PersistentHashMap_findEntry_x3f___at___00Lean_Meta_Grind_getDiseqFor_x3f_spec__0_spec__0___redArg___boxed(lean_object* v___x_75_, lean_object* v_x_76_, lean_object* v_x_77_, lean_object* v_x_78_){
 _start:
 {
-size_t v_x_4771__boxed_79_; lean_object* v_res_80_; 
-v_x_4771__boxed_79_ = lean_unbox_usize(v_x_77_);
+size_t v_x_4773__boxed_79_; lean_object* v_res_80_; 
+v_x_4773__boxed_79_ = lean_unbox_usize(v_x_77_);
 lean_dec(v_x_77_);
-v_res_80_ = l_Lean_PersistentHashMap_findEntryAux___at___00Lean_PersistentHashMap_findEntry_x3f___at___00Lean_Meta_Grind_getDiseqFor_x3f_spec__0_spec__0___redArg(v___x_75_, v_x_76_, v_x_4771__boxed_79_, v_x_78_);
+v_res_80_ = l_Lean_PersistentHashMap_findEntryAux___at___00Lean_PersistentHashMap_findEntry_x3f___at___00Lean_Meta_Grind_getDiseqFor_x3f_spec__0_spec__0___redArg(v___x_75_, v_x_76_, v_x_4773__boxed_79_, v_x_78_);
 lean_dec_ref(v___x_75_);
 return v_res_80_;
 }
@@ -665,10 +665,10 @@ return v___x_193_;
 LEAN_EXPORT lean_object* l_Lean_PersistentHashMap_findEntryAux___at___00Lean_PersistentHashMap_findEntry_x3f___at___00Lean_Meta_Grind_getDiseqFor_x3f_spec__0_spec__0___boxed(lean_object* v___x_194_, lean_object* v_00_u03b2_195_, lean_object* v_x_196_, lean_object* v_x_197_, lean_object* v_x_198_){
 _start:
 {
-size_t v_x_4936__boxed_199_; lean_object* v_res_200_; 
-v_x_4936__boxed_199_ = lean_unbox_usize(v_x_197_);
+size_t v_x_4938__boxed_199_; lean_object* v_res_200_; 
+v_x_4938__boxed_199_ = lean_unbox_usize(v_x_197_);
 lean_dec(v_x_197_);
-v_res_200_ = l_Lean_PersistentHashMap_findEntryAux___at___00Lean_PersistentHashMap_findEntry_x3f___at___00Lean_Meta_Grind_getDiseqFor_x3f_spec__0_spec__0(v___x_194_, v_00_u03b2_195_, v_x_196_, v_x_4936__boxed_199_, v_x_198_);
+v_res_200_ = l_Lean_PersistentHashMap_findEntryAux___at___00Lean_PersistentHashMap_findEntry_x3f___at___00Lean_Meta_Grind_getDiseqFor_x3f_spec__0_spec__0(v___x_194_, v_00_u03b2_195_, v_x_196_, v_x_4938__boxed_199_, v_x_198_);
 lean_dec_ref(v_x_196_);
 lean_dec_ref(v___x_194_);
 return v_res_200_;

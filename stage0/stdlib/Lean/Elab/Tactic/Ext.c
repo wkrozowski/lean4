@@ -6644,10 +6644,10 @@ return v___x_2219_;
 LEAN_EXPORT lean_object* l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__0___boxed(lean_object* v_structName_2222_, lean_object* v___x_2223_, lean_object* v_a_2224_, lean_object* v___x_2225_, lean_object* v___y_2226_, lean_object* v___y_2227_, lean_object* v___y_2228_, lean_object* v___y_2229_, lean_object* v___y_2230_, lean_object* v___y_2231_, lean_object* v___y_2232_){
 _start:
 {
-uint8_t v___x_20837__boxed_2233_; uint8_t v___x_20839__boxed_2234_; lean_object* v_res_2235_; 
-v___x_20837__boxed_2233_ = lean_unbox(v___x_2223_);
-v___x_20839__boxed_2234_ = lean_unbox(v___x_2225_);
-v_res_2235_ = l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__0(v_structName_2222_, v___x_20837__boxed_2233_, v_a_2224_, v___x_20839__boxed_2234_, v___y_2226_, v___y_2227_, v___y_2228_, v___y_2229_, v___y_2230_, v___y_2231_);
+uint8_t v___x_20841__boxed_2233_; uint8_t v___x_20843__boxed_2234_; lean_object* v_res_2235_; 
+v___x_20841__boxed_2233_ = lean_unbox(v___x_2223_);
+v___x_20843__boxed_2234_ = lean_unbox(v___x_2225_);
+v_res_2235_ = l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__0(v_structName_2222_, v___x_20841__boxed_2233_, v_a_2224_, v___x_20843__boxed_2234_, v___y_2226_, v___y_2227_, v___y_2228_, v___y_2229_, v___y_2230_, v___y_2231_);
 lean_dec(v___y_2231_);
 lean_dec_ref(v___y_2230_);
 lean_dec(v___y_2229_);
@@ -6668,9 +6668,9 @@ return v___x_2245_;
 LEAN_EXPORT lean_object* l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__1___boxed(lean_object* v___f_2246_, lean_object* v___x_2247_, lean_object* v___y_2248_, lean_object* v___y_2249_, lean_object* v___y_2250_, lean_object* v___y_2251_, lean_object* v___y_2252_, lean_object* v___y_2253_, lean_object* v___y_2254_){
 _start:
 {
-uint8_t v___x_21082__boxed_2255_; lean_object* v_res_2256_; 
-v___x_21082__boxed_2255_ = lean_unbox(v___x_2247_);
-v_res_2256_ = l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__1(v___f_2246_, v___x_21082__boxed_2255_, v___y_2248_, v___y_2249_, v___y_2250_, v___y_2251_, v___y_2252_, v___y_2253_);
+uint8_t v___x_21086__boxed_2255_; lean_object* v_res_2256_; 
+v___x_21086__boxed_2255_ = lean_unbox(v___x_2247_);
+v_res_2256_ = l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__1(v___f_2246_, v___x_21086__boxed_2255_, v___y_2248_, v___y_2249_, v___y_2250_, v___y_2251_, v___y_2252_, v___y_2253_);
 lean_dec(v___y_2253_);
 lean_dec_ref(v___y_2252_);
 lean_dec(v___y_2251_);
@@ -8466,11 +8466,11 @@ return v___x_2891_;
 LEAN_EXPORT lean_object* l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__2___boxed(lean_object* v_structName_2894_, lean_object* v_flat_2895_, lean_object* v___x_2896_, lean_object* v___x_2897_, lean_object* v___x_2898_, lean_object* v___y_2899_, lean_object* v___y_2900_, lean_object* v___y_2901_, lean_object* v___y_2902_, lean_object* v___y_2903_, lean_object* v___y_2904_, lean_object* v___y_2905_){
 _start:
 {
-uint8_t v_flat_boxed_2906_; uint8_t v___x_21949__boxed_2907_; uint8_t v___x_21950__boxed_2908_; lean_object* v_res_2909_; 
+uint8_t v_flat_boxed_2906_; uint8_t v___x_21953__boxed_2907_; uint8_t v___x_21954__boxed_2908_; lean_object* v_res_2909_; 
 v_flat_boxed_2906_ = lean_unbox(v_flat_2895_);
-v___x_21949__boxed_2907_ = lean_unbox(v___x_2896_);
-v___x_21950__boxed_2908_ = lean_unbox(v___x_2897_);
-v_res_2909_ = l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__2(v_structName_2894_, v_flat_boxed_2906_, v___x_21949__boxed_2907_, v___x_21950__boxed_2908_, v___x_2898_, v___y_2899_, v___y_2900_, v___y_2901_, v___y_2902_, v___y_2903_, v___y_2904_);
+v___x_21953__boxed_2907_ = lean_unbox(v___x_2896_);
+v___x_21954__boxed_2908_ = lean_unbox(v___x_2897_);
+v_res_2909_ = l___private_Lean_Elab_Tactic_Ext_0__Lean_Elab_Tactic_Ext_realizeExtTheorem___lam__2(v_structName_2894_, v_flat_boxed_2906_, v___x_21953__boxed_2907_, v___x_21954__boxed_2908_, v___x_2898_, v___y_2899_, v___y_2900_, v___y_2901_, v___y_2902_, v___y_2903_, v___y_2904_);
 lean_dec(v___y_2904_);
 lean_dec_ref(v___y_2903_);
 lean_dec(v___y_2902_);
