@@ -4,47 +4,58 @@ source ../common.sh
 ./clean.sh
 cp -r input/* .
 
-# builtin-lint should fail with a clear message when oleans are not built
-lake_out builtin-lint || true
+# --builtin-lint should fail with a clear message when oleans are not built
+lake_out lint --builtin-lint || true
 match_pat 'out of date oleans' produced.out
 
 # up-to-date check is per-module: building only Clean should let us lint Clean
 test_run build Clean
-test_run builtin-lint Clean
+test_run lint --builtin-only Clean
 
 # but linting Main (not yet built) should still fail the up-to-date check
-lake_out builtin-lint Main || true
+lake_out lint --builtin-only Main || true
 match_pat 'out of date oleans' produced.out
 
 test_run build
 
-# builtin-lint should detect the defLemma violation in Main (the default target)
-lake_out builtin-lint || true
+# --builtin-lint should detect the defLemma violation in Main (the default target)
+lake_out lint --builtin-lint || true
 match_pat 'shouldBeTheorem' produced.out
 match_pat 'is a def, should be lemma/theorem' produced.out
 
-# builtin-lint should also detect the checkUnivs violation
+# --builtin-lint should also detect the checkUnivs violation
 match_pat 'badUnivDecl' produced.out
 match_pat 'only occur together' produced.out
 # builtin_nolint checkUnivs should suppress the warning
 no_match_pat 'badUnivSkipped' produced.out
 
 # --lint-only defLemma should run only the defLemma linter
-lake_out builtin-lint --lint-only defLemma || true
+lake_out lint --lint-only defLemma || true
 match_pat 'shouldBeTheorem' produced.out
 no_match_pat 'badUnivDecl' produced.out
 
 # Clean module has no violations; exit code should be 0
-test_run builtin-lint Clean
+test_run lint --builtin-only Clean
 
 # Without --clippy, the clippy linter should not run
-lake_out builtin-lint ClippyViolations || true
+lake_out lint --builtin-only ClippyViolations || true
 no_match_pat 'badNameClippy' produced.out
 
-# With --clippy, the clippy linter should flag badNameClippy
-lake_out builtin-lint --clippy ClippyViolations || true
+# --clippy should run only non-default (clippy) linters
+lake_out lint --clippy ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat "declaration name ends with 'Clippy'" produced.out
+# --clippy should not run default linters
+no_match_pat 'shouldBeTheorem' produced.out
+
+# --lint-all should run both default and clippy linters
+lake_out lint --lint-all ClippyViolations || true
+match_pat 'badNameClippy' produced.out
+
+# --builtin-only should skip the lint driver
+lake_out lint -f with-driver.lean --builtin-only Main || true
+match_pat 'shouldBeTheorem' produced.out
+no_match_pat 'lint-driver:' produced.out
 
 # --- builtinLint package configuration tests ---
 
@@ -59,12 +70,12 @@ match_pat 'no lint driver configured' produced.out
 lake_out lint --builtin-lint || true
 match_pat 'shouldBeTheorem' produced.out
 
-# lake lint --builtin-lint should accept builtin-lint flags like --clippy
-lake_out lint --builtin-lint --clippy ClippyViolations || true
+# --clippy implicitly enables builtin lint
+lake_out lint --clippy ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 
-# lake lint --builtin-lint should accept --lint-only
-lake_out lint --builtin-lint --lint-only defLemma || true
+# --lint-only implicitly enables builtin lint
+lake_out lint --lint-only defLemma || true
 match_pat 'shouldBeTheorem' produced.out
 
 # builtinLint = false: check-lint fails (no lint driver and builtin linting disabled)

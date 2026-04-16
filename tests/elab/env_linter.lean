@@ -127,7 +127,7 @@ error: invalid attribute `builtin_env_linter`, linter `dummyBadName` has already
 
 -- Default mode: only isDefault=true linters
 def testGetChecksDefault : CoreM (Array Name) := do
-  let checks ← getChecks (clippy := false) (runOnly := none)
+  let checks ← getChecks (scope := .default) (runOnly := none)
   return checks.map (·.name)
 
 -- dummyBadName and checkUnivs are default, dummyClippyLinter is not
@@ -135,18 +135,27 @@ def testGetChecksDefault : CoreM (Array Name) := do
 #guard_msgs in
 #eval testGetChecksDefault
 
--- Clippy mode: all linters
+-- Clippy mode: only non-default linters
 def testGetChecksClippy : CoreM (Array Name) := do
-  let checks ← getChecks (clippy := true) (runOnly := none)
+  let checks ← getChecks (scope := .clippy) (runOnly := none)
+  return checks.map (·.name)
+
+/-- info: #[`dummyClippyLinter] -/
+#guard_msgs in
+#eval testGetChecksClippy
+
+-- All mode: all linters
+def testGetChecksAll : CoreM (Array Name) := do
+  let checks ← getChecks (scope := .all) (runOnly := none)
   return checks.map (·.name)
 
 /-- info: #[`checkUnivs, `defLemma, `dummyBadName, `dummyClippyLinter] -/
 #guard_msgs in
-#eval testGetChecksClippy
+#eval testGetChecksAll
 
 -- runOnly: only specified linters
 def testGetChecksRunOnly : CoreM (Array Name) := do
-  let checks ← getChecks (clippy := false) (runOnly := some [`dummyClippyLinter])
+  let checks ← getChecks (runOnly := some [`dummyClippyLinter])
   return checks.map (·.name)
 
 /-- info: #[`dummyClippyLinter] -/
@@ -168,7 +177,7 @@ def testDeclsInCurrModule : CoreM Bool := do
 
 -- lintCore should find badDef but not goodDef or badButNolinted
 def testLintCore : CoreM (Array (Name × Nat)) := do
-  let linters ← getChecks (clippy := false) (runOnly := none)
+  let linters ← getChecks (scope := .default) (runOnly := none)
   let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
   return results.map fun (linter, msgs) => (linter.name, msgs.size)
 
@@ -178,7 +187,7 @@ def testLintCore : CoreM (Array (Name × Nat)) := do
 
 -- Verify which declaration was flagged
 def testLintCoreDetail : CoreM (Array Name) := do
-  let linters ← getChecks (clippy := false) (runOnly := none)
+  let linters ← getChecks (scope := .default) (runOnly := none)
   let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
   let mut flagged := #[]
   for (_, msgs) in results do
@@ -193,10 +202,10 @@ def testLintCoreDetail : CoreM (Array Name) := do
 /-! ## Test: formatLinterResults -/
 
 def testFormatResults : CoreM Format := do
-  let linters ← getChecks (clippy := false) (runOnly := none)
+  let linters ← getChecks (scope := .default) (runOnly := none)
   let results ← lintCore #[`badDef, `goodDef] linters
   let msg ← formatLinterResults results #[`badDef, `goodDef]
-    (groupByFilename := false) (whereDesc := "in test") (runClippyLinters := true)
+    (groupByFilename := false) (whereDesc := "in test") (scope := .all)
     (verbose := .medium) (numLinters := linters.size)
   return (← msg.format)
 
@@ -212,10 +221,10 @@ found bad names -/
 
 -- No errors case
 def testFormatResultsClean : CoreM Format := do
-  let linters ← getChecks (clippy := false) (runOnly := none)
+  let linters ← getChecks (scope := .default) (runOnly := none)
   let results ← lintCore #[`goodDef] linters
   let msg ← formatLinterResults results #[`goodDef]
-    (groupByFilename := false) (whereDesc := "in test") (runClippyLinters := true)
+    (groupByFilename := false) (whereDesc := "in test") (scope := .all)
     (verbose := .medium) (numLinters := linters.size)
   return (← msg.format)
 

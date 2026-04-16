@@ -76,6 +76,8 @@ public structure LakeOptions where
   builtinLint : BuiltinLint.Args := {}
   /-- Whether `lake lint` should also run builtin lints (via `--builtin-lint`). -/
   runBuiltinLint : Bool := false
+  /-- Whether `lake lint` should skip the lint driver (via `--builtin-only`). -/
+  builtinOnly : Bool := false
 
 def LakeOptions.outLv (opts : LakeOptions) : LogLevel :=
   opts.outLv?.getD opts.verbosity.minLogLv
@@ -306,13 +308,15 @@ def lakeLongOption : (opt : String) → CliM PUnit
 | "--"            => do
   let subArgs ← takeArgs
   modifyThe LakeOptions ({· with subArgs})
--- Builtin lint options
+-- Builtin lint options (using any of these implicitly enables --builtin-lint)
 | "--builtin-lint" => modifyThe LakeOptions ({· with runBuiltinLint := true})
-| "--clippy" => modifyThe LakeOptions ({· with builtinLint.clippy := true})
+| "--builtin-only" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinOnly := true})
+| "--clippy" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinLint.clippyOnly := true})
+| "--lint-all" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinLint.lintAll := true})
 | "--lint-only" => do
   let name ← takeOptArg "--lint-only" "linter name"
   modifyThe LakeOptions fun opts =>
-    {opts with builtinLint.only := opts.builtinLint.only.push name.toName}
+    {opts with runBuiltinLint := true, builtinLint.only := opts.builtinLint.only.push name.toName}
 -- Shared options
 | "--force" => modifyThe LakeOptions ({· with shake.force := true, builtinLint.force := true})
 -- Shake options
@@ -975,15 +979,18 @@ protected def lint : CliM PUnit := do
   processOptions lakeOption
   let opts ← getThe LakeOptions
   let ws ← loadWorkspace (← mkLoadConfig opts)
-  let hasDriver := !ws.root.lintDriver.isEmpty
+  let hasDriver := !ws.root.lintDriver.isEmpty && !opts.builtinOnly
   let pkgBuiltinLint := ws.root.config.builtinLint?
   let doBuiltinLint := opts.runBuiltinLint || pkgBuiltinLint == some true
   let mut builtinExitCode : UInt32 := 0
   if doBuiltinLint then
     let mods := (← takeArgs).toArray.map (·.toName)
     builtinExitCode ← runBuiltinLint ws opts.builtinLint mods
-  let driverExitCode ← noArgsRem do
+  let driverExitCode ← if hasDriver then
+    noArgsRem do
     ws.root.lint opts.subArgs (mkBuildConfig opts) |>.run (mkLakeContext ws)
+  else
+    pure 0
   unless doBuiltinLint || hasDriver do
     error s!"{ws.root.prettyName}: no lint driver configured and builtin linting is disabled"
   exit <| if builtinExitCode == 0 && driverExitCode == 0 then 0 else 1
@@ -994,14 +1001,6 @@ protected def checkLint : CliM PUnit := do
   noArgsRem do
   let hasLint := !pkg.lintDriver.isEmpty || pkg.config.builtinLint? == some true
   exit <| if hasLint then 0 else 1
-
-protected def builtinLint : CliM PUnit := do
-  processOptions lakeOption
-  let opts ← getThe LakeOptions
-  let config ← mkLoadConfig opts
-  let ws ← loadWorkspace config
-  let mods := (← takeArgs).toArray.map (·.toName)
-  exit <| ← runBuiltinLint ws opts.builtinLint mods
 
 protected def clean : CliM PUnit := do
   processOptions lakeOption
@@ -1193,7 +1192,6 @@ def lakeCli : (cmd : String) → CliM PUnit
 | "test"                => lake.test
 | "check-test"          => lake.checkTest
 | "lint"                => lake.lint
-| "builtin-lint"        => lake.builtinLint
 | "check-lint"          => lake.checkLint
 | "clean"               => lake.clean
 | "shake"               => lake.shake

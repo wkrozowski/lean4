@@ -14,10 +14,12 @@ open Lean Lean.Core Meta
 
 namespace Lake.BuiltinLint
 
-/-- Arguments for `lake builtin-lint`. -/
+/-- Arguments for builtin linting via `lake lint --builtin-lint`. -/
 public structure Args where
-  /-- Run all linters including non-default ones. -/
-  clippy : Bool := false
+  /-- Run only clippy (non-default) linters. -/
+  clippyOnly : Bool := false
+  /-- Run all linters (default + clippy). -/
+  lintAll : Bool := false
   /-- Run only the specified linters. -/
   only : Array Name := #[]
   /-- Skip the up-to-date build check. -/
@@ -33,10 +35,14 @@ Assumes Lean's search path has already been properly configured.
 public def run (args : Args) : IO UInt32 := do
   let mods := args.mods
   if mods.isEmpty then
-    IO.eprintln "lake builtin-lint: no modules specified"
+    IO.eprintln "lake lint: no modules specified for builtin linting"
     return 1
 
   let runOnly := if args.only.isEmpty then none else some args.only.toList
+  let scope : Linter.EnvLinter.LintScope :=
+    if args.lintAll then .all
+    else if args.clippyOnly then .clippy
+    else .default
   let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
 
   let mut anyFailed := false
@@ -45,7 +51,7 @@ public def run (args : Args) : IO UInt32 := do
     let env ← importModules #[{ module := mod }, envLinterModule] {} (trustLevel := 1024) (loadExts := true)
     let (result, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
       let decls ← Linter.EnvLinter.getDeclsInPackage mod.getRoot
-      let linters ← Linter.EnvLinter.getChecks (clippy := args.clippy) (runOnly := runOnly)
+      let linters ← Linter.EnvLinter.getChecks (scope := scope) (runOnly := runOnly)
       if linters.isEmpty then
         IO.println s!"-- No linters registered for {mod}."
         return false
@@ -55,7 +61,7 @@ public def run (args : Args) : IO UInt32 := do
         let fmtResults ←
           Linter.EnvLinter.formatLinterResults results decls
             (groupByFilename := true) (useErrorFormat := true)
-            s!"in {mod}" (runClippyLinters := args.clippy || !args.only.isEmpty) .medium linters.size
+            s!"in {mod}" (scope := if args.only.isEmpty then scope else .all) .medium linters.size
         IO.print (← fmtResults.toString)
       else
         IO.println s!"-- Linting passed for {mod}."
