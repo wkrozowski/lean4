@@ -37,14 +37,12 @@ public def run (args : Args) : IO UInt32 := do
     return 1
 
   let runOnly := if args.only.isEmpty then none else some args.only.toList
-
-  let imports : Array Import := mods.map ({ module := · })
-  let imports := imports.push { module := `Lean.Linter.EnvLinter }
-  unsafe Lean.enableInitializersExecution
-  let env ← importModules imports {} (trustLevel := 1024) (loadExts := true)
+  let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
 
   let mut anyFailed := false
   for mod in mods do
+    unsafe Lean.enableInitializersExecution
+    let env ← importModules #[{ module := mod }, envLinterModule] {} (trustLevel := 1024) (loadExts := true)
     let (result, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
       let decls ← Linter.EnvLinter.getDeclsInPackage mod.getRoot
       let linters ← Linter.EnvLinter.getChecks (clippy := args.clippy) (runOnly := runOnly)
