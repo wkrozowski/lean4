@@ -332,7 +332,7 @@ public configuration PackageConfig (p : Name) (n : Name) extends WorkspaceConfig
     will run built-in lints when no lint driver is configured (i.e., act like `true`
     as a fallback).
   -/
-  builtinLint : Option Bool := none
+  builtinLint?, builtinLint : Option Bool := none
 
   /--
   Whether this package is expected to function only on a single toolchain

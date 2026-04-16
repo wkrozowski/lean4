@@ -976,7 +976,7 @@ protected def lint : CliM PUnit := do
   let opts ← getThe LakeOptions
   let ws ← loadWorkspace (← mkLoadConfig opts)
   let hasDriver := !ws.root.lintDriver.isEmpty
-  let pkgBuiltinLint := ws.root.config.builtinLint
+  let pkgBuiltinLint := ws.root.config.builtinLint?
   let doBuiltinLint := opts.runBuiltinLint || pkgBuiltinLint == some true
   let mut builtinExitCode : UInt32 := 0
   if doBuiltinLint then
@@ -992,7 +992,7 @@ protected def checkLint : CliM PUnit := do
   processOptions lakeOption
   let pkg ← loadPackage (← mkLoadConfig (← getThe LakeOptions))
   noArgsRem do
-  let hasLint := !pkg.lintDriver.isEmpty || pkg.config.builtinLint == some true
+  let hasLint := !pkg.lintDriver.isEmpty || pkg.config.builtinLint? == some true
   exit <| if hasLint then 0 else 1
 
 protected def builtinLint : CliM PUnit := do
