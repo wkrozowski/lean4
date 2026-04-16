@@ -8,6 +8,14 @@ cp -r input/* .
 lake_out builtin-lint || true
 match_pat 'out of date oleans' produced.out
 
+# up-to-date check is per-module: building only Clean should let us lint Clean
+test_run build Clean
+test_run builtin-lint Clean
+
+# but linting Main (not yet built) should still fail the up-to-date check
+lake_out builtin-lint Main || true
+match_pat 'out of date oleans' produced.out
+
 test_run build
 
 # builtin-lint should detect the defLemma violation in Main (the default target)

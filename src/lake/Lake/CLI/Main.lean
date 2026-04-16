@@ -964,7 +964,7 @@ private def runBuiltinLint
     error "no modules specified and there are no applicable default targets"
   let args := {args with mods}
   unless args.force do
-    let specs ← parseTargetSpecs ws []
+    let specs ← parseTargetSpecs ws (mods.map (s!"+{·}") |>.toList)
     let upToDate ← ws.checkNoBuild <| buildSpecs specs
     unless upToDate do
       error "there are out of date oleans; run `lake build` or fetch them from a cache first"
