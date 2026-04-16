@@ -74,6 +74,8 @@ public structure LakeOptions where
   maxRevs : Nat := 100
   shake : Shake.Args := {}
   builtinLint : BuiltinLint.Args := {}
+  /-- Whether `lake lint` should also run builtin lints (via `--builtin-lint`). -/
+  runBuiltinLint : Bool := false
 
 def LakeOptions.outLv (opts : LakeOptions) : LogLevel :=
   opts.outLv?.getD opts.verbosity.minLogLv
@@ -305,6 +307,7 @@ def lakeLongOption : (opt : String) → CliM PUnit
   let subArgs ← takeArgs
   modifyThe LakeOptions ({· with subArgs})
 -- Builtin lint options
+| "--builtin-lint" => modifyThe LakeOptions ({· with runBuiltinLint := true})
 | "--clippy" => modifyThe LakeOptions ({· with builtinLint.clippy := true})
 | "--lint-only" => do
   let name ← takeOptArg "--lint-only" "linter name"
@@ -954,41 +957,47 @@ protected def checkTest : CliM PUnit := do
   let pkg ← loadPackage (← mkLoadConfig (← getThe LakeOptions))
   noArgsRem do exit <| if pkg.testDriver.isEmpty then 1 else 0
 
-/-- Run builtin environment linters on a loaded workspace. -/
 private def runBuiltinLint
-    (ws : Workspace) (args : BuiltinLint.Args) (mods : Array Lean.Name)
-: CliM PUnit := do
+    (ws : Workspace) (args : BuiltinLint.Args) (mods : Array Lean.Name) : CliM UInt32 := do
   let mods := if mods.isEmpty then ws.defaultTargetRoots else mods
   if mods.isEmpty then
     error "no modules specified and there are no applicable default targets"
   let args := {args with mods}
   unless args.force do
     let specs ← parseTargetSpecs ws []
-    let upToDate ← ws.checkNoBuild (buildSpecs specs)
+    let upToDate ← ws.checkNoBuild <| buildSpecs specs
     unless upToDate do
       error "there are out of date oleans; run `lake build` or fetch them from a cache first"
-  -- Set the search path so importModules can find oleans
   Lean.searchPathRef.set ws.augmentedLeanPath
-  let exitCode ← BuiltinLint.run args
-  if exitCode != 0 then
-    exit exitCode
+  BuiltinLint.run args
 
 protected def lint : CliM PUnit := do
   processOptions lakeOption
   let opts ← getThe LakeOptions
   let ws ← loadWorkspace (← mkLoadConfig opts)
-  if ws.root.lintDriver.isEmpty then
+  let hasDriver := !ws.root.lintDriver.isEmpty
+  let pkgBuiltinLint := ws.root.config.builtinLint
+  let doBuiltinLint := opts.runBuiltinLint || pkgBuiltinLint == some true
+  let mut builtinExitCode : UInt32 := 0
+  if doBuiltinLint then
     let mods := (← takeArgs).toArray.map (·.toName)
-    runBuiltinLint ws opts.builtinLint mods
-  else
+    builtinExitCode ← runBuiltinLint ws opts.builtinLint mods
+  let driverExitCode ← if hasDriver then
     noArgsRem do
-    let x := ws.root.lint opts.subArgs (mkBuildConfig opts)
-    exit <| ← x.run (mkLakeContext ws)
+    ws.root.lint opts.subArgs (mkBuildConfig opts) |>.run (mkLakeContext ws)
+  else
+    pure 0
+  unless doBuiltinLint || hasDriver do
+    error s!"{ws.root.prettyName}: no lint driver configured and builtin linting is disabled"
+  exit <| if builtinExitCode == 0 && driverExitCode == 0 then 0 else 1
 
 protected def checkLint : CliM PUnit := do
   processOptions lakeOption
   let pkg ← loadPackage (← mkLoadConfig (← getThe LakeOptions))
-  noArgsRem do exit <| if pkg.lintDriver.isEmpty then 1 else 0
+  noArgsRem do
+  -- Lint is available if a lint driver is configured or builtinLint is explicitly `true`.
+  let hasLint := !pkg.lintDriver.isEmpty || pkg.config.builtinLint == some true
+  exit <| if hasLint then 0 else 1
 
 /-- The `lake builtin-lint` command: run builtin environment linters. -/
 protected def builtinLint : CliM PUnit := do
@@ -997,7 +1006,7 @@ protected def builtinLint : CliM PUnit := do
   let config ← mkLoadConfig opts
   let ws ← loadWorkspace config
   let mods := (← takeArgs).toArray.map (·.toName)
-  runBuiltinLint ws opts.builtinLint mods
+  exit <| ← runBuiltinLint ws opts.builtinLint mods
 
 protected def clean : CliM PUnit := do
   processOptions lakeOption

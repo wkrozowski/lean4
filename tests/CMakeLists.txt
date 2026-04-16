@@ -261,7 +261,7 @@ else()
     GLOB_RECURSE LEANLAKETESTS
     "${LEAN_SOURCE_DIR}/../tests/lake/examples/test.sh"
     "${LEAN_SOURCE_DIR}/../tests/lake/tests/shake/test.sh"
-    "${LEAN_SOURCE_DIR}/../tests/lake/tests/lint/test.sh"
+    "${LEAN_SOURCE_DIR}/../tests/lake/tests/builtin-lint/test.sh"
   )
 endif()
 foreach(T ${LEANLAKETESTS})
