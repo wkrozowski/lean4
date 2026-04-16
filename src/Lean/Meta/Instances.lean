@@ -250,8 +250,7 @@ def checkNonClassInstance (declName : Name) (c : Expr) : MetaM Unit := do
   forallTelescopeReducing type fun _ target => do
     unless (← isClass? target).isSome do
       unless target.isSorry do
-      throwError m!"instance `{declName}` target `{target}` is not a type class. \n\n\
-      Disable `warning.nonClassInstance` to silence this warning."
+      throwError m!"instance `{declName}` target `{target}` is not a type class."
 
 def addInstance (declName : Name) (attrKind : AttributeKind) (prio : Nat) : MetaM Unit := do
   let c ← mkConstWithLevelParams declName

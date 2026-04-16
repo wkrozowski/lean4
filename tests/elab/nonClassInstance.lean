@@ -6,22 +6,14 @@ structure Foo where
 class Bar where
   x : Nat
 
-/--
-error: instance `instFoo` target `Foo` is not a type class. ⏎
-
-Disable `warning.nonClassInstance` to silence this warning.
--/
+/-- error: instance `instFoo` target `Foo` is not a type class. -/
 #guard_msgs in
 instance instFoo : Foo := ⟨0⟩
 
 -- Applying @[instance] to a non-class def should also warn
 def instFoo2 : Foo := ⟨1⟩
 
-/--
-error: instance `instFoo2` target `Foo` is not a type class. ⏎
-
-Disable `warning.nonClassInstance` to silence this warning.
--/
+/-- error: instance `instFoo2` target `Foo` is not a type class. -/
 #guard_msgs in
 attribute [instance] instFoo2
 
@@ -40,10 +32,6 @@ instance : Baz Nat := ⟨0⟩
 structure Qux (α : Type) where
   x : α
 
-/--
-error: instance `instQux` target `Qux Nat` is not a type class. ⏎
-
-Disable `warning.nonClassInstance` to silence this warning.
--/
+/-- error: instance `instQux` target `Qux Nat` is not a type class. -/
 #guard_msgs in
 instance instQux : Qux Nat := ⟨0⟩
