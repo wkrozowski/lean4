@@ -83,7 +83,7 @@ lake_out lint --lint-only defLemma || true
 match_pat 'shouldBeTheorem' produced.out
 
 # builtinLint = false: check-lint fails (no lint driver and builtin linting disabled)
-sed_i 's/^version = .*/&\nbuiltinLint = false/' lakefile.toml
+sed_i 's/^name = .*/&\nbuiltinLint = false/' lakefile.toml
 test_fails check-lint
 
 # builtinLint = false: lake lint errors
