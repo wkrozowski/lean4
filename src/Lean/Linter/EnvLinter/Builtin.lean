@@ -17,6 +17,7 @@ public meta import Lean.ProjFns
 public meta import Lean.Meta.InferType
 public meta import Lean.Util.CollectLevelParams
 public meta import Lean.Util.ForEachExpr
+public meta import Lean.Meta.Instances
 
 open Lean Meta
 
@@ -30,19 +31,14 @@ has been used. A `def` whose type is a `Prop` should be a `theorem`, and vice ve
   noErrorsFound := "All declarations correctly marked as def/lemma."
   errorsFound := "INCORRECT DEF/LEMMA:"
   test declName := do
-    if (← isAutoDecl declName) || (← isImplicitReducible declName) then
-      return none
-    -- Projections are generated as `def`s even when they should be `theorem`s
-    if ← isProjectionFn declName then return none
+    if ← isAutoDecl declName then return none
     let info ← getConstInfo declName
-    let isThm ← match info with
-      | .defnInfo .. => pure false
-      | .thmInfo ..  => pure true
-      | _            => return none
-    match isThm, ← isProp info.type with
-    | true,  false => return some "is a lemma/theorem, should be a def"
-    | false, true  => return some "is a def, should be lemma/theorem"
-    | _,     _     => return none
+    if info.isDefinition then
+      -- Delta-derived instances are not theorems even when they should be. (leanprover/lean4#13295)
+      -- The only indication we have is that they are instances marked `@[implicit_reducible]`.
+      if ← isInstance declName <&&> isImplicitReducible declName then return none
+      if ← isProp info.type then return some "is a def, should be a lemma/theorem"
+    return none
 
 /--
 `univParamsGrouped e nm₀` computes for each `Level` occurring in `e` the set of level parameters

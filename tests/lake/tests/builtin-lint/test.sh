@@ -21,7 +21,11 @@ test_run build
 # --builtin-lint should detect the defLemma violation in Main (the default target)
 lake_out lint --builtin-lint || true
 match_pat 'shouldBeTheorem' produced.out
-match_pat 'is a def, should be lemma/theorem' produced.out
+match_pat 'is a def, should be a lemma/theorem' produced.out
+# `@[reducible, instance]` on a `def` of Prop type keeps it a `def`, so flag it.
+match_pat 'reducibleInstShouldBeTheorem' produced.out
+# Plain `instance` of Prop type is elaborated as a theorem; it should not be flagged.
+no_match_pat 'plainInstIsOk' produced.out
 
 # --builtin-lint should also detect the checkUnivs violation
 match_pat 'badUnivDecl' produced.out
