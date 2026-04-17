@@ -48,3 +48,8 @@ public import Lean.DefEqAttrib
 public import Lean.Shell
 public import Lean.ExtraModUses
 public import Lean.OriginalConstKind
+
+-- TEMP probes so `script/prune_deprecations.sh` has real data to report on.
+-- Delete both lines (and recompile) before committing anything from this tree.
+deprecated_syntax Lean.Parser.Term.let_fun "probe: use `have` instead" (since := "2025-01-01")
+deprecated_module "probe: module-level deprecation" (since := "2025-01-01")
