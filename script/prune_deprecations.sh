@@ -13,12 +13,11 @@
 #
 # Handlers:
 #
-#   @[deprecated_arg old new (since := "...")]
-#       Reports the `file:line` of each matching attribute (grep-based).
-#
-#   @[deprecated_arg old (since := "...")]       (no replacement)
-#       Reports each match for manual review — the parameter may still be in
-#       the signature, so removing the attribute has non-local effects.
+#   @[deprecated_arg ...]  or  attribute [deprecated_arg ...] ...
+#       Discovery delegated to script/find_deprecated_args.lean. Reports each
+#       match for manual review — the no-replacement form may leave a dead
+#       binder in the signature, and the script's syntactic scan can't tell
+#       which variant a given attribute belongs to.
 #
 #   register_builtin_option ... := { ... deprecation? := some { since := "..." } ... }
 #       Discovery delegated to script/find_deprecated_options.lean, which reads
@@ -56,31 +55,20 @@ fi
 # the script's own scan.
 LEAN_ARGS=(-Dlinter.deprecated.module=false)
 
-# ---- @[deprecated_arg] (rename form): report file positions -----------------
-echo "== deprecated_arg (rename form)"
-pattern='^[[:space:]]*@\[deprecated_arg [^ ,"]+ [^ ,"]+.*\(since := "[0-9]{4}-[0-9]{2}-[0-9]{2}"\)\][[:space:]]*$'
-# `grep` returns 1 when there are no matches; `|| true` keeps `pipefail` happy.
-{ grep -rHnE "$pattern" --include='*.lean' src 2>/dev/null || true; } \
-  | awk -F: -v c="$CUTOFF" '
-      {
-        match($0, /\(since := "[0-9-]+"\)/); since = substr($0, RSTART+12, 10)
-        if (since <= c) print $1 ":" $2
-      }' \
-  | sort -t: -k1,1 -k2,2n \
-  | sed 's/^/  /'
-echo
-
-# ---- @[deprecated_arg] (no-replacement form): manual review -----------------
-echo "== deprecated_arg (no-replacement form, manual review)"
-{ grep -rHnE '^[[:space:]]*@\[deprecated_arg [^ ,"]+[[:space:]]*(".+")?[[:space:]]*\(since := "[0-9]{4}-[0-9]{2}-[0-9]{2}"\)\][[:space:]]*$' \
-       --include='*.lean' src 2>/dev/null || true; } \
-  | awk -F: -v c="$CUTOFF" '
-      {
-        match($0, /\(since := "[0-9-]+"\)/); since = substr($0, RSTART+12, 10)
-        # skip rename form (two identifiers before the optional string / since)
-        if (match($0, /@\[deprecated_arg [^ ,"]+ [^ ,"]+/)) next
-        if (since <= c) print "  " $0
-      }'
+# ---- deprecated_arg: delegate to Lean (handles @[...] and attribute [...]) --
+# Output columns: file, line, column, since, form ("attr" | "attribute"), content.
+# Both forms are reported together; removing either requires human review since
+# dropping a parameter (no-replacement case) has non-local effects.
+echo "== deprecated_arg (attribute uses, manual review)"
+arg_records=$("$LEAN" "${LEAN_ARGS[@]}" --run script/find_deprecated_args.lean --cutoff "$CUTOFF")
+if [[ -z "$arg_records" ]]; then
+  echo "  (none)"
+else
+  while IFS=$'\t' read -r file line col since form content; do
+    echo "  $file:$line:$col  ($form, since $since)"
+    echo "    $content"
+  done <<<"$arg_records"
+fi
 echo
 
 # ---- deprecated_option: delegate discovery to Lean --------------------------
@@ -148,14 +136,4 @@ else
     echo "  $file  (module $module, since $since)"
     [[ -n "$message" ]] && echo "    message: $message"
   done <<<"$mod_records"
-  echo
-  echo "== remaining imports of deprecated modules (rewrite before removing)"
-  awk -F'\t' '{print $2}' <<<"$mod_records" | sort -u | while read -r module; do
-    hits=$(grep -rHnE "^[[:space:]]*(public[[:space:]]+)?(meta[[:space:]]+)?import[[:space:]]+${module}(\$|[[:space:]])" \
-               --include='*.lean' src 2>/dev/null || true)
-    if [[ -n "$hits" ]]; then
-      echo "  $module:"
-      echo "$hits" | sed 's/^/    /'
-    fi
-  done
 fi

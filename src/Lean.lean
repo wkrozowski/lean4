@@ -50,6 +50,15 @@ public import Lean.ExtraModUses
 public import Lean.OriginalConstKind
 
 -- TEMP probes so `script/prune_deprecations.sh` has real data to report on.
--- Delete both lines (and recompile) before committing anything from this tree.
+-- Delete these lines (and recompile) before committing anything from this tree.
 deprecated_syntax Lean.Parser.Term.let_fun "probe: use `have` instead" (since := "2025-01-01")
 deprecated_module "probe: module-level deprecation" (since := "2025-01-01")
+
+-- Two `deprecated_arg` probes — one plain @[…] form, one inside a group,
+-- one `attribute […] in …` form — to verify the scanner hits all three.
+@[deprecated_arg oldName probeParam (since := "2025-01-01")]
+def _probeArgRename (probeParam : Nat) : Nat := probeParam
+@[simp, deprecated_arg oldAlt probeParam (since := "2025-01-01")]
+def _probeArgGroup (probeParam : Nat) : Nat := probeParam
+def _probeArgAttribute (probeParam : Nat) : Nat := probeParam
+attribute [deprecated_arg oldAttr probeParam (since := "2025-01-01")] _probeArgAttribute
