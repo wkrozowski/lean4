@@ -3930,9 +3930,9 @@ goto v___jp_1361_;
 v___jp_1313_:
 {
 lean_object* v___x_1319_; lean_object* v___x_1320_; lean_object* v___x_1321_; lean_object* v___x_1322_; lean_object* v___x_1323_; lean_object* v___x_1324_; lean_object* v___x_1325_; lean_object* v___x_1326_; lean_object* v___x_1327_; lean_object* v___x_1328_; lean_object* v___x_1329_; lean_object* v___x_1330_; lean_object* v___x_1331_; lean_object* v___x_1332_; lean_object* v_vars_1333_; uint8_t v___x_1334_; 
-lean_inc_ref(v___y_1316_);
+lean_inc_ref(v___y_1317_);
 v___x_1319_ = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(v___x_1319_, 0, v___y_1316_);
+lean_ctor_set(v___x_1319_, 0, v___y_1317_);
 lean_ctor_set(v___x_1319_, 1, v___y_1318_);
 v___x_1320_ = ((lean_object*)(l_Lake_Workspace_augmentedEnvVars___closed__1));
 v___x_1321_ = l_Lake_Workspace_augmentedPath(v_self_1304_);
@@ -3945,9 +3945,9 @@ lean_ctor_set(v___x_1324_, 1, v___x_1323_);
 v___x_1325_ = lean_unsigned_to_nat(6u);
 v___x_1326_ = lean_mk_empty_array_with_capacity(v___x_1325_);
 v___x_1327_ = lean_array_push(v___x_1326_, v___x_1312_);
-v___x_1328_ = lean_array_push(v___x_1327_, v___y_1314_);
-v___x_1329_ = lean_array_push(v___x_1328_, v___y_1315_);
-v___x_1330_ = lean_array_push(v___x_1329_, v___y_1317_);
+v___x_1328_ = lean_array_push(v___x_1327_, v___y_1315_);
+v___x_1329_ = lean_array_push(v___x_1328_, v___y_1314_);
+v___x_1330_ = lean_array_push(v___x_1329_, v___y_1316_);
 v___x_1331_ = lean_array_push(v___x_1330_, v___x_1319_);
 v___x_1332_ = lean_array_push(v___x_1331_, v___x_1324_);
 v_vars_1333_ = l_Array_append___redArg(v___x_1309_, v___x_1332_);
@@ -4005,10 +4005,10 @@ lean_object* v___x_1358_; lean_object* v___x_1359_;
 v___x_1358_ = l_Lake_Env_leanGithash(v_lakeEnv_1305_);
 v___x_1359_ = lean_alloc_ctor(1, 1, 0);
 lean_ctor_set(v___x_1359_, 0, v___x_1358_);
-v___y_1314_ = v___x_1346_;
-v___y_1315_ = v___x_1351_;
-v___y_1316_ = v___x_1357_;
-v___y_1317_ = v___x_1356_;
+v___y_1314_ = v___x_1351_;
+v___y_1315_ = v___x_1346_;
+v___y_1316_ = v___x_1356_;
+v___y_1317_ = v___x_1357_;
 v___y_1318_ = v___x_1359_;
 goto v___jp_1313_;
 }
@@ -4016,10 +4016,10 @@ else
 {
 lean_object* v___x_1360_; 
 v___x_1360_ = lean_box(0);
-v___y_1314_ = v___x_1346_;
-v___y_1315_ = v___x_1351_;
-v___y_1316_ = v___x_1357_;
-v___y_1317_ = v___x_1356_;
+v___y_1314_ = v___x_1351_;
+v___y_1315_ = v___x_1346_;
+v___y_1316_ = v___x_1356_;
+v___y_1317_ = v___x_1357_;
 v___y_1318_ = v___x_1360_;
 goto v___jp_1313_;
 }

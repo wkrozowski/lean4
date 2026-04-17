@@ -808,7 +808,7 @@ _start:
 lean_object* v___x_249_; lean_object* v___x_250_; lean_object* v___x_251_; lean_object* v___x_252_; 
 v___x_249_ = lean_obj_once(&l_Lake_instInhabitedArtifact_default___closed__1, &l_Lake_instInhabitedArtifact_default___closed__1_once, _init_l_Lake_instInhabitedArtifact_default___closed__1);
 v___x_250_ = ((lean_object*)(l_Lake_ArtifactDescr_ofFilePath_x3f___closed__2));
-v___x_251_ = lean_obj_once(&l_Lake_instInhabitedArtifactDescr_default___closed__1, &l_Lake_instInhabitedArtifactDescr_default___closed__1_once, _init_l_Lake_instInhabitedArtifactDescr_default___closed__1);
+v___x_251_ = l_Lake_instInhabitedArtifactDescr_default;
 v___x_252_ = lean_alloc_ctor(0, 4, 0);
 lean_ctor_set(v___x_252_, 0, v___x_251_);
 lean_ctor_set(v___x_252_, 1, v___x_250_);

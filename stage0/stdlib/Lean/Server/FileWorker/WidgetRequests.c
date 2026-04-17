@@ -3808,8 +3808,8 @@ lean_object* v___x_959_; lean_object* v___x_960_; lean_object* v___x_961_; lean_
 v___x_959_ = l_Option_toJson___at___00Lean_Widget_instRpcEncodableInfoPopup_enc_00___x40_Lean_Server_FileWorker_WidgetRequests_2734021171____hygCtx___hyg_1__spec__0(v_fst_957_);
 lean_dec(v_fst_957_);
 v___x_960_ = lean_alloc_ctor(0, 3, 0);
-lean_ctor_set(v___x_960_, 0, v___y_955_);
-lean_ctor_set(v___x_960_, 1, v___y_956_);
+lean_ctor_set(v___x_960_, 0, v___y_956_);
+lean_ctor_set(v___x_960_, 1, v___y_955_);
 lean_ctor_set(v___x_960_, 2, v___x_959_);
 v___x_961_ = l_Lean_Widget_instToJsonRpcEncodablePacket_toJson_00___x40_Lean_Server_FileWorker_WidgetRequests_1691946469____hygCtx___hyg_32_(v___x_960_);
 lean_dec_ref(v___x_960_);
@@ -3827,8 +3827,8 @@ if (lean_obj_tag(v_doc_965_) == 0)
 {
 lean_object* v___x_971_; 
 v___x_971_ = lean_box(0);
-v___y_955_ = v___y_967_;
-v___y_956_ = v___x_970_;
+v___y_955_ = v___x_970_;
+v___y_956_ = v___y_967_;
 v_fst_957_ = v___x_971_;
 v_snd_958_ = v_snd_969_;
 goto v___jp_954_;
@@ -3873,8 +3873,8 @@ goto v_reusejp_977_;
 }
 v_reusejp_977_:
 {
-v___y_955_ = v___y_967_;
-v___y_956_ = v___x_970_;
+v___y_955_ = v___x_970_;
+v___y_956_ = v___y_967_;
 v_fst_957_ = v___x_978_;
 v_snd_958_ = v_snd_969_;
 goto v___jp_954_;
@@ -5727,10 +5727,10 @@ return v___x_1492_;
 LEAN_EXPORT lean_object* l___private_Lean_Server_FileWorker_WidgetRequests_0__Lean_Widget_makePopup_ppExprForPopup___lam__0___boxed(lean_object* v_explicit_1493_, lean_object* v___x_1494_, lean_object* v___y_1495_, lean_object* v___y_1496_, lean_object* v___y_1497_, lean_object* v___y_1498_, lean_object* v___y_1499_, lean_object* v___y_1500_, lean_object* v___y_1501_){
 _start:
 {
-uint8_t v_explicit_boxed_1502_; uint8_t v___x_793__boxed_1503_; lean_object* v_res_1504_; 
+uint8_t v_explicit_boxed_1502_; uint8_t v___x_795__boxed_1503_; lean_object* v_res_1504_; 
 v_explicit_boxed_1502_ = lean_unbox(v_explicit_1493_);
-v___x_793__boxed_1503_ = lean_unbox(v___x_1494_);
-v_res_1504_ = l___private_Lean_Server_FileWorker_WidgetRequests_0__Lean_Widget_makePopup_ppExprForPopup___lam__0(v_explicit_boxed_1502_, v___x_793__boxed_1503_, v___y_1495_, v___y_1496_, v___y_1497_, v___y_1498_, v___y_1499_, v___y_1500_);
+v___x_795__boxed_1503_ = lean_unbox(v___x_1494_);
+v_res_1504_ = l___private_Lean_Server_FileWorker_WidgetRequests_0__Lean_Widget_makePopup_ppExprForPopup___lam__0(v_explicit_boxed_1502_, v___x_795__boxed_1503_, v___y_1495_, v___y_1496_, v___y_1497_, v___y_1498_, v___y_1499_, v___y_1500_);
 lean_dec(v___y_1500_);
 lean_dec_ref(v___y_1499_);
 lean_dec(v___y_1498_);
