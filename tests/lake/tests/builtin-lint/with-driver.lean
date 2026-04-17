@@ -2,7 +2,6 @@ import Lake
 open System Lake DSL
 
 package lint where
-  version := v!"0.1.0"
   builtinLint := true
 
 @[lint_driver]
