@@ -1,5 +1,4 @@
 name = "lint"
-version = "0.1.0"
 defaultTargets = ["Main", "Clean", "Linters", "ClippyViolations"]
 
 [[lean_lib]]
