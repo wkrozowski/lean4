@@ -317,7 +317,8 @@ def handleIn : Handler := fun _ stx => do
   -- `set_option ... in`. This is unlike `withSetOptionIn`, which stops at the first `in` not of
   -- the form `set_option ... in`; as such, we must inline the functionality.
   if stx[0].getKind == ``«set_option» then
-    let (opts, _) ← try Elab.elabSetOption stx[0][1] stx[0][3] (addInfo := false) catch _ => getOptions
+    let opts ← try (·.1) <$> Elab.elabSetOption stx[0][1] stx[0][3] (addInfo := false)
+      catch _ => getOptions
     withScope ({ · with opts }) do missingDocs.run stx[2]
   else
     missingDocs.run stx[2]
