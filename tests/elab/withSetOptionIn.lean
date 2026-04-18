@@ -4,6 +4,8 @@ import Lean
 # `withSetOptionIn`
 -/
 
+open Lean Elab Command
+
 section recurse
 
 /-!
@@ -12,8 +14,6 @@ This test checks that `withSetOptionIn` recurses into the command syntax (`stx[2
 
 Prior to #3806, `withSetOptionIn` erroneously recursed into the syntax `in` (`stx[1]`).
 -/
-
-open Lean Elab Command
 
 /-- Trace `foo` when `set_option trace.debug true`. -/
 elab "#trace_debug_foo" : command => do trace[debug] "foo"
@@ -56,96 +56,39 @@ panic.
 We also check that we do not error inside linters due to malformed options.
 -/
 
-open Lean Elab Command
+/-- The total size of an infotree plus `acc`. -/
+partial def sizeAux (acc : Nat) : InfoTree → Nat
+  | .node _ ch => ch.foldl (init := acc + 1) sizeAux
+  | .context _ t => sizeAux (acc + 1) t
+  | .hole _ => acc + 1
 
-/-- Two persistent arrays are equal if the corresponding elements are equal. -/
-def Lean.PersistentArray.eqOf [Inhabited α] (a b : PersistentArray α) (eq : α → α → Bool) : Bool :=
-  a.size == b.size && Id.run do
-    for i in 0...a.size do
-      unless eq a[i]! b[i]! do return false
-    return true
+/-- Check that the infotrees within `withSetOptionIn` all have a context and match the size of the
+infotrees before `withSetOptionIn`. Noisy for confirmation when `pp.all` is true via
+`set_option ... in`. -/
+def checkInfoTrees : Linter where run cmd := do
+  -- Get initial infotree size
+  let initInfoTreeSize := (← getInfoTrees).foldl (init := 0) sizeAux
+  if getPPAll (← getOptions) then throwError "`pp.all` should not be set ambiently for testing."
+  withSetOptionIn (fun cmd => do
+    if getPPAll (← getOptions) then logInfo m!"Test linter is functioning."
+    -- Ensure we're checking something.
+    if (← getInfoTrees).isEmpty then throwError "No infotrees."
+    -- Ensure every infotree has context
+    unless (← getInfoTrees).all (· matches .context ..) do
+      logError "Context-free infotree!"
+    -- Ensure the number of nodes is the same
+    unless initInfoTreeSize = (← getInfoTrees).foldl (init := 0) sizeAux do
+      logError "Wrong size!") cmd
 
-/-- Compare the structure of an infotree. (Do not check that the infos are the same.) -/
-partial def Lean.Elab.InfoTree.structEq : InfoTree → InfoTree → Bool
-  | .context _ t, .context _ t' => t.structEq t'
-  | .node _ ts, .node _ ts' => ts.eqOf ts' structEq
-  | .hole _, .hole _ => true
-  | _, _ => false
+run_cmd do addLinter checkInfoTrees
 
-/-- Collect the option names from all `OptionInfo` infos in the infotrees. -/
-def getOptionNames (ts : PersistentArray InfoTree) : List Name :=
-  ts.foldl (init := []) fun acc t =>
-    acc ++ t.collectNodesBottomUp fun
-      | _, .ofOptionInfo i, _, ns => i.optionName :: ns
-      | _, _, _, ns => ns
-
-def compareWithSetOptionIn : CommandElab := fun stx => do
-  let originalTrees ← getInfoTrees
-  logInfo m!"without `withSetOptionIn`:\n\
-    - `linter.all := {← getBoolOption `linter.all}`\n\
-    - Found option names in trees: {getOptionNames (← getInfoTrees)}"
-  let runWithSetOptionIn : CommandElab := withSetOptionIn fun _ => do
-    logInfo m!"trees are structurally equal: {originalTrees.eqOf (← getInfoTrees) (·.structEq ·)}"
-    logInfo m!"with `withSetOptionIn`:\n\
-      - `linter.all := {← getBoolOption `linter.all}`\n\
-      - Found option names in trees: {getOptionNames (← getInfoTrees)}"
-  runWithSetOptionIn stx
-
-/-
-Should show `linter.all := false` without `withSetOptionIn`, and `linter.all := true` with.
-Should find the option name `linter.all` exactly once **both** with and without `withSetOptionIn`.
-This ensures that we're looking at correct post-elaboration infotrees in this test.
--/
-
+-- This errored with both "Context-free infotree!" and "Wrong size!" prior to #11313.
 /--
-info: without `withSetOptionIn`:
-- `linter.all := false`
-- Found option names in trees: [linter.all]
----
-info: trees are structurally equal: true
----
-info: with `withSetOptionIn`:
-- `linter.all := true`
-- Found option names in trees: [linter.all]
+info: Test linter is functioning.
 -/
 #guard_msgs in
-run_cmd do
-  let stx ← `(command| set_option linter.all true in example : True := trivial)
-  elabCommand stx
-  compareWithSetOptionIn stx
-
-/-
-Should have `linter.all := false` both times, since the value is malformed, but still find an
-`OptionInfo`.
-
-Should only log the `set_option` error **once** from `elabCommand`. `compareWithSetOption` should
-not produce an error.
--/
-
-/--
-error: set_option value type mismatch: The value
-  3
-has type
-  Nat
-but the option `linter.all` expects a value of type
-  Bool
----
-info: without `withSetOptionIn`:
-- `linter.all := false`
-- Found option names in trees: [linter.all]
----
-info: trees are structurally equal: true
----
-info: with `withSetOptionIn`:
-- `linter.all := false`
-- Found option names in trees: [linter.all]
--/
-#guard_msgs in
-run_cmd do
-  let stx ← `(command| set_option linter.all 3 in example : True := trivial)
-  elabCommand stx
-  try compareWithSetOptionIn stx catch ex =>
-    throwError "comparison produced error:\n\n{ex.toMessageData}"
+set_option pp.all true in
+example : True := trivial
 
 end infotree
 
