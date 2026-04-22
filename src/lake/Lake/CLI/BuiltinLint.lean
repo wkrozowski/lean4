@@ -16,10 +16,8 @@ namespace Lake.BuiltinLint
 
 /-- Arguments for builtin linting via `lake lint --builtin-lint`. -/
 public structure Args where
-  /-- Run only clippy (non-default) linters. -/
-  clippyOnly : Bool := false
-  /-- Run all linters (default + clippy). -/
-  lintAll : Bool := false
+  /-- Which set of linters to run (set by `--clippy` / `--lint-all`; default if neither). -/
+  scope : Linter.EnvLinter.LintScope := .default
   /-- Run only the specified linters. -/
   only : Array Name := #[]
   /-- Skip the up-to-date build check. -/
@@ -39,10 +37,7 @@ public def run (args : Args) : IO UInt32 := do
     return 1
 
   let runOnly := if args.only.isEmpty then none else some args.only.toList
-  let scope : Linter.EnvLinter.LintScope :=
-    if args.lintAll then .all
-    else if args.clippyOnly then .clippy
-    else .default
+  let scope := args.scope
   let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
 
   let mut anyFailed := false

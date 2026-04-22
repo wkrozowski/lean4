@@ -56,6 +56,33 @@ no_match_pat 'shouldBeTheorem' produced.out
 lake_out lint --lint-all ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 
+# Multiple --lint-only flags accumulate: both named linters should run
+lake_out lint --lint-only defLemma --lint-only checkUnivs || true
+match_pat 'shouldBeTheorem' produced.out
+match_pat 'badUnivDecl' produced.out
+no_match_pat 'badNameClippy' produced.out
+
+# Last-wins: --clippy overrides a prior --lint-all and clears --lint-only
+lake_out lint --lint-all --lint-only defLemma --clippy || true
+match_pat 'badNameClippy' produced.out
+no_match_pat 'shouldBeTheorem' produced.out
+no_match_pat 'badUnivDecl' produced.out
+
+# Last-wins: --lint-all overrides a prior --clippy (both default and clippy run)
+lake_out lint --clippy --lint-all || true
+match_pat 'badNameClippy' produced.out
+match_pat 'shouldBeTheorem' produced.out
+
+# Last-wins: --clippy clears a previously accumulated --lint-only
+lake_out lint --lint-only defLemma --clippy || true
+match_pat 'badNameClippy' produced.out
+no_match_pat 'shouldBeTheorem' produced.out
+
+# --lint-only after --clippy: the named linter runs (selection ignores scope)
+lake_out lint --clippy --lint-only defLemma || true
+match_pat 'shouldBeTheorem' produced.out
+no_match_pat 'badNameClippy' produced.out
+
 # --builtin-only should skip the lint driver
 lake_out lint -f with-driver.lean --builtin-only Main || true
 match_pat 'shouldBeTheorem' produced.out

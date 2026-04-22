@@ -311,8 +311,10 @@ def lakeLongOption : (opt : String) → CliM PUnit
 -- Builtin lint options (using any of these implicitly enables --builtin-lint)
 | "--builtin-lint" => modifyThe LakeOptions ({· with runBuiltinLint := true})
 | "--builtin-only" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinOnly := true})
-| "--clippy" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinLint.clippyOnly := true})
-| "--lint-all" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinLint.lintAll := true})
+| "--clippy" => modifyThe LakeOptions ({· with
+    runBuiltinLint := true, builtinLint.scope := .clippy, builtinLint.only := #[]})
+| "--lint-all" => modifyThe LakeOptions ({· with
+    runBuiltinLint := true, builtinLint.scope := .all, builtinLint.only := #[]})
 | "--lint-only" => do
   let name ← takeOptArg "--lint-only" "linter name"
   modifyThe LakeOptions fun opts =>
