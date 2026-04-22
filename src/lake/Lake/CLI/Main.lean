@@ -320,7 +320,7 @@ def lakeLongOption : (opt : String) → CliM PUnit
   modifyThe LakeOptions fun opts =>
     {opts with runBuiltinLint := true, builtinLint.only := opts.builtinLint.only.push name.toName}
 -- Shared options
-| "--force" => modifyThe LakeOptions ({· with shake.force := true, builtinLint.force := true})
+| "--force" => modifyThe LakeOptions ({· with shake.force := true})
 -- Shake options
 | "--keep-implied" => modifyThe LakeOptions ({· with shake.keepImplied := true})
 | "--keep-prefix" => modifyThe LakeOptions ({· with shake.keepPrefix := true})
@@ -964,16 +964,23 @@ protected def checkTest : CliM PUnit := do
   noArgsRem do exit <| if pkg.testDriver.isEmpty then 1 else 0
 
 private def runBuiltinLint
-    (ws : Workspace) (args : BuiltinLint.Args) (mods : Array Lean.Name) : CliM UInt32 := do
+    (opts : LakeOptions) (ws : Workspace) (args : BuiltinLint.Args) (mods : Array Lean.Name)
+    : CliM UInt32 := do
   let mods := if mods.isEmpty then ws.defaultTargetRoots else mods
   if mods.isEmpty then
     error "no modules specified and there are no applicable default targets"
   let args := {args with mods}
-  unless args.force do
-    let specs ← parseTargetSpecs ws (mods.map (s!"+{·}") |>.toList)
-    let upToDate ← ws.checkNoBuild <| buildSpecs specs
-    unless upToDate do
-      error "there are out of date oleans; run `lake build` or fetch them from a cache first"
+  -- Always drive a build before reading the persisted lint log. The option
+  -- overrides determine which text linters fire during elaboration; Lake's
+  -- local artifact cache keys on the merged options, so distinct lint modes
+  -- reuse cached oleans independently of regular `lake build` outputs.
+  let specs ← parseTargetSpecs ws (mods.map (s!"+{·}") |>.toList)
+  -- Suppress Lake's log output during the lint build: the text-linter warnings
+  -- we care about are read back from the olean-persisted `lintLogExt` and
+  -- printed by `BuiltinLint.run`. Real build errors still surface via `outLv`.
+  let buildCfg := { mkBuildConfig opts with outLv := .error }
+  let overrides := BuiltinLint.leanOptOverrides args
+  ws.runBuild (buildSpecs specs) buildCfg overrides
   Lean.searchPathRef.set ws.augmentedLeanPath
   BuiltinLint.run args
 
@@ -987,7 +994,7 @@ protected def lint : CliM PUnit := do
   let mut exitCode : UInt32 := 0
   if doBuiltinLint then
     let mods := (← takeArgs).toArray.map (·.toName)
-    exitCode ← runBuiltinLint ws opts.builtinLint mods
+    exitCode ← runBuiltinLint opts ws opts.builtinLint mods
   if hasDriver then
     let driverExitCode ← noArgsRem do
       ws.root.lint opts.subArgs (mkBuildConfig opts) |>.run (mkLakeContext ws)

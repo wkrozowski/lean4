@@ -4,19 +4,32 @@ source ../common.sh
 ./clean.sh
 cp -r input/* .
 
-# --builtin-lint should fail with a clear message when oleans are not built
-lake_out lint --builtin-lint || true
-match_pat 'out of date oleans' produced.out
-
-# up-to-date check is per-module: building only Clean should let us lint Clean
-test_run build Clean
+# --builtin-lint drives the build itself; we do not need to `lake build` first.
+# Linting Clean should succeed (no violations) and implicitly build Clean.
 test_run lint --builtin-only Clean
 
-# but linting Main (not yet built) should still fail the up-to-date check
-lake_out lint --builtin-only Main || true
-match_pat 'out of date oleans' produced.out
+# --- Text linter capture (persistent lint log) ---
 
-test_run build
+# Default scope: `linter.unusedVariables` (defValue=true) fires during the build,
+# is captured in `lintLogExt`, and is re-emitted by `lake lint` post-build.
+# `linter.missingDocs` (defValue=false) must NOT fire without --lint-all/--lint-only.
+lake_out lint --builtin-only TextLints || true
+match_pat 'unused variable `unusedLet`' produced.out
+no_match_pat 'missing doc string' produced.out
+
+# --lint-all enables all linters, so missingDocs fires too.
+lake_out lint --lint-all TextLints || true
+match_pat 'unused variable `unusedLet`' produced.out
+match_pat 'missing doc string for public def undocumentedPublicDef' produced.out
+
+# --lint-only filters entries by suffix match against the linter name.
+lake_out lint --lint-only missingDocs TextLints || true
+match_pat 'missing doc string for public def undocumentedPublicDef' produced.out
+no_match_pat 'unused variable' produced.out
+
+lake_out lint --lint-only unusedVariables TextLints || true
+match_pat 'unused variable `unusedLet`' produced.out
+no_match_pat 'missing doc string' produced.out
 
 # --builtin-lint should detect the defLemma violation in Main (the default target)
 lake_out lint --builtin-lint || true

@@ -548,7 +548,7 @@ def Module.recFetchSetup (mod : Module) : FetchM (Job ModuleSetup) := ensureJob 
       importArts := info.directArts
       dynlibs := dynlibs.map (·.path)
       plugins := plugins.map (·.path)
-      options := mod.leanOptions
+      options := mod.leanOptions ++ (← getLeanOptOverrides)
     }
 
 /-- The `ModuleFacetConfig` for the builtin `setupFacet`. -/

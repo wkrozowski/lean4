@@ -54,6 +54,13 @@ public structure BuildContext extends BuildConfig, Context where
   If `none`, tracking outputs is disabled for this build.
   -/
   outputsRef? : Option CacheRef := none
+  /--
+  Lean options merged on top of each module's `leanOptions` for this build only,
+  overriding any clashing entries. Used by `lake lint` to inject
+  `linter.batchMode`/`linter.all` for `--clippy`/`--lint-all`/`--lint-only` without
+  affecting regular `lake build`.
+  -/
+  leanOptOverrides : Lean.LeanOptions := {}
 
 /-- A transformer to equip a monad with a `BuildContext`. -/
 public abbrev BuildT := ReaderT BuildContext
@@ -91,3 +98,6 @@ public instance [Pure m] : MonadLift LakeM (BuildT m) where
 
 @[inline] public def getIsQuiet [Functor m] [MonadBuild m] : m Bool :=
   (· == .quiet) <$> getVerbosity
+
+@[inline] public def getLeanOptOverrides [Functor m] [MonadBuild m] : m Lean.LeanOptions :=
+  (·.leanOptOverrides) <$> getBuildContext

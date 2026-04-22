@@ -1,5 +1,5 @@
 name = "lint"
-defaultTargets = ["Main", "Clean", "Linters", "ClippyViolations"]
+defaultTargets = ["Main", "Clean", "Linters", "ClippyViolations", "TextLints"]
 
 [[lean_lib]]
 name = "Main"
@@ -12,3 +12,6 @@ name = "Linters"
 
 [[lean_lib]]
 name = "ClippyViolations"
+
+[[lean_lib]]
+name = "TextLints"
