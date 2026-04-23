@@ -24,27 +24,32 @@ public structure Args where
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
 
-
 public def leanOptOverrides (args : Args) : LeanOptions :=
   let lintMode : LeanOption := ⟨`linter.lintMode, .ofBool true⟩
   let enableAll : Array LeanOption :=
-    #[lintMode, ⟨`linter.batchMode, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
+    #[lintMode, ⟨`linter.clippy, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
   if !args.only.isEmpty then
     LeanOptions.ofArray enableAll
   else
     match args.scope with
     | .default => LeanOptions.ofArray #[lintMode]
-    | .clippy  => LeanOptions.ofArray #[lintMode, ⟨`linter.batchMode, .ofBool true⟩]
+    | .clippy  => LeanOptions.ofArray #[lintMode, ⟨`linter.clippy, .ofBool true⟩]
     | .all     => LeanOptions.ofArray enableAll
 
 private def collectTextLints
     (env : Environment) (args : Args) (pkgRoot : Name) : Array Linter.LintEntry :=
   let matchOnly (linter : Name) : Bool :=
     args.only.isEmpty || args.only.any (fun n => n.isSuffixOf linter)
+  let matchScope (linter : Name) : Bool :=
+    if !args.only.isEmpty then true
+    else match args.scope with
+      | .default => linter != `linter.clippy
+      | .clippy  => linter == `linter.clippy
+      | .all     => true
   Linter.getAllLints env |>.foldl (init := #[]) fun acc (mod, entries) =>
     if pkgRoot.isPrefixOf mod then
       entries.foldl (init := acc) fun acc e =>
-        if matchOnly e.linter then acc.push e else acc
+        if matchOnly e.linter && matchScope e.linter then acc.push e else acc
     else
       acc
 

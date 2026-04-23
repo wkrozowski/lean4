@@ -54,20 +54,34 @@ no_match_pat 'badUnivDecl' produced.out
 # Clean module has no violations; exit code should be 0
 test_run lint --builtin-only Clean
 
-# Without --clippy, the clippy linter should not run
+# Without --clippy, the clippy linters (both the env linter and the dummy clippy
+# text linter in Linters.lean) must not run.
 lake_out lint --builtin-only ClippyViolations || true
 no_match_pat 'badNameClippy' produced.out
+no_match_pat 'clippy text linter saw a declaration' produced.out
 
-# --clippy should run only non-default (clippy) linters
+# --clippy should run only non-default (clippy) linters, including the clippy
+# text linter which tags its warnings with `linter.clippy`.
 lake_out lint --clippy ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat "declaration name ends with 'Clippy'" produced.out
+match_pat 'clippy text linter saw a declaration' produced.out
 # --clippy should not run default linters
 no_match_pat 'shouldBeTheorem' produced.out
 
-# --lint-all should run both default and clippy linters
+# --clippy on TextLints: the default `linter.unusedVariables` entry is filtered
+# out because its tag is not `linter.clippy`. The file has no clippy-tagged
+# linter, so the clippy-scope text-linter output should be empty.
+lake_out lint --clippy TextLints || true
+no_match_pat 'unused variable' produced.out
+no_match_pat 'missing doc string' produced.out
+
+# --lint-all should run both default and clippy linters, for both the
+# declaration-linter flow (badNameClippy from `dummyClippy`) and the text-linter
+# flow (the `linter.clippy`-tagged warning from `dummyClippyTextLinter`).
 lake_out lint --lint-all ClippyViolations || true
 match_pat 'badNameClippy' produced.out
+match_pat 'clippy text linter saw a declaration' produced.out
 
 # Multiple --lint-only flags accumulate: both named linters should run
 lake_out lint --lint-only defLemma --lint-only checkUnivs || true

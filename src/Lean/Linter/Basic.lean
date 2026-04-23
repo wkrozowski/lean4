@@ -65,15 +65,14 @@ register_builtin_option linter.all : Bool := {
   descr := "enable all linters"
 }
 
-register_builtin_option linter.batchMode : Bool := {
+register_builtin_option linter.clippy : Bool := {
   defValue := false
-  descr := "set to true by `lake lint --clippy` and similar flags to enable batch-only linters \
-    (linters that early-return unless this option is true so they have zero cost during \
-    `lake build` and interactive editing)"
+  descr := "enables the set of clippy linters — linters that are turned off by default and \
+    only available via `lake lint`. A clippy linter early-returns unless this option is true."
 }
 
-def getLinterBatchMode (o : LinterOptions) : Bool :=
-  o.get linter.batchMode.name linter.batchMode.defValue
+def getLinterClippy (o : LinterOptions) : Bool :=
+  o.get linter.clippy.name linter.clippy.defValue
 
 register_builtin_option linter.lintMode : Bool := {
   defValue := false
