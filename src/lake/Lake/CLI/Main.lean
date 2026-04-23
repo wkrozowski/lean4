@@ -972,16 +972,25 @@ protected def checkTest : CliM PUnit := do
   noArgsRem do exit <| if pkg.testDriver.isEmpty then 1 else 0
 
 private def runBuiltinLint
-    (opts : LakeOptions) (ws : Workspace) (args : BuiltinLint.Args) (mods : Array Lean.Name)
+    (opts : LakeOptions) (ws : Workspace) (mods : Array Lean.Name)
     : CliM UInt32 := do
   let mods := if mods.isEmpty then ws.defaultTargetRoots else mods
   if mods.isEmpty then
     error "no modules specified and there are no applicable default targets"
+  let args := opts.builtinLint
   let args := {args with mods}
   let specs ← parseTargetSpecs ws (mods.map (s!"+{·}") |>.toList)
-  let buildCfg := { mkBuildConfig opts with outLv := .error }
-  let overrides := BuiltinLint.leanOptOverrides args
-  ws.runBuild (buildSpecs specs) buildCfg overrides
+  -- Scope the lint-mode option overrides to the target modules only, so
+  -- dependencies keep their regular trace hash and are not rebuilt with
+  -- different options.
+  let lintOpts := BuiltinLint.leanOptOverrides args
+  let overrides : Lean.NameMap Lean.LeanOptions :=
+    mods.foldl (fun m n => m.insert n lintOpts) {}
+  let buildCfg := { mkBuildConfig opts with
+    outLv := .error
+    leanOptOverrides := overrides
+  }
+  ws.runBuild (buildSpecs specs) buildCfg
   Lean.searchPathRef.set ws.augmentedLeanPath
   BuiltinLint.run args
 
@@ -995,7 +1004,7 @@ protected def lint : CliM PUnit := do
   let mut exitCode : UInt32 := 0
   if doBuiltinLint then
     let mods := (← takeArgs).toArray.map (·.toName)
-    exitCode ← runBuiltinLint opts ws opts.builtinLint mods
+    exitCode ← runBuiltinLint opts ws mods
   if hasDriver then
     let driverExitCode ← noArgsRem do
       ws.root.lint opts.subArgs (mkBuildConfig opts) |>.run (mkLakeContext ws)

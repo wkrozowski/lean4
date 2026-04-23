@@ -319,7 +319,6 @@ def monitorJob (ctx : MonitorContext) (job : Job α) : BaseIO (BuildResult α) :
 
 def mkBuildContext'
   (ws : Workspace) (cfg : BuildConfig) (jobs : JobQueue)
-  (leanOptOverrides : Lean.LeanOptions := {})
 : BaseIO BuildContext := return {
   opaqueWs := ws
   toBuildConfig := cfg
@@ -331,7 +330,6 @@ def mkBuildContext'
   registeredJobs := jobs
   leanTrace := .ofHash (pureHash ws.lakeEnv.leanGithash)
     s!"Lean {Lean.versionStringCore}, commit {ws.lakeEnv.leanGithash}"
-  leanOptOverrides
 }
 
 def Workspace.startBuild
@@ -403,11 +401,10 @@ public def Workspace.checkNoBuild
 /-- Run a build function in the Workspace's context and await the result. -/
 public def Workspace.runBuild
   (ws : Workspace) (build : FetchM (Job α)) (cfg : BuildConfig := {})
-  (leanOptOverrides : Lean.LeanOptions := {})
 : IO α := do
   let jobs ← mkJobQueue
   let mctx ← mkMonitorContext cfg jobs
-  let bctx ← mkBuildContext' ws cfg jobs leanOptOverrides
+  let bctx ← mkBuildContext' ws cfg jobs
   let job ← startBuild bctx build
   let result ← monitorBuild mctx job
   finalizeBuild cfg bctx mctx result

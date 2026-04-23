@@ -27,6 +27,17 @@ public structure BuildConfig extends LogConfig where
   showSuccess : Bool := false
   /-- File to save input-to-output mappings from the build of the workspace's root -/
   outputsFile? : Option FilePath := none
+  /--
+  Per-module Lean option overrides, merged on top of a module's `leanOptions`
+  for this build only. When `recFetchSetup` builds module `M`, the `LeanOptions`
+  associated with `M`'s name (if any) are appended to `M.leanOptions`, overriding
+  clashing entries. Modules with no entry are unaffected.
+
+  Used by `lake lint` to inject `linter.lintMode`/`linter.clippy`/`linter.all`
+  into the target modules only, keeping dependencies on their normal trace hash
+  so they are not silently rebuilt with a different option set.
+  -/
+  leanOptOverrides : Lean.NameMap Lean.LeanOptions := {}
 
 /--
 Whether the build should show progress information.
@@ -54,13 +65,6 @@ public structure BuildContext extends BuildConfig, Context where
   If `none`, tracking outputs is disabled for this build.
   -/
   outputsRef? : Option CacheRef := none
-  /--
-  Lean options merged on top of each module's `leanOptions` for this build only,
-  overriding any clashing entries. Used by `lake lint` to inject
-  `linter.batchMode`/`linter.all` for `--clippy`/`--lint-all`/`--lint-only` without
-  affecting regular `lake build`.
-  -/
-  leanOptOverrides : Lean.LeanOptions := {}
 
 /-- A transformer to equip a monad with a `BuildContext`. -/
 public abbrev BuildT := ReaderT BuildContext
@@ -99,5 +103,6 @@ public instance [Pure m] : MonadLift LakeM (BuildT m) where
 @[inline] public def getIsQuiet [Functor m] [MonadBuild m] : m Bool :=
   (· == .quiet) <$> getVerbosity
 
-@[inline] public def getLeanOptOverrides [Functor m] [MonadBuild m] : m Lean.LeanOptions :=
-  (·.leanOptOverrides) <$> getBuildContext
+@[inline] public def getLeanOptOverrides [Functor m] [MonadBuild m]
+    : m (Lean.NameMap Lean.LeanOptions) :=
+  (·.leanOptOverrides) <$> getBuildConfig
