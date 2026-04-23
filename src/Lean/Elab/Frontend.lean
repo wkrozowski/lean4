@@ -196,12 +196,13 @@ def runFrontend
 
   if let some oleanFileName := oleanFileName? then
     profileitIO ".olean serialization" finalOpts do
-      -- Aggregate diagnostics across the snapshot tree rather than reading
-      -- `cmdState.messages` directly: `waitForFinalCmdState?` returns the raw
-      -- last-command state, which does not carry messages from prior commands.
-      let allMessages := snaps.getAll.foldl
-        (init := (.empty : MessageLog)) (fun acc s => acc ++ s.diagnostics.msgLog)
-      let env ← Linter.recordLints env allMessages
+      let env ←
+        if Linter.linter.lintMode.get finalOpts then
+          let allMessages := snaps.getAll.foldl
+            (init := (.empty : MessageLog)) (fun acc s => acc ++ s.diagnostics.msgLog)
+          Linter.recordLints env allMessages
+        else
+          pure env
       writeModule (writeIR := !Compiler.compiler.postponeCompile.get finalOpts) env oleanFileName
 
   if let some ileanFileName := ileanFileName? then

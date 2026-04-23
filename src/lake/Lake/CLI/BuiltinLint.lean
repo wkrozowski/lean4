@@ -24,37 +24,19 @@ public structure Args where
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
 
-/--
-Lean option overrides to apply when Lake re-runs the build for a lint pass.
-These control which text linters (i.e. `logLint`-based) actually fire during
-elaboration:
 
-- default (no flag): no overrides; only linters enabled by lakefile config fire.
-- `--clippy`: enables batch-only linters via `linter.batchMode = true`.
-- `--lint-all`: also sets `linter.all = true` so every registered linter fires.
-- `--lint-only`: same as `--lint-all`; we filter the resulting log entries
-  afterwards by linter-name suffix match.
-
-The merged options are included in the Lean build trace, so distinct override
-sets land in distinct local-cache entries and coexist with the regular
-`lake build` outputs.
--/
 public def leanOptOverrides (args : Args) : LeanOptions :=
+  let lintMode : LeanOption := ⟨`linter.lintMode, .ofBool true⟩
   let enableAll : Array LeanOption :=
-    #[⟨`linter.batchMode, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
+    #[lintMode, ⟨`linter.batchMode, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
   if !args.only.isEmpty then
     LeanOptions.ofArray enableAll
   else
     match args.scope with
-    | .default => {}
-    | .clippy  => LeanOptions.ofArray #[⟨`linter.batchMode, .ofBool true⟩]
+    | .default => LeanOptions.ofArray #[lintMode]
+    | .clippy  => LeanOptions.ofArray #[lintMode, ⟨`linter.batchMode, .ofBool true⟩]
     | .all     => LeanOptions.ofArray enableAll
 
-/--
-Collects all text-linter entries persisted in `env` that belong to the package
-rooted at `pkgRoot`. When `args.only` is non-empty, entries are filtered by
-suffix match against their linter name.
--/
 private def collectTextLints
     (env : Environment) (args : Args) (pkgRoot : Name) : Array Linter.LintEntry :=
   let matchOnly (linter : Name) : Bool :=
@@ -66,17 +48,6 @@ private def collectTextLints
     else
       acc
 
-/--
-Run the builtin linters on the given modules.
-
-Reads text-linter diagnostics from each module's `lintLogExt` (populated during
-the preceding build) and runs declaration linters post-hoc over the imported
-environment.
-
-Assumes Lean's search path has already been configured and the target modules
-have been built by Lake with `leanOptOverrides args` applied, so the oleans
-carry the text-linter entries we need.
--/
 public def run (args : Args) : IO UInt32 := do
   let mods := args.mods
   if mods.isEmpty then
