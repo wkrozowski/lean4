@@ -78,7 +78,9 @@ namespace ContentLength
 Parses a content length header value.
 -/
 def parse (v : Value) : Option ContentLength :=
-   v.value.toNat?.map (.mk)
+  let s := v.value
+  if s.isEmpty || !s.all Char.isDigit then none
+  else s.toNat?.map (.mk)
 
 /--
 Serializes a content length header back to a name-value pair.

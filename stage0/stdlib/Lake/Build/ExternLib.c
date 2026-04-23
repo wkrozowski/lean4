@@ -530,7 +530,7 @@ _start:
 {
 lean_object* v_toContext_139_; lean_object* v_lakeEnv_140_; lean_object* v_log_141_; uint8_t v_action_142_; uint8_t v_wantsRebuild_143_; lean_object* v_trace_144_; lean_object* v_buildTime_145_; lean_object* v___x_147_; uint8_t v_isShared_148_; uint8_t v_isSharedCheck_196_; 
 v_toContext_139_ = lean_ctor_get(v___y_136_, 1);
-v_lakeEnv_140_ = lean_ctor_get(v_toContext_139_, 1);
+v_lakeEnv_140_ = lean_ctor_get(v_toContext_139_, 0);
 v_log_141_ = lean_ctor_get(v___y_137_, 0);
 v_action_142_ = lean_ctor_get_uint8(v___y_137_, sizeof(void*)*3);
 v_wantsRebuild_143_ = lean_ctor_get_uint8(v___y_137_, sizeof(void*)*3 + 1);

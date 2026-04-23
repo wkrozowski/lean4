@@ -156,6 +156,17 @@ end Chunk.ExtensionValue
 /--
 Represents a chunk of data with optional extensions (key-value pairs).
 
+The interpretation of a chunk depends on the protocol layer consuming it:
+
+- HTTP/1.1: The zero-size wire encoding (`0\r\n\r\n`) is reserved
+  exclusively as the `last-chunk` terminator. The HTTP/1.1 writer silently discards
+  any empty chunk (including its extensions) rather than emitting a premature
+  end-of-body signal. `Encode.encode` on a `Chunk.empty` value does produce
+  `"0\r\n\r\n"`, but that path bypasses the writer's framing logic.
+
+- HTTP/2 (not yet implemented): Chunked transfer encoding does not exist; HTTP/2 uses DATA
+  frames instead. This type is specific to the HTTP/1.1 wire format.
+
 Reference: https://httpwg.org/specs/rfc9112.html#rfc.section.7.1
 -/
 structure Chunk where
@@ -201,7 +212,7 @@ def toString? (chunk : Chunk) : Option String :=
 instance : Encode .v11 Chunk where
   encode buffer chunk :=
     let chunkLen := chunk.data.size
-    let exts := chunk.extensions.foldl (fun acc (name, value)  =>
+    let exts := chunk.extensions.foldl (fun acc (name, value) =>
       acc ++ ";" ++ name.value ++ (value.elim "" (fun x => "=" ++ x.quote))) ""
     let size := Nat.toDigits 16 chunkLen |>.toArray |>.map Char.toUInt8 |> ByteArray.mk
     buffer.append #[size, exts.toUTF8, "\r\n".toUTF8, chunk.data, "\r\n".toUTF8]

@@ -51,6 +51,12 @@ class Body (α : Type) where
   recvSelector : α → Selector (Option Chunk)
 
   /--
+  Non-blocking receive attempt. Returns `none` if no chunk is immediately available,
+  `some (some chunk)` when a chunk is ready, or `some none` at end-of-stream.
+  -/
+  tryRecv (body : α) : Async (Option (Option Chunk))
+
+  /--
   Gets the declared size of the body.
   -/
   getKnownSize : α → Async (Option Body.Length)

@@ -227,6 +227,19 @@ def tryRecv (stream : Stream) : Async (Option Chunk) :=
     Channel.pruneFinishedWaiters
     Channel.tryRecv'
 
+/--
+Non-blocking receive for the `Body` typeclass. Returns `none` when no producer is
+waiting and the channel is still open, `some (some chunk)` when data is ready,
+or `some none` at end-of-stream (channel closed with no pending producer).
+-/
+def tryRecvBody (stream : Stream) : Async (Option (Option Chunk)) :=
+  stream.state.atomically do
+    Channel.pruneFinishedWaiters
+    if ← Channel.recvReady' then
+      return some (← Channel.tryRecv')
+    else
+      return none
+
 private def recv' (stream : Stream) : BaseIO (AsyncTask (Option Chunk)) := do
   stream.state.atomically do
     Channel.pruneFinishedWaiters
@@ -598,6 +611,7 @@ instance : Http.Body Stream where
   close := Stream.close
   isClosed := Stream.isClosed
   recvSelector := Stream.recvSelector
+  tryRecv := Stream.tryRecvBody
   getKnownSize := Stream.getKnownSize
   setKnownSize := Stream.setKnownSize
 

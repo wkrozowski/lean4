@@ -1782,7 +1782,7 @@ mutual
             doIfToCode doElem doElems
           else if k == ``Parser.Term.doUnless then
             doUnlessToCode doElem doElems
-          else if k == `Lean.doRepeat then
+          else if k == ``Parser.Term.doRepeat then
             let seq := doElem[1]
             let expanded ← `(doElem| for _ in Loop.mk do $seq)
             doSeqToCode (expanded :: doElems)

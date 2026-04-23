@@ -53,6 +53,13 @@ def isClosed (_ : Empty) : Async Bool :=
   pure true
 
 /--
+Non-blocking receive. Empty bodies are always at EOF.
+-/
+@[inline]
+def tryRecv (_ : Empty) : Async (Option (Option Chunk)) :=
+  pure (some none)
+
+/--
 Selector that immediately resolves with end-of-stream for an empty body.
 -/
 @[inline]
@@ -72,6 +79,7 @@ instance : Http.Body Empty where
   close := Empty.close
   isClosed := Empty.isClosed
   recvSelector := Empty.recvSelector
+  tryRecv := Empty.tryRecv
   getKnownSize _ := pure (some <| .fixed 0)
   setKnownSize _ _ := pure ()
 

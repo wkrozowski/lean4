@@ -57,7 +57,7 @@ uint8_t l_Lean_Name_isAnonymous(lean_object*);
 lean_object* l_Lean_Json_getStr_x3f(lean_object*);
 lean_object* l_Std_DTreeMap_Internal_Impl_insert___at___00Lean_NameMap_insert_spec__0___redArg(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_JsonNumber_fromNat(lean_object*);
-lean_object* l_Lake_Hash_hex(uint64_t);
+lean_object* l_Lake_lowerHexUInt64(uint64_t);
 lean_object* l_Lean_Name_toString(lean_object*, uint8_t);
 uint8_t lean_string_dec_lt(lean_object*, lean_object*);
 lean_object* lean_nat_mul(lean_object*, lean_object*);
@@ -4200,9 +4200,9 @@ goto v___jp_1270_;
 v___jp_1259_:
 {
 lean_object* v___x_1263_; lean_object* v___x_1265_; 
-v___x_1263_ = lean_nat_add(v___y_1261_, v___y_1262_);
+v___x_1263_ = lean_nat_add(v___y_1260_, v___y_1262_);
 lean_dec(v___y_1262_);
-lean_dec(v___y_1261_);
+lean_dec(v___y_1260_);
 if (v_isShared_1255_ == 0)
 {
 lean_ctor_set(v___x_1254_, 4, v_r_1231_);
@@ -4231,7 +4231,7 @@ lean_object* v___x_1267_;
 if (v_isShared_1243_ == 0)
 {
 lean_ctor_set(v___x_1242_, 4, v___x_1265_);
-lean_ctor_set(v___x_1242_, 3, v___y_1260_);
+lean_ctor_set(v___x_1242_, 3, v___y_1261_);
 lean_ctor_set(v___x_1242_, 2, v_v_1246_);
 lean_ctor_set(v___x_1242_, 1, v_k_1245_);
 lean_ctor_set(v___x_1242_, 0, v___x_1258_);
@@ -4245,7 +4245,7 @@ v_reuseFailAlloc_1268_ = lean_alloc_ctor(0, 5, 0);
 lean_ctor_set(v_reuseFailAlloc_1268_, 0, v___x_1258_);
 lean_ctor_set(v_reuseFailAlloc_1268_, 1, v_k_1245_);
 lean_ctor_set(v_reuseFailAlloc_1268_, 2, v_v_1246_);
-lean_ctor_set(v_reuseFailAlloc_1268_, 3, v___y_1260_);
+lean_ctor_set(v_reuseFailAlloc_1268_, 3, v___y_1261_);
 lean_ctor_set(v_reuseFailAlloc_1268_, 4, v___x_1265_);
 v___x_1267_ = v_reuseFailAlloc_1268_;
 goto v_reusejp_1266_;
@@ -4290,8 +4290,8 @@ if (lean_obj_tag(v_r_1248_) == 0)
 lean_object* v_size_1276_; 
 v_size_1276_ = lean_ctor_get(v_r_1248_, 0);
 lean_inc(v_size_1276_);
-v___y_1260_ = v___x_1274_;
-v___y_1261_ = v___x_1275_;
+v___y_1260_ = v___x_1275_;
+v___y_1261_ = v___x_1274_;
 v___y_1262_ = v_size_1276_;
 goto v___jp_1259_;
 }
@@ -4299,8 +4299,8 @@ else
 {
 lean_object* v___x_1277_; 
 v___x_1277_ = lean_unsigned_to_nat(0u);
-v___y_1260_ = v___x_1274_;
-v___y_1261_ = v___x_1275_;
+v___y_1260_ = v___x_1275_;
+v___y_1261_ = v___x_1274_;
 v___y_1262_ = v___x_1277_;
 goto v___jp_1259_;
 }
@@ -5869,7 +5869,7 @@ v___x_1636_ = lean_alloc_ctor(1, 2, 0);
 lean_ctor_set(v___x_1636_, 0, v___x_1635_);
 lean_ctor_set(v___x_1636_, 1, v___x_1621_);
 v___x_1637_ = ((lean_object*)(l___private_Lake_Load_Lean_Elab_0__Lake_instToJsonConfigTrace_toJson___closed__4));
-v___x_1638_ = l_Lake_Hash_hex(v_configHash_1615_);
+v___x_1638_ = l_Lake_lowerHexUInt64(v_configHash_1615_);
 v___x_1639_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_1639_, 0, v___x_1638_);
 v___x_1640_ = lean_alloc_ctor(0, 2, 0);

@@ -185,8 +185,8 @@ lean_object* l___private_Lean_Meta_Basic_0__Lean_Meta_lambdaTelescopeImp(lean_ob
 lean_object* l_Lean_Name_mkStr4(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_letToHave(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_isProp(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_saveEqnAffectingOptions(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_enableRealizationsForConst(lean_object*, lean_object*, lean_object*);
-lean_object* l_Lean_Meta_generateEagerEqns(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_markMeta(lean_object*, lean_object*);
 uint8_t l_Lean_isNoncomputable(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_addNoncomputable(lean_object*, lean_object*);
@@ -11033,12 +11033,12 @@ else
 {
 lean_object* v___x_3772_; 
 lean_inc(v___y_3763_);
-v___x_3772_ = l_Lean_enableRealizationsForConst(v___y_3763_, v___y_3770_, v___y_3771_);
+v___x_3772_ = l_Lean_Meta_saveEqnAffectingOptions(v___y_3763_, v___y_3768_, v___y_3769_, v___y_3770_, v___y_3771_);
 if (lean_obj_tag(v___x_3772_) == 0)
 {
 lean_object* v___x_3773_; 
 lean_dec_ref(v___x_3772_);
-v___x_3773_ = l_Lean_Meta_generateEagerEqns(v___y_3763_, v___y_3768_, v___y_3769_, v___y_3770_, v___y_3771_);
+v___x_3773_ = l_Lean_enableRealizationsForConst(v___y_3763_, v___y_3770_, v___y_3771_);
 if (lean_obj_tag(v___x_3773_) == 0)
 {
 lean_dec_ref(v___x_3773_);

@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Lake.Config.Dependency
-// Imports: public import Init.Dynamic public import Init.System.FilePath public import Lean.Data.NameMap.Basic import Init.Data.ToString.Name import Init.Data.ToString.Macro
+// Imports: public import Init.Dynamic public import Init.System.FilePath public import Lean.Data.NameMap.Basic public import Lake.Util.Git import Init.Data.ToString.Name import Init.Data.ToString.Macro
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -537,6 +537,7 @@ return v___x_191_;
 lean_object* runtime_initialize_Init_Dynamic(uint8_t builtin);
 lean_object* runtime_initialize_Init_System_FilePath(uint8_t builtin);
 lean_object* runtime_initialize_Lean_Data_NameMap_Basic(uint8_t builtin);
+lean_object* runtime_initialize_Lake_Util_Git(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_ToString_Name(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_ToString_Macro(uint8_t builtin);
 static bool _G_runtime_initialized = false;
@@ -551,6 +552,9 @@ res = runtime_initialize_Init_System_FilePath(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Lean_Data_NameMap_Basic(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lake_Util_Git(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Init_Data_ToString_Name(builtin);
@@ -571,6 +575,7 @@ return lean_io_result_mk_ok(lean_box(0));
 lean_object* initialize_Init_Dynamic(uint8_t builtin);
 lean_object* initialize_Init_System_FilePath(uint8_t builtin);
 lean_object* initialize_Lean_Data_NameMap_Basic(uint8_t builtin);
+lean_object* initialize_Lake_Util_Git(uint8_t builtin);
 lean_object* initialize_Init_Data_ToString_Name(uint8_t builtin);
 lean_object* initialize_Init_Data_ToString_Macro(uint8_t builtin);
 static bool _G_initialized = false;
@@ -585,6 +590,9 @@ res = initialize_Init_System_FilePath(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Lean_Data_NameMap_Basic(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Lake_Util_Git(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Init_Data_ToString_Name(builtin);

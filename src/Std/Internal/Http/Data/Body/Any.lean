@@ -49,6 +49,12 @@ structure Any where
   recvSelector : Selector (Option Chunk)
 
   /--
+  Non-blocking receive attempt. Returns `none` if no chunk is immediately available,
+  `some (some chunk)` when a chunk is ready, or `some none` at end-of-stream.
+  -/
+  tryRecv : Async (Option (Option Chunk))
+
+  /--
   Returns the declared size.
   -/
   getKnownSize : Async (Option Body.Length)
@@ -67,6 +73,7 @@ def ofBody [Http.Body α] (body : α) : Any where
   close := Http.Body.close body
   isClosed := Http.Body.isClosed body
   recvSelector := Http.Body.recvSelector body
+  tryRecv := Http.Body.tryRecv body
   getKnownSize := Http.Body.getKnownSize body
   setKnownSize := Http.Body.setKnownSize body
 
@@ -77,6 +84,7 @@ instance : Http.Body Any where
   close := Any.close
   isClosed := Any.isClosed
   recvSelector := Any.recvSelector
+  tryRecv := Any.tryRecv
   getKnownSize := Any.getKnownSize
   setKnownSize := Any.setKnownSize
 

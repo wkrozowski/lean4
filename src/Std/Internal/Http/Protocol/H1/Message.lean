@@ -66,6 +66,14 @@ def Message.Head.headers (m : Message.Head dir) : Headers :=
   | .sending => Response.Head.headers m
 
 /--
+Returns a copy of the message head with the headers replaced.
+-/
+def Message.Head.setHeaders (m : Message.Head dir) (headers : Headers) : Message.Head dir :=
+  match dir with
+  | .receiving => { (m : Request.Head)  with headers }
+  | .sending   => { (m : Response.Head) with headers }
+
+/--
 Gets the version of a `Message`.
 -/
 def Message.Head.version (m : Message.Head dir) : Version :=
@@ -82,7 +90,7 @@ def Message.Head.getSize (message : Message.Head dir) (allowEOFBody : Bool) : Op
   match message.headers.getAll? .transferEncoding with
   | none =>
       match contentLength with
-      | some #[cl] => .fixed <$> cl.value.toNat?
+      | some #[cl] => .fixed <$> (Header.ContentLength.parse cl |>.map (·.length))
       | some _ => none -- To avoid request smuggling with malformed/multiple content-length headers.
       | none => if allowEOFBody then some (.fixed 0) else none
 

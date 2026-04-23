@@ -31,7 +31,7 @@ lean_object* l_Lean_Json_getBool_x3f(lean_object*);
 lean_object* l_Lake_JsonObject_insertJson(lean_object*, lean_object*, lean_object*);
 lean_object* lean_string_utf8_byte_size(lean_object*);
 uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
-lean_object* l_Lake_Hash_hex(uint64_t);
+lean_object* l_Lake_lowerHexUInt64(uint64_t);
 lean_object* lean_array_push(lean_object*, lean_object*);
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
 LEAN_EXPORT lean_object* l_Lake_ModuleOutputDescrs_oleanParts(lean_object*);
@@ -179,7 +179,7 @@ v___x_32_ = lean_nat_dec_eq(v___x_31_, v___x_22_);
 if (v___x_32_ == 0)
 {
 lean_object* v___x_33_; lean_object* v___x_34_; lean_object* v___x_35_; lean_object* v___x_36_; 
-v___x_33_ = l_Lake_Hash_hex(v_hash_20_);
+v___x_33_ = l_Lake_lowerHexUInt64(v_hash_20_);
 v___x_34_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Array_toJson___at___00Lake_ModuleOutputDescrs_toJson_spec__0_spec__0___closed__0));
 v___x_35_ = lean_string_append(v___x_33_, v___x_34_);
 v___x_36_ = lean_string_append(v___x_35_, v_ext_21_);
@@ -191,7 +191,7 @@ else
 {
 lean_object* v___x_37_; 
 lean_dec_ref(v_ext_21_);
-v___x_37_ = l_Lake_Hash_hex(v_hash_20_);
+v___x_37_ = l_Lake_lowerHexUInt64(v_hash_20_);
 v___y_25_ = v___x_37_;
 goto v___jp_24_;
 }
@@ -267,7 +267,7 @@ v___x_157_ = lean_nat_dec_eq(v___x_155_, v___x_156_);
 if (v___x_157_ == 0)
 {
 lean_object* v___x_158_; lean_object* v___x_159_; lean_object* v___x_160_; lean_object* v___x_161_; 
-v___x_158_ = l_Lake_Hash_hex(v_hash_128_);
+v___x_158_ = l_Lake_lowerHexUInt64(v_hash_128_);
 v___x_159_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Array_toJson___at___00Lake_ModuleOutputDescrs_toJson_spec__0_spec__0___closed__0));
 v___x_160_ = lean_string_append(v___x_158_, v___x_159_);
 v___x_161_ = lean_string_append(v___x_160_, v_ext_129_);
@@ -279,7 +279,7 @@ else
 {
 lean_object* v___x_162_; 
 lean_dec_ref(v_ext_129_);
-v___x_162_ = l_Lake_Hash_hex(v_hash_128_);
+v___x_162_ = l_Lake_lowerHexUInt64(v_hash_128_);
 v___y_140_ = v___x_162_;
 goto v___jp_139_;
 }
@@ -313,7 +313,7 @@ v___x_78_ = lean_nat_dec_eq(v___x_76_, v___x_77_);
 if (v___x_78_ == 0)
 {
 lean_object* v___x_79_; lean_object* v___x_80_; lean_object* v___x_81_; lean_object* v___x_82_; 
-v___x_79_ = l_Lake_Hash_hex(v_hash_73_);
+v___x_79_ = l_Lake_lowerHexUInt64(v_hash_73_);
 v___x_80_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Array_toJson___at___00Lake_ModuleOutputDescrs_toJson_spec__0_spec__0___closed__0));
 v___x_81_ = lean_string_append(v___x_79_, v___x_80_);
 v___x_82_ = lean_string_append(v___x_81_, v_ext_74_);
@@ -327,7 +327,7 @@ else
 {
 lean_object* v___x_83_; 
 lean_dec_ref(v_ext_74_);
-v___x_83_ = l_Lake_Hash_hex(v_hash_73_);
+v___x_83_ = l_Lake_lowerHexUInt64(v_hash_73_);
 v___y_58_ = v_obj_71_;
 v___y_59_ = v___x_75_;
 v___y_60_ = v___x_83_;
@@ -377,7 +377,7 @@ v___x_103_ = lean_nat_dec_eq(v___x_101_, v___x_102_);
 if (v___x_103_ == 0)
 {
 lean_object* v___x_104_; lean_object* v___x_105_; lean_object* v___x_106_; lean_object* v___x_107_; 
-v___x_104_ = l_Lake_Hash_hex(v_hash_98_);
+v___x_104_ = l_Lake_lowerHexUInt64(v_hash_98_);
 v___x_105_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Array_toJson___at___00Lake_ModuleOutputDescrs_toJson_spec__0_spec__0___closed__0));
 v___x_106_ = lean_string_append(v___x_104_, v___x_105_);
 v___x_107_ = lean_string_append(v___x_106_, v_ext_99_);
@@ -391,7 +391,7 @@ else
 {
 lean_object* v___x_108_; 
 lean_dec_ref(v_ext_99_);
-v___x_108_ = l_Lake_Hash_hex(v_hash_98_);
+v___x_108_ = l_Lake_lowerHexUInt64(v_hash_98_);
 v___y_86_ = v___x_96_;
 v___y_87_ = v___x_100_;
 v___y_88_ = v___x_108_;
@@ -419,7 +419,7 @@ v___x_116_ = lean_nat_dec_eq(v___x_114_, v___x_115_);
 if (v___x_116_ == 0)
 {
 lean_object* v___x_117_; lean_object* v___x_118_; lean_object* v___x_119_; lean_object* v___x_120_; 
-v___x_117_ = l_Lake_Hash_hex(v_hash_111_);
+v___x_117_ = l_Lake_lowerHexUInt64(v_hash_111_);
 v___x_118_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Array_toJson___at___00Lake_ModuleOutputDescrs_toJson_spec__0_spec__0___closed__0));
 v___x_119_ = lean_string_append(v___x_117_, v___x_118_);
 v___x_120_ = lean_string_append(v___x_119_, v_ext_112_);
@@ -433,7 +433,7 @@ else
 {
 lean_object* v___x_121_; 
 lean_dec_ref(v_ext_112_);
-v___x_121_ = l_Lake_Hash_hex(v_hash_111_);
+v___x_121_ = l_Lake_lowerHexUInt64(v_hash_111_);
 v___y_92_ = v___x_113_;
 v___y_93_ = v_obj_110_;
 v___y_94_ = v___x_121_;
@@ -445,8 +445,8 @@ v___jp_122_:
 lean_object* v___x_126_; lean_object* v___x_127_; 
 v___x_126_ = lean_alloc_ctor(3, 1, 0);
 lean_ctor_set(v___x_126_, 0, v___y_125_);
-lean_inc_ref(v___y_123_);
-v___x_127_ = l_Lake_JsonObject_insertJson(v___y_124_, v___y_123_, v___x_126_);
+lean_inc_ref(v___y_124_);
+v___x_127_ = l_Lake_JsonObject_insertJson(v___y_123_, v___y_124_, v___x_126_);
 v_obj_110_ = v___x_127_;
 goto v___jp_109_;
 }
@@ -473,13 +473,13 @@ v___x_149_ = lean_nat_dec_eq(v___x_147_, v___x_148_);
 if (v___x_149_ == 0)
 {
 lean_object* v___x_150_; lean_object* v___x_151_; lean_object* v___x_152_; lean_object* v___x_153_; 
-v___x_150_ = l_Lake_Hash_hex(v_hash_144_);
+v___x_150_ = l_Lake_lowerHexUInt64(v_hash_144_);
 v___x_151_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Array_toJson___at___00Lake_ModuleOutputDescrs_toJson_spec__0_spec__0___closed__0));
 v___x_152_ = lean_string_append(v___x_150_, v___x_151_);
 v___x_153_ = lean_string_append(v___x_152_, v_ext_145_);
 lean_dec_ref(v_ext_145_);
-v___y_123_ = v___x_146_;
-v___y_124_ = v___x_142_;
+v___y_123_ = v___x_142_;
+v___y_124_ = v___x_146_;
 v___y_125_ = v___x_153_;
 goto v___jp_122_;
 }
@@ -487,9 +487,9 @@ else
 {
 lean_object* v___x_154_; 
 lean_dec_ref(v_ext_145_);
-v___x_154_ = l_Lake_Hash_hex(v_hash_144_);
-v___y_123_ = v___x_146_;
-v___y_124_ = v___x_142_;
+v___x_154_ = l_Lake_lowerHexUInt64(v_hash_144_);
+v___y_123_ = v___x_142_;
+v___y_124_ = v___x_146_;
 v___y_125_ = v___x_154_;
 goto v___jp_122_;
 }
