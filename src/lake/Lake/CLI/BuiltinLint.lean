@@ -79,7 +79,7 @@ public def run (args : Args) : IO UInt32 := do
       let decls ← Linter.EnvLinter.getDeclsInPackage mod.getRoot
       let linters ← Linter.EnvLinter.getChecks (scope := scope) (runOnly := runOnly)
       if linters.isEmpty then
-        IO.println s!"-- No declaration linters registered for {mod}."
+        IO.println s!"-- No environment linters registered for {mod}."
         return false
       let results ← Linter.EnvLinter.lintCore decls linters
       let failed := results.any (!·.2.isEmpty)

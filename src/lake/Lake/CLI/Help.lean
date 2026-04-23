@@ -259,7 +259,7 @@ with `lintDriverArgs` from the package config plus any arguments after
 OPTIONS:
   --builtin-lint        run builtin environment and text linters
   --builtin-only        run only builtin linters, skip the lint driver
-  --clippy              also run batch-only (clippy) linters
+  --clippy              run only non-default (clippy) builtin linters
   --lint-all            run all registered linters, including defaults, clippy,
                         and any other disabled-by-default linters
   --lint-only <name>    run only the specified linter (repeatable)

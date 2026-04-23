@@ -978,14 +978,7 @@ private def runBuiltinLint
   if mods.isEmpty then
     error "no modules specified and there are no applicable default targets"
   let args := {args with mods}
-  -- Always drive a build before reading the persisted lint log. The option
-  -- overrides determine which text linters fire during elaboration; Lake's
-  -- local artifact cache keys on the merged options, so distinct lint modes
-  -- reuse cached oleans independently of regular `lake build` outputs.
   let specs ← parseTargetSpecs ws (mods.map (s!"+{·}") |>.toList)
-  -- Suppress Lake's log output during the lint build: the text-linter warnings
-  -- we care about are read back from the olean-persisted `lintLogExt` and
-  -- printed by `BuiltinLint.run`. Real build errors still surface via `outLv`.
   let buildCfg := { mkBuildConfig opts with outLv := .error }
   let overrides := BuiltinLint.leanOptOverrides args
   ws.runBuild (buildSpecs specs) buildCfg overrides
