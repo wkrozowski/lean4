@@ -33,9 +33,9 @@ public structure BuildConfig extends LogConfig where
   associated with `M`'s name (if any) are appended to `M.leanOptions`, overriding
   clashing entries. Modules with no entry are unaffected.
 
-  Used by `lake lint` to inject `linter.lintMode`/`linter.clippy`/`linter.all`
-  into the target modules only, keeping dependencies on their normal trace hash
-  so they are not silently rebuilt with a different option set.
+  Used by `lake lint` to inject `linter.clippy`/`linter.all` into the target
+  modules only, keeping dependencies on their normal trace hash so they are
+  not silently rebuilt with a different option set.
   -/
   leanOptOverrides : Lean.NameMap Lean.LeanOptions := {}
 

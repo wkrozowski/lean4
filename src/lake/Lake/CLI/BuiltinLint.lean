@@ -25,15 +25,14 @@ public structure Args where
   mods : Array Name := #[]
 
 public def leanOptOverrides (args : Args) : LeanOptions :=
-  let lintMode : LeanOption := ⟨`linter.lintMode, .ofBool true⟩
   let enableAll : Array LeanOption :=
-    #[lintMode, ⟨`linter.clippy, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
+    #[⟨`linter.clippy, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
   if !args.only.isEmpty then
     LeanOptions.ofArray enableAll
   else
     match args.scope with
-    | .default => LeanOptions.ofArray #[lintMode]
-    | .clippy  => LeanOptions.ofArray #[lintMode, ⟨`linter.clippy, .ofBool true⟩]
+    | .default => {}
+    | .clippy  => LeanOptions.ofArray #[⟨`linter.clippy, .ofBool true⟩]
     | .all     => LeanOptions.ofArray enableAll
 
 private def collectTextLints

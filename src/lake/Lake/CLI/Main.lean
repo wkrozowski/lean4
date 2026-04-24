@@ -980,12 +980,15 @@ private def runBuiltinLint
   let args := opts.builtinLint
   let args := {args with mods}
   let specs ← parseTargetSpecs ws (mods.map (s!"+{·}") |>.toList)
-  -- Scope the lint-mode option overrides to the target modules only, so
-  -- dependencies keep their regular trace hash and are not rebuilt with
-  -- different options.
+  -- Scope linter-scope overrides (`--clippy`/`--lint-all`/`--lint-only`)
+  -- to the target modules only, so dependencies keep their regular trace hash
+  -- and are not rebuilt with different options. For the default scope no
+  -- overrides are needed: every build already records lint entries into its
+  -- olean, so a plain `lake lint` simply reads the cached oleans.
   let lintOpts := BuiltinLint.leanOptOverrides args
   let overrides : Lean.NameMap Lean.LeanOptions :=
-    mods.foldl (fun m n => m.insert n lintOpts) {}
+    if lintOpts.values.isEmpty then {}
+    else mods.foldl (fun m n => m.insert n lintOpts) {}
   let buildCfg := { mkBuildConfig opts with
     outLv := .error
     leanOptOverrides := overrides

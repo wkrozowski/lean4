@@ -74,33 +74,16 @@ register_builtin_option linter.clippy : Bool := {
 def getLinterClippy (o : LinterOptions) : Bool :=
   o.get linter.clippy.name linter.clippy.defValue
 
-register_builtin_option linter.lintMode : Bool := {
-  defValue := false
-  descr := "set to true by `lake lint` when it re-runs the build for a lint pass. Enables \
-    persistence of linter-tagged diagnostics into the olean (via `Lean.Linter.lintLogExt`) \
-    and suppresses the `set_option <name> false to disable` note on linter messages. \
-    Regular `lake build` leaves this off, so it has no effect outside of `lake lint`."
-}
-
-def getLinterLintMode (o : LinterOptions) : Bool :=
-  o.get linter.lintMode.name linter.lintMode.defValue
-
 def getLinterAll (o : LinterOptions) (defValue := linter.all.defValue) : Bool :=
     o.get linter.all.name defValue
 
 def getLinterValue (opt : Lean.Option Bool) (o : LinterOptions) : Bool :=
   o.get opt.name (getLinterAll o <| (o.getSet opt).any (o.get? · == some true) || opt.defValue)
 
-def logLint [Monad m] [MonadLog m] [AddMessageContext m] [MonadOptions m] [MonadEnv m]
-    (linterOption : Lean.Option Bool) (stx : Syntax) (msg : MessageData) : m Unit := do
-  -- `lake lint` runs with `linter.lintMode = true` so the saved/reprinted
-  -- warning does not include a `set_option` disabling hint.
-  let body :=
-    if getLinterLintMode (← getLinterOptions) then msg
-    else
-      let disable := .note m!"This linter can be disabled with `set_option {linterOption.name} false`"
-      m!"{msg}{disable}"
-  logWarningAt stx (.tagged linterOption.name body)
+def logLint [Monad m] [MonadLog m] [AddMessageContext m] [MonadOptions m]
+    (linterOption : Lean.Option Bool) (stx : Syntax) (msg : MessageData) : m Unit :=
+  let disable := .note m!"This linter can be disabled with `set_option {linterOption.name} false`"
+  logWarningAt stx (.tagged linterOption.name m!"{msg}{disable}")
 
 /--
 If `linterOption` is enabled, print a linter warning message at the position determined by `stx`.
