@@ -28,14 +28,14 @@ public structure BuildConfig extends LogConfig where
   /-- File to save input-to-output mappings from the build of the workspace's root -/
   outputsFile? : Option FilePath := none
   /--
-  Per-module Lean option overrides, merged on top of a module's `leanOptions`
-  for this build only. When `recFetchSetup` builds module `M`, the `LeanOptions`
-  associated with `M`'s name (if any) are appended to `M.leanOptions`, overriding
-  clashing entries. Modules with no entry are unaffected.
+  Per-package Lean option overrides, applied to every module whose owning
+  package's `baseName` appears as a key. When `recFetchSetup` builds module
+  `M`, the `LeanOptions` associated with `M.pkg.baseName` (if any) are appended
+  to `M.leanOptions`, overriding clashing entries.
 
-  Used by `lake lint` to inject `linter.clippy`/`linter.all` into the target
-  modules only, keeping dependencies on their normal trace hash so they are
-  not silently rebuilt with a different option set.
+  Used by `lake lint` to inject `linter.clippy`/`linter.all` into every module
+  of a target package (so transitively-imported first-party modules capture
+  linter-tagged warnings), without touching dependencies.
   -/
   leanOptOverrides : Lean.NameMap Lean.LeanOptions := {}
 

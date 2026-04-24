@@ -972,23 +972,26 @@ protected def checkTest : CliM PUnit := do
   noArgsRem do exit <| if pkg.testDriver.isEmpty then 1 else 0
 
 private def runBuiltinLint
-    (opts : LakeOptions) (ws : Workspace) (mods : Array Lean.Name)
+    (opts : LakeOptions) (ws : Workspace) (specifiedMods : Array Lean.Name)
     : CliM UInt32 := do
-  let mods := if mods.isEmpty then ws.defaultTargetRoots else mods
+  let mods := if specifiedMods.isEmpty then ws.defaultTargetRoots else specifiedMods
   if mods.isEmpty then
     error "no modules specified and there are no applicable default targets"
   let args := opts.builtinLint
   let args := {args with mods}
   let specs ← parseTargetSpecs ws (mods.map (s!"+{·}") |>.toList)
-  -- Scope linter-scope overrides (`--clippy`/`--lint-all`/`--lint-only`)
-  -- to the target modules only, so dependencies keep their regular trace hash
-  -- and are not rebuilt with different options. For the default scope no
-  -- overrides are needed: every build already records lint entries into its
-  -- olean, so a plain `lake lint` simply reads the cached oleans.
   let lintOpts := BuiltinLint.leanOptOverrides args
   let overrides : Lean.NameMap Lean.LeanOptions :=
-    if lintOpts.values.isEmpty then {}
-    else mods.foldl (fun m n => m.insert n lintOpts) {}
+    if lintOpts.values.isEmpty then
+      {}
+    else if specifiedMods.isEmpty then
+      ({} : Lean.NameMap Lean.LeanOptions).insert ws.root.baseName lintOpts
+    else
+      specifiedMods.foldl (init := ({} : Lean.NameMap Lean.LeanOptions))
+        fun m modName =>
+          match ws.findTargetModule? modName with
+          | some mod => m.insert mod.pkg.baseName lintOpts
+          | none     => m
   let buildCfg := { mkBuildConfig opts with
     outLv := .error
     leanOptOverrides := overrides

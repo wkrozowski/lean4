@@ -51,6 +51,32 @@ lake_out lint --lint-only defLemma || true
 match_pat 'shouldBeTheorem' produced.out
 no_match_pat 'badUnivDecl' produced.out
 
+# --- Transitive-import behaviour ---
+# `Main` (a default target) imports `Main.Sub`. Both live under the `Main.*`
+# module-name prefix, so `getDeclsInPackage Main` covers them and
+# `collectTextLints` filters by `Main.isPrefixOf mod`. Overrides are keyed by
+# package, so passing any module of a package flips the flag for every module
+# in that package.
+
+# Env linters run post-build against `importModules`-loaded decls, so
+# `defLemma` catches `shouldBeTheoremInSub` regardless of override scope.
+lake_out lint --builtin-lint Main || true
+match_pat 'shouldBeTheoremInSub' produced.out
+
+# `linter.unusedVariables` (defValue=true) fires on every build, so its entry
+# lands in `Main.Sub.olean` unconditionally.
+match_pat 'unused variable `unusedInSub`' produced.out
+
+# Explicit arg with --lint-all: the override applies to the whole package of
+# `Main`, so `Main.Sub` is also built with `linter.all=true` and the
+# missingDocs warning IS captured.
+lake_out lint --lint-all Main || true
+match_pat 'missing doc string for public def undocumentedInSub' produced.out
+
+# No args: override is keyed by the root package; same effect on Main.Sub.
+lake_out lint --lint-all || true
+match_pat 'missing doc string for public def undocumentedInSub' produced.out
+
 # Clean module has no violations; exit code should be 0
 test_run lint --builtin-only Clean
 

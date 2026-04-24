@@ -540,7 +540,7 @@ def Module.recFetchSetup (mod : Module) : FetchM (Job ModuleSetup) := ensureJob 
     | some false => addTrace depTrace; addTrace libTrace; addPlatformTrace
     | some true => addTrace depTrace
     let {dynlibs, plugins} ← computeModuleDeps impLibs externLibs dynlibs plugins
-    let extra := (← getLeanOptOverrides).find? mod.name |>.getD {}
+    let extra := (← getLeanOptOverrides).find? mod.pkg.baseName |>.getD {}
     return {
       name := mod.name
       isModule := header.isModule

@@ -3,6 +3,7 @@ defaultTargets = ["Main", "Clean", "Linters", "ClippyViolations", "TextLints"]
 
 [[lean_lib]]
 name = "Main"
+globs = "Main.*"
 
 [[lean_lib]]
 name = "Clean"
