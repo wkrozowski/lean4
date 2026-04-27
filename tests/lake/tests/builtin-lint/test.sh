@@ -85,6 +85,8 @@ test_run lint --builtin-only Clean
 lake_out lint --builtin-only ClippyViolations || true
 no_match_pat 'badNameClippy' produced.out
 no_match_pat 'clippy text linter saw a declaration' produced.out
+# Builtin clippy text linter `unnecessarySeqFocus` is non-default, so silent.
+no_match_pat 'tac1 <;> tac2' produced.out
 
 # --clippy should run only non-default (clippy) linters, including the clippy
 # text linter which tags its warnings with `linter.clippy`.
@@ -92,6 +94,10 @@ lake_out lint --clippy ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat "declaration name ends with 'Clippy'" produced.out
 match_pat 'clippy text linter saw a declaration' produced.out
+# Builtin clippy text linter `unnecessarySeqFocus` fires under --clippy: its
+# tag `linter.clippy.unnecessarySeqFocus` is matched by the `linter.clippy`
+# prefix filter.
+match_pat 'tac1 <;> tac2' produced.out
 # --clippy should not run default linters
 no_match_pat 'shouldBeTheorem' produced.out
 
@@ -108,6 +114,12 @@ no_match_pat 'missing doc string' produced.out
 lake_out lint --lint-all ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat 'clippy text linter saw a declaration' produced.out
+match_pat 'tac1 <;> tac2' produced.out
+
+# --lint-only unnecessarySeqFocus runs only the clippy text linter.
+lake_out lint --lint-only unnecessarySeqFocus ClippyViolations || true
+match_pat 'tac1 <;> tac2' produced.out
+no_match_pat 'badNameClippy' produced.out
 
 # Multiple --lint-only flags accumulate: both named linters should run
 lake_out lint --lint-only defLemma --lint-only checkUnivs || true
