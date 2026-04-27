@@ -984,10 +984,8 @@ private def runBuiltinLint
   let overrides : Lean.NameMap Lean.LeanOptions :=
     if lintOpts.values.isEmpty then
       {}
-    else if specifiedMods.isEmpty then
-      ({} : Lean.NameMap Lean.LeanOptions).insert ws.root.baseName lintOpts
     else
-      specifiedMods.foldl (init := ({} : Lean.NameMap Lean.LeanOptions))
+      mods.foldl (init := ({} : Lean.NameMap Lean.LeanOptions))
         fun m modName =>
           match ws.findTargetModule? modName with
           | some mod => m.insert mod.pkg.baseName lintOpts

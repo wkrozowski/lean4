@@ -1,6 +1,10 @@
 name = "lint"
 defaultTargets = ["Main", "Clean", "Linters", "ClippyViolations", "TextLints"]
 
+[[require]]
+name = "dep"
+path = "dep"
+
 [[lean_lib]]
 name = "Main"
 globs = "Main.*"

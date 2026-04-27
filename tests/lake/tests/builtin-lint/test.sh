@@ -199,3 +199,16 @@ match_pat 'lint-driver:' produced.out
 
 # builtinLint = true + lint driver: check-lint succeeds
 test_run -f with-driver.lean check-lint
+
+# --- Non-root package as a lint target ---
+# `Dep` lives in a path-based dependency (`dep`), not in the root package.
+# Specifying it on the command line must key the linter option override by
+# the *dep* package's baseName, not the root's, so that `linter.all=true`
+# reaches `Dep` during build and `missingDocs` is captured in its olean.
+lake_out lint --lint-all Dep || true
+match_pat 'missing doc string for public def undocumentedInDep' produced.out
+
+# Baseline: without `--lint-all`, no override is injected, so `missingDocs`
+# stays at its default (off) and produces no entry for `Dep`.
+lake_out lint --builtin-only Dep || true
+no_match_pat 'missing doc string for public def undocumentedInDep' produced.out

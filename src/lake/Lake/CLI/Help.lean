@@ -251,6 +251,11 @@ USAGE:
 By default, runs the package's configured lint driver. If `builtinLint` is
 set to `true` in the package configuration, builtin lints also run.
 
+Builtin linting (`--builtin-lint`, `--builtin-only`, `--clippy`, `--lint-all`,
+`--lint-only`, or `builtinLint = true` in the package configuration) drives a
+build of the targeted modules with the requested linter options enabled.
+The lint driver path on its own does not trigger a build.
+
 Positional `MODULE` arguments narrow only the builtin lints; if omitted,
 the workspace's default target roots are used. The lint driver is invoked
 with `lintDriverArgs` from the package config plus any arguments after
