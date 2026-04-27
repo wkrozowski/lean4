@@ -85,6 +85,8 @@ test_run lint --builtin-only Clean
 lake_out lint --builtin-only ClippyViolations || true
 no_match_pat 'badNameClippy' produced.out
 no_match_pat 'clippy text linter saw a declaration' produced.out
+# Builtin clippy env linter `dupNamespace` is non-default, so it stays silent.
+no_match_pat 'Dup.Dup.violation' produced.out
 
 # --clippy should run only non-default (clippy) linters, including the clippy
 # text linter which tags its warnings with `linter.clippy`.
@@ -92,6 +94,9 @@ lake_out lint --clippy ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat "declaration name ends with 'Clippy'" produced.out
 match_pat 'clippy text linter saw a declaration' produced.out
+# Builtin `dupNamespace` env linter fires under --clippy.
+match_pat 'Dup.Dup.violation' produced.out
+match_pat "namespace .*Dup.* is duplicated" produced.out
 # --clippy should not run default linters
 no_match_pat 'shouldBeTheorem' produced.out
 
@@ -108,6 +113,13 @@ no_match_pat 'missing doc string' produced.out
 lake_out lint --lint-all ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat 'clippy text linter saw a declaration' produced.out
+match_pat 'Dup.Dup.violation' produced.out
+
+# --lint-only dupNamespace runs only the builtin clippy `dupNamespace` env linter.
+lake_out lint --lint-only dupNamespace ClippyViolations || true
+match_pat 'Dup.Dup.violation' produced.out
+no_match_pat 'badNameClippy' produced.out
+no_match_pat 'shouldBeTheorem' produced.out
 
 # Multiple --lint-only flags accumulate: both named linters should run
 lake_out lint --lint-only defLemma --lint-only checkUnivs || true
