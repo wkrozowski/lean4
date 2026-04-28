@@ -184,6 +184,43 @@ elab_rules : tactic
   dbg_trace "blocked!"
   log "blocked"
 
+/-! ## Helpers for end-to-end testing of parallel subtask cancellation -/
+
+meta initialize checkCancelRefs : IO.Ref (Std.HashMap String (Task Unit × IO.CancelToken)) ← IO.mkRef {}
+
+/--
+Tests whether the cancel token is properly set on re-elaboration. On first invocation with a
+given label, loops checking `Core.checkSystem` and waiting for a signal from the second
+invocation. If the loop completes without interruption (i.e. the cancel token was not propagated),
+prints `"{label}: leaked!"` to stderr. Second invocation signals the first and waits for it to
+complete (so the server doesn't exit prematurely).
+-/
+scoped syntax "check_cancel" ident : tactic
+elab_rules : tactic
+| `(tactic| check_cancel $id) => do
+  let label := id.getId.toString (escape := false)
+  let prom ← IO.Promise.new
+  let signal ← IO.CancelToken.new
+  let prior ← checkCancelRefs.modifyGet fun m =>
+    match m.get? label with
+    | some entry => (some entry, m)
+    | none       => (none, m.insert label (prom.result!, signal))
+  if let some (t, sig) := prior then
+    sig.set
+    IO.wait t
+    return
+  try
+    while true do
+      Core.checkSystem "check_cancel"
+      if (← signal.isSet) then break
+      IO.sleep 10
+    let ctx ← readThe Core.Context
+    let some cancelTk := ctx.cancelTk? | unreachable!
+    if !(← cancelTk.isSet) then
+      IO.eprintln s!"{label}: leaked!"
+  finally
+    prom.resolve ()
+
 meta initialize cmdOnceRef : IO.Ref (Option (Task Unit)) ← IO.mkRef none
 
 /--
