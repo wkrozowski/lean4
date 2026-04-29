@@ -12,3 +12,5 @@ example : True := by
 -- The component `Dup` appears consecutively in this declaration's name —
 -- the builtin clippy `dupNamespace` env linter should flag it.
 def Dup.Dup.violation : Nat := 2
+
+def unreachableTacticViolation : True := by trivial <;> done

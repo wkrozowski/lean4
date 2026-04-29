@@ -88,6 +88,8 @@ no_match_pat 'clippy text linter saw a declaration' produced.out
 no_match_pat 'tac1 <;> tac2' produced.out
 # Builtin clippy env linter `dupNamespace` is non-default, so it stays silent.
 no_match_pat 'Dup.Dup.violation' produced.out
+# Builtin clippy text linter `unreachableTactic` is non-default, so silent.
+no_match_pat 'this tactic is never executed' produced.out
 
 # --clippy should run only non-default (clippy) linters, including the clippy
 # text linter which tags its warnings with `linter.clippy`.
@@ -102,6 +104,8 @@ match_pat 'tac1 <;> tac2' produced.out
 # Builtin `dupNamespace` env linter fires under --clippy.
 match_pat 'Dup.Dup.violation' produced.out
 match_pat "namespace .*Dup.* is duplicated" produced.out
+# Builtin `unreachableTactic` clippy text linter fires under --clippy.
+match_pat 'this tactic is never executed' produced.out
 # --clippy should not run default linters
 no_match_pat 'shouldBeTheorem' produced.out
 
@@ -119,6 +123,7 @@ lake_out lint --lint-all ClippyViolations || true
 match_pat 'badNameClippy' produced.out
 match_pat 'clippy text linter saw a declaration' produced.out
 match_pat 'tac1 <;> tac2' produced.out
+match_pat 'this tactic is never executed' produced.out
 
 # --lint-only unnecessarySeqFocus runs only the clippy text linter.
 lake_out lint --lint-only unnecessarySeqFocus ClippyViolations || true
