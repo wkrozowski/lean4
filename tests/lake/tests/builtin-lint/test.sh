@@ -2,7 +2,6 @@
 source ../common.sh
 
 ./clean.sh
-cp -r input/* .
 
 # --builtin-lint drives the build itself; we do not need to `lake build` first.
 # Linting Clean should succeed (no violations) and implicitly build Clean.
@@ -125,7 +124,7 @@ match_pat 'tac1 <;> tac2' produced.out
 lake_out lint --lint-only unnecessarySeqFocus ClippyViolations || true
 match_pat 'tac1 <;> tac2' produced.out
 no_match_pat 'badNameClippy' produced.out
-match_pat 'Dup.Dup.violation' produced.out
+no_match_pat 'Dup.Dup.violation' produced.out
 
 # --lint-only dupNamespace runs only the builtin clippy `dupNamespace` env linter.
 lake_out lint --lint-only dupNamespace ClippyViolations || true
@@ -187,27 +186,22 @@ lake_out lint --lint-only defLemma || true
 match_pat 'shouldBeTheorem' produced.out
 
 # builtinLint = false: check-lint fails (no lint driver and builtin linting disabled)
-sed_i 's/^name = .*/&\nbuiltinLint = false/' lakefile.toml
-test_fails check-lint
+test_fails -f lakefile-builtin-false.toml check-lint
 
 # builtinLint = false: lake lint errors
-lake_out lint || true
+lake_out -f lakefile-builtin-false.toml lint || true
 match_pat 'no lint driver configured' produced.out
 
 # builtinLint = false with --builtin-lint flag: overrides and runs builtin lints
-lake_out lint --builtin-lint || true
+lake_out -f lakefile-builtin-false.toml lint --builtin-lint || true
 match_pat 'shouldBeTheorem' produced.out
 
 # builtinLint = true: check-lint succeeds even without a lint driver
-sed_i 's/builtinLint = false/builtinLint = true/' lakefile.toml
-test_run check-lint
+test_run -f lakefile-builtin-true.toml check-lint
 
 # builtinLint = true: lake lint runs builtin lints
-lake_out lint || true
+lake_out -f lakefile-builtin-true.toml lint || true
 match_pat 'shouldBeTheorem' produced.out
-
-# Restore original lakefile
-cp input/lakefile.toml lakefile.toml
 
 # --- builtinLint = true with a lint driver ---
 
