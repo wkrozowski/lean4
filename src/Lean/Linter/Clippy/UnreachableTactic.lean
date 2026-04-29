@@ -119,7 +119,7 @@ def unreachableTacticLinter : Linter where run := withSetOptionIn fun stx => do
     -- if stx.getKind ∈ [``Batteries.Tactic.unreachable, ``Batteries.Tactic.unreachableConv] then
     --   continue
     if last.start ≤ r.start && r.stop ≤ last.stop then continue
-    logLint linter.clippy.unreachableTactic stx "this tactic is never executed"
+    logLintIfClippy linter.clippy.unreachableTactic stx "this tactic is never executed"
     last := r
 
 builtin_initialize addLinter unreachableTacticLinter
