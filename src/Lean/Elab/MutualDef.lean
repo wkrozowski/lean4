@@ -253,7 +253,7 @@ private def elabHeaders (views : Array DefView) (expandedDeclIds : Array ExpandD
         withRestoreOrSaveFull reusableResult? none do
         withReuseContext view.headerRef do
         applyAttributesAt declName view.modifiers.attrs .beforeElaboration
-        withConditionalCheckDeprecated view.modifiers.attrs <|
+        withDeprecationContextFromAttrs view.modifiers.attrs <|
           withDeclName declName <| withAutoBoundImplicit <| withLevelNames levelNames <|
           elabBindersEx view.binders.getArgs fun xs => do
             let refForElabFunType := view.value
@@ -529,7 +529,7 @@ private def elabFunValues (headers : Array DefViewElabHeader) (vars : Array Expr
     let (val, state) ← withRestoreOrSaveFull reusableResult? header.tacSnap? do
       withReuseContext header.value do
       withTraceNode `Elab.definition.value (fun _ => pure header.declName) do
-      withConditionalCheckDeprecated header.modifiers.attrs <| withDeclName header.declName <| withLevelNames header.levelNames do
+      withDeprecationContextFromAttrs header.modifiers.attrs <| withDeclName header.declName <| withLevelNames header.levelNames do
       let valStx ← declValToTerm header.value header.type
       (if header.kind.isTheorem && !deprecated.oldSectionVars.get (← getOptions) then withHeaderSecVars vars sc #[header] else fun x => x #[]) fun vars => do
       withLCtx' ((← getLCtx).modifyLocalDecls fun decl => decl.setType decl.type.cleanupAnnotations) do
@@ -691,7 +691,7 @@ private def fillHolesFromWhereFinally (name : Name) (es : Array ExprWithHoles) (
 
   withExporting (isExporting := wasExporting && !isNoLongerExporting) do
   Lean.Elab.Term.TermElabM.run' do
-  Term.withConditionalCheckDeprecated attrs do
+  withDeprecationContextFromAttrs attrs do
   Term.withDeclName name do
   withRef whereFinally.ref do
     unless goals.isEmpty do
@@ -1312,7 +1312,7 @@ where
     let act ←
       -- NOTE: We must set the decl name before going async to ensure that the `auxDeclNGen` is
       -- forked correctly.
-      withConditionalCheckDeprecated oldAttrs do
+      withDeprecationContextFromAttrs oldAttrs do
       withDeclName header.declName do
       wrapAsyncAsSnapshot (desc := s!"elaborating proof of {declId.declName}")
         (cancelTk? := cancelTk) fun _ => do profileitM Exception "elaboration" (← getOptions) do

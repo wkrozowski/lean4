@@ -347,7 +347,7 @@ end Methods
 
 namespace Term
 
-@[inline] def withConditionalCheckDeprecated [MonadWithReaderOf Term.Context m]
+@[inline] def withDeprecationContextFromAttrs [MonadWithReaderOf Term.Context m]
     (attrs : Array Attribute) : m α → m α :=
   if attrs.any (·.name == `deprecated) then
     withTheReader Term.Context (fun ctx => { ctx with checkDeprecated := false })
