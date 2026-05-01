@@ -345,4 +345,15 @@ def expandDeclId (currNamespace : Name) (currLevelNames : List Name) (declId : S
 
 end Methods
 
+namespace Term
+
+@[inline] def withConditionalCheckDeprecated [MonadWithReaderOf Term.Context m]
+    (attrs : Array Attribute) : m α → m α :=
+  if attrs.any (·.name == `deprecated) then
+    withTheReader Term.Context (fun ctx => { ctx with checkDeprecated := false })
+  else
+    id
+
+end Term
+
 end Lean.Elab

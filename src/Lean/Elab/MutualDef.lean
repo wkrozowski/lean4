@@ -253,7 +253,8 @@ private def elabHeaders (views : Array DefView) (expandedDeclIds : Array ExpandD
         withRestoreOrSaveFull reusableResult? none do
         withReuseContext view.headerRef do
         applyAttributesAt declName view.modifiers.attrs .beforeElaboration
-        withDeclName declName <| withAutoBoundImplicit <| withLevelNames levelNames <|
+        withConditionalCheckDeprecated view.modifiers.attrs <|
+          withDeclName declName <| withAutoBoundImplicit <| withLevelNames levelNames <|
           elabBindersEx view.binders.getArgs fun xs => do
             let refForElabFunType := view.value
             let mut type ← match view.type? with
@@ -528,7 +529,7 @@ private def elabFunValues (headers : Array DefViewElabHeader) (vars : Array Expr
     let (val, state) ← withRestoreOrSaveFull reusableResult? header.tacSnap? do
       withReuseContext header.value do
       withTraceNode `Elab.definition.value (fun _ => pure header.declName) do
-      withDeclName header.declName <| withLevelNames header.levelNames do
+      withConditionalCheckDeprecated header.modifiers.attrs <| withDeclName header.declName <| withLevelNames header.levelNames do
       let valStx ← declValToTerm header.value header.type
       (if header.kind.isTheorem && !deprecated.oldSectionVars.get (← getOptions) then withHeaderSecVars vars sc #[header] else fun x => x #[]) fun vars => do
       withLCtx' ((← getLCtx).modifyLocalDecls fun decl => decl.setType decl.type.cleanupAnnotations) do
@@ -669,7 +670,8 @@ private def ExprWithHoles.getHoles (e : ExprWithHoles) : TermElabM (Array MVarId
   let goals ← goals.mapM fun goal => return ((← goal.getDecl).index, goal)
   return goals.insertionSort (·.fst < ·.fst) |>.map (·.snd)
 
-private def fillHolesFromWhereFinally (name : Name) (es : Array ExprWithHoles) (whereFinally : WhereFinallyView) : TermElabM PUnit := do
+private def fillHolesFromWhereFinally (name : Name) (es : Array ExprWithHoles) (whereFinally : WhereFinallyView)
+    (attrs : Array Attribute) : TermElabM PUnit := do
   if whereFinally.isNone then return
   let goals := (← es.mapM fun e => e.getHoles).flatten
 
@@ -689,6 +691,7 @@ private def fillHolesFromWhereFinally (name : Name) (es : Array ExprWithHoles) (
 
   withExporting (isExporting := wasExporting && !isNoLongerExporting) do
   Lean.Elab.Term.TermElabM.run' do
+  Term.withConditionalCheckDeprecated attrs do
   Term.withDeclName name do
   withRef whereFinally.ref do
     unless goals.isEmpty do
@@ -1293,6 +1296,7 @@ where
       async.commitSignature { name := header.declName, levelParams, type }
 
     -- attributes should be applied on the main thread; see below
+    let oldAttrs := header.modifiers.attrs
     let header := { header with modifiers.attrs := #[] }
 
     -- insert a hole for the proof info trees in the main info tree
@@ -1308,6 +1312,7 @@ where
     let act ←
       -- NOTE: We must set the decl name before going async to ensure that the `auxDeclNGen` is
       -- forked correctly.
+      withConditionalCheckDeprecated oldAttrs do
       withDeclName header.declName do
       wrapAsyncAsSnapshot (desc := s!"elaborating proof of {declId.declName}")
         (cancelTk? := cancelTk) fun _ => do profileitM Exception "elaboration" (← getOptions) do
@@ -1405,7 +1410,7 @@ where
     for header in headers, value in values do
       let whereFinally ← declValToWhereFinally header.value
       let exprsWithHoles := (exprsWithHoles.getD header.declName #[]).push { ref := header.ref, expr := value }
-      fillHolesFromWhereFinally header.declName exprsWithHoles whereFinally
+      fillHolesFromWhereFinally header.declName exprsWithHoles whereFinally header.modifiers.attrs
     -- Compilation should take place without unused section vars, but all section vars should be
     -- present when elaborating documentation.
     let docCtx := (← getLCtx, ← getLocalInstances)
