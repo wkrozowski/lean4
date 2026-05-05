@@ -1561,6 +1561,7 @@ def updateViewWithFunctorName (view : InductiveView) : InductiveView :=
 private def elabInductiveViews (vars : Array Expr) (elabs : Array InductiveElabStep1) : TermElabM FinalizeContext := do
   let view0 := elabs[0]!.view
   let ref := view0.ref
+  Term.withDeprecationContextFromAttrs view0.modifiers.attrs <|
   Term.withDeclName view0.declName do withRef ref do
   withExporting (isExporting := !isPrivateName view0.declName) do
     let res ← mkInductiveDecl vars elabs
@@ -1581,6 +1582,7 @@ private def elabInductiveViews (vars : Array Expr) (elabs : Array InductiveElabS
 private def elabFlatInductiveViews (vars : Array Expr) (elabs : Array InductiveElabStep1) : TermElabM Unit := do
   let view0 := elabs[0]!.view
   let ref := view0.ref
+  Term.withDeprecationContextFromAttrs view0.modifiers.attrs <|
   Term.withDeclName view0.declName do withRef ref do
   withExporting (isExporting := !isPrivateName view0.declName) do
     withElaboratedHeaders vars elabs <| mkInductiveDeclCore (fun context =>

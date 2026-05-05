@@ -15,11 +15,16 @@ theorem quux (x : Nat) : foo x = x + 1 := by
   rw [qux x]
   rfl
 
+@[deprecated "test" (since:="2025-06-23")]
 inductive Hello : Prop where
   | mk (n : Nat) : baz n = 7 → Hello
 
 @[deprecated "test" (since:="2025-06-23")]
-inductive Hello2 (h : baz n = 7) where
+coinductive Hello2 : Prop where
+  | mk (n : Nat) : baz n = 7 → Hello2
+
+@[deprecated "test" (since:="2025-06-23")]
+inductive Hello3 (h : baz n = 7) where
 
 @[deprecated "test" (since:="2025-06-23")]
 axiom ax : baz n = 7
@@ -35,3 +40,7 @@ structure MyStruct2 (n : Nat) (hp : baz n = 7) where
 @[deprecated "test" (since:="2025-06-23")]
 def myFun (n : Nat) : Nat := Id.run do
   return baz n
+
+@[deprecated "test" (since:="2025-06-23")]
+instance : BEq Nat where
+  beq m n := m == baz n
