@@ -6,4 +6,4 @@ Authors: Wojciech Różowski
 module
 
 prelude
-public import Lean.Linter.Clippy.UnnecessarySeqFocus
+public import Lean.Linter.Extra.UnnecessarySeqFocus
