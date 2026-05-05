@@ -252,9 +252,9 @@ private def elabHeaders (views : Array DefView) (expandedDeclIds : Array ExpandD
         withTraceNode `Elab.definition.header (fun _ => pure declName) do
         withRestoreOrSaveFull reusableResult? none do
         withReuseContext view.headerRef do
+        withDeprecationContextFromAttrs view.modifiers.attrs do
         applyAttributesAt declName view.modifiers.attrs .beforeElaboration
-        withDeprecationContextFromAttrs view.modifiers.attrs <|
-          withDeclName declName <| withAutoBoundImplicit <| withLevelNames levelNames <|
+        withDeclName declName <| withAutoBoundImplicit <| withLevelNames levelNames <|
           elabBindersEx view.binders.getArgs fun xs => do
             let refForElabFunType := view.value
             let mut type ← match view.type? with
@@ -1296,6 +1296,7 @@ where
       async.commitSignature { name := header.declName, levelParams, type }
 
     -- attributes should be applied on the main thread; see below
+    -- save before clearing so the deprecation-silencing wrap below can still see `@[deprecated]`
     let oldAttrs := header.modifiers.attrs
     let header := { header with modifiers.attrs := #[] }
 
@@ -1334,8 +1335,9 @@ where
     Core.logSnapshotTask { stx? := none, cancelTk? := none, task := (← getEnv).checked.map fun _ =>
       default
     }
-    applyAttributesAt declId.declName view.modifiers.attrs .afterTypeChecking
-    applyAttributesAt declId.declName view.modifiers.attrs .afterCompilation
+    withDeprecationContextFromAttrs view.modifiers.attrs do
+      applyAttributesAt declId.declName view.modifiers.attrs .afterTypeChecking
+      applyAttributesAt declId.declName view.modifiers.attrs .afterCompilation
   finishElab headers := withFunLocalDecls headers fun funFVars => do
     let env ← getEnv
     let inExposeSection := sc.attrs.any (· matches `(attrInstance| expose))
