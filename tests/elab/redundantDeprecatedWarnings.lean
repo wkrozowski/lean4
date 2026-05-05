@@ -7,6 +7,9 @@ theorem bar (x : Nat) : foo x = x + 1 := rfl
 @[deprecated foo (since:="2025-06-23")]
 def baz (x : Nat) := x + 1
 
+@[deprecated foo (since:="2025-06-23")]
+def baz2 (x : Nat) := x + 1
+
 @[deprecated bar (since:="2025-06-23")]
 theorem qux (x : Nat) : foo x = baz x := rfl
 
@@ -44,3 +47,13 @@ def myFun (n : Nat) : Nat := Id.run do
 @[deprecated "test" (since:="2025-06-23")]
 instance : BEq Nat where
   beq m n := m == baz n
+
+/-- warning: `baz` has been deprecated: Use `foo` instead -/
+#guard_msgs in
+mutual
+  inductive NotDep : Prop where
+    | mk : baz 0 = 0 → NotDep → DepInd → NotDep
+  @[deprecated "test" (since:="2025-06-23")]
+  inductive DepInd : Prop where
+    | mk : baz2 0 = 0 → NotDep → DepInd → DepInd
+end

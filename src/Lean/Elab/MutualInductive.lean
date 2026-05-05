@@ -324,7 +324,8 @@ private def elabHeadersAux (views : Array InductiveView) (i : Nat) (acc : Array 
   Term.withAutoBoundImplicitForbiddenPred (fun n => views.any (·.shortDeclName == n)) do
     if h : i < views.size then
       let view := views[i]
-      let acc ← withRef view.ref <| Term.withAutoBoundImplicit <| Term.elabBinders view.binders.getArgs fun params => do
+      let acc ← withRef view.ref <| Term.withDeprecationContextFromAttrs view.modifiers.attrs <|
+          Term.withAutoBoundImplicit <| Term.elabBinders view.binders.getArgs fun params => do
         let (type, _) ← Term.withAutoBoundImplicit do
           let typeStx ← view.type?.getDM `(Sort _)
           let type ← Term.elabType typeStx
@@ -1458,7 +1459,8 @@ private def mkInductiveDeclCore
     for h : i in *...views.size do
       Term.addLocalVarInfo views[i].declId indFVars[i]!
       let r     := rs[i]!
-      let elab' ← elabs[i]!.elabCtors rs r params
+      let elab' ← Term.withDeprecationContextFromAttrs views[i].modifiers.attrs <|
+        elabs[i]!.elabCtors rs r params
       elabs'    := elabs'.push elab'
       indTypesArray := indTypesArray.push { name := r.view.declName, type := r.type, ctors := elab'.ctors }
     Term.synthesizeSyntheticMVarsNoPostponing
@@ -1561,7 +1563,6 @@ def updateViewWithFunctorName (view : InductiveView) : InductiveView :=
 private def elabInductiveViews (vars : Array Expr) (elabs : Array InductiveElabStep1) : TermElabM FinalizeContext := do
   let view0 := elabs[0]!.view
   let ref := view0.ref
-  Term.withDeprecationContextFromAttrs view0.modifiers.attrs <|
   Term.withDeclName view0.declName do withRef ref do
   withExporting (isExporting := !isPrivateName view0.declName) do
     let res ← mkInductiveDecl vars elabs
@@ -1582,7 +1583,6 @@ private def elabInductiveViews (vars : Array Expr) (elabs : Array InductiveElabS
 private def elabFlatInductiveViews (vars : Array Expr) (elabs : Array InductiveElabStep1) : TermElabM Unit := do
   let view0 := elabs[0]!.view
   let ref := view0.ref
-  Term.withDeprecationContextFromAttrs view0.modifiers.attrs <|
   Term.withDeclName view0.declName do withRef ref do
   withExporting (isExporting := !isPrivateName view0.declName) do
     withElaboratedHeaders vars elabs <| mkInductiveDeclCore (fun context =>
