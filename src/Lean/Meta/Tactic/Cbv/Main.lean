@@ -259,10 +259,13 @@ def handleProj : Simproc := fun e => do
   | .step e' proof _ _ =>
     let type ← Sym.inferType e'
     let congrArgFun := Lean.mkLambda `x .default type <| .proj typeName idx <| .bvar 0
-    let congrArgFunType ← inferType congrArgFun
+    let congrArgFunType ← Sym.inferType congrArgFun
     -- If the type of a projection function is non-dependent, we can safely prove `e.i = e'.i` from `e = e'`
-    if (congrArgFunType.isArrow) then
-      let newProof ← mkCongrArg congrArgFun proof
+    if congrArgFunType.isArrow then
+      let .forallE _ α β _ := congrArgFunType | unreachable!
+      let u ← Sym.getLevel α
+      let v ← Sym.getLevel β
+      let newProof := mkApp6 (mkConst ``congrArg [u, v]) α β struct e' congrArgFun proof
       return .step (← Lean.Expr.updateProjS! e e') newProof
     else
       -- If the type of the projection function is dependent, we first try to reduce the projection
@@ -301,7 +304,10 @@ def simplifyAppFn : Simproc := fun e => do
       let newType ← Sym.inferType e'
       let congrArgFun := Lean.mkLambda `x .default newType (mkAppN (.bvar 0) e.getAppArgs)
       let newValue ← mkAppNS e' e.getAppArgs
-      let newProof ← mkCongrArg congrArgFun proof
+      let resultType ← Sym.inferType e
+      let u ← Sym.getLevel newType
+      let v ← Sym.getLevel resultType
+      let newProof := mkApp6 (mkConst ``congrArg [u, v]) newType resultType fn e' congrArgFun proof
       trace[Debug.Meta.Tactic.cbv.reduce] "simplifyAppFn:{indentExpr e}\n==>{indentExpr newValue}"
       return .step newValue newProof
 
@@ -405,11 +411,11 @@ public def cbvGoal (mvarId : MVarId) (simplifyTarget : Bool := true) (fvarIdsToS
         | .rfl _ _ => pure ()
         | .step type' proof _ _ =>
           if type'.isFalse then
-            let u ← getLevel type
+            let u ← Sym.getLevel type
             mvarIdNew.assign (← mkFalseElim (← mvarIdNew.getType) (mkApp4 (mkConst ``Eq.mp [u]) type type' proof (mkFVar fvarId)))
             return none
           else
-            let u ← getLevel type
+            let u ← Sym.getLevel type
             toAssert := toAssert.push { userName := localDecl.userName, type := type', value := mkApp4 (mkConst ``Eq.mp [u]) type type' proof (mkFVar fvarId) }
       -- Process target
       if simplifyTarget then
