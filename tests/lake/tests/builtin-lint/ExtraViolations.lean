@@ -16,3 +16,7 @@ def Dup.Dup.violation : Nat := 2
 -- This uses `def` for a Prop — the default `defLemma` linter should flag this
 -- whenever default linters run, including under `--extra`.
 def shouldBeTheoremUnderExtra : 1 = 1 := rfl
+
+-- The `done` here is unreachable because `trivial` produces no subgoals.
+-- The builtin extra `unreachableTactic` text linter should flag it.
+def unreachableTacticViolation : True := by trivial <;> done

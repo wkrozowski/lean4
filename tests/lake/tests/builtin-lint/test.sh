@@ -89,6 +89,8 @@ no_match_pat 'extra text linter saw a declaration' produced.out
 no_match_pat 'tac1 <;> tac2' produced.out
 # Builtin extra env linter `dupNamespace` is non-default, so it stays silent.
 no_match_pat 'Dup.Dup.violation' produced.out
+# Builtin extra text linter `unreachableTactic` is non-default, so silent.
+no_match_pat 'this tactic is never executed' produced.out
 # Default env linter `defLemma` runs and flags the def-of-Prop in this file.
 match_pat 'shouldBeTheoremUnderExtra' produced.out
 
@@ -105,6 +107,8 @@ match_pat 'tac1 <;> tac2' produced.out
 # Builtin `dupNamespace` env linter fires under --extra.
 match_pat 'Dup.Dup.violation' produced.out
 match_pat "namespace .*Dup.* is duplicated" produced.out
+# Builtin `unreachableTactic` extra text linter fires under --extra.
+match_pat 'this tactic is never executed' produced.out
 # --extra also runs default linters, so `defLemma` flags this file's violation.
 match_pat 'shouldBeTheoremUnderExtra' produced.out
 
@@ -122,6 +126,7 @@ lake_out lint --lint-all ExtraViolations || true
 match_pat 'badNameExtra' produced.out
 match_pat 'extra text linter saw a declaration' produced.out
 match_pat 'tac1 <;> tac2' produced.out
+match_pat 'this tactic is never executed' produced.out
 
 # --lint-only unnecessarySeqFocus runs only the extra text linter.
 lake_out lint --lint-only unnecessarySeqFocus ExtraViolations || true
