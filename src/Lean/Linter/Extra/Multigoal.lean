@@ -28,108 +28,137 @@ public register_option linter.extra.multiGoal : Bool := {
   descr := "enable the multiGoal linter"
 }
 
-/--
-Persistent registry of `SyntaxNodeKind`s that are exempt from the `multiGoal`
-linter despite not being recognisable structurally or behaviourally. Use
-sparingly — most exemptions should fall out of the analysis itself.
--/
-builtin_initialize multiGoalSafeExt :
-    SimplePersistentEnvExtension SyntaxNodeKind (Std.HashSet SyntaxNodeKind) ←
-  registerSimplePersistentEnvExtension {
-    addImportedFn := fun arrs => arrs.foldl (init := {}) fun acc arr =>
-      arr.foldl (init := acc) (·.insert ·)
-    addEntryFn  := fun s k => s.insert k
-    toArrayFn   := fun es => es.toArray
-  }
+/-- The `SyntaxNodeKind`s in `exclusions` correspond to tactics that the linter allows,
+even though there are multiple active goals.
+Reasons for admitting a kind in `exclusions` include
+* the tactic focuses on one goal, e.g. `·`, `focus`, `on_goal i =>`, ...;
+* the tactic is reordering the goals, e.g. `swap`, `rotate_left`, ...;
+* the tactic is structuring a proof, e.g. `skip`, `<;>`, ...;
+* the tactic is creating new goals, e.g. `constructor`, `cases`, `induction`, ....
 
-/-- Mark `kind` as exempt from the `multiGoal` linter. -/
-public def registerMultiGoalSafe (kind : SyntaxNodeKind) : CoreM Unit :=
-  modifyEnv fun env => multiGoalSafeExt.addEntry env kind
+There is some overlap in scope between `ignoreBranch` and `exclusions`.
 
-/--
-Returns `true` if `kind` is a member of the `tactic` parser category. This
-filters out parser tokens, tactic-sequence wrappers (`tacticSeq`,
-`tacticSeq1Indented`, `tacticSeqBracketed`), `null`, separators, and other
-syntax kinds that appear as `TacticInfo` records but do not represent
-user-level tactic applications.
+Tactic combinators like `repeat` or `try` are a mix of both.
 -/
-def isTacticKind (env : Environment) (kind : SyntaxNodeKind) : Bool :=
-  match (Parser.parserExtension.getState env).categories.find? `tactic with
-  | some cat => cat.kinds.contains kind
-  | none     => false
+abbrev exclusions : Std.HashSet SyntaxNodeKind := .ofArray #[
+    -- structuring a proof
+    ``Lean.Parser.Term.cdot,
+    ``cdot,
+    ``cdotTk,
+    ``Lean.Parser.Tactic.tacticSeqBracketed,
+    `«;»,
+    `«<;>»,
+    ``Lean.Parser.Tactic.«tactic_<;>_»,
+    `«{»,
+    `«]»,
+    `null,
+    `then,
+    `else,
+    ``Lean.Parser.Tactic.«tacticNext_=>_»,
+    ``Lean.Parser.Tactic.tacticSeq1Indented,
+    ``Lean.Parser.Tactic.tacticSeq,
+    `focus,
+    ``Lean.Parser.Tactic.focus,
+    -- grind interactive mode
+    ``Lean.Parser.Tactic.Grind.grindSeq1Indented,
+    ``Lean.Parser.Tactic.Grind.grindSeq,
+    ``Lean.Parser.Tactic.Grind.«grind·_»,
+    ``Lean.Parser.Tactic.Grind.grindSeqBracketed,
+    ``Lean.Parser.Tactic.Grind.«grind_<;>_»,
+    ``Lean.Parser.Tactic.Grind.skip,
+    ``Lean.Parser.Tactic.Grind.focus,
+    ``Lean.Parser.Tactic.Grind.next,
+    ``Lean.Parser.Tactic.Grind.cases,
+    -- re-ordering goals
+    ``Lean.Parser.Tactic.rotateLeft,
+    ``Lean.Parser.Tactic.rotateRight,
+    ``Lean.Parser.Tactic.skip,
+    -- tactic combinators
+    ``Lean.Parser.Tactic.tacticRepeat_,
+    ``Lean.Parser.Tactic.tacticTry_,
+    -- creating new goals
+    ``Lean.Parser.Tactic.paren,
+    ``Lean.Parser.Tactic.case,
+    ``Lean.Parser.Tactic.constructor,
+    ``Lean.Parser.Tactic.induction,
+    ``Lean.Parser.Tactic.cases,
+    ``Lean.Parser.Tactic.intros,
+    ``Lean.Parser.Tactic.injections,
+    ``Lean.Parser.Tactic.substVars,
+    ``Lean.Parser.Tactic.case',
+    `«tactic#adaptation_note_»,
+    `tacticSleep_heartbeats_
+  ]
 
-/--
-Returns `true` if `t` carries a `TacticInfo` at the root or anywhere below.
-A `TacticInfo` node whose children also contain `TacticInfo`s is structural
-(a combinator, sequence, `try`, `repeat`, `<;>`, `·`, `case`, `focus`, ...)
-and is skipped: the linter inspects only the leaf invocations underneath.
--/
-partial def hasTacticInfo : InfoTree → Bool
-  | .node (.ofTacticInfo _) _ => true
-  | .node _ args              => args.any hasTacticInfo
-  | .context _ t              => hasTacticInfo t
-  | _                         => false
+/-- The `SyntaxNodeKind`s in `ignoreBranch` correspond to tactics that disable the linter from
+their first application until the corresponding proof branch is closed.
+Reasons for ignoring these tactics include
+* the linter gets confused by the proof management, e.g. `conv`;
+* the tactics are *intended* to act on multiple goals, e.g. `repeat`, `any_goals`, `all_goals`, ...
 
-/--
-Returns `true` when `before` and `after` are equal as multisets. This single
-check subsumes pure no-ops (`skip`, `sleep_heartbeats`, `#adaptation_note`)
-and pure reorderings (`swap`, `rotate_left`, `rotate_right`, `pick_goal`,
-`swap_var`).
+There is some overlap in scope between `exclusions` and `ignoreBranch`.
 -/
-def isReorderOrNoop (before after : List MVarId) : Bool :=
-  before.length == after.length && before.all after.contains
+abbrev ignoreBranch : Std.HashSet SyntaxNodeKind := .ofArray #[
+    ``Lean.Parser.Tactic.Conv.conv,
+    ``Lean.Parser.Tactic.first,
+    ``Lean.Parser.Tactic.tacticRepeat_,
+    ``Lean.Parser.Tactic.repeat',
+    ``Lean.Parser.Tactic.tacticIterate____,
+    ``Lean.Parser.Tactic.anyGoals,
+    ``Lean.Parser.Tactic.allGoals,
+    ``Lean.Parser.Tactic.failIfSuccess,
+    ``Lean.Parser.Tactic.Grind.anyGoals,
+    ``Lean.Parser.Tactic.Grind.allGoals,
+    ``Lean.Parser.Tactic.Grind.first,
+    ``Lean.Parser.Tactic.Grind.failIfSuccess,
+    ``Lean.Parser.Tactic.Grind.grindRepeat_,
+  ]
 
-/--
-Walks an `InfoTree` and collects the offending tactic invocations as
-`(stx, #goalsBefore, #goalsAfter, #unaffectedGoals)`.
+
+/-- `getManyGoals t` returns the syntax nodes of the `InfoTree` `t` corresponding to tactic calls
+which
+* leave at least one goal that was present before it ran
+  (with the exception of tactics that leave the sole goal unchanged);
+* are not excluded through `exclusions` or `ignoreBranch`;
+
+together with the number of goals before the tactic,
+the number of goals after the tactic, and the number of unaffected goals.
 -/
-partial def collectMultiGoal (env : Environment) (safe : Std.HashSet SyntaxNodeKind) :
-    InfoTree → Array (Syntax × Nat × Nat × Nat)
+partial
+def getManyGoals : InfoTree → Array (Syntax × Nat × Nat × Nat)
   | .node info args =>
-    let descend := (args.toArray.map (collectMultiGoal env safe)).flatten
-    match info with
-    | .ofTacticInfo ti =>
-      -- Structural node: real work is in a descendant `TacticInfo`.
-      if args.any hasTacticInfo then descend
-      -- Already focused on a single goal: nothing to lint.
-      else if ti.goalsBefore.length ≤ 1 then descend
-      -- Pure reorder or no-op.
-      else if isReorderOrNoop ti.goalsBefore ti.goalsAfter then descend
-      -- Not a real tactic-category node (parser token, sequence shell, ...).
-      else if !isTacticKind env ti.stx.getKind then descend
-      -- Explicitly whitelisted.
-      else if safe.contains ti.stx.getKind then descend
-      else match ti.stx.getHeadInfo with
-        | .original .. =>
-          -- Goals that survive untouched from before to after.
-          let background := ti.goalsAfter.filter ti.goalsBefore.contains
-          if background.isEmpty then descend
-          else descend.push
-            (ti.stx, ti.goalsBefore.length, ti.goalsAfter.length, background.length)
-        | _ => descend
-    | _ => descend
-  | .context _ t => collectMultiGoal env safe t
-  | _ => #[]
+    let kargs := (args.map getManyGoals).toArray.flatten
+    if let .ofTacticInfo info := info then
+      if ignoreBranch.contains info.stx.getKind then #[]
+      -- Ideal case: one goal, and it might or might not be closed.
+      else if info.goalsBefore.length == 1 && info.goalsAfter.length ≤ 1 then kargs
+      else if let .original .. := info.stx.getHeadInfo then
+        let backgroundGoals := info.goalsAfter.filter (info.goalsBefore.contains ·)
+        if backgroundGoals.length != 0 && !exclusions.contains info.stx.getKind then
+          kargs.push (info.stx,
+                      info.goalsBefore.length, info.goalsAfter.length, backgroundGoals.length)
+        else kargs
+      else kargs
+    else kargs
+  | .context _ t => getManyGoals t
+  | _ => default
 
-@[inherit_doc linter.extra.multiGoal]
-def multiGoalLinter : Linter where run := withSetOptionIn fun _stx => do
-  unless getLinterValueExtra linter.extra.multiGoal (← getLinterOptions) do
-    return
-  if (← get).messages.hasErrors then
-    return
-  let env  ← getEnv
-  let safe := multiGoalSafeExt.getState env
-  for t in (← getInfoTrees) do
-    for (stx, before, after, n) in collectMultiGoal env safe t do
-      let goals (k : Nat) := if k == 1 then m!"1 goal" else m!"{k} goals"
-      let pretty ← liftCoreM <|
-        try PrettyPrinter.ppTactic ⟨stx⟩
-        catch _ => pure f!"(failed to pretty print)"
-      logLintIfExtra linter.extra.multiGoal stx m!"\
-        The following tactic starts with {goals before} and ends with {goals after}, \
-        {n} of which {if n == 1 then "is" else "are"} not operated on:\
-        {indentD pretty}\n\
-        Please focus on the current goal, e.g. with `·` (typed as `\\.`)."
+def multiGoalLinter : Linter where run := withSetOptionIn fun _stx ↦ do
+    unless getLinterValue linter.extra.multiGoal (← getLinterOptions) do
+      return
+    if (← get).messages.hasErrors then
+      return
+    let trees ← getInfoTrees
+    for t in trees do
+      for (s, before, after, n) in getManyGoals t do
+        let goals (k : Nat) := if k == 1 then f!"1 goal" else f!"{k} goals"
+        let fmt ← Command.liftCoreM
+          try PrettyPrinter.ppTactic ⟨s⟩ catch _ => pure f!"(failed to pretty print)"
+        Linter.logLintIfExtra linter.extra.multiGoal s m!"\
+          The following tactic starts with {goals before} and ends with {goals after}, \
+          {n} of which {if n == 1 then "is" else "are"} not operated on.\
+          {indentD fmt}\n\
+          Please focus on the current goal, for instance using `·` (typed as \"\\.\")."
 
 builtin_initialize addLinter multiGoalLinter
 
