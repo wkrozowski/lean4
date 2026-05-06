@@ -273,7 +273,7 @@ def handleProj : Simproc := fun e => do
         return .step reduced (← Sym.mkEqRefl reduced)
       | .none =>
        -- If we failed to reduce it, we turn to a last resort; we try use heterogeneous congruence lemma that we then try to turn into an equality.
-        unless (← isDefEq struct e') do
+        unless (← Sym.isDefEqI struct e') do
           -- If we rewrote the projection body using something that holds up to propositional equality, then there is nothing we can do.
           -- TODO: Check if there is a need to report this to a user, or shall we fail silently.
           return .rfl (done := true)
