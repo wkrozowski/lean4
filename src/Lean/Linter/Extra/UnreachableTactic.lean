@@ -17,7 +17,7 @@ public import Init.Try
 
 public section
 
-namespace Lean.Linter.Clippy
+namespace Lean.Linter.Extra
 open Elab Command
 
 /--
@@ -29,7 +29,7 @@ or anything else there and no error would result.
 A common source of such things is `simp <;> tac` in the case that `simp` improves and
 closes a subgoal that was previously being closed by `tac`.
 -/
-register_builtin_option linter.clippy.unreachableTactic : Bool := {
+register_builtin_option linter.extra.unreachableTactic : Bool := {
   defValue := false
   descr := "enable the 'unreachable tactic' linter"
 }
@@ -94,9 +94,9 @@ partial def eraseUsedTactics : InfoTree → M Unit
 
 end
 
-@[inherit_doc linter.clippy.unreachableTactic]
+@[inherit_doc linter.extra.unreachableTactic]
 def unreachableTacticLinter : Linter where run := withSetOptionIn fun stx => do
-  unless getLinterValueClippy linter.clippy.unreachableTactic (← getLinterOptions)
+  unless getLinterValueExtra linter.extra.unreachableTactic (← getLinterOptions)
     && (← getInfoState).enabled do
     return
   if (← get).messages.hasErrors then
@@ -117,11 +117,11 @@ def unreachableTacticLinter : Linter where run := withSetOptionIn fun stx => do
   let mut last : Lean.Syntax.Range := ⟨0, 0⟩
   for (r, stx) in let _ := @lexOrd; let _ := @ltOfOrd.{0}; unreachable.qsort (key ·.1 < key ·.1) do
     if last.start ≤ r.start && r.stop ≤ last.stop then continue
-    logLintIfClippy linter.clippy.unreachableTactic stx "this tactic is never executed"
+    logLintIfExtra linter.extra.unreachableTactic stx "this tactic is never executed"
     last := r
 
 builtin_initialize addLinter unreachableTacticLinter
 end UnreachableTactic
 
 
-end Lean.Linter.Clippy
+end Lean.Linter.Extra
