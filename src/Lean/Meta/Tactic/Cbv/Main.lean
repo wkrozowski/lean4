@@ -249,13 +249,13 @@ def handleProj : Simproc := fun e => do
   -- We recursively simplify the projection
   let res ← simp struct
   match res with
-  | .rfl _ _ =>
+  | .rfl _ cd =>
     let some reduced ← withCbvOpaqueGuard <| reduceProj? <| .proj typeName idx struct | do
       return .rfl (done := true)
 
     -- TODO: Figure if we can share this term incrementally
     let reduced ← Sym.share reduced
-    return .step reduced (← Sym.mkEqRefl reduced)
+    return .step reduced (← Sym.mkEqRefl reduced) cd
   | .step e' proof _ cd =>
     let type ← Sym.inferType e'
     let congrArgFun := Lean.mkLambda `x .default type <| .proj typeName idx <| .bvar 0
@@ -279,7 +279,7 @@ def handleProj : Simproc := fun e => do
         unless (← Sym.isDefEqI struct e') do
           -- If we rewrote the projection body using something that holds up to propositional equality, then there is nothing we can do.
           -- TODO: Check if there is a need to report this to a user, or shall we fail silently.
-          return .rfl (done := true)
+          return .rfl (done := true) cd
         let hcongr ← mkHCongr congrArgFun
         let newProof := mkApp3 (hcongr.proof) struct e' proof
         -- We have already checked if `struct` and `e'` are defEq, so we can skip the check.
