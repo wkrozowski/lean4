@@ -31,6 +31,9 @@ make -C build/release -j "$(nproc)" test ARGS='--rerun-failed'
 # Run a test manually without ctest (test pile: pass filename relative to the pile dir)
 tests/with_stage1_test_env.sh tests/elab_bench/run_bench.sh cbv_decide.lean
 tests/with_stage1_test_env.sh tests/elab/run_test.sh grind_indexmap.lean
+
+# Build Lake and run a Lake test (pass directory name relative to `tests/lake`)
+tests/lake/run_test.sh tests/ltar
 ```
 
 ## Benchmark vs Test Problem Sizes
@@ -99,7 +102,7 @@ Follow the commit convention in `doc/dev/commit_convention.md`.
 **Title format:** `<type>: <subject>` where type is one of: `feat`, `fix`, `doc`, `style`, `refactor`, `test`, `chore`, `perf`.
 Subject should use imperative present tense ("add" not "added"), no capitalization, no trailing period.
 
-**Body format:** The first paragraph must start with "This PR". This paragraph is automatically incorporated into release notes. Use imperative present tense. Include motivation and contrast with previous behavior when relevant. Do NOT use markdown headings (`## Summary`, `## Test plan`, etc.) in PR bodies.
+**Body format:** The first paragraph must start with "This PR". This paragraph is automatically incorporated into release notes, so keep it short, focus on user-side impact, and avoid implementation-specific wording. Save the implementation details for a follow-up paragraph. Use imperative present tense. Do NOT use markdown headings (`## Summary`, `## Test plan`, etc.) in PR bodies.
 
 Example:
 ```
@@ -148,3 +151,7 @@ When CI jobs fail, investigate immediately - don't wait for other jobs to comple
 New files require a copyright header. To get the year right, always run `date +%Y` rather than relying on memory. The copyright holder should be the author or their current employer — check other recent files by the same author in the repository to determine the correct entity (e.g., "Lean FRO, LLC", "Amazon.com, Inc. or its affiliates").
 
 Test files (in `tests/`) do not need copyright headers.
+
+## Test Module Docstrings
+
+Every test `.lean` file must include a module docstring (`/-! ... -/`) briefly explaining what the file tests. For regression tests, reference the issue (e.g. `#13599`). Place the docstring after the `import` block, if any.

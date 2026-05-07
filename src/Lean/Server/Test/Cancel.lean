@@ -60,8 +60,16 @@ elab_rules : tactic
   prom.resolve ()
   Core.checkInterrupted
 
--- can't use a naked promise in `initialize` as marking it persistent would block
-meta initialize unblockedCancelTk : IO.CancelToken ← IO.CancelToken.new
+-- CancelToken is Promise-based, so we can't create one during `initialize`
+-- (task manager not yet ready). Create lazily on first use, atomically via `modifyGet`
+-- to avoid two callers each constructing a token and only one being stored.
+meta initialize unblockedCancelTkRef : IO.Ref (Option IO.CancelToken) ← IO.mkRef none
+
+private meta def getUnblockedCancelTk : BaseIO IO.CancelToken := do
+  let fresh ← IO.CancelToken.new
+  unblockedCancelTkRef.modifyGet fun
+    | some tk => (tk, some tk)
+    | none    => (fresh, some fresh)
 
 /--
 Waits for `unblock` to be called, which is expected to happen in a subsequent document version that
@@ -86,7 +94,7 @@ elab_rules : tactic
   }
 
   while true do
-    if (← unblockedCancelTk.isSet) then
+    if (← (← getUnblockedCancelTk).isSet) then
       break
     IO.sleep 30
   if (← cancelTk.isSet) then
@@ -104,7 +112,7 @@ elab "wait_for_unblock_async" : tactic => do
     let ctx ← readThe Core.Context
     let some cancelTk := ctx.cancelTk? | unreachable!
     while true do
-      if (← unblockedCancelTk.isSet) then
+      if (← (← getUnblockedCancelTk).isSet) then
         break
       IO.sleep 30
     if (← cancelTk.isSet) then
@@ -118,7 +126,7 @@ elab "wait_for_unblock_async" : tactic => do
 /-- Unblocks a `wait_for_unblock*` task. -/
 scoped elab "unblock" : tactic => do
   dbg_trace "unblocking!"
-  unblockedCancelTk.set
+  (← getUnblockedCancelTk).set
 
 /--
 Like `wait_for_cancel_once` but does the waiting in a separate task and waits for its
@@ -183,6 +191,39 @@ elab_rules : tactic
 
   dbg_trace "blocked!"
   log "blocked"
+
+/-! ## Helpers for end-to-end testing of cancellation propagation -/
+
+meta initialize blockUntilCancelledOnce : IO.Ref (Std.HashMap String (Task Unit)) ← IO.mkRef {}
+
+/--
+Tactic for testing cancellation propagation. On the first invocation for a given `<label>`,
+prints `<label>: blocked` to stderr and loops on `Core.checkInterrupted` until the tactic's
+cancel token fires (at which point the loop throws and `finally` resolves the shared promise).
+Subsequent invocations (e.g. on re-elaboration) wait on that promise: they return as soon as
+the first invocation has actually exited the loop, and hang otherwise. So if cancellation
+propagates correctly, the test completes; if propagation is broken, the second invocation's
+`IO.wait` blocks forever and the test hangs (timeout = failure).
+-/
+scoped syntax "block_until_cancelled" str : tactic
+elab_rules : tactic
+| `(tactic| block_until_cancelled $label) => do
+  let lbl := label.getString
+  let prom ← IO.Promise.new
+  let prior ← blockUntilCancelledOnce.modifyGet fun m =>
+    match m[lbl]? with
+    | some t => (some t, m)
+    | none   => (none, m.insert lbl prom.result!)
+  if let some t := prior then
+    IO.wait t
+    return
+  IO.eprintln s!"{lbl}: blocked"
+  try
+    while true do
+      Core.checkInterrupted
+      IO.sleep 10
+  finally
+    prom.resolve ()
 
 meta initialize cmdOnceRef : IO.Ref (Option (Task Unit)) ← IO.mkRef none
 
