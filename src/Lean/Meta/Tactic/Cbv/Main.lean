@@ -275,6 +275,7 @@ def handleConst : Simproc := fun e => do
   if eType matches .forallE .. then return .rfl
   unless info.hasValue && info.levelParams.length == lvls.length do return .rfl
   let fBody ← instantiateValueLevelParams info lvls
+  let fBody ← Sym.unfoldReducible fBody
   let eNew ← Sym.share fBody
   trace[Meta.Tactic.cbv.unfold] "const `{n}`:{indentExpr e}\n==>{indentExpr eNew}"
   return .step eNew (← Sym.mkEqRefl eNew)
