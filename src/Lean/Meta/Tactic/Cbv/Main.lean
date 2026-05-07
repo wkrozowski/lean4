@@ -256,7 +256,7 @@ def handleProj : Simproc := fun e => do
     -- TODO: Figure if we can share this term incrementally
     let reduced ← Sym.share reduced
     return .step reduced (← Sym.mkEqRefl reduced)
-  | .step e' proof _ _ =>
+  | .step e' proof _ cd =>
     let type ← Sym.inferType e'
     let congrArgFun := Lean.mkLambda `x .default type <| .proj typeName idx <| .bvar 0
     let congrArgFunType ← Sym.inferType congrArgFun
@@ -266,14 +266,14 @@ def handleProj : Simproc := fun e => do
       let u ← Sym.getLevel α
       let v ← Sym.getLevel β
       let newProof := mkApp6 (mkConst ``congrArg [u, v]) α β struct e' congrArgFun proof
-      return .step (← Lean.Expr.updateProjS! e e') newProof
+      return .step (← Lean.Expr.updateProjS! e e') newProof cd
     else
       -- If the type of the projection function is dependent, we first try to reduce the projection
       let reduced ← withCbvOpaqueGuard <| reduceProj? e
       match reduced with
       | .some reduced =>
         let reduced ← Sym.share reduced
-        return .step reduced (← Sym.mkEqRefl reduced)
+        return .step reduced (← Sym.mkEqRefl reduced) cd
       | .none =>
        -- If we failed to reduce it, we turn to a last resort; we try use heterogeneous congruence lemma that we then try to turn into an equality.
         unless (← Sym.isDefEqI struct e') do
@@ -284,7 +284,7 @@ def handleProj : Simproc := fun e => do
         let newProof := mkApp3 (hcongr.proof) struct e' proof
         -- We have already checked if `struct` and `e'` are defEq, so we can skip the check.
         let newProof ← mkEqOfHEq newProof (check := false)
-        return .step (← Lean.Expr.updateProjS! e e') newProof
+        return .step (← Lean.Expr.updateProjS! e e') newProof cd
 
 open Sym.Internal in
 /--
@@ -300,7 +300,7 @@ def simplifyAppFn : Simproc := fun e => do
     let res ← simp fn
     match res with
     | .rfl _ _ => return res
-    | .step e' proof _ _ =>
+    | .step e' proof _ cd =>
       let newType ← Sym.inferType e'
       let congrArgFun := Lean.mkLambda `x .default newType (mkAppN (.bvar 0) e.getAppArgs)
       let newValue ← mkAppNS e' e.getAppArgs
@@ -309,7 +309,7 @@ def simplifyAppFn : Simproc := fun e => do
       let v ← Sym.getLevel resultType
       let newProof := mkApp6 (mkConst ``congrArg [u, v]) newType resultType fn e' congrArgFun proof
       trace[Debug.Meta.Tactic.cbv.reduce] "simplifyAppFn:{indentExpr e}\n==>{indentExpr newValue}"
-      return .step newValue newProof
+      return .step newValue newProof cd
 
 def handleConst : Simproc := fun e => do
   let .const n lvls := e | return .rfl
