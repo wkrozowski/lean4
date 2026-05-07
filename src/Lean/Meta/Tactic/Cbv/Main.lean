@@ -206,9 +206,8 @@ def handleProj : Simproc := fun e => do
   match res with
   | .rfl _ cd =>
     let some reduced ← withCbvOpaqueGuard <| reduceProj? <| .proj typeName idx struct | do
-      return .rfl (done := true)
+      return .rfl (done := true) cd
 
-    -- TODO: Figure if we can share this term incrementally
     let reduced ← Sym.share reduced
     return .step reduced (← Sym.mkEqRefl reduced) cd
   | .step e' proof _ cd =>

@@ -10,6 +10,7 @@ import Lean.Meta.Sym.Simp.Result
 import Lean.Meta.Sym.Simp.Rewrite
 import Lean.Meta.Sym.Simp.ControlFlow
 import Lean.Meta.Sym.AlphaShareBuilder
+import Lean.Meta.Sym.Util
 import Lean.Meta.Sym.InstantiateS
 import Lean.Meta.Sym.InferType
 import Lean.Meta.Sym.Simp.App
@@ -313,9 +314,13 @@ builtin_cbv_simproc ↓ simpCbvCond (@cond _ _ _) := simpCond
 public def reduceRecMatcher : Simproc := fun e => do
   if let some e' ← withCbvOpaqueGuard <| reduceRecMatcher? e then
     trace[Meta.Tactic.cbv.rewrite] "recMatcher:{indentExpr e}\n==>{indentExpr e'}"
-    return .step e' (← Sym.mkEqRefl e')
-  else
-    return .rfl
+    -- Iota-reduction may expose kernel `Expr.proj` terms via struct-eta,
+    -- which the structural simplifier cannot consume directly.
+    let mut e'' ← Sym.foldProjs e'
+    unless Sym.isSameExpr e' e'' do
+      e'' ← Sym.share e''
+    return .step e'' (← Sym.mkEqRefl e'')
+  return .rfl
 
 builtin_cbv_simproc ↓ simpDecidableRec (@Decidable.rec _ _ _ _ _) :=
   (simpInterlaced · #[false,false,false,false,true]) >> reduceRecMatcher
