@@ -52,17 +52,27 @@ private def collectTextLints
     else
       acc
 
+/--
+For benchmarking, set `LEAN_LINT_SKIP_TEXT=1` to skip text-linter collection
+in both the barrel and per-module flows. Text-linter results come from
+`lintLogExt` populated at build time, so they're essentially free, but
+omitting them removes one cross-flow variable from timing comparisons.
+-/
+private def skipTextLints : IO Bool :=
+  return (← IO.getEnv "LEAN_LINT_SKIP_TEXT").any (· == "1")
+
 private def runBarrel (args : Args) : IO UInt32 := do
   let runOnly := if args.only.isEmpty then none else some args.only.toList
   let scope := args.scope
   let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
+  let skipText ← skipTextLints
 
   let mut anyFailed := false
   for mod in args.mods do
     unsafe Lean.enableInitializersExecution
     let env ← importModules #[{ module := mod }, envLinterModule] {} (trustLevel := 1024) (loadExts := true)
 
-    let textEntries := collectTextLints env args mod.getRoot
+    let textEntries := if skipText then #[] else collectTextLints env args mod.getRoot
     let textFailed := !textEntries.isEmpty
     if textFailed then
       IO.println s!"-- Text linter diagnostics in {mod}:"
@@ -131,6 +141,7 @@ private def runPerModule (args : Args) : IO UInt32 := do
   let scope := args.scope
   let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
   let level ← parseLintLevel
+  let skipText ← skipTextLints
 
   let mut anyFailed := false
   for topMod in args.mods do
@@ -143,14 +154,16 @@ private def runPerModule (args : Args) : IO UInt32 := do
     let env₀ ← importModules #[{ module := topMod }, envLinterModule] {}
       (trustLevel := 1024) (loadExts := true) (level := level)
     let pkgModules := env₀.header.moduleNames.filter (pkgRoot.isPrefixOf ·)
-    let textEntries := collectTextLints env₀ args pkgRoot
+    let textEntries :=
+      if skipText then #[] else collectTextLints env₀ args pkgRoot
     let textFailed := !textEntries.isEmpty
     if textFailed then
       IO.println s!"-- Text linter diagnostics in {topMod}:"
       for e in textEntries do
         IO.print e.message.toString
-    -- `SerialMessage` is self-contained, so freeing the barrel env now is safe.
-    unsafe env₀.freeRegions
+    -- (Skipped explicit `env₀.freeRegions`: with `loadExts := true` it
+    -- segfaults if any imported extension state references the regions.
+    -- For this experiment we accept growing memory.)
 
     -- Phase 2: env linters per module.
     let mut perModFailed := false
@@ -174,11 +187,7 @@ private def runPerModule (args : Args) : IO UInt32 := do
           IO.print (← fmtResults.toString)
         return failed
 
-      -- `loadExts := true` + `freeRegions` is generally fragile, but here all
-      -- linter output has been materialized to `String` above, so no env
-      -- references should outlive this point. Drop if it crashes during the
-      -- experiment.
-      unsafe env.freeRegions
+      -- (Skipped explicit `env.freeRegions`: see Phase 1 comment.)
 
       if failed then perModFailed := true
 
