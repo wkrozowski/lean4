@@ -150,9 +150,14 @@ private def runPerModule (args : Args) : IO UInt32 := do
     -- Phase 1: barrel import for module enumeration + text linters.
     -- `withImporting` resets the initializers-execution flag after each
     -- `importModules` call, so re-enable it before every invocation.
+    --
+    -- Always import at `.private` here regardless of `LEAN_LINT_LEVEL`:
+    -- at `.exported`/`.server`, only modules reached through `public import`
+    -- are loaded, so `env.header.moduleNames` would miss anything imported
+    -- with plain `import`. We need the full module list to drive Phase 2.
     unsafe Lean.enableInitializersExecution
     let env₀ ← importModules #[{ module := topMod }, envLinterModule] {}
-      (trustLevel := 1024) (loadExts := true) (level := level)
+      (trustLevel := 1024) (loadExts := true) (level := .private)
     let pkgModules := env₀.header.moduleNames.filter (pkgRoot.isPrefixOf ·)
     let textEntries :=
       if skipText then #[] else collectTextLints env₀ args pkgRoot
@@ -166,8 +171,13 @@ private def runPerModule (args : Args) : IO UInt32 := do
     -- For this experiment we accept growing memory.)
 
     -- Phase 2: env linters per module.
+    let trace := (← IO.getEnv "LEAN_LINT_TRACE").any (· == "1")
     let mut perModFailed := false
+    let mut iter : Nat := 0
     for mod in pkgModules do
+      iter := iter + 1
+      if trace then
+        IO.eprintln s!"-- [{iter}/{pkgModules.size}] importing {mod}"
       unsafe Lean.enableInitializersExecution
       let env ← importModules #[{ module := mod }, envLinterModule] {}
         (trustLevel := 1024) (loadExts := true) (level := level)
