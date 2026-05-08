@@ -195,4 +195,20 @@ def getDeclsInPackage (pkg : Name) : CoreM (Array Name) := do
       decls.push declName
     else decls
 
+/--
+Get the list of declarations whose defining module is exactly `modName`.
+
+Unlike `getDeclsInPackage`, this does *not* match modules by prefix. Used by the
+per-module linting flow, where each module is imported as the root so its
+private decls are loaded (`Root ≥ all`), and we restrict linting to the decls
+that module itself defined.
+-/
+def getDeclsInModule (modName : Name) : CoreM (Array Name) := do
+  let env ← getEnv
+  let some idx := env.getModuleIdx? modName | return #[]
+  return env.constants.map₁.fold (init := #[]) fun decls declName _ =>
+    if env.getModuleIdxFor? declName == some idx then
+      decls.push declName
+    else decls
+
 end Lean.Linter.EnvLinter
