@@ -1,4 +1,7 @@
-import Lean.Linter.EnvLinter
+module
+
+public import Lean.Linter.EnvLinter
+public import Lean.Elab.Command
 
 open Lean Meta Lean.Linter Lean.Elab.Command
 

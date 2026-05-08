@@ -93,35 +93,55 @@ private def runBarrel (args : Args) : IO UInt32 := do
   return if anyFailed then 1 else 0
 
 /--
+Parse `LEAN_LINT_LEVEL` for the experimental per-module flow.
+
+Accepts `exported`, `server`, `private`. Defaults to `.exported` (the
+public-only setting that motivates the experiment); `private` lets the loop
+run on non-module-system roots that `.exported` would reject.
+-/
+private def parseLintLevel : IO OLeanLevel := do
+  match (← IO.getEnv "LEAN_LINT_LEVEL") with
+  | none | some "exported" => return .exported
+  | some "server"          => return .server
+  | some "private"         => return .private
+  | some other =>
+    IO.eprintln s!"lake lint: unknown LEAN_LINT_LEVEL={other} (expected exported|server|private)"
+    return .exported
+
+/--
 Experimental per-module flow gated on `LEAN_LINT_PER_MODULE=1`.
 
 For each top-level module passed in `args.mods`:
-  1. Import the barrel once at `.exported` to enumerate the package's modules
-     and harvest text-linter entries (`lintLogExt` is uniform across olean
-     levels, so `.exported` is sufficient).
-  2. For each module in the package, import *that* module as the root at
-     `.exported`. Because `importModules` treats roots as `importAll := true`,
-     the module's private decls are visible while transitive imports stay
-     public-only. Run env linters restricted to decls defined in that module.
+  1. Import the barrel once at the configured level to enumerate the package's
+     modules and harvest text-linter entries (`lintLogExt` is uniform across
+     olean levels, so any level is sufficient).
+  2. For each module in the package, import *that* module as the root at the
+     same level. Because `importModules` treats roots as `importAll := true`,
+     the module's private decls are visible while transitive imports inherit
+     the level. Run env linters restricted to decls defined in that module.
 
-Goal of the experiment: compare wall-clock vs. the barrel flow on Mathlib.
-The expected win comes from `.exported` oleans being smaller; the cost is
-~one `importModules` call per module in the package.
+`LEAN_LINT_LEVEL` selects the level (default `.exported`). Use `private` for
+roots that aren't yet module-system files, since `.exported`/`.server`
+require module annotations and will throw `cannot import non-`module` X`.
+
+Goal: compare wall-clock vs. the barrel flow.
 -/
 private def runPerModule (args : Args) : IO UInt32 := do
   let runOnly := if args.only.isEmpty then none else some args.only.toList
   let scope := args.scope
   let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
-
-  unsafe Lean.enableInitializersExecution
+  let level ← parseLintLevel
 
   let mut anyFailed := false
   for topMod in args.mods do
     let pkgRoot := topMod.getRoot
 
     -- Phase 1: barrel import for module enumeration + text linters.
+    -- `withImporting` resets the initializers-execution flag after each
+    -- `importModules` call, so re-enable it before every invocation.
+    unsafe Lean.enableInitializersExecution
     let env₀ ← importModules #[{ module := topMod }, envLinterModule] {}
-      (trustLevel := 1024) (loadExts := true) (level := .exported)
+      (trustLevel := 1024) (loadExts := true) (level := level)
     let pkgModules := env₀.header.moduleNames.filter (pkgRoot.isPrefixOf ·)
     let textEntries := collectTextLints env₀ args pkgRoot
     let textFailed := !textEntries.isEmpty
@@ -135,8 +155,9 @@ private def runPerModule (args : Args) : IO UInt32 := do
     -- Phase 2: env linters per module.
     let mut perModFailed := false
     for mod in pkgModules do
+      unsafe Lean.enableInitializersExecution
       let env ← importModules #[{ module := mod }, envLinterModule] {}
-        (trustLevel := 1024) (loadExts := true) (level := .exported)
+        (trustLevel := 1024) (loadExts := true) (level := level)
 
       let (failed, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
         let decls ← Linter.EnvLinter.getDeclsInModule mod

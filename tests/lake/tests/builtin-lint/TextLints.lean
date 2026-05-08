@@ -1,3 +1,5 @@
+module
+
 -- `linter.unusedVariables` has `defValue := true`, so it fires during the normal
 -- build that backs `lake lint --builtin-lint`. The warning is captured in the
 -- olean via `lintLogExt` and re-emitted by `lake lint`.

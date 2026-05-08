@@ -1,3 +1,5 @@
+module
+
 import Linters
 
 -- This name ends with 'Extra' — the dummyExtra linter should flag it.

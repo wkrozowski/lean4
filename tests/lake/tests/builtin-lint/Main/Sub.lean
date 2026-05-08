@@ -1,3 +1,5 @@
+module
+
 -- Env-linter violation: `def` on a Prop — should be caught by `defLemma`
 -- regardless of build-time options, since env linters run post-build.
 def shouldBeTheoremInSub : 1 = 1 := rfl

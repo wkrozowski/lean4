@@ -1,3 +1,5 @@
+module
+
 -- No linter violations here.
 theorem correctTheorem : 1 = 1 := rfl
 
