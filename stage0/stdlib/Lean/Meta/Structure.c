@@ -5745,8 +5745,8 @@ lean_object* v___x_2018_;
 v___x_2018_ = l_Lean_Expr_appArg_x21(v_e_1903_);
 if (lean_obj_tag(v_x_x3f_1904_) == 0)
 {
-v___y_1979_ = v___x_2015_;
-v___y_1980_ = v___x_2018_;
+v___y_1979_ = v___x_2018_;
+v___y_1980_ = v___x_2015_;
 goto v___jp_1978_;
 }
 else
@@ -5764,8 +5764,8 @@ goto v___jp_1913_;
 }
 else
 {
-v___y_1979_ = v___x_2015_;
-v___y_1980_ = v___x_2018_;
+v___y_1979_ = v___x_2018_;
+v___y_1980_ = v___x_2015_;
 goto v___jp_1978_;
 }
 }
@@ -5790,7 +5790,7 @@ v_dummy_1982_ = lean_obj_once(&l___private_Lean_Meta_Structure_0__Lean_Meta_etaS
 v_nargs_1983_ = l_Lean_Expr_getAppNumArgs(v___x_1981_);
 lean_inc(v_nargs_1983_);
 v___x_1984_ = lean_mk_array(v_nargs_1983_, v_dummy_1982_);
-v___x_1985_ = lean_nat_sub(v_nargs_1983_, v___y_1979_);
+v___x_1985_ = lean_nat_sub(v_nargs_1983_, v___y_1980_);
 lean_dec(v_nargs_1983_);
 v___x_1986_ = l___private_Lean_Expr_0__Lean_Expr_getAppArgsAux(v___x_1981_, v___x_1984_, v___x_1985_);
 v___x_1987_ = l___private_Lean_Meta_Structure_0__Lean_Meta_etaStruct_x3f_sameParams(v_params_1901_, v___x_1986_, v_a_1905_, v_a_1906_, v_a_1907_, v_a_1908_);
@@ -5821,7 +5821,7 @@ lean_dec(v_a_1988_);
 if (v___x_1992_ == 0)
 {
 lean_del_object(v___x_1990_);
-lean_dec_ref(v___y_1980_);
+lean_dec_ref(v___y_1979_);
 lean_del_object(v___x_1976_);
 goto v___jp_1913_;
 }
@@ -5831,7 +5831,7 @@ lean_object* v___x_1994_;
 if (v_isShared_1977_ == 0)
 {
 lean_ctor_set_tag(v___x_1976_, 1);
-lean_ctor_set(v___x_1976_, 0, v___y_1980_);
+lean_ctor_set(v___x_1976_, 0, v___y_1979_);
 v___x_1994_ = v___x_1976_;
 goto v_reusejp_1993_;
 }
@@ -5839,7 +5839,7 @@ else
 {
 lean_object* v_reuseFailAlloc_1998_; 
 v_reuseFailAlloc_1998_ = lean_alloc_ctor(1, 1, 0);
-lean_ctor_set(v_reuseFailAlloc_1998_, 0, v___y_1980_);
+lean_ctor_set(v_reuseFailAlloc_1998_, 0, v___y_1979_);
 v___x_1994_ = v_reuseFailAlloc_1998_;
 goto v_reusejp_1993_;
 }
@@ -5871,7 +5871,7 @@ return v___x_1996_;
 else
 {
 lean_object* v_a_2000_; lean_object* v___x_2002_; uint8_t v_isShared_2003_; uint8_t v_isSharedCheck_2007_; 
-lean_dec_ref(v___y_1980_);
+lean_dec_ref(v___y_1979_);
 lean_del_object(v___x_1976_);
 v_a_2000_ = lean_ctor_get(v___x_1987_, 0);
 v_isSharedCheck_2007_ = !lean_is_exclusive(v___x_1987_);

@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Init.System.FilePath
-// Imports: import Init.Data.String.Modify import Init.Data.String.Search public import Init.Data.ToString.Basic import Init.Data.Iterators.Consumers.Collect import Init.System.Platform
+// Imports: import Init.Data.String.Modify import Init.Data.String.Search public import Init.Data.ToString.Basic import Init.Data.Iterators.Consumers.Collect import Init.System.Platform import Init.Data.String.Length
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -2752,6 +2752,7 @@ lean_object* runtime_initialize_Init_Data_String_Search(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_ToString_Basic(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_Iterators_Consumers_Collect(uint8_t builtin);
 lean_object* runtime_initialize_Init_System_Platform(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_String_Length(uint8_t builtin);
 static bool _G_runtime_initialized = false;
 LEAN_EXPORT lean_object* runtime_initialize_Init_System_FilePath(uint8_t builtin) {
 lean_object * res;
@@ -2770,6 +2771,9 @@ res = runtime_initialize_Init_Data_Iterators_Consumers_Collect(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Init_System_Platform(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_String_Length(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 l_System_FilePath_pathSeparator = _init_l_System_FilePath_pathSeparator();
@@ -2799,6 +2803,7 @@ lean_object* initialize_Init_Data_String_Search(uint8_t builtin);
 lean_object* initialize_Init_Data_ToString_Basic(uint8_t builtin);
 lean_object* initialize_Init_Data_Iterators_Consumers_Collect(uint8_t builtin);
 lean_object* initialize_Init_System_Platform(uint8_t builtin);
+lean_object* initialize_Init_Data_String_Length(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Init_System_FilePath(uint8_t builtin) {
 lean_object * res;
@@ -2817,6 +2822,9 @@ res = initialize_Init_Data_Iterators_Consumers_Collect(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Init_System_Platform(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_Data_String_Length(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Init_System_FilePath(builtin);

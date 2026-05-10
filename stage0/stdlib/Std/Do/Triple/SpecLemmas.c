@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Std.Do.Triple.SpecLemmas
-// Imports: public import Std.Do.Triple.Basic public import Init.Data.Range.Polymorphic.Iterators import Init.Data.Range.Polymorphic public import Init.Data.Slice.Array public import Init.Data.Iterators.Lemmas.Combinators.FilterMap public import Init.Data.Range import Init.Data.Iterators.Lemmas import Init.Data.List.Nat.Range import Init.Data.List.Nat.TakeDrop import Init.Data.List.Range import Init.Data.List.TakeDrop import Init.Data.Nat.Mod import Init.Data.Slice.Lemmas import Init.Omega public import Init.Data.String.Defs public import Init.Data.String.Iterate import Init.Data.String.Lemmas.Splits import Init.Data.String.Termination import Init.Data.String.Lemmas.Iterate
+// Imports: public import Std.Do.Triple.Basic public import Init.Data.Range.Polymorphic.Iterators import Init.Data.Range.Polymorphic public import Init.Data.Slice.Array public import Std.Do.WP.Adequate public import Init.While public import Init.Data.Iterators.Lemmas.Combinators.FilterMap public import Init.Data.Range import Init.Data.Iterators.Lemmas import Init.Data.List.Nat.Range import Init.Data.List.Nat.TakeDrop import Init.Data.List.Range import Init.Data.List.TakeDrop import Init.Data.Nat.Mod import Init.Data.Slice.Lemmas import Init.Omega public import Init.Data.String.Defs public import Init.Data.String.Iterate import Init.Data.String.Lemmas.Splits import Init.Data.String.Termination import Init.Data.String.Lemmas.Iterate
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -137,6 +137,8 @@ LEAN_EXPORT lean_object* l_Std_Do_StringSliceInvariant_withEarlyReturn___boxed(l
 LEAN_EXPORT lean_object* l_Std_Do_StringSliceInvariant_withEarlyReturnNewDo___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Std_Do_StringSliceInvariant_withEarlyReturnNewDo(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Std_Do_StringSliceInvariant_withEarlyReturnNewDo___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l___private_Std_Do_Triple_SpecLemmas_0__Lean_Loop_forIn_match__1_splitter___redArg(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l___private_Std_Do_Triple_SpecLemmas_0__Lean_Loop_forIn_match__1_splitter(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Std_Legacy_Range_toList(lean_object* v_r_1_){
 _start:
 {
@@ -1056,10 +1058,62 @@ lean_dec_ref(v_s_425_);
 return v_res_429_;
 }
 }
+LEAN_EXPORT lean_object* l___private_Std_Do_Triple_SpecLemmas_0__Lean_Loop_forIn_match__1_splitter___redArg(lean_object* v_____do__lift_430_, lean_object* v_h__1_431_, lean_object* v_h__2_432_){
+_start:
+{
+if (lean_obj_tag(v_____do__lift_430_) == 0)
+{
+lean_object* v_a_433_; lean_object* v___x_434_; 
+lean_dec(v_h__2_432_);
+v_a_433_ = lean_ctor_get(v_____do__lift_430_, 0);
+lean_inc(v_a_433_);
+lean_dec_ref(v_____do__lift_430_);
+v___x_434_ = lean_apply_1(v_h__1_431_, v_a_433_);
+return v___x_434_;
+}
+else
+{
+lean_object* v_a_435_; lean_object* v___x_436_; 
+lean_dec(v_h__1_431_);
+v_a_435_ = lean_ctor_get(v_____do__lift_430_, 0);
+lean_inc(v_a_435_);
+lean_dec_ref(v_____do__lift_430_);
+v___x_436_ = lean_apply_1(v_h__2_432_, v_a_435_);
+return v___x_436_;
+}
+}
+}
+LEAN_EXPORT lean_object* l___private_Std_Do_Triple_SpecLemmas_0__Lean_Loop_forIn_match__1_splitter(lean_object* v_00_u03b2_437_, lean_object* v_motive_438_, lean_object* v_____do__lift_439_, lean_object* v_h__1_440_, lean_object* v_h__2_441_){
+_start:
+{
+if (lean_obj_tag(v_____do__lift_439_) == 0)
+{
+lean_object* v_a_442_; lean_object* v___x_443_; 
+lean_dec(v_h__2_441_);
+v_a_442_ = lean_ctor_get(v_____do__lift_439_, 0);
+lean_inc(v_a_442_);
+lean_dec_ref(v_____do__lift_439_);
+v___x_443_ = lean_apply_1(v_h__1_440_, v_a_442_);
+return v___x_443_;
+}
+else
+{
+lean_object* v_a_444_; lean_object* v___x_445_; 
+lean_dec(v_h__1_440_);
+v_a_444_ = lean_ctor_get(v_____do__lift_439_, 0);
+lean_inc(v_a_444_);
+lean_dec_ref(v_____do__lift_439_);
+v___x_445_ = lean_apply_1(v_h__2_441_, v_a_444_);
+return v___x_445_;
+}
+}
+}
 lean_object* runtime_initialize_Std_Do_Triple_Basic(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_Range_Polymorphic_Iterators(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_Range_Polymorphic(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_Slice_Array(uint8_t builtin);
+lean_object* runtime_initialize_Std_Do_WP_Adequate(uint8_t builtin);
+lean_object* runtime_initialize_Init_While(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_Iterators_Lemmas_Combinators_FilterMap(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_Range(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_Iterators_Lemmas(uint8_t builtin);
@@ -1090,6 +1144,12 @@ res = runtime_initialize_Init_Data_Range_Polymorphic(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Init_Data_Slice_Array(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Std_Do_WP_Adequate(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_While(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Init_Data_Iterators_Lemmas_Combinators_FilterMap(builtin);
@@ -1154,6 +1214,8 @@ lean_object* initialize_Std_Do_Triple_Basic(uint8_t builtin);
 lean_object* initialize_Init_Data_Range_Polymorphic_Iterators(uint8_t builtin);
 lean_object* initialize_Init_Data_Range_Polymorphic(uint8_t builtin);
 lean_object* initialize_Init_Data_Slice_Array(uint8_t builtin);
+lean_object* initialize_Std_Do_WP_Adequate(uint8_t builtin);
+lean_object* initialize_Init_While(uint8_t builtin);
 lean_object* initialize_Init_Data_Iterators_Lemmas_Combinators_FilterMap(uint8_t builtin);
 lean_object* initialize_Init_Data_Range(uint8_t builtin);
 lean_object* initialize_Init_Data_Iterators_Lemmas(uint8_t builtin);
@@ -1184,6 +1246,12 @@ res = initialize_Init_Data_Range_Polymorphic(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Init_Data_Slice_Array(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Std_Do_WP_Adequate(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_While(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Init_Data_Iterators_Lemmas_Combinators_FilterMap(builtin);

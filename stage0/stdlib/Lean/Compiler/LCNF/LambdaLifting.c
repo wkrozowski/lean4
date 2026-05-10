@@ -2940,8 +2940,8 @@ goto v___jp_692_;
 else
 {
 lean_dec(v_value_700_);
-lean_dec_ref(v_value_698_);
 lean_dec_ref(v_decl_699_);
+lean_dec_ref(v_value_698_);
 lean_dec_ref(v_decl_683_);
 goto v___jp_692_;
 }

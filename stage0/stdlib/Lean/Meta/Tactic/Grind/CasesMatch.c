@@ -531,7 +531,7 @@ if (v___y_52_ == 0)
 lean_object* v___x_53_; 
 lean_inc(v_binderName_45_);
 lean_dec_ref(v_alt_44_);
-v___x_53_ = l_Lean_Expr_forallE___override(v_binderName_45_, v___y_50_, v___y_51_, v_binderInfo_48_);
+v___x_53_ = l_Lean_Expr_forallE___override(v_binderName_45_, v___y_51_, v___y_50_, v_binderInfo_48_);
 return v___x_53_;
 }
 else
@@ -543,7 +543,7 @@ if (v___x_54_ == 0)
 lean_object* v___x_55_; 
 lean_inc(v_binderName_45_);
 lean_dec_ref(v_alt_44_);
-v___x_55_ = l_Lean_Expr_forallE___override(v_binderName_45_, v___y_50_, v___y_51_, v_binderInfo_48_);
+v___x_55_ = l_Lean_Expr_forallE___override(v_binderName_45_, v___y_51_, v___y_50_, v_binderInfo_48_);
 return v___x_55_;
 }
 else
@@ -564,8 +564,8 @@ v___x_60_ = lean_ptr_addr(v___y_57_);
 v___x_61_ = lean_usize_dec_eq(v___x_59_, v___x_60_);
 if (v___x_61_ == 0)
 {
-v___y_50_ = v___y_57_;
-v___y_51_ = v___x_58_;
+v___y_50_ = v___x_58_;
+v___y_51_ = v___y_57_;
 v___y_52_ = v___x_61_;
 goto v___jp_49_;
 }
@@ -575,8 +575,8 @@ size_t v___x_62_; size_t v___x_63_; uint8_t v___x_64_;
 v___x_62_ = lean_ptr_addr(v_body_47_);
 v___x_63_ = lean_ptr_addr(v___x_58_);
 v___x_64_ = lean_usize_dec_eq(v___x_62_, v___x_63_);
-v___y_50_ = v___y_57_;
-v___y_51_ = v___x_58_;
+v___y_50_ = v___x_58_;
+v___y_51_ = v___y_57_;
 v___y_52_ = v___x_64_;
 goto v___jp_49_;
 }
