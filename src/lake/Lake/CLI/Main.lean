@@ -977,8 +977,17 @@ private def runBuiltinLint
   let mods := if specifiedMods.isEmpty then ws.defaultTargetRoots else specifiedMods
   if mods.isEmpty then
     error "no modules specified and there are no applicable default targets"
+  -- Resolve each top-level target to the full list of buildable modules in its
+  -- library. The per-module flow in `BuiltinLint.run` consumes this to do a
+  -- single `importModules` call per target with every module as a root, which
+  -- gives each module `Root ≥ all` (private decls visible) and avoids the
+  -- segfault/freeze of doing one `importModules` per module.
+  let pkgMods : Array (Array Lean.Name) ← mods.mapM fun modName => do
+    match ws.findTargetModule? modName with
+    | some mod => return (← mod.lib.getModuleArray).map (·.name)
+    | none     => return #[modName]
   let args := opts.builtinLint
-  let args := {args with mods}
+  let args := {args with mods, pkgMods}
   let specs ← parseTargetSpecs ws (mods.map (s!"+{·}") |>.toList)
   let lintOpts := BuiltinLint.leanOptOverrides args
   let overrides : Lean.NameMap Lean.LeanOptions :=

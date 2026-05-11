@@ -23,6 +23,14 @@ public structure Args where
   only : Array Name := #[]
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
+  /--
+  Parallel to `mods`: for each top-level target, the buildable modules in its
+  library. Used only by the experimental per-module flow, which imports every
+  package module as a root in a single `importModules` call so each module's
+  private decls are visible (`Root ≥ all`). Populated by Lake from
+  `LeanLib.getModuleArray`; the barrel flow ignores this field.
+  -/
+  pkgMods : Array (Array Name) := #[]
 
 public def leanOptOverrides (args : Args) : LeanOptions :=
   let enableAll : Array LeanOption :=
@@ -121,20 +129,25 @@ private def parseLintLevel : IO OLeanLevel := do
 /--
 Experimental per-module flow gated on `LEAN_LINT_PER_MODULE=1`.
 
-For each top-level module passed in `args.mods`:
-  1. Import the barrel once at the configured level to enumerate the package's
-     modules and harvest text-linter entries (`lintLogExt` is uniform across
-     olean levels, so any level is sufficient).
-  2. For each module in the package, import *that* module as the root at the
-     same level. Because `importModules` treats roots as `importAll := true`,
-     the module's private decls are visible while transitive imports inherit
-     the level. Run env linters restricted to decls defined in that module.
+For each top-level target in `args.mods`, we import every module in the
+target's library (provided by Lake as `args.pkgMods`) in a single
+`importModules` call, listing each module as a root. `importModulesCore`
+deduplicates underlying olean reads via the DAG walk, and every module
+listed as a root gets `importAll := true` — i.e. `Root ≥ all`, with private
+decls visible. Transitive non-package deps (Init, Lean libs, …) load at
+`LEAN_LINT_LEVEL` (default `.exported`).
 
-`LEAN_LINT_LEVEL` selects the level (default `.exported`). Use `private` for
-roots that aren't yet module-system files, since `.exported`/`.server`
-require module annotations and will throw `cannot import non-`module` X`.
+Then a single linter pass walks each module's decls (filtered by
+`getModuleIdxFor?`) and runs the configured env-linter set against them.
 
-Goal: compare wall-clock vs. the barrel flow.
+Compared to the original per-module-loop, this design:
+  * runs *one* `importModules` call instead of N, avoiding the dynlib
+    re-init segfaults observed on Mathlib;
+  * keeps the same coverage (every module's privates visible);
+  * still benefits from `.exported` for transitive non-package deps.
+
+`LEAN_LINT_LEVEL` selects the transitive level (default `.exported`). Use
+`private` for non-module-system roots that `.exported`/`.server` reject.
 -/
 private def runPerModule (args : Args) : IO UInt32 := do
   let runOnly := if args.only.isEmpty then none else some args.only.toList
@@ -142,64 +155,59 @@ private def runPerModule (args : Args) : IO UInt32 := do
   let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
   let level ← parseLintLevel
   let skipText ← skipTextLints
+  let trace := (← IO.getEnv "LEAN_LINT_TRACE").any (· == "1")
+
+  if args.pkgMods.size != args.mods.size then
+    IO.eprintln s!"lake lint: per-module flow requires `pkgMods` (size {args.pkgMods.size}) to match `mods` (size {args.mods.size}). \
+      This field must be populated by Lake's CLI; see `runBuiltinLint` in `Main.lean`."
+    return 1
 
   let mut anyFailed := false
-  for topMod in args.mods do
-    let pkgRoot := topMod.getRoot
+  for h : i in [:args.mods.size] do
+    let topMod := args.mods[i]
+    let pkgModules := args.pkgMods[i]!
 
-    -- Phase 1: barrel import for module enumeration + text linters.
-    -- `withImporting` resets the initializers-execution flag after each
-    -- `importModules` call, so re-enable it before every invocation.
-    --
-    -- Always import at `.private` here regardless of `LEAN_LINT_LEVEL`:
-    -- at `.exported`/`.server`, only modules reached through `public import`
-    -- are loaded, so `env.header.moduleNames` would miss anything imported
-    -- with plain `import`. We need the full module list to drive Phase 2.
+    if trace then
+      let t ← IO.monoMsNow
+      IO.eprintln s!"-- [+{t}ms] importing {pkgModules.size} modules as roots (target {topMod})"
+
+    -- Single `importModules` call with every package module as a root.
+    -- `importAll := true` for each → `Root ≥ all` → privates loaded.
     unsafe Lean.enableInitializersExecution
-    let env₀ ← importModules #[{ module := topMod }, envLinterModule] {}
-      (trustLevel := 1024) (loadExts := true) (level := .private)
-    let pkgModules := env₀.header.moduleNames.filter (pkgRoot.isPrefixOf ·)
+    let roots : Array Import :=
+      pkgModules.map (fun m => ({ module := m } : Import)) |>.push envLinterModule
+    let env ← importModules roots {} (trustLevel := 1024) (loadExts := true) (level := level)
+
+    if trace then
+      let t ← IO.monoMsNow
+      IO.eprintln s!"-- [+{t}ms] import done; running linters"
+
     let textEntries :=
-      if skipText then #[] else collectTextLints env₀ args pkgRoot
+      if skipText then #[] else collectTextLints env args topMod.getRoot
     let textFailed := !textEntries.isEmpty
     if textFailed then
       IO.println s!"-- Text linter diagnostics in {topMod}:"
       for e in textEntries do
         IO.print e.message.toString
-    -- (Skipped explicit `env₀.freeRegions`: with `loadExts := true` it
-    -- segfaults if any imported extension state references the regions.
-    -- For this experiment we accept growing memory.)
 
-    -- Phase 2: env linters per module.
-    let trace := (← IO.getEnv "LEAN_LINT_TRACE").any (· == "1")
-    let mut perModFailed := false
-    let mut iter : Nat := 0
-    for mod in pkgModules do
-      iter := iter + 1
-      if trace then
-        IO.eprintln s!"-- [{iter}/{pkgModules.size}] importing {mod}"
-      unsafe Lean.enableInitializersExecution
-      let env ← importModules #[{ module := mod }, envLinterModule] {}
-        (trustLevel := 1024) (loadExts := true) (level := level)
-
-      let (failed, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
+    -- One CoreM pass: enumerate each module's decls and lint them.
+    let (perModFailed, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
+      let linters ← Linter.EnvLinter.getChecks (scope := scope) (runOnly := runOnly)
+      if linters.isEmpty then return false
+      let mut anyMod := false
+      for mod in pkgModules do
         let decls ← Linter.EnvLinter.getDeclsInModule mod
-        let linters ← Linter.EnvLinter.getChecks (scope := scope) (runOnly := runOnly)
-        if linters.isEmpty then return false
+        if decls.isEmpty then continue
         let results ← Linter.EnvLinter.lintCore decls linters
         let failed := results.any (!·.2.isEmpty)
         if failed then
+          anyMod := true
           let fmtResults ←
             Linter.EnvLinter.formatLinterResults results decls
               (groupByFilename := true) (useErrorFormat := true)
               s!"in {mod}" (scope := if args.only.isEmpty then scope else .all) .medium linters.size
-          -- Force rendering before freeing the env's compacted regions.
           IO.print (← fmtResults.toString)
-        return failed
-
-      -- (Skipped explicit `env.freeRegions`: see Phase 1 comment.)
-
-      if failed then perModFailed := true
+      return anyMod
 
     if !textFailed && !perModFailed then
       IO.println s!"-- Linting passed for {topMod}."
