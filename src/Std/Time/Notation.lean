@@ -159,7 +159,6 @@ Example:
 -/
 syntax "zoned(" str "," term ")" : term
 
-
 /--
 Defines a syntax for datetime values without timezone. The input should be a string in an
 ISO8601-like format.
@@ -203,7 +202,6 @@ Example:
 `timezone("America/Sao_Paulo")`
 -/
 syntax "timezone(" str ")" : term
-
 
 macro_rules
   | `(zoned( $date:str )) => do

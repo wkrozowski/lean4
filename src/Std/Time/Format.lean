@@ -489,7 +489,7 @@ def fromAscTimeString (input : String) : Except String PlainDateTime :=
 Formats a `PlainDateTime` value into an AscTime format string.
 -/
 def toAscTimeString (pdt : PlainDateTime) : String :=
-  Formats.ascTime.format (DateTime.ofPlainDateTimeAssumingUTC pdt .UTC)
+  Formats.ascTime.format (DateTime.ofPlainDateTime pdt .UTC)
 
 /--
 Parses a `String` in the `LongDateFormat` and returns a `PlainDateTime` object in the GMT time zone.
@@ -502,7 +502,7 @@ def fromLongDateFormatString (input : String) : Except String PlainDateTime :=
 Formats a `PlainDateTime` value into a LongDateFormat string.
 -/
 def toLongDateFormatString (pdt : PlainDateTime) : String :=
-  Formats.longDateFormat.format (DateTime.ofPlainDateTimeAssumingUTC pdt .UTC)
+  Formats.longDateFormat.format (DateTime.ofPlainDateTime pdt .UTC)
 
 /--
 Parses a `String` in the `DateTime` format and returns a `PlainDateTime`.

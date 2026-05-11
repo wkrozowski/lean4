@@ -6,7 +6,7 @@ Authors: Sofia Rodrigues
 module
 
 prelude
-public import Std.Time.DateTime.Timestamp
+public import Std.Time.DateTime.WallTime
 
 public section
 
@@ -51,24 +51,24 @@ instance : LawfulEqOrd PlainDateTime where
 namespace PlainDateTime
 
 /--
-Converts a `PlainDateTime` to a `Timestamp`
+Converts a `PlainDateTime` to a `WallTime`.
 -/
-def toTimestampAssumingUTC (dt : PlainDateTime) : Timestamp :=
-  let days := dt.date.toDaysSinceUNIXEpoch
+def toWallTime (dt : PlainDateTime) : WallTime :=
+  let days := dt.date.toEpochDay
   let nanos := days.toSeconds + dt.time.toSeconds |>.mul 1000000000
   let nanos := nanos.val + dt.time.nanosecond.val
-  Timestamp.ofNanosecondsSinceUnixEpoch (Nanosecond.Offset.ofInt nanos)
+  WallTime.ofNanoseconds (Nanosecond.Offset.ofInt nanos)
 
 /--
-Converts a `Timestamp` to a `PlainDateTime`.
+Converts a `WallTime` to a `PlainDateTime`.
 -/
-def ofTimestampAssumingUTC (stamp : Timestamp) : PlainDateTime := Id.run do
+def ofWallTime (stamp : WallTime) : PlainDateTime := Id.run do
   let leapYearEpoch := 11017
   let daysPer400Y := 365 * 400 + 97
   let daysPer100Y := 365 * 100 + 24
   let daysPer4Y := 365 * 4 + 1
 
-  let nanos := stamp.toNanosecondsSinceUnixEpoch
+  let nanos := stamp.toNanoseconds
 
   let secs : Second.Offset := nanos.toSeconds
   let remNano := Bounded.LE.byMod nanos.val 1000000000 (by decide)
@@ -152,21 +152,21 @@ def ofTimestampAssumingUTC (stamp : Timestamp) : PlainDateTime := Id.run do
   }
 
 /--
-Converts a `PlainDateTime` to the number of days since the UNIX epoch.
+Returns the local (civil) date of the `PlainDateTime` as a `Day.Offset` relative to 1970-01-01.
 -/
 @[inline]
-def toDaysSinceUNIXEpoch (pdt : PlainDateTime) : Day.Offset :=
-  pdt.date.toDaysSinceUNIXEpoch
+def toEpochDay (pdt : PlainDateTime) : Day.Offset :=
+  pdt.date.toEpochDay
 
 /--
-Converts a `PlainDateTime` to the number of days since the UNIX epoch.
+Converts the number of days relative to 1970-01-01 as a `PlainDateTime`.
 -/
 @[inline]
-def ofDaysSinceUNIXEpoch (days : Day.Offset) (time : PlainTime) : PlainDateTime :=
-  PlainDateTime.mk (PlainDate.ofDaysSinceUNIXEpoch days) time
+def ofEpochDay (days : Day.Offset) (time : PlainTime) : PlainDateTime :=
+  PlainDateTime.mk (PlainDate.ofEpochDay days) time
 
 /--
-Sets the `PlainDateTime` to the specified `desiredWeekday`.
+Sets the `PlainDateTime` to the specified `Weekday`.
 -/
 def withWeekday (dt : PlainDateTime) (desiredWeekday : Weekday) : PlainDateTime :=
   { dt with date := PlainDate.withWeekday dt.date desiredWeekday }
@@ -346,7 +346,7 @@ Adds a `Nanosecond.Offset` to a `PlainDateTime`, adjusting the seconds, minutes,
 -/
 @[inline]
 def addNanoseconds (dt : PlainDateTime) (nanos : Nanosecond.Offset) : PlainDateTime :=
-  ofTimestampAssumingUTC (dt.toTimestampAssumingUTC + nanos)
+  ofWallTime (dt.toWallTime + nanos)
 
 /--
 Subtracts a `Nanosecond.Offset` from a `PlainDateTime`, adjusting the seconds, minutes, hours, and date if the nanoseconds underflow.
