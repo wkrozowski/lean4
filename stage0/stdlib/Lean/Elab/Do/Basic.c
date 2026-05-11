@@ -17839,8 +17839,8 @@ else
 lean_object* v___x_7501_; 
 lean_dec_ref(v_args_7417_);
 lean_dec(v_kind_7416_);
-lean_dec_ref(v_x_7405_);
 lean_dec(v_info_7415_);
+lean_dec_ref(v_x_7405_);
 lean_dec_ref(v_a_7406_);
 lean_dec(v_baseId_7402_);
 v___x_7501_ = l_Lean_Core_withFreshMacroScope___redArg(v___y_7497_, v_a_7412_, v_a_7413_);
@@ -18195,8 +18195,8 @@ else
 {
 lean_object* v_a_7584_; lean_object* v___x_7586_; uint8_t v_isShared_7587_; uint8_t v_isSharedCheck_7591_; 
 lean_dec(v_kind_7416_);
-lean_dec_ref(v_x_7405_);
 lean_dec(v_info_7415_);
+lean_dec_ref(v_x_7405_);
 v_a_7584_ = lean_ctor_get(v___x_7526_, 0);
 v_isSharedCheck_7591_ = !lean_is_exclusive(v___x_7526_);
 if (v_isSharedCheck_7591_ == 0)

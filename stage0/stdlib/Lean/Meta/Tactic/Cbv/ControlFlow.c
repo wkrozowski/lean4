@@ -9482,8 +9482,8 @@ return v___x_2794_;
 else
 {
 lean_object* v_val_2811_; lean_object* v___x_2812_; 
-lean_dec_ref(v___x_2750_);
 lean_dec(v_a_2751_);
+lean_dec_ref(v___x_2750_);
 lean_dec(v___x_2749_);
 v_val_2811_ = lean_ctor_get(v_canUnfold_x3f_2743_, 0);
 lean_inc(v_val_2811_);
@@ -11191,8 +11191,8 @@ return v___y_3460_;
 v___jp_3462_:
 {
 lean_object* v___x_3466_; lean_object* v___x_3467_; 
-lean_dec_ref(v___y_3463_);
-v___x_3466_ = l_Lean_Meta_Sym_Simp_Result_withContextDependent(v___y_3464_);
+lean_dec_ref(v___y_3464_);
+v___x_3466_ = l_Lean_Meta_Sym_Simp_Result_withContextDependent(v___y_3463_);
 lean_inc_ref(v___x_3466_);
 v___x_3467_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_3467_, 0, v___x_3466_);
@@ -11227,8 +11227,8 @@ lean_object* v_a_3474_; uint8_t v___x_3475_;
 v_a_3474_ = lean_ctor_get(v___x_3473_, 0);
 lean_inc(v_a_3474_);
 v___x_3475_ = 0;
-v___y_3463_ = v___x_3473_;
-v___y_3464_ = v_a_3474_;
+v___y_3463_ = v_a_3474_;
+v___y_3464_ = v___x_3473_;
 v___y_3465_ = v___x_3475_;
 goto v___jp_3462_;
 }

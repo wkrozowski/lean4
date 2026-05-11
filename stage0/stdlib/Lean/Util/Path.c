@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Lean.Util.Path
-// Imports: public import Init.System.IO import Init.Control.Do import Init.Data.ToString.Name import Init.Data.String.TakeDrop import Init.Data.List.Monadic import Init.Data.Option.BasicAux import Init.Data.ToString.Macro
+// Imports: public import Init.System.IO import Init.Control.Do import Init.Data.ToString.Name import Init.Data.String.TakeDrop import Init.Data.List.Monadic import Init.Data.Option.BasicAux import Init.Data.ToString.Macro import Init.Data.String.Length
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -511,7 +511,7 @@ _start:
 lean_object* v___x_141_; lean_object* v___x_142_; lean_object* v___x_143_; lean_object* v___x_144_; lean_object* v___x_145_; lean_object* v___x_146_; 
 v___x_141_ = ((lean_object*)(l___private_Lean_Util_Path_0__Lean_modToFilePath_go___closed__2));
 v___x_142_ = lean_unsigned_to_nat(20u);
-v___x_143_ = lean_unsigned_to_nat(50u);
+v___x_143_ = lean_unsigned_to_nat(51u);
 v___x_144_ = ((lean_object*)(l___private_Lean_Util_Path_0__Lean_modToFilePath_go___closed__1));
 v___x_145_ = ((lean_object*)(l___private_Lean_Util_Path_0__Lean_modToFilePath_go___closed__0));
 v___x_146_ = l_mkPanicMessageWithDecl(v___x_145_, v___x_144_, v___x_143_, v___x_142_, v___x_141_);
@@ -2229,7 +2229,7 @@ return v___x_676_;
 v___jp_677_:
 {
 lean_object* v___x_680_; 
-v___x_680_ = lean_string_append(v___y_678_, v___y_679_);
+v___x_680_ = lean_string_append(v___y_679_, v___y_678_);
 v_rootDir_659_ = v___x_680_;
 goto v___jp_658_;
 }
@@ -2249,8 +2249,8 @@ v___x_687_ = lean_obj_once(&l_Lean_moduleNameOfFileName___closed__4, &l_Lean_mod
 v___x_688_ = lean_nat_dec_le(v___x_687_, v___x_686_);
 if (v___x_688_ == 0)
 {
-v___y_678_ = v_a_684_;
-v___y_679_ = v___x_685_;
+v___y_678_ = v___x_685_;
+v___y_679_ = v_a_684_;
 goto v___jp_677_;
 }
 else
@@ -2262,8 +2262,8 @@ v___x_691_ = lean_string_memcmp(v_a_684_, v___x_685_, v___x_690_, v___x_689_, v_
 lean_dec(v___x_690_);
 if (v___x_691_ == 0)
 {
-v___y_678_ = v_a_684_;
-v___y_679_ = v___x_685_;
+v___y_678_ = v___x_685_;
+v___y_679_ = v_a_684_;
 goto v___jp_677_;
 }
 else
@@ -2758,6 +2758,7 @@ lean_object* runtime_initialize_Init_Data_String_TakeDrop(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_List_Monadic(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_Option_BasicAux(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_ToString_Macro(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_String_Length(uint8_t builtin);
 static bool _G_runtime_initialized = false;
 LEAN_EXPORT lean_object* runtime_initialize_Lean_Util_Path(uint8_t builtin) {
 lean_object * res;
@@ -2784,6 +2785,9 @@ lean_dec_ref(res);
 res = runtime_initialize_Init_Data_ToString_Macro(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
+res = runtime_initialize_Init_Data_String_Length(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
 res = l___private_Lean_Util_Path_0__Lean_initFn_00___x40_Lean_Util_Path_2007882598____hygCtx___hyg_2_();
 if (lean_io_result_is_error(res)) return res;
 l_Lean_searchPathRef = lean_io_result_get_value(res);
@@ -2805,6 +2809,7 @@ lean_object* initialize_Init_Data_String_TakeDrop(uint8_t builtin);
 lean_object* initialize_Init_Data_List_Monadic(uint8_t builtin);
 lean_object* initialize_Init_Data_Option_BasicAux(uint8_t builtin);
 lean_object* initialize_Init_Data_ToString_Macro(uint8_t builtin);
+lean_object* initialize_Init_Data_String_Length(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Lean_Util_Path(uint8_t builtin) {
 lean_object * res;
@@ -2829,6 +2834,9 @@ res = initialize_Init_Data_Option_BasicAux(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Init_Data_ToString_Macro(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_Data_String_Length(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Lean_Util_Path(builtin);

@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Std.Http.Data.URI.Basic
-// Imports: import Init.Data.ToString public import Std.Net public import Std.Http.Internal public import Std.Http.Data.URI.Encoding public import Init.Data.String.Search
+// Imports: import Init.Data.ToString public import Std.Net public import Std.Http.Internal public import Std.Http.Data.URI.Encoding public import Init.Data.String.Search public import Init.Data.String.Length
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -1163,7 +1163,7 @@ if (lean_obj_tag(v___x_103_) == 0)
 lean_object* v___x_104_; lean_object* v___x_105_; lean_object* v___x_106_; lean_object* v___x_107_; lean_object* v___x_108_; lean_object* v___x_109_; lean_object* v___x_110_; lean_object* v___x_111_; lean_object* v___x_112_; 
 v___x_104_ = ((lean_object*)(l_Std_Http_URI_Scheme_ofString_x21___closed__0));
 v___x_105_ = ((lean_object*)(l_Std_Http_URI_Scheme_ofString_x21___closed__1));
-v___x_106_ = lean_unsigned_to_nat(83u);
+v___x_106_ = lean_unsigned_to_nat(84u);
 v___x_107_ = lean_unsigned_to_nat(12u);
 v___x_108_ = ((lean_object*)(l_Std_Http_URI_Scheme_ofString_x21___closed__2));
 v___x_109_ = l_String_quote(v_s_102_);
@@ -8123,7 +8123,7 @@ if (lean_obj_tag(v___x_2517_) == 0)
 lean_object* v___x_2518_; lean_object* v___x_2519_; lean_object* v___x_2520_; lean_object* v___x_2521_; lean_object* v___x_2522_; lean_object* v___x_2523_; lean_object* v___x_2524_; lean_object* v___x_2525_; lean_object* v___x_2526_; 
 v___x_2518_ = ((lean_object*)(l_Std_Http_URI_Scheme_ofString_x21___closed__0));
 v___x_2519_ = ((lean_object*)(l_Std_Http_URI_Builder_setScheme_x21___closed__0));
-v___x_2520_ = lean_unsigned_to_nat(678u);
+v___x_2520_ = lean_unsigned_to_nat(679u);
 v___x_2521_ = lean_unsigned_to_nat(14u);
 v___x_2522_ = ((lean_object*)(l_Std_Http_URI_Scheme_ofString_x21___closed__2));
 v___x_2523_ = l_String_quote(v_scheme_2516_);
@@ -8412,7 +8412,7 @@ if (lean_obj_tag(v___x_2597_) == 0)
 lean_object* v___x_2598_; lean_object* v___x_2599_; lean_object* v___x_2600_; lean_object* v___x_2601_; lean_object* v___x_2602_; lean_object* v___x_2603_; lean_object* v___x_2604_; lean_object* v___x_2605_; lean_object* v___x_2606_; 
 v___x_2598_ = ((lean_object*)(l_Std_Http_URI_Scheme_ofString_x21___closed__0));
 v___x_2599_ = ((lean_object*)(l_Std_Http_URI_Builder_setHost_x21___closed__0));
-v___x_2600_ = lean_unsigned_to_nat(707u);
+v___x_2600_ = lean_unsigned_to_nat(708u);
 v___x_2601_ = lean_unsigned_to_nat(14u);
 v___x_2602_ = ((lean_object*)(l_Std_Http_URI_Builder_setHost_x21___closed__1));
 v___x_2603_ = l_String_quote(v_name_2596_);
@@ -11425,6 +11425,7 @@ lean_object* runtime_initialize_Std_Net(uint8_t builtin);
 lean_object* runtime_initialize_Std_Http_Internal(uint8_t builtin);
 lean_object* runtime_initialize_Std_Http_Data_URI_Encoding(uint8_t builtin);
 lean_object* runtime_initialize_Init_Data_String_Search(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_String_Length(uint8_t builtin);
 static bool _G_runtime_initialized = false;
 LEAN_EXPORT lean_object* runtime_initialize_Std_Http_Data_URI_Basic(uint8_t builtin) {
 lean_object * res;
@@ -11443,6 +11444,9 @@ res = runtime_initialize_Std_Http_Data_URI_Encoding(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Init_Data_String_Search(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Init_Data_String_Length(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 l_Std_Http_URI_instInhabitedUserInfo_default = _init_l_Std_Http_URI_instInhabitedUserInfo_default();
@@ -11475,6 +11479,7 @@ lean_object* initialize_Std_Net(uint8_t builtin);
 lean_object* initialize_Std_Http_Internal(uint8_t builtin);
 lean_object* initialize_Std_Http_Data_URI_Encoding(uint8_t builtin);
 lean_object* initialize_Init_Data_String_Search(uint8_t builtin);
+lean_object* initialize_Init_Data_String_Length(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Std_Http_Data_URI_Basic(uint8_t builtin) {
 lean_object * res;
@@ -11493,6 +11498,9 @@ res = initialize_Std_Http_Data_URI_Encoding(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Init_Data_String_Search(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Init_Data_String_Length(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Std_Http_Data_URI_Basic(builtin);

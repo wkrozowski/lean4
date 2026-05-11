@@ -4683,8 +4683,8 @@ goto v___jp_1225_;
 }
 else
 {
-lean_dec_ref(v_fst_1300_);
 lean_dec(v_pre_1301_);
+lean_dec_ref(v_fst_1300_);
 lean_dec_ref(v___x_1299_);
 lean_dec(v___x_1298_);
 lean_del_object(v___x_1240_);
@@ -5342,8 +5342,8 @@ return v___x_1690_;
 else
 {
 lean_object* v___x_1691_; 
-lean_dec_ref(v_fst_1625_);
 lean_dec(v_pre_1626_);
+lean_dec_ref(v_fst_1625_);
 lean_dec_ref(v___x_1624_);
 lean_del_object(v___x_1240_);
 v___x_1691_ = lean_alloc_ctor(0, 1, 0);
@@ -5551,8 +5551,8 @@ return v___x_1732_;
 else
 {
 lean_object* v___x_1733_; 
-lean_dec(v_pre_1695_);
 lean_dec_ref(v_fst_1694_);
+lean_dec(v_pre_1695_);
 lean_dec_ref(v___x_1693_);
 lean_del_object(v___x_1240_);
 v___x_1733_ = lean_alloc_ctor(0, 1, 0);
