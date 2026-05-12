@@ -1,2 +1,0 @@
-uncaught exception: waitForMessage: server reported fatalError before message "nope" was emitted
-Watchdog error: Cannot read LSP message: Stream was closed
