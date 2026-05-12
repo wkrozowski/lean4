@@ -489,11 +489,19 @@ def inLeapYear (date : PlainDateTime) : Bool :=
   date.year.isLeap
 
 /--
-Determines the week of the year for the given `PlainDateTime`.
+Determines the week of the year for the given `PlainDateTime`, using `firstDay` as the start of the week.
 -/
 @[inline]
-def weekOfYear (date : PlainDateTime) : Week.Ordinal :=
-  date.date.weekOfYear
+def weekOfYear (date : PlainDateTime) (firstDay : Weekday := .monday) : Week.Ordinal :=
+  date.date.weekOfYear firstDay
+
+/--
+Returns the week-based year for the given `PlainDateTime`, using `firstDay` as the start of the week.
+The week-based year may differ from the calendar year for dates near the start or end of the year.
+-/
+@[inline]
+def weekYear (date : PlainDateTime) (firstDay : Weekday := .monday) : Year.Offset :=
+  date.date.weekYear firstDay
 
 /--
 Returns the unaligned week of the month for a `PlainDateTime` (day divided by 7, plus 1).
@@ -502,13 +510,11 @@ def weekOfMonth (date : PlainDateTime) : Bounded.LE 1 5 :=
   date.date.weekOfMonth
 
 /--
-Determines the week of the month for the given `PlainDateTime`. The week of the month is calculated based
-on the day of the month and the weekday. Each week starts on Monday because the entire library is
-based on the Gregorian Calendar.
+Determines the week of the month for the given `PlainDateTime`, using `firstDay` as the start of the week.
 -/
 @[inline]
-def alignedWeekOfMonth (date : PlainDateTime) : Week.Ordinal.OfMonth :=
-  date.date.alignedWeekOfMonth
+def alignedWeekOfMonth (date : PlainDateTime) (firstDay : Weekday := .monday) : Week.Ordinal.OfMonth :=
+  date.date.alignedWeekOfMonth firstDay
 
 /--
 Transforms a tuple of a `PlainDateTime` into a `Day.Ordinal.OfYear`.

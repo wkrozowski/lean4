@@ -310,10 +310,10 @@ Determines the week of the month for the given `PlainDate`. The week of the mont
 on the day of the month and the weekday. Each week starts on Monday because the entire library is
 based on the Gregorian Calendar.
 -/
-def alignedWeekOfMonth (date : PlainDate) : Week.Ordinal.OfMonth :=
-  let weekday := date.withDaysClip 1 |>.weekday |>.toOrdinal |>.sub 1
-  let days := date.day |>.sub 1 |>.addBounds weekday
-  days |>.ediv 7 (by decide) |>.add 1
+def alignedWeekOfMonth (date : PlainDate) (firstDay : Weekday := .monday) : Week.Ordinal.OfMonth :=
+  let day1Ord := (date.withDaysClip 1).weekday.toOrdinal.val
+  let offset := (day1Ord - firstDay.toOrdinal.val + 7) % 7
+  Bounded.LE.ofNatWrapping ((date.day.val - 1 + offset) / 7 + 1) (by decide)
 
 /--
 Sets the date to the specified `desiredWeekday`. If the `desiredWeekday` is the same as the current weekday,
@@ -335,14 +335,16 @@ def withWeekday (date : PlainDate) (desiredWeekday : Weekday) : PlainDate :=
   date.addDays (Day.Offset.ofInt offset.toInt)
 
 /--
-Calculates the week of the year starting Monday for a given year.
+Calculates the week of the year for a given date, using `firstDay` as the first day of the week.
 -/
-def weekOfYear (date : PlainDate) : Week.Ordinal :=
+def weekOfYear (date : PlainDate) (firstDay : Weekday := .monday) : Week.Ordinal :=
   let y := date.year
+  let posInWeek : Bounded.LE 1 7 :=
+    .ofNatWrapping ((date.weekday.toOrdinal.val - firstDay.toOrdinal.val + 7) % 7 + 1) (by decide)
 
   let w := Bounded.LE.exact 10
     |>.addBounds date.dayOfYear
-    |>.subBounds date.weekday.toOrdinal
+    |>.subBounds posInWeek
     |>.ediv 7 (by decide)
 
   if h : w.val < 1 then
@@ -354,6 +356,24 @@ def weekOfYear (date : PlainDate) : Week.Ordinal :=
     let h₁ := Int.not_lt.mp h₁
     let w := w.truncateBottom h |>.truncateTop (Int.le_trans h₁ y.weeks.property.right)
     w
+
+/--
+Returns the week-based year for the given `PlainDate`, using `firstDay` as the start of the week.
+The week-based year may differ from the calendar year for dates near the start or end of the year.
+-/
+def weekYear (date : PlainDate) (firstDay : Weekday := .monday) : Year.Offset :=
+  let y := date.year
+  let posInWeek : Bounded.LE 1 7 :=
+    .ofNatWrapping ((date.weekday.toOrdinal.val - firstDay.toOrdinal.val + 7) % 7 + 1) (by decide)
+
+  let w := Bounded.LE.exact 10
+    |>.addBounds date.dayOfYear
+    |>.subBounds posInWeek
+    |>.ediv 7 (by decide)
+
+  if w.val < 1 then y - 1
+  else if w.val > y.weeks.val then y + 1
+  else y
 
 instance : HAdd PlainDate Day.Offset PlainDate where
   hAdd := addDays
