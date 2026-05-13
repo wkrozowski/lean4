@@ -311,6 +311,5 @@ def unusedDecidableInTypeLinter : Linter where run := withSetOptionIn fun _ => d
 builtin_initialize addLinter unusedDecidableInTypeLinter
 
 end UnusedDecidableInType
-
 end Linter.Extra
 end Lean
