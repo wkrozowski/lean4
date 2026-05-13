@@ -851,26 +851,6 @@ def findConstVal? (env : Environment) (n : Name) (skipRealize := false) : Option
     return c.toConstantVal
   env.findAsyncCore? n (skipRealize := skipRealize) |>.map (·.toConstantVal)
 
-/--
-Like `findConstVal?`, but only finds the `ConstantVal` for `decl` in `env` if its kind satisfies
-`p`. Otherwise, returns `none`.
-
-Blocks on everything but the constant's body (if any), which is not accessible through the result.
--/
-def findConstValOfKind? (env : Environment) (p : ConstantKind → Bool) (decl : Name)
-    (skipRealize := false) : Option ConstantVal := do
-  let info ← env.findAsync? decl skipRealize
-  if p info.kind then info.toConstantVal else none
-
-/--
-Like `findConstVal?`, but only finds the `ConstantVal` for `decl` in `env` if it is a theorem.
-
-Blocks on everything but the constant's body (if any), which is not accessible through the result.
--/
-def findTheoremConstVal? (env : Environment) (decl : Name) (skipRealize := false) :
-    Option ConstantVal :=
-  env.findConstValOfKind? (· matches .thm) decl skipRealize
-
 /-- Like `findAsync?`, but blocks until the constant's info is fully available.  -/
 def find? (env : Environment) (n : Name) (skipRealize := false) : Option ConstantInfo := do
   if let some c := env.base.get env |>.constants.map₁[n]? then
