@@ -87,7 +87,7 @@ no_match_pat 'badNameExtra' produced.out
 no_match_pat 'extra text linter saw a declaration' produced.out
 # Builtin extra text linter `unnecessarySeqFocus` is non-default, so silent.
 no_match_pat 'tac1 <;> tac2' produced.out
-# Builtin extra env linter `dupNamespace` is non-default, so it stays silent.
+# Builtin extra text linter `dupNamespace` is non-default, so it stays silent.
 no_match_pat 'Dup.Dup.violation' produced.out
 # Builtin extra text linter `unreachableTactic` is non-default, so silent.
 no_match_pat 'this tactic is never executed' produced.out
@@ -104,7 +104,7 @@ match_pat 'extra text linter saw a declaration' produced.out
 # tag `linter.extra.unnecessarySeqFocus` is matched by the `linter.extra`
 # prefix filter.
 match_pat 'tac1 <;> tac2' produced.out
-# Builtin `dupNamespace` env linter fires under --extra.
+# Builtin `dupNamespace` extra text linter fires under --extra.
 match_pat 'Dup.Dup.violation' produced.out
 match_pat "namespace .*Dup.* is duplicated" produced.out
 # Builtin `unreachableTactic` extra text linter fires under --extra.
@@ -134,7 +134,7 @@ match_pat 'tac1 <;> tac2' produced.out
 no_match_pat 'badNameExtra' produced.out
 no_match_pat 'Dup.Dup.violation' produced.out
 
-# --lint-only dupNamespace runs only the builtin extra `dupNamespace` env linter.
+# --lint-only dupNamespace runs only the builtin extra `dupNamespace` text linter.
 lake_out lint --lint-only dupNamespace ExtraViolations || true
 match_pat 'Dup.Dup.violation' produced.out
 no_match_pat 'badNameExtra' produced.out
