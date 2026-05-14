@@ -28,7 +28,7 @@ forall with return type of the same form (i.e. of the form `∀ (x₀ : X₀) (x
 
 Runs `cleanupAnnotations` on `type` and `forallE` bodies, and ignores metadata in applications.
 -/
-@[inline] partial def isAppOrForallOfConstP (p : Name → Bool) (type : Expr) : Bool :=
+@[inline] private partial def isAppOrForallOfConstP (p : Name → Bool) (type : Expr) : Bool :=
   match type.cleanupAnnotations.getAppFn' with
   | .const n _ => p n
   | .forallE _ _ body _ => isAppOrForallOfConstP p body
@@ -39,7 +39,7 @@ Returns `true` if `e` includes a `forallE` instance binder with type satisfying 
 
 Cleans up annotations before traversing nested `forallE`s, and sees through `let`s.
 -/
-partial def hasInstanceBinderOf (p : Expr → Bool) (e : Expr) : Bool :=
+private partial def hasInstanceBinderOf (p : Expr → Bool) (e : Expr) : Bool :=
   match e.cleanupAnnotations with
   | .forallE _ type body bi => (bi.isInstImplicit && p type) || hasInstanceBinderOf p body
   | .letE _ _ _ body _ => hasInstanceBinderOf p body
@@ -60,7 +60,7 @@ This function runs `cleanupAnnotations` on each expression before examining it.
 We see through `let`s, and do not increment the index when doing so. This behavior is compatible
 with `forallBoundedTelescope`.
 -/
-partial def getUnusedForallInstanceBinderIdxsWhere (p : Expr → Bool) (e : Expr) : Array Nat :=
+private partial def getUnusedForallInstanceBinderIdxsWhere (p : Expr → Bool) (e : Expr) : Array Nat :=
   go e 0 #[]
 where
   /-- Inspects `body`, and if it is a `.forallE` of an instance with type `type` such that `p type`
@@ -88,7 +88,7 @@ Like `findConstVal?`, but only finds the `ConstantVal` for `decl` in `env` if it
 
 Blocks on everything but the constant's body (if any), which is not accessible through the result.
 -/
-def findConstValOfKind? (env : Environment) (p : ConstantKind → Bool) (decl : Name)
+private def findConstValOfKind? (env : Environment) (p : ConstantKind → Bool) (decl : Name)
     (skipRealize := false) : Option ConstantVal := do
   let info ← env.findAsync? decl skipRealize
   if p info.kind then info.toConstantVal else none
@@ -98,7 +98,7 @@ Like `findConstVal?`, but only finds the `ConstantVal` for `decl` in `env` if it
 
 Blocks on everything but the constant's body (if any), which is not accessible through the result.
 -/
-def findTheoremConstVal? (env : Environment) (decl : Name) (skipRealize := false) :
+private def findTheoremConstVal? (env : Environment) (decl : Name) (skipRealize := false) :
     Option ConstantVal :=
   env.findConstValOfKind? (· matches .thm) decl skipRealize
 
