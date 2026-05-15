@@ -14,7 +14,6 @@ public import Lean.Linter.DocsOnAlt
 public import Lean.Linter.UnusedVariables
 public import Lean.Linter.MissingDocs
 public import Lean.Linter.Omit
-public import Lean.Linter.NewDecls
 public import Lean.Linter.List
 public import Lean.Linter.Sets
 public import Lean.Linter.UnusedSimpArgs
