@@ -78,6 +78,5 @@ public def mepoSelector (useRarity : Bool) (p : Float := 0.6) (c : Float := 2.4)
     pure <| unweightedScore
   let accept := fun ci => return !isDeniedPremise env ci.name
   let suggestions ← mepo constants score accept config.maxSuggestions p c
-  let suggestions := suggestions
-    |>.reverse  -- we favor constants that appear at the end of `env.constants`
+  -- `mepo` already returns suggestions in score-descending order.
   return suggestions.take config.maxSuggestions
