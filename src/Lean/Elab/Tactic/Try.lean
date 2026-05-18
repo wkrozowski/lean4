@@ -263,6 +263,19 @@ builtin_initialize tryTacticElabAttribute : KeyedDeclsAttribute TryTactic ← do
 private def getEvalFns (kind : SyntaxNodeKind) : CoreM (List (KeyedDeclsAttribute.AttributeEntry TryTactic)) := do
   return tryTacticElabAttribute.getEntries (← getEnv) kind
 
+/--
+If the current `try?` context is terminal, throws unless all goals have been solved.
+
+`try?` handlers whose execution may leave goals open (e.g. `simp?`, generic atomic leaves) should
+call this before returning their suggestion. Combinator handlers that delegate via `evalSuggest`
+do not need to call it, since the recursive call already enforces the invariant on the
+sub-tactic in terminal mode.
+-/
+private def checkTerminalGoals : TryTacticM Unit := do
+  if (← read).terminal then
+    unless (← getGoals).isEmpty do
+      throwError "unsolved goals"
+
 /-! User-extensible try suggestion generators -/
 
 /-- A user-defined generator that proposes tactics for `try?` to attempt.
@@ -545,6 +558,7 @@ where
                     $tacs2*)
       modify (·.push tac)
 
+@[builtin_try_tactic Lean.Parser.Tactic.grindTrace]
 private def evalSuggestGrindTrace : TryTactic := fun tac => do
   withOriginalHeartbeats do
     let `(tactic| grind? $configStx:optConfig $[only%$only]?  $[ [$params:grindParam,*] ]?) := tac | throwUnsupportedSyntax
@@ -563,6 +577,7 @@ private def evalSuggestGrindTrace : TryTactic := fun tac => do
     else
       return tac
 
+@[builtin_try_tactic Lean.Parser.Tactic.simpTrace]
 private def evalSuggestSimpTrace : TryTactic := fun tac => do (← getMainGoal).withContext do
   match tac with
   | `(tactic| simp? $configStx:optConfig $[only%$only]? $[[$args,*]]? $(loc)?) =>
@@ -571,6 +586,7 @@ private def evalSuggestSimpTrace : TryTactic := fun tac => do (← getMainGoal).
       let { ctx, simprocs, .. } ← mkSimpContext tac (eraseLocal := false)
       let stats ← simpLocation ctx (simprocs := simprocs) none <| (loc.map expandLocation).getD (.targets #[] true)
       trace[try.debug] "`simp` succeeded"
+      checkTerminalGoals
       if (← read).config.only then
         let tac' ← mkSimpCallStx tac stats.usedTheorems
         -- If config has +suggestions, only return the 'only' version, not the original
@@ -582,6 +598,7 @@ private def evalSuggestSimpTrace : TryTactic := fun tac => do (← getMainGoal).
         return tac
   | _ => throwUnsupportedSyntax
 
+@[builtin_try_tactic Lean.Parser.Tactic.simpAllTrace]
 private def evalSuggestSimpAllTrace : TryTactic := fun tac => do
   match tac with
   | `(tactic| simp_all? $[!%$_bang]? $configStx:optConfig $(_discharger)? $[only%$_only]? $[[$_args,*]]?) =>
@@ -623,6 +640,7 @@ private def evalSuggestSimpAllTrace : TryTactic := fun tac => do
         | none => replaceMainGoal []
         | some mvarId => replaceMainGoal [mvarId]
         trace[try.debug] "`simp_all` succeeded"
+        checkTerminalGoals
         if (← read).config.only then
           -- Remove +suggestions and +locals from config for the output (similar to SimpTrace.lean)
           let filteredCfg ← filterSuggestionsAndLocalsFromSimpConfig configStx
@@ -767,14 +785,70 @@ private partial def evalSuggestFirstPar (tacs : Array (TSyntax ``Parser.Tactic.t
     withOriginalHeartbeats (evalSuggestTacticSeq tacSeq) ctx
   TacticM.parFirst jobs
 
-private partial def evalSuggestDefault (tac : TSyntax `tactic) : TryTacticM (TSyntax `tactic) := do
-  let kind := tac.raw.getKind
-  match (← getEvalFns kind) with
-  | [] =>
-    withOriginalHeartbeats (evalSuggestAtomic tac)
-  | evalFns => eval (← Tactic.saveState) evalFns #[]
+/-! `@[builtin_try_tactic]` registrations for the built-in combinators and trace wrappers. -/
+
+@[builtin_try_tactic Lean.Parser.Tactic.«tactic_<;>_»]
+private def evalSuggestChainTac : TryTactic := fun tac => do
+  let `(tactic| $tac1 <;> $tac2) := tac | throwUnsupportedSyntax
+  evalSuggestChain tac1 tac2
+
+@[builtin_try_tactic Lean.Parser.Tactic.first]
+private def evalSuggestFirstTac : TryTactic := fun tac => do
+  let `(tactic| first $[| $tacs]*) := tac | throwUnsupportedSyntax
+  evalSuggestFirst tacs
+
+@[builtin_try_tactic Lean.Parser.Tactic.paren]
+private def evalSuggestParenTac : TryTactic := fun tac => do
+  let `(tactic| ($tac:tacticSeq)) := tac | throwUnsupportedSyntax
+  evalSuggestTacticSeq tac
+
+@[builtin_try_tactic Lean.Parser.Tactic.tacticTry_]
+private def evalSuggestTryTac : TryTactic := fun tac => do
+  let `(tactic| try $tac:tacticSeq) := tac | throwUnsupportedSyntax
+  evalSuggestTry tac
+
+@[builtin_try_tactic Lean.Parser.Tactic.attemptAll]
+private def evalSuggestAttemptAllTac : TryTactic := fun tac => do
+  let `(tactic| attempt_all $[| $tacs]*) := tac | throwUnsupportedSyntax
+  evalSuggestAttemptAll tacs
+
+@[builtin_try_tactic Lean.Parser.Tactic.attemptAllPar]
+private def evalSuggestAttemptAllParTac : TryTactic := fun tac => do
+  let `(tactic| attempt_all_par $[| $tacs]*) := tac | throwUnsupportedSyntax
+  evalSuggestAttemptAllPar tacs
+
+@[builtin_try_tactic Lean.Parser.Tactic.firstPar]
+private def evalSuggestFirstParTac : TryTactic := fun tac => do
+  let `(tactic| first_par $[| $tacs]*) := tac | throwUnsupportedSyntax
+  evalSuggestFirstPar tacs
+
+@[builtin_try_tactic Lean.Parser.Tactic.seq1]
+private def evalSuggestSeq1Tac : TryTactic := fun tac =>
+  evalSuggestSeqCore tac.raw[0].getSepArgs
+
+@[builtin_try_tactic Lean.Parser.Tactic.exact?]
+private def evalSuggestExactTac : TryTactic := fun _ =>
+  withOriginalHeartbeats evalSuggestExact
+
+/-! `evalSuggest` dispatcher. -/
+
+-- `evalSuggest` implementation
+set_option compiler.ignoreBorrowAnnotation true in
+@[export lean_eval_suggest_tactic]
+private partial def evalSuggestImpl : TryTactic := evalSuggestCore
 where
-  throwExs (failures : Array EvalTacticFailure) : TryTacticM (TSyntax `tactic) := do
+  evalSuggestCore (tac : TSyntax `tactic) : TryTacticM (TSyntax `tactic) := do
+    trace[try.debug] "{tac}"
+    match (← getEvalFns tac.raw.getKind) with
+    | [] =>
+      -- No registered handler: run atomically. Atomic execution may leave goals open, so
+      -- enforce the terminal-mode invariant here.
+      let r ← withOriginalHeartbeats (evalSuggestAtomic tac)
+      checkTerminalGoals
+      return r
+    | evalFns => eval tac (← Tactic.saveState) evalFns #[]
+
+  throwExs (tac : TSyntax `tactic) (failures : Array EvalTacticFailure) : TryTacticM (TSyntax `tactic) := do
     if h : 0 < failures.size  then
       let fail := failures[failures.size - 1]
       fail.state.restore (restoreInfo := true)
@@ -782,9 +856,9 @@ where
     else
       throwErrorAt tac "unexpected syntax {indentD tac}"
 
-  eval (s : SavedState) (evalFns : List _) (failures : Array EvalTacticFailure) : TryTacticM (TSyntax `tactic) := do
+  eval (tac : TSyntax `tactic) (s : SavedState) (evalFns : List _) (failures : Array EvalTacticFailure) : TryTacticM (TSyntax `tactic) := do
     match evalFns with
-    | [] => throwExs failures
+    | [] => throwExs tac failures
     | evalFn::evalFns =>
       try
         withTheReader Tactic.Context ({ · with elaborator := evalFn.declName }) do
@@ -792,49 +866,15 @@ where
       catch ex => match ex with
       | .error .. =>
         let failures := failures.push ⟨ex, ← Tactic.saveState⟩
-        s.restore (restoreInfo := true); eval s evalFns failures
+        s.restore (restoreInfo := true); eval tac s evalFns failures
       | .internal id _ =>
         if id == unsupportedSyntaxExceptionId then
-          s.restore (restoreInfo := true); eval s evalFns failures
+          s.restore (restoreInfo := true); eval tac s evalFns failures
         else if id == abortTacticExceptionId then
           let failures := failures.push ⟨ex, ← Tactic.saveState⟩
-          s.restore (restoreInfo := true); eval s evalFns failures
+          s.restore (restoreInfo := true); eval tac s evalFns failures
         else
           throw ex
-
--- `evalSuggest` implementation
-set_option compiler.ignoreBorrowAnnotation true in
-@[export lean_eval_suggest_tactic]
-private partial def evalSuggestImpl : TryTactic := fun tac => do
-  trace[try.debug] "{tac}"
-  -- TODO: Implement builtin cases using `[builtin_try_tactic]` after update-stage0
-  match tac with
-  | `(tactic| $tac1 <;> $tac2) => evalSuggestChain tac1 tac2
-  | `(tactic| first $[| $tacs]*) => evalSuggestFirst tacs
-  | `(tactic| ($tac:tacticSeq)) => evalSuggestTacticSeq tac
-  | `(tactic| try $tac:tacticSeq) => evalSuggestTry tac
-  | `(tactic| attempt_all $[| $tacs]*) => evalSuggestAttemptAll tacs
-  | `(tactic| attempt_all_par $[| $tacs]*) => evalSuggestAttemptAllPar tacs
-  | `(tactic| first_par $[| $tacs]*) => evalSuggestFirstPar tacs
-  | _ =>
-    let k := tac.raw.getKind
-    if k == ``Parser.Tactic.seq1 then
-      evalSuggestSeqCore tac.raw[0].getSepArgs
-    else
-      let r ← if k == ``Parser.Tactic.grindTrace then
-        evalSuggestGrindTrace tac
-      else if k == ``Parser.Tactic.simpTrace then
-        evalSuggestSimpTrace tac
-      else if k == ``Parser.Tactic.simpAllTrace then
-        evalSuggestSimpAllTrace tac
-      else if k == ``Parser.Tactic.exact? then
-        withOriginalHeartbeats evalSuggestExact
-      else
-        evalSuggestDefault tac
-      if (← read).terminal then
-        unless (← getGoals).isEmpty do
-          throwError "unsolved goals"
-      return r
 
 /-! `evalAndSuggest` frontend -/
 
