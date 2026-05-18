@@ -7,6 +7,8 @@ module
 prelude
 public import Lean.Meta.Tactic.ExposeNames
 public import Lean.Meta.Tactic.Try
+public import Lean.Meta.TryThis
+public import Lean.Server.InfoUtils
 public import Lean.Elab.Tactic.SimpTrace
 public import Lean.Elab.Tactic.LibrarySearch
 public import Lean.Elab.Tactic.Grind.Main
@@ -333,40 +335,43 @@ def elabRegisterTryTactic : Command.CommandElab := fun stx => do
 
 /--
 Evaluates a user-generated tactic and captures any "Try this" suggestions it produces
-by examining the message log.
+by walking the info tree for `TryThisInfo` nodes registered by `TryThis.addSuggestion`.
 
 Returns an array of tactics: the original tactic followed by any extracted suggestions.
 -/
 private def expandUserTactic (tac : TSyntax `tactic) (goal : MVarId) : MetaM (Array (TSyntax `tactic)) := do
   Term.TermElabM.run' <| do
     let initialState ← saveState
-    let initialLog ← Core.getMessageLog
-    let initialMsgCount := initialLog.toList.length
+    let initialTreeSize := (← getInfoState).trees.size
 
     let result ← tryCatchRuntimeEx
       (do
-        -- Run the tactic to capture its "Try this" messages
-        discard <| Tactic.run goal do
+        -- Run the tactic under `withSaveInfoContext` so its "Try this" suggestions
+        -- get pushed onto info trees that are wrapped with a `ContextInfo` (which
+        -- `foldInfo` needs in order to actually descend).
+        withSaveInfoContext <| discard <| Tactic.run goal do
           evalTactic tac
 
-        -- Extract tactic suggestions from new messages
-        -- This parses the format produced by TryThis.addSuggestions: "Try this:\n  [apply] tactic"
-        let newMsgs := (← Core.getMessageLog).toList.drop initialMsgCount
-        let mut suggestions : Array (TSyntax `tactic) := #[]
-        for msg in newMsgs do
-          if msg.severity == MessageSeverity.information then
-            let msgText ← msg.data.toString
-            for line in msgText.split '\n' do
-              if let some tacticText := line.dropPrefix? "  [apply] " then
-                let env ← getEnv
-                if let .ok stx := Parser.runParserCategory env `tactic tacticText.copy then
-                  suggestions := suggestions.push ⟨stx⟩
+        -- Walk only the info trees added by this tactic and pull out the
+        -- structured suggestions stored in `TryThisInfo` nodes.
+        let trees := (← getInfoState).trees.toArray
+        let newTrees := trees.extract initialTreeSize trees.size
+        let env ← getEnv
+        let suggestions := newTrees.foldl (init := #[]) fun acc tree =>
+          tree.foldInfo (init := acc) fun _ info acc => Id.run do
+            let .ofCustomInfo { value, .. } := info | acc
+            let some tti := value.get? Meta.Tactic.TryThis.TryThisInfo | acc
+            match tti.suggestion.suggestion with
+            | .tsyntax stx => acc.push ⟨stx.raw⟩
+            | .string s =>
+              match Parser.runParserCategory env `tactic s with
+              | .ok stx => acc.push ⟨stx⟩
+              | .error _ => acc
 
         pure (some suggestions))
       (fun _ => pure none)
 
     initialState.restore
-    Core.setMessageLog initialLog
     return #[tac] ++ (result.getD #[])
 
 -- TODO: polymorphic `Tactic.focus`
