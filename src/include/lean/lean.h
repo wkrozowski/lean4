@@ -676,6 +676,18 @@ static inline b_lean_obj_res lean_ctor_get(b_lean_obj_arg o, unsigned i) {
     return lean_ctor_obj_cptr(o)[i];
 }
 
+static inline void lean_dec_ref_known(lean_object * o, unsigned objs) {
+    assert(lean_is_ref(o));
+    if (lean_is_exclusive(o)) {
+        for(unsigned i = 0; i < objs; i++) {
+            lean_dec(lean_ctor_get(o, i));
+        }
+        lean_del_object(o);
+    } else {
+        lean_dec_ref(o);
+    }
+}
+
 static inline void lean_ctor_set(b_lean_obj_arg o, unsigned i, lean_obj_arg v) {
     assert(i < lean_ctor_num_objs(o));
     lean_ctor_obj_cptr(o)[i] = v;
