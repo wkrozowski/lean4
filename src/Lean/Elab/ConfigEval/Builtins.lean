@@ -185,35 +185,4 @@ open Linter.MissingDocs in
 @[builtin_missing_docs_handler elabDeclareCommandConfig]
 private def checkCommandConfigElab : SimpleHandler := mkSimpleHandler "config elab"
 
--- TODO(kmill) remove section after stage0 update
-section RemoveMe
-
-set_option compiler.relaxedMetaCheck true
-
-@[command_elab ensureEvalTermInstance]
-meta def elabEnsureEvalTermInstance' := elabEnsureEvalTermInstance
-
-@[command_elab ensureEvalExprInstance]
-meta def elabEnsureEvalExprInstance' := elabEnsureEvalExprInstance
-
-@[macro ensureEvalTermExprInstances]
-meta def expandEnsureEvalTermExprInstance' := expandEnsureEvalTermExprInstance
-
-@[command_elab defEvalConfigItemCmd]
-meta def elabDefEvalConfigItemCmd' := elabDefEvalConfigItemCmd
-
-@[macro declareCoreConfigElab]
-meta def elabDeclareCoreConfigElab' := elabDeclareCoreConfigElab
-
-@[macro declareTermConfigElab]
-meta def elabDeclareTermConfigElab' := elabDeclareTermConfigElab
-
-@[macro declareTacticConfig]
-meta def elabDeclareTacticConfig' := elabDeclareTacticConfig
-
-@[macro declareCommandConfig]
-meta def elabDeclareCommandConfig' := elabDeclareCommandConfig
-
-end RemoveMe
-
 end Lean.Elab.ConfigEval
