@@ -1441,7 +1441,7 @@ v_reusejp_167_:
 uint64_t v___x_169_; uint64_t v___x_170_; uint64_t v___x_171_; uint64_t v___x_172_; uint64_t v___x_173_; uint64_t v_key_174_; lean_object* v___x_175_; lean_object* v___x_176_; lean_object* v___x_177_; lean_object* v___x_178_; lean_object* v___x_179_; lean_object* v___x_180_; lean_object* v___x_181_; lean_object* v___x_182_; lean_object* v___x_183_; 
 lean_ctor_set_uint8(v_config_168_, 9, v___x_166_);
 v___x_169_ = l_Lean_Meta_Context_configKey(v_a_127_);
-v___x_170_ = 2ULL;
+v___x_170_ = 3ULL;
 v___x_171_ = lean_uint64_shift_right(v___x_169_, v___x_170_);
 v___x_172_ = lean_uint64_shift_left(v___x_171_, v___x_170_);
 v___x_173_ = lean_uint64_once(&l_Lean_Elab_Tactic_NormCast_proveEqUsing___closed__0, &l_Lean_Elab_Tactic_NormCast_proveEqUsing___closed__0_once, _init_l_Lean_Elab_Tactic_NormCast_proveEqUsing___closed__0);

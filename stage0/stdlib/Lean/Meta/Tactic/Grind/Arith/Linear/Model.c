@@ -664,7 +664,7 @@ v_reusejp_160_:
 uint64_t v___x_162_; uint64_t v___x_163_; uint64_t v___x_164_; uint64_t v___x_165_; uint64_t v___x_166_; uint64_t v_key_167_; lean_object* v___x_168_; lean_object* v___x_169_; lean_object* v___x_170_; 
 lean_ctor_set_uint8(v_config_161_, 9, v___x_159_);
 v___x_162_ = l_Lean_Meta_Context_configKey(v_a_121_);
-v___x_163_ = 2ULL;
+v___x_163_ = 3ULL;
 v___x_164_ = lean_uint64_shift_right(v___x_162_, v___x_163_);
 v___x_165_ = lean_uint64_shift_left(v___x_164_, v___x_163_);
 v___x_166_ = lean_uint64_once(&l___private_Lean_Meta_Tactic_Grind_Arith_Linear_Model_0__Lean_Meta_Grind_Arith_Linear_hasType___closed__0, &l___private_Lean_Meta_Tactic_Grind_Arith_Linear_Model_0__Lean_Meta_Grind_Arith_Linear_hasType___closed__0_once, _init_l___private_Lean_Meta_Tactic_Grind_Arith_Linear_Model_0__Lean_Meta_Grind_Arith_Linear_hasType___closed__0);

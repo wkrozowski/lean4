@@ -22053,7 +22053,7 @@ v_reusejp_6706_:
 uint64_t v___x_6708_; uint64_t v___x_6709_; uint64_t v___x_6710_; uint64_t v___x_6711_; uint64_t v___x_6712_; uint64_t v_key_6713_; lean_object* v___x_6714_; lean_object* v___x_6715_; lean_object* v___x_6716_; 
 lean_ctor_set_uint8(v_config_6707_, 9, v___x_6593_);
 v___x_6708_ = l_Lean_Meta_Context_configKey(v___y_6601_);
-v___x_6709_ = 2ULL;
+v___x_6709_ = 3ULL;
 v___x_6710_ = lean_uint64_shift_right(v___x_6708_, v___x_6709_);
 v___x_6711_ = lean_uint64_shift_left(v___x_6710_, v___x_6709_);
 v___x_6712_ = l_Lean_Meta_TransparencyMode_toUInt64(v___x_6593_);

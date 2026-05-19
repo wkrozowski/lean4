@@ -3023,7 +3023,7 @@ v_reusejp_915_:
 uint64_t v___x_917_; uint64_t v___x_918_; uint64_t v___x_919_; uint8_t v___x_920_; uint64_t v___x_921_; uint64_t v___x_922_; uint64_t v_key_923_; lean_object* v___x_924_; lean_object* v___x_925_; lean_object* v___x_926_; 
 lean_ctor_set_uint8(v_config_916_, 9, v___x_914_);
 v___x_917_ = l_Lean_Meta_Context_configKey(v___y_877_);
-v___x_918_ = 2ULL;
+v___x_918_ = 3ULL;
 v___x_919_ = lean_uint64_shift_right(v___x_917_, v___x_918_);
 v___x_920_ = 0;
 v___x_921_ = lean_uint64_shift_left(v___x_919_, v___x_918_);
@@ -4025,7 +4025,7 @@ v_reusejp_1313_:
 uint64_t v___x_1315_; uint64_t v___x_1316_; uint64_t v___x_1317_; uint64_t v___x_1318_; uint64_t v___x_1319_; uint64_t v_key_1320_; lean_object* v___x_1321_; lean_object* v___x_1322_; lean_object* v___x_1323_; 
 lean_ctor_set_uint8(v_config_1314_, 9, v___x_1312_);
 v___x_1315_ = l_Lean_Meta_Context_configKey(v___x_1269_);
-v___x_1316_ = 2ULL;
+v___x_1316_ = 3ULL;
 v___x_1317_ = lean_uint64_shift_right(v___x_1315_, v___x_1316_);
 v___x_1318_ = lean_uint64_shift_left(v___x_1317_, v___x_1316_);
 v___x_1319_ = lean_uint64_once(&l___private_Lean_Elab_Tactic_Monotonicity_0__Lean_Meta_Monotonicity_initFn___lam__1___closed__0_00___x40_Lean_Elab_Tactic_Monotonicity_1250514167____hygCtx___hyg_2_, &l___private_Lean_Elab_Tactic_Monotonicity_0__Lean_Meta_Monotonicity_initFn___lam__1___closed__0_00___x40_Lean_Elab_Tactic_Monotonicity_1250514167____hygCtx___hyg_2__once, _init_l___private_Lean_Elab_Tactic_Monotonicity_0__Lean_Meta_Monotonicity_initFn___lam__1___closed__0_00___x40_Lean_Elab_Tactic_Monotonicity_1250514167____hygCtx___hyg_2_);

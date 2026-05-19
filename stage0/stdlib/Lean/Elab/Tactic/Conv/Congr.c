@@ -9712,7 +9712,7 @@ v_reusejp_2872_:
 uint64_t v___x_2874_; uint64_t v___x_2875_; uint64_t v___x_2876_; lean_object* v___x_2877_; uint64_t v___x_2878_; uint64_t v___x_2879_; uint64_t v_key_2880_; lean_object* v___x_2881_; lean_object* v___x_2882_; lean_object* v___x_2883_; 
 lean_ctor_set_uint8(v_config_2873_, 9, v___x_2871_);
 v___x_2874_ = l_Lean_Meta_Context_configKey(v___y_2804_);
-v___x_2875_ = 2ULL;
+v___x_2875_ = 3ULL;
 v___x_2876_ = lean_uint64_shift_right(v___x_2874_, v___x_2875_);
 v___x_2877_ = lean_expr_instantiate_rev_range(v_fst_2835_, v_fst_2836_, v_a_2802_, v_xs_2801_);
 lean_dec(v_fst_2836_);

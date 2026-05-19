@@ -34543,7 +34543,7 @@ goto v_resetjp_11031_;
 v_resetjp_11031_:
 {
 uint64_t v___x_11034_; uint64_t v___x_11035_; uint64_t v___x_11036_; uint64_t v___x_11037_; uint64_t v_key_11038_; lean_object* v___x_11039_; lean_object* v___x_11041_; 
-v___x_11034_ = 2ULL;
+v___x_11034_ = 3ULL;
 v___x_11035_ = lean_uint64_shift_right(v___x_11030_, v___x_11034_);
 v___x_11036_ = lean_uint64_shift_left(v___x_11035_, v___x_11034_);
 v___x_11037_ = l_Lean_Meta_TransparencyMode_toUInt64(v___x_10986_);

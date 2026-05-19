@@ -3308,7 +3308,7 @@ v_reusejp_878_:
 uint64_t v___x_880_; uint64_t v___x_881_; uint64_t v___x_882_; uint64_t v___x_883_; uint64_t v___x_884_; uint64_t v_key_885_; lean_object* v___x_886_; lean_object* v___x_887_; lean_object* v___x_888_; 
 lean_ctor_set_uint8(v_config_879_, 9, v___x_877_);
 v___x_880_ = l_Lean_Meta_Context_configKey(v___y_841_);
-v___x_881_ = 2ULL;
+v___x_881_ = 3ULL;
 v___x_882_ = lean_uint64_shift_right(v___x_880_, v___x_881_);
 v___x_883_ = lean_uint64_shift_left(v___x_882_, v___x_881_);
 v___x_884_ = lean_uint64_once(&l_Lean_Meta_injectionCore___lam__1___closed__14, &l_Lean_Meta_injectionCore___lam__1___closed__14_once, _init_l_Lean_Meta_injectionCore___lam__1___closed__14);

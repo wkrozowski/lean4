@@ -7633,7 +7633,7 @@ v_reusejp_2566_:
 uint64_t v___x_2568_; uint64_t v___x_2569_; uint64_t v___x_2570_; uint64_t v___x_2571_; uint64_t v___x_2572_; uint64_t v_key_2573_; lean_object* v___x_2574_; lean_object* v___x_2575_; lean_object* v___x_2576_; 
 lean_ctor_set_uint8(v_config_2567_, 9, v___x_2565_);
 v___x_2568_ = l_Lean_Meta_Context_configKey(v_a_2528_);
-v___x_2569_ = 2ULL;
+v___x_2569_ = 3ULL;
 v___x_2570_ = lean_uint64_shift_right(v___x_2568_, v___x_2569_);
 v___x_2571_ = lean_uint64_shift_left(v___x_2570_, v___x_2569_);
 v___x_2572_ = lean_uint64_once(&l_Lean_Meta_mkSimpCongrTheorem___closed__0, &l_Lean_Meta_mkSimpCongrTheorem___closed__0_once, _init_l_Lean_Meta_mkSimpCongrTheorem___closed__0);

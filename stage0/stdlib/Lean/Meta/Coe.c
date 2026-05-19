@@ -6290,7 +6290,7 @@ v_reusejp_2169_:
 uint64_t v___x_2171_; uint64_t v___x_2172_; uint64_t v___x_2173_; lean_object* v___f_2174_; lean_object* v___f_2175_; uint8_t v___x_2176_; lean_object* v___x_2177_; uint64_t v___x_2178_; uint64_t v___x_2179_; uint64_t v_key_2180_; lean_object* v___x_2181_; lean_object* v___x_2182_; lean_object* v___x_2183_; 
 lean_ctor_set_uint8(v_config_2170_, 9, v___x_2168_);
 v___x_2171_ = l_Lean_Meta_Context_configKey(v_a_2131_);
-v___x_2172_ = 2ULL;
+v___x_2172_ = 3ULL;
 v___x_2173_ = lean_uint64_shift_right(v___x_2171_, v___x_2172_);
 v___f_2174_ = ((lean_object*)(l_Lean_Meta_expandCoe___closed__0));
 v___f_2175_ = ((lean_object*)(l_Lean_Meta_expandCoe___closed__1));
@@ -9552,7 +9552,7 @@ v_reusejp_3197_:
 uint64_t v___x_3199_; uint64_t v___x_3200_; uint64_t v___x_3201_; uint64_t v___x_3202_; uint64_t v___x_3203_; uint64_t v_key_3204_; lean_object* v___x_3205_; lean_object* v___x_3206_; lean_object* v___x_3207_; 
 lean_ctor_set_uint8(v_config_3198_, 9, v___x_3196_);
 v___x_3199_ = l_Lean_Meta_Context_configKey(v_a_3159_);
-v___x_3200_ = 2ULL;
+v___x_3200_ = 3ULL;
 v___x_3201_ = lean_uint64_shift_right(v___x_3199_, v___x_3200_);
 v___x_3202_ = lean_uint64_shift_left(v___x_3201_, v___x_3200_);
 v___x_3203_ = lean_uint64_once(&l_Lean_Meta_isTypeApp_x3f___closed__0, &l_Lean_Meta_isTypeApp_x3f___closed__0_once, _init_l_Lean_Meta_isTypeApp_x3f___closed__0);

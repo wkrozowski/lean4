@@ -5194,7 +5194,7 @@ v_reusejp_1685_:
 uint64_t v___x_1687_; uint64_t v___x_1688_; uint64_t v___x_1689_; uint64_t v___x_1690_; uint64_t v___x_1691_; uint64_t v_key_1692_; lean_object* v___x_1693_; lean_object* v___x_1694_; lean_object* v___x_1695_; uint8_t v___x_1696_; lean_object* v___x_1697_; lean_object* v___x_1698_; uint8_t v___x_1699_; uint8_t v___x_1700_; 
 lean_ctor_set_uint8(v_config_1686_, 9, v___y_1636_);
 v___x_1687_ = l_Lean_Meta_Context_configKey(v___y_1633_);
-v___x_1688_ = 2ULL;
+v___x_1688_ = 3ULL;
 v___x_1689_ = lean_uint64_shift_right(v___x_1687_, v___x_1688_);
 v___x_1690_ = lean_uint64_shift_left(v___x_1689_, v___x_1688_);
 v___x_1691_ = l_Lean_Meta_TransparencyMode_toUInt64(v___y_1636_);

@@ -2096,7 +2096,7 @@ v_reusejp_538_:
 uint64_t v___x_540_; uint64_t v___x_541_; uint64_t v___x_542_; lean_object* v___x_543_; uint64_t v___x_544_; uint64_t v___x_545_; uint64_t v_key_546_; lean_object* v___x_547_; lean_object* v___x_548_; lean_object* v___x_549_; 
 lean_ctor_set_uint8(v_config_539_, 9, v___x_537_);
 v___x_540_ = l_Lean_Meta_Context_configKey(v___y_466_);
-v___x_541_ = 2ULL;
+v___x_541_ = 3ULL;
 v___x_542_ = lean_uint64_shift_right(v___x_540_, v___x_541_);
 v___x_543_ = lean_expr_instantiate_rev_range(v_fst_497_, v_fst_498_, v_a_463_, v_args_462_);
 lean_dec(v_fst_498_);

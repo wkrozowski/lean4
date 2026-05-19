@@ -24213,7 +24213,7 @@ v_reusejp_7069_:
 uint64_t v___x_7071_; uint64_t v___x_7072_; uint64_t v___x_7073_; lean_object* v___x_7074_; uint64_t v___x_7075_; uint64_t v___x_7076_; uint64_t v_key_7077_; lean_object* v___x_7078_; lean_object* v___x_7079_; lean_object* v___x_7080_; 
 lean_ctor_set_uint8(v_config_7070_, 9, v___x_7068_);
 v___x_7071_ = l_Lean_Meta_Context_configKey(v___y_7028_);
-v___x_7072_ = 2ULL;
+v___x_7072_ = 3ULL;
 v___x_7073_ = lean_uint64_shift_right(v___x_7071_, v___x_7072_);
 v___x_7074_ = l_Lean_Expr_mvarId_x21(v_a_7035_);
 lean_dec(v_a_7035_);

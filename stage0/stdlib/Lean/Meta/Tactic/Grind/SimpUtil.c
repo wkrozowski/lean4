@@ -4793,7 +4793,7 @@ v_reusejp_1479_:
 uint64_t v___x_1481_; uint64_t v___x_1482_; uint64_t v___x_1483_; uint64_t v___x_1484_; uint64_t v___x_1485_; uint64_t v_key_1486_; lean_object* v___x_1487_; lean_object* v___x_1488_; lean_object* v___x_1489_; 
 lean_ctor_set_uint8(v_config_1480_, 9, v___x_1478_);
 v___x_1481_ = l_Lean_Meta_Context_configKey(v___y_1426_);
-v___x_1482_ = 2ULL;
+v___x_1482_ = 3ULL;
 v___x_1483_ = lean_uint64_shift_right(v___x_1481_, v___x_1482_);
 v___x_1484_ = lean_uint64_shift_left(v___x_1483_, v___x_1482_);
 v___x_1485_ = lean_uint64_once(&l_Lean_Meta_Grind_reduceCtorEqCheap___lam__0___closed__0, &l_Lean_Meta_Grind_reduceCtorEqCheap___lam__0___closed__0_once, _init_l_Lean_Meta_Grind_reduceCtorEqCheap___lam__0___closed__0);

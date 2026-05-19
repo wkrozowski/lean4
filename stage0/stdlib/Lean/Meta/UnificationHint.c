@@ -4973,7 +4973,7 @@ v_reusejp_1707_:
 uint64_t v___x_1709_; uint64_t v___x_1710_; uint64_t v___x_1711_; uint64_t v___x_1712_; uint64_t v___x_1713_; uint64_t v_key_1714_; lean_object* v___x_1715_; lean_object* v___x_1716_; lean_object* v___x_1717_; 
 lean_ctor_set_uint8(v_config_1708_, 9, v___x_1706_);
 v___x_1709_ = l_Lean_Meta_Context_configKey(v_a_1669_);
-v___x_1710_ = 2ULL;
+v___x_1710_ = 3ULL;
 v___x_1711_ = lean_uint64_shift_right(v___x_1709_, v___x_1710_);
 v___x_1712_ = lean_uint64_shift_left(v___x_1711_, v___x_1710_);
 v___x_1713_ = lean_uint64_once(&l___private_Lean_Meta_UnificationHint_0__Lean_Meta_tryUnificationHints_isDefEqPattern___closed__0, &l___private_Lean_Meta_UnificationHint_0__Lean_Meta_tryUnificationHints_isDefEqPattern___closed__0_once, _init_l___private_Lean_Meta_UnificationHint_0__Lean_Meta_tryUnificationHints_isDefEqPattern___closed__0);

@@ -29055,7 +29055,7 @@ lean_ctor_set_uint8(v_config_11272_, 16, v_zetaDelta_11258_);
 lean_ctor_set_uint8(v_config_11272_, 17, v_zetaUnused_11259_);
 lean_ctor_set_uint8(v_config_11272_, 18, v_zetaHave_11260_);
 v___x_11273_ = l_Lean_Meta_Context_configKey(v___y_11232_);
-v___x_11274_ = 2ULL;
+v___x_11274_ = 3ULL;
 v___x_11275_ = lean_uint64_shift_right(v___x_11273_, v___x_11274_);
 v___f_11276_ = ((lean_object*)(l___private_Lean_Elab_Tactic_Do_Spec_0__Lean_Elab_Tactic_Do_dischargeFailEntails___at___00__private_Lean_Elab_Tactic_Do_Spec_0__Lean_Elab_Tactic_Do_dischargePostEntails___at___00Lean_Elab_Tactic_Do_mSpec___at___00__private_Lean_Elab_Tactic_Do_VCGen_0__Lean_Elab_Tactic_Do_VCGen_genVCs_onWPApp_spec__11_spec__20_spec__27___closed__2));
 lean_inc_ref_n(v_Q_x27_11228_, 2);
@@ -30003,7 +30003,7 @@ v_reusejp_11579_:
 uint64_t v___x_11581_; uint64_t v___x_11582_; uint64_t v___x_11583_; lean_object* v___f_11584_; lean_object* v___f_11585_; lean_object* v___f_11586_; uint8_t v_a_11588_; lean_object* v___f_11647_; uint64_t v___x_11648_; uint64_t v___x_11649_; uint64_t v_key_11650_; lean_object* v___x_11651_; lean_object* v___x_11652_; lean_object* v___x_11653_; 
 lean_ctor_set_uint8(v_config_11580_, 9, v___x_11578_);
 v___x_11581_ = l_Lean_Meta_Context_configKey(v___y_11535_);
-v___x_11582_ = 2ULL;
+v___x_11582_ = 3ULL;
 v___x_11583_ = lean_uint64_shift_right(v___x_11581_, v___x_11582_);
 v___f_11584_ = ((lean_object*)(l___private_Lean_Elab_Tactic_Do_Spec_0__Lean_Elab_Tactic_Do_dischargePostEntails___at___00Lean_Elab_Tactic_Do_mSpec___at___00__private_Lean_Elab_Tactic_Do_VCGen_0__Lean_Elab_Tactic_Do_VCGen_genVCs_onWPApp_spec__11_spec__20___closed__0));
 lean_inc_ref(v_Q_11530_);
@@ -45656,7 +45656,7 @@ goto v_resetjp_16674_;
 v_resetjp_16674_:
 {
 uint64_t v___x_16677_; uint64_t v___x_16678_; uint64_t v___x_16679_; uint64_t v___x_16680_; uint64_t v_key_16681_; lean_object* v___x_16682_; lean_object* v___x_16684_; 
-v___x_16677_ = 2ULL;
+v___x_16677_ = 3ULL;
 v___x_16678_ = lean_uint64_shift_right(v___x_16673_, v___x_16677_);
 v___x_16679_ = lean_uint64_shift_left(v___x_16678_, v___x_16677_);
 v___x_16680_ = l_Lean_Meta_TransparencyMode_toUInt64(v___x_16629_);

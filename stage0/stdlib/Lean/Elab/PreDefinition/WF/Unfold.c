@@ -9913,7 +9913,7 @@ lean_ctor_set_uint8(v_config_3802_, 16, v_zetaDelta_3678_);
 lean_ctor_set_uint8(v_config_3802_, 17, v_zetaUnused_3679_);
 lean_ctor_set_uint8(v_config_3802_, 18, v_zetaHave_3680_);
 v___x_3803_ = l_Lean_Meta_Context_configKey(v_a_3546_);
-v___x_3804_ = 2ULL;
+v___x_3804_ = 3ULL;
 v___x_3805_ = lean_uint64_shift_right(v___x_3803_, v___x_3804_);
 v___x_3806_ = lean_uint64_shift_left(v___x_3805_, v___x_3804_);
 v___x_3807_ = lean_uint64_once(&l___private_Lean_Elab_PreDefinition_WF_Unfold_0__Lean_Elab_WF_matcherPushArg___closed__7, &l___private_Lean_Elab_PreDefinition_WF_Unfold_0__Lean_Elab_WF_matcherPushArg___closed__7_once, _init_l___private_Lean_Elab_PreDefinition_WF_Unfold_0__Lean_Elab_WF_matcherPushArg___closed__7);
@@ -10181,7 +10181,7 @@ v_reusejp_3748_:
 uint64_t v___x_3750_; uint64_t v___x_3751_; uint64_t v___x_3752_; size_t v___x_3753_; lean_object* v___x_3754_; uint64_t v___x_3755_; uint64_t v___x_3756_; uint64_t v_key_3757_; lean_object* v___x_3758_; lean_object* v___x_3759_; lean_object* v___x_3760_; 
 lean_ctor_set_uint8(v_config_3749_, 9, v___x_3691_);
 v___x_3750_ = l_Lean_Meta_Context_configKey(v_a_3546_);
-v___x_3751_ = 2ULL;
+v___x_3751_ = 3ULL;
 v___x_3752_ = lean_uint64_shift_right(v___x_3750_, v___x_3751_);
 v___x_3753_ = ((size_t)0ULL);
 v___x_3754_ = l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00__private_Lean_Elab_PreDefinition_WF_Unfold_0__Lean_Elab_WF_matcherPushArg_spec__4(v_sz_3747_, v___x_3753_, v___x_3746_);
@@ -11339,7 +11339,7 @@ v_reusejp_4161_:
 uint64_t v___x_4163_; uint64_t v___x_4164_; uint64_t v___x_4165_; lean_object* v___x_4166_; lean_object* v___x_4167_; uint64_t v___x_4168_; uint64_t v___x_4169_; uint64_t v_key_4170_; lean_object* v___x_4171_; lean_object* v___x_4172_; lean_object* v___x_4173_; 
 lean_ctor_set_uint8(v_config_4162_, 9, v___x_4160_);
 v___x_4163_ = l_Lean_Meta_Context_configKey(v_a_4118_);
-v___x_4164_ = 2ULL;
+v___x_4164_ = 3ULL;
 v___x_4165_ = lean_uint64_shift_right(v___x_4163_, v___x_4164_);
 v___x_4166_ = lean_obj_once(&l___private_Lean_Elab_PreDefinition_WF_Unfold_0__Lean_Elab_WF_mkUnfoldProof___closed__6, &l___private_Lean_Elab_PreDefinition_WF_Unfold_0__Lean_Elab_WF_mkUnfoldProof___closed__6_once, _init_l___private_Lean_Elab_PreDefinition_WF_Unfold_0__Lean_Elab_WF_mkUnfoldProof___closed__6);
 v___x_4167_ = l_Lean_Options_empty;

@@ -1024,7 +1024,7 @@ goto v_resetjp_217_;
 v_resetjp_217_:
 {
 uint64_t v___x_220_; uint64_t v___x_221_; uint64_t v___x_222_; uint64_t v___x_223_; uint64_t v_key_224_; lean_object* v___x_225_; lean_object* v___x_227_; 
-v___x_220_ = 2ULL;
+v___x_220_ = 3ULL;
 v___x_221_ = lean_uint64_shift_right(v___x_216_, v___x_220_);
 v___x_222_ = lean_uint64_shift_left(v___x_221_, v___x_220_);
 v___x_223_ = lean_uint64_once(&l_Lean_Elab_Tactic_Conv_matchPattern_x3f___lam__0___closed__0, &l_Lean_Elab_Tactic_Conv_matchPattern_x3f___lam__0___closed__0_once, _init_l_Lean_Elab_Tactic_Conv_matchPattern_x3f___lam__0___closed__0);

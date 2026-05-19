@@ -14827,7 +14827,7 @@ uint64_t v___x_4883_; uint64_t v___x_4884_; uint64_t v___x_4885_; uint64_t v___x
 lean_ctor_set_uint8(v_config_4882_, 9, v___x_4880_);
 v___x_4883_ = l_Lean_Meta_Context_configKey(v___x_4857_);
 lean_dec_ref(v___x_4857_);
-v___x_4884_ = 2ULL;
+v___x_4884_ = 3ULL;
 v___x_4885_ = lean_uint64_shift_right(v___x_4883_, v___x_4884_);
 v___x_4886_ = lean_uint64_shift_left(v___x_4885_, v___x_4884_);
 v___x_4887_ = lean_uint64_once(&l___private_Lean_Meta_LetToHave_0__Lean_Meta_LetToHave_main___lam__3___closed__6, &l___private_Lean_Meta_LetToHave_0__Lean_Meta_LetToHave_main___lam__3___closed__6_once, _init_l___private_Lean_Meta_LetToHave_0__Lean_Meta_LetToHave_main___lam__3___closed__6);

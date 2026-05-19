@@ -3606,7 +3606,7 @@ v_reusejp_1206_:
 uint64_t v___x_1208_; uint64_t v___x_1209_; uint64_t v___x_1210_; uint64_t v___x_1211_; uint64_t v___x_1212_; uint64_t v_key_1213_; lean_object* v___x_1214_; lean_object* v___x_1215_; lean_object* v___x_1216_; 
 lean_ctor_set_uint8(v_config_1207_, 9, v___x_1205_);
 v___x_1208_ = l_Lean_Meta_Context_configKey(v___x_1162_);
-v___x_1209_ = 2ULL;
+v___x_1209_ = 3ULL;
 v___x_1210_ = lean_uint64_shift_right(v___x_1208_, v___x_1209_);
 v___x_1211_ = lean_uint64_shift_left(v___x_1210_, v___x_1209_);
 v___x_1212_ = lean_uint64_once(&l___private_Lean_Meta_Tactic_Rfl_0__Lean_Meta_Rfl_initFn___lam__3___closed__7_00___x40_Lean_Meta_Tactic_Rfl_914023288____hygCtx___hyg_2_, &l___private_Lean_Meta_Tactic_Rfl_0__Lean_Meta_Rfl_initFn___lam__3___closed__7_00___x40_Lean_Meta_Tactic_Rfl_914023288____hygCtx___hyg_2__once, _init_l___private_Lean_Meta_Tactic_Rfl_0__Lean_Meta_Rfl_initFn___lam__3___closed__7_00___x40_Lean_Meta_Tactic_Rfl_914023288____hygCtx___hyg_2_);
@@ -7945,7 +7945,7 @@ v_reusejp_2701_:
 uint64_t v___x_2703_; uint64_t v___x_2704_; uint64_t v___x_2705_; uint64_t v___x_2706_; uint64_t v___x_2707_; uint64_t v_key_2708_; lean_object* v___x_2709_; lean_object* v___x_2710_; lean_object* v___x_2711_; 
 lean_ctor_set_uint8(v_config_2702_, 9, v___x_2700_);
 v___x_2703_ = l_Lean_Meta_Context_configKey(v_a_2661_);
-v___x_2704_ = 2ULL;
+v___x_2704_ = 3ULL;
 v___x_2705_ = lean_uint64_shift_right(v___x_2703_, v___x_2704_);
 v___x_2706_ = lean_uint64_shift_left(v___x_2705_, v___x_2704_);
 v___x_2707_ = lean_uint64_once(&l___private_Lean_Meta_Tactic_Rfl_0__Lean_Meta_Rfl_initFn___lam__3___closed__7_00___x40_Lean_Meta_Tactic_Rfl_914023288____hygCtx___hyg_2_, &l___private_Lean_Meta_Tactic_Rfl_0__Lean_Meta_Rfl_initFn___lam__3___closed__7_00___x40_Lean_Meta_Tactic_Rfl_914023288____hygCtx___hyg_2__once, _init_l___private_Lean_Meta_Tactic_Rfl_0__Lean_Meta_Rfl_initFn___lam__3___closed__7_00___x40_Lean_Meta_Tactic_Rfl_914023288____hygCtx___hyg_2_);

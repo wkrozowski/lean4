@@ -1381,7 +1381,7 @@ v_reusejp_359_:
 uint64_t v___x_361_; uint64_t v___x_362_; uint64_t v___x_363_; uint64_t v___x_364_; uint64_t v___x_365_; uint64_t v_key_366_; lean_object* v___x_367_; lean_object* v___x_368_; lean_object* v___x_369_; 
 lean_ctor_set_uint8(v_config_360_, 9, v___x_358_);
 v___x_361_ = l_Lean_Meta_Context_configKey(v_a_321_);
-v___x_362_ = 2ULL;
+v___x_362_ = 3ULL;
 v___x_363_ = lean_uint64_shift_right(v___x_361_, v___x_362_);
 v___x_364_ = lean_uint64_shift_left(v___x_363_, v___x_362_);
 v___x_365_ = lean_uint64_once(&l___private_Lean_Compiler_LCNF_Types_0__Lean_Compiler_LCNF_toLCNFType_whnfEta___closed__0, &l___private_Lean_Compiler_LCNF_Types_0__Lean_Compiler_LCNF_toLCNFType_whnfEta___closed__0_once, _init_l___private_Lean_Compiler_LCNF_Types_0__Lean_Compiler_LCNF_toLCNFType_whnfEta___closed__0);

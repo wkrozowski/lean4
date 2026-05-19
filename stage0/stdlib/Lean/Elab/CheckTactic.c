@@ -1403,7 +1403,7 @@ v_reusejp_357_:
 uint64_t v___x_359_; uint64_t v___x_360_; uint64_t v___x_361_; uint64_t v___x_362_; uint64_t v___x_363_; uint64_t v_key_364_; lean_object* v___x_365_; lean_object* v___x_366_; lean_object* v___x_367_; 
 lean_ctor_set_uint8(v_config_358_, 9, v___x_356_);
 v___x_359_ = l_Lean_Meta_Context_configKey(v___y_229_);
-v___x_360_ = 2ULL;
+v___x_360_ = 3ULL;
 v___x_361_ = lean_uint64_shift_right(v___x_359_, v___x_360_);
 v___x_362_ = lean_uint64_shift_left(v___x_361_, v___x_360_);
 v___x_363_ = lean_uint64_once(&l_Lean_Elab_CheckTactic_elabCheckTactic___lam__1___closed__9, &l_Lean_Elab_CheckTactic_elabCheckTactic___lam__1___closed__9_once, _init_l_Lean_Elab_CheckTactic_elabCheckTactic___lam__1___closed__9);

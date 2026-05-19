@@ -2287,7 +2287,7 @@ uint64_t v___x_673_; uint64_t v___x_674_; uint64_t v___x_675_; uint64_t v___x_67
 lean_ctor_set_uint8(v_config_672_, 9, v___x_670_);
 v___x_673_ = l_Lean_Meta_Context_configKey(v_a_633_);
 lean_dec_ref(v_a_633_);
-v___x_674_ = 2ULL;
+v___x_674_ = 3ULL;
 v___x_675_ = lean_uint64_shift_right(v___x_673_, v___x_674_);
 v___x_676_ = lean_uint64_shift_left(v___x_675_, v___x_674_);
 v___x_677_ = lean_uint64_once(&l___private_Lean_PrettyPrinter_Delaborator_FieldNotation_0__Lean_PrettyPrinter_Delaborator_typeMatchesBaseName___closed__0, &l___private_Lean_PrettyPrinter_Delaborator_FieldNotation_0__Lean_PrettyPrinter_Delaborator_typeMatchesBaseName___closed__0_once, _init_l___private_Lean_PrettyPrinter_Delaborator_FieldNotation_0__Lean_PrettyPrinter_Delaborator_typeMatchesBaseName___closed__0);

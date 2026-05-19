@@ -8511,7 +8511,7 @@ v_reusejp_3387_:
 uint64_t v___x_3389_; uint64_t v___x_3390_; uint64_t v___x_3391_; lean_object* v___x_3392_; lean_object* v___x_3393_; uint64_t v___x_3394_; uint64_t v___x_3395_; uint64_t v_key_3396_; lean_object* v___x_3397_; lean_object* v___x_3398_; lean_object* v___x_3399_; 
 lean_ctor_set_uint8(v_config_3388_, 9, v___x_3386_);
 v___x_3389_ = l_Lean_Meta_Context_configKey(v_a_3349_);
-v___x_3390_ = 2ULL;
+v___x_3390_ = 3ULL;
 v___x_3391_ = lean_uint64_shift_right(v___x_3389_, v___x_3390_);
 v___x_3392_ = lean_unsigned_to_nat(1u);
 v___x_3393_ = l_Lean_Syntax_getArg(v_stx_3344_, v___x_3392_);
@@ -8740,7 +8740,7 @@ v_reusejp_3517_:
 uint64_t v___x_3519_; uint64_t v___x_3520_; uint64_t v___x_3521_; lean_object* v___x_3522_; lean_object* v___x_3523_; uint64_t v___x_3524_; uint64_t v___x_3525_; uint64_t v_key_3526_; lean_object* v___x_3527_; lean_object* v___x_3528_; lean_object* v___x_3529_; 
 lean_ctor_set_uint8(v_config_3518_, 9, v___x_3516_);
 v___x_3519_ = l_Lean_Meta_Context_configKey(v_a_3479_);
-v___x_3520_ = 2ULL;
+v___x_3520_ = 3ULL;
 v___x_3521_ = lean_uint64_shift_right(v___x_3519_, v___x_3520_);
 v___x_3522_ = lean_unsigned_to_nat(1u);
 v___x_3523_ = l_Lean_Syntax_getArg(v_stx_3474_, v___x_3522_);
@@ -8969,7 +8969,7 @@ v_reusejp_3647_:
 uint64_t v___x_3649_; uint64_t v___x_3650_; uint64_t v___x_3651_; lean_object* v___x_3652_; lean_object* v___x_3653_; uint64_t v___x_3654_; uint64_t v___x_3655_; uint64_t v_key_3656_; lean_object* v___x_3657_; lean_object* v___x_3658_; lean_object* v___x_3659_; 
 lean_ctor_set_uint8(v_config_3648_, 9, v___x_3646_);
 v___x_3649_ = l_Lean_Meta_Context_configKey(v_a_3609_);
-v___x_3650_ = 2ULL;
+v___x_3650_ = 3ULL;
 v___x_3651_ = lean_uint64_shift_right(v___x_3649_, v___x_3650_);
 v___x_3652_ = lean_unsigned_to_nat(1u);
 v___x_3653_ = l_Lean_Syntax_getArg(v_stx_3604_, v___x_3652_);
@@ -9198,7 +9198,7 @@ v_reusejp_3777_:
 uint64_t v___x_3779_; uint64_t v___x_3780_; uint64_t v___x_3781_; lean_object* v___x_3782_; lean_object* v___x_3783_; uint64_t v___x_3784_; uint64_t v___x_3785_; uint64_t v_key_3786_; lean_object* v___x_3787_; lean_object* v___x_3788_; lean_object* v___x_3789_; 
 lean_ctor_set_uint8(v_config_3778_, 9, v___x_3776_);
 v___x_3779_ = l_Lean_Meta_Context_configKey(v_a_3739_);
-v___x_3780_ = 2ULL;
+v___x_3780_ = 3ULL;
 v___x_3781_ = lean_uint64_shift_right(v___x_3779_, v___x_3780_);
 v___x_3782_ = lean_unsigned_to_nat(1u);
 v___x_3783_ = l_Lean_Syntax_getArg(v_stx_3734_, v___x_3782_);

@@ -7507,7 +7507,7 @@ v_reusejp_2425_:
 uint64_t v___x_2427_; uint64_t v___x_2428_; uint64_t v___x_2429_; lean_object* v___f_2430_; uint64_t v___x_2431_; uint64_t v___x_2432_; uint64_t v_key_2433_; lean_object* v___x_2434_; lean_object* v___x_2435_; lean_object* v___x_2436_; 
 lean_ctor_set_uint8(v_config_2426_, 9, v___x_2424_);
 v___x_2427_ = l_Lean_Meta_Context_configKey(v___y_2371_);
-v___x_2428_ = 2ULL;
+v___x_2428_ = 3ULL;
 v___x_2429_ = lean_uint64_shift_right(v___x_2427_, v___x_2428_);
 lean_inc(v_a_2376_);
 v___f_2430_ = lean_alloc_closure((void*)(l___private_Lean_Elab_PreDefinition_WF_Fix_0__Lean_Elab_WF_replaceRecApps_loop___lam__0___boxed), 11, 2);

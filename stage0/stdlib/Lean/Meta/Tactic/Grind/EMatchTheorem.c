@@ -41231,7 +41231,7 @@ v_reusejp_13349_:
 uint64_t v___x_13351_; uint64_t v___x_13352_; uint64_t v___x_13353_; lean_object* v___x_13354_; lean_object* v___x_13355_; lean_object* v___x_13356_; uint64_t v___x_13357_; uint64_t v___x_13358_; uint64_t v_key_13359_; lean_object* v___x_13360_; lean_object* v___x_13361_; lean_object* v___x_13362_; 
 lean_ctor_set_uint8(v_config_13350_, 9, v___x_13348_);
 v___x_13351_ = l_Lean_Meta_Context_configKey(v___y_13306_);
-v___x_13352_ = 2ULL;
+v___x_13352_ = 3ULL;
 v___x_13353_ = lean_uint64_shift_right(v___x_13351_, v___x_13352_);
 v___x_13354_ = ((lean_object*)(l_Lean_Meta_Grind_mkEMatchTheoremUsingSingletonPatterns___lam__0___closed__0));
 lean_inc_ref(v_xs_13304_);
@@ -41463,7 +41463,7 @@ v_reusejp_13447_:
 uint64_t v___x_13449_; uint64_t v___x_13450_; uint64_t v___x_13451_; lean_object* v___x_13452_; lean_object* v___x_13453_; lean_object* v___f_13454_; uint64_t v___x_13455_; uint64_t v___x_13456_; uint64_t v_key_13457_; lean_object* v___x_13458_; lean_object* v___x_13459_; lean_object* v___x_13460_; 
 lean_ctor_set_uint8(v_config_13448_, 9, v___x_13446_);
 v___x_13449_ = l_Lean_Meta_Context_configKey(v_a_13406_);
-v___x_13450_ = 2ULL;
+v___x_13450_ = 3ULL;
 v___x_13451_ = lean_uint64_shift_right(v___x_13449_, v___x_13450_);
 v___x_13452_ = lean_box(v___x_13411_);
 v___x_13453_ = lean_box(v_showInfo_13405_);
@@ -42639,7 +42639,7 @@ v_reusejp_13834_:
 uint64_t v___x_13836_; uint64_t v___x_13837_; uint64_t v___x_13838_; uint64_t v___x_13839_; uint64_t v___x_13840_; uint64_t v_key_13841_; lean_object* v___x_13842_; lean_object* v___x_13843_; 
 lean_ctor_set_uint8(v_config_13835_, 9, v___x_13833_);
 v___x_13836_ = l_Lean_Meta_Context_configKey(v___y_13796_);
-v___x_13837_ = 2ULL;
+v___x_13837_ = 3ULL;
 v___x_13838_ = lean_uint64_shift_right(v___x_13836_, v___x_13837_);
 v___x_13839_ = lean_uint64_shift_left(v___x_13838_, v___x_13837_);
 v___x_13840_ = lean_uint64_once(&l_Lean_Meta_Grind_mkEMatchTheoremUsingSingletonPatterns___lam__0___closed__1, &l_Lean_Meta_Grind_mkEMatchTheoremUsingSingletonPatterns___lam__0___closed__1_once, _init_l_Lean_Meta_Grind_mkEMatchTheoremUsingSingletonPatterns___lam__0___closed__1);
@@ -43476,7 +43476,7 @@ v_reusejp_14060_:
 uint64_t v___x_14062_; uint64_t v___x_14063_; uint64_t v___x_14064_; lean_object* v___x_14065_; lean_object* v___x_14066_; lean_object* v___x_14067_; lean_object* v___f_14068_; uint8_t v___x_14069_; uint64_t v___x_14070_; uint64_t v___x_14071_; uint64_t v_key_14072_; lean_object* v___x_14073_; lean_object* v___x_14074_; lean_object* v___x_14075_; 
 lean_ctor_set_uint8(v_config_14061_, 9, v___x_14059_);
 v___x_14062_ = l_Lean_Meta_Context_configKey(v_a_13960_);
-v___x_14063_ = 2ULL;
+v___x_14063_ = 3ULL;
 v___x_14064_ = lean_uint64_shift_right(v___x_14062_, v___x_14063_);
 v___x_14065_ = lean_box(v_groundPatterns_13957_);
 v___x_14066_ = lean_box(v_showInfo_13958_);

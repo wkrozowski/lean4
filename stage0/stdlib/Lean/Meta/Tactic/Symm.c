@@ -3215,7 +3215,7 @@ v_reusejp_1059_:
 uint64_t v___x_1061_; uint64_t v___x_1062_; uint64_t v___x_1063_; uint64_t v___x_1064_; uint64_t v___x_1065_; uint64_t v_key_1066_; lean_object* v___x_1067_; lean_object* v___x_1068_; lean_object* v___x_1069_; 
 lean_ctor_set_uint8(v_config_1060_, 9, v___x_1058_);
 v___x_1061_ = l_Lean_Meta_Context_configKey(v___x_1015_);
-v___x_1062_ = 2ULL;
+v___x_1062_ = 3ULL;
 v___x_1063_ = lean_uint64_shift_right(v___x_1061_, v___x_1062_);
 v___x_1064_ = lean_uint64_shift_left(v___x_1063_, v___x_1062_);
 v___x_1065_ = lean_uint64_once(&l___private_Lean_Meta_Tactic_Symm_0__Lean_Meta_Symm_initFn___lam__0___closed__7_00___x40_Lean_Meta_Tactic_Symm_3447505512____hygCtx___hyg_2_, &l___private_Lean_Meta_Tactic_Symm_0__Lean_Meta_Symm_initFn___lam__0___closed__7_00___x40_Lean_Meta_Tactic_Symm_3447505512____hygCtx___hyg_2__once, _init_l___private_Lean_Meta_Tactic_Symm_0__Lean_Meta_Symm_initFn___lam__0___closed__7_00___x40_Lean_Meta_Tactic_Symm_3447505512____hygCtx___hyg_2_);
@@ -4394,7 +4394,7 @@ v_reusejp_1576_:
 uint64_t v___x_1578_; uint64_t v___x_1579_; uint64_t v___x_1580_; lean_object* v___x_1581_; uint8_t v___x_1582_; uint64_t v___x_1583_; uint64_t v___x_1584_; uint64_t v_key_1585_; lean_object* v___x_1586_; lean_object* v___x_1587_; lean_object* v___x_1588_; 
 lean_ctor_set_uint8(v_config_1577_, 9, v___x_1575_);
 v___x_1578_ = l_Lean_Meta_Context_configKey(v___y_1506_);
-v___x_1579_ = 2ULL;
+v___x_1579_ = 3ULL;
 v___x_1580_ = lean_uint64_shift_right(v___x_1578_, v___x_1579_);
 v___x_1581_ = lean_box(0);
 v___x_1582_ = 0;
@@ -5877,7 +5877,7 @@ v_reusejp_1989_:
 uint64_t v___x_1991_; uint64_t v___x_1992_; uint64_t v___x_1993_; lean_object* v___x_1994_; uint8_t v___x_1995_; uint64_t v___x_1996_; uint64_t v___x_1997_; uint64_t v_key_1998_; lean_object* v___x_1999_; lean_object* v___x_2000_; lean_object* v___x_2001_; 
 lean_ctor_set_uint8(v_config_1990_, 9, v___x_1988_);
 v___x_1991_ = l_Lean_Meta_Context_configKey(v___y_1923_);
-v___x_1992_ = 2ULL;
+v___x_1992_ = 3ULL;
 v___x_1993_ = lean_uint64_shift_right(v___x_1991_, v___x_1992_);
 v___x_1994_ = lean_box(0);
 v___x_1995_ = 0;

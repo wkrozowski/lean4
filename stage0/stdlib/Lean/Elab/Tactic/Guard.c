@@ -1484,7 +1484,7 @@ goto v_resetjp_340_;
 v_resetjp_340_:
 {
 uint64_t v___x_343_; uint64_t v___x_344_; uint64_t v___x_345_; uint64_t v___x_346_; uint64_t v_key_347_; lean_object* v___x_348_; lean_object* v___x_350_; 
-v___x_343_ = 2ULL;
+v___x_343_ = 3ULL;
 v___x_344_ = lean_uint64_shift_right(v___x_339_, v___x_343_);
 v___x_345_ = lean_uint64_shift_left(v___x_344_, v___x_343_);
 v___x_346_ = l_Lean_Meta_TransparencyMode_toUInt64(v_red_297_);

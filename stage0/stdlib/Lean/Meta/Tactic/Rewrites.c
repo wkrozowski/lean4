@@ -1704,7 +1704,7 @@ goto v_resetjp_479_;
 v_resetjp_479_:
 {
 uint64_t v___x_482_; uint64_t v___x_483_; uint64_t v___x_484_; uint64_t v___x_485_; uint64_t v_key_486_; lean_object* v___x_487_; lean_object* v___x_489_; 
-v___x_482_ = 2ULL;
+v___x_482_ = 3ULL;
 v___x_483_ = lean_uint64_shift_right(v___x_478_, v___x_482_);
 v___x_484_ = lean_uint64_shift_left(v___x_483_, v___x_482_);
 v___x_485_ = l_Lean_Meta_TransparencyMode_toUInt64(v___x_435_);
@@ -4675,7 +4675,7 @@ goto v_resetjp_1465_;
 v_resetjp_1465_:
 {
 uint64_t v___x_1468_; uint64_t v___x_1469_; lean_object* v___x_1470_; uint8_t v___x_1471_; uint64_t v___x_1472_; uint64_t v___x_1473_; uint64_t v_key_1474_; lean_object* v___x_1475_; lean_object* v___x_1477_; 
-v___x_1468_ = 2ULL;
+v___x_1468_ = 3ULL;
 v___x_1469_ = lean_uint64_shift_right(v___x_1464_, v___x_1468_);
 v___x_1470_ = l_Lean_Expr_mvarId_x21(v_a_1428_);
 lean_dec(v_a_1428_);

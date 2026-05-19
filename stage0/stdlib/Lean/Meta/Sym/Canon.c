@@ -12734,7 +12734,7 @@ v_reusejp_3915_:
 uint64_t v___x_3917_; uint64_t v___x_3918_; uint64_t v___x_3919_; uint64_t v___x_3920_; uint64_t v___x_3921_; uint64_t v_key_3922_; lean_object* v___x_3923_; lean_object* v___x_3924_; lean_object* v___x_3925_; 
 lean_ctor_set_uint8(v_config_3916_, 9, v___x_3873_);
 v___x_3917_ = l_Lean_Meta_Context_configKey(v___y_3878_);
-v___x_3918_ = 2ULL;
+v___x_3918_ = 3ULL;
 v___x_3919_ = lean_uint64_shift_right(v___x_3917_, v___x_3918_);
 v___x_3920_ = lean_uint64_shift_left(v___x_3919_, v___x_3918_);
 v___x_3921_ = l_Lean_Meta_TransparencyMode_toUInt64(v___x_3873_);

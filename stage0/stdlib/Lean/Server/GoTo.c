@@ -2425,7 +2425,7 @@ v_reusejp_666_:
 uint64_t v___x_668_; uint64_t v___x_669_; uint64_t v___x_670_; uint64_t v___x_671_; uint64_t v___x_672_; uint64_t v_key_673_; lean_object* v___x_674_; lean_object* v___x_675_; lean_object* v___x_676_; 
 lean_ctor_set_uint8(v_config_667_, 9, v___x_665_);
 v___x_668_ = l_Lean_Meta_Context_configKey(v_a_628_);
-v___x_669_ = 2ULL;
+v___x_669_ = 3ULL;
 v___x_670_ = lean_uint64_shift_right(v___x_668_, v___x_669_);
 v___x_671_ = lean_uint64_shift_left(v___x_670_, v___x_669_);
 v___x_672_ = lean_uint64_once(&l_Lean_Server_getInstanceProjectionArg_x3f___closed__0, &l_Lean_Server_getInstanceProjectionArg_x3f___closed__0_once, _init_l_Lean_Server_getInstanceProjectionArg_x3f___closed__0);

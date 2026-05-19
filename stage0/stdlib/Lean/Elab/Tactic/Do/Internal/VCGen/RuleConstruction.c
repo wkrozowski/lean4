@@ -4939,7 +4939,7 @@ v_reusejp_1674_:
 uint64_t v___x_1676_; uint64_t v___x_1677_; uint64_t v___x_1678_; uint64_t v___x_1679_; uint64_t v___x_1680_; uint64_t v_key_1681_; lean_object* v___x_1682_; lean_object* v___x_1683_; lean_object* v___x_1684_; 
 lean_ctor_set_uint8(v_config_1675_, 9, v___x_1673_);
 v___x_1676_ = l_Lean_Meta_Context_configKey(v___y_1633_);
-v___x_1677_ = 2ULL;
+v___x_1677_ = 3ULL;
 v___x_1678_ = lean_uint64_shift_right(v___x_1676_, v___x_1677_);
 v___x_1679_ = lean_uint64_shift_left(v___x_1678_, v___x_1677_);
 v___x_1680_ = lean_uint64_once(&l_Lean_Elab_Tactic_Do_Internal_VCGen_mkBackwardRuleFromSimpSpec___lam__1___closed__1, &l_Lean_Elab_Tactic_Do_Internal_VCGen_mkBackwardRuleFromSimpSpec___lam__1___closed__1_once, _init_l_Lean_Elab_Tactic_Do_Internal_VCGen_mkBackwardRuleFromSimpSpec___lam__1___closed__1);

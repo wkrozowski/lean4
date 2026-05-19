@@ -3143,7 +3143,7 @@ v_reusejp_1072_:
 uint64_t v___x_1074_; uint64_t v___x_1075_; uint64_t v___x_1076_; lean_object* v___x_1077_; uint64_t v___x_1078_; uint64_t v___x_1079_; uint64_t v_key_1080_; lean_object* v___x_1081_; lean_object* v___x_1082_; lean_object* v___x_1083_; 
 lean_ctor_set_uint8(v_config_1073_, 9, v_a_1024_);
 v___x_1074_ = l_Lean_Meta_Context_configKey(v_a_1026_);
-v___x_1075_ = 2ULL;
+v___x_1075_ = 3ULL;
 v___x_1076_ = lean_uint64_shift_right(v___x_1074_, v___x_1075_);
 v___x_1077_ = ((lean_object*)(l_List_forIn_x27_loop___at___00Lean_Meta_Canonicalizer_canon_spec__0___redArg___closed__0));
 v___x_1078_ = lean_uint64_shift_left(v___x_1076_, v___x_1075_);

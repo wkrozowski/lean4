@@ -435,7 +435,7 @@ v_reusejp_179_:
 uint64_t v___x_181_; uint64_t v___x_182_; uint64_t v___x_183_; lean_object* v___x_184_; lean_object* v___x_185_; lean_object* v___x_186_; uint8_t v___x_187_; uint8_t v___x_188_; uint64_t v___x_189_; uint64_t v___x_190_; uint64_t v_key_191_; lean_object* v___x_192_; lean_object* v___x_193_; lean_object* v___x_194_; 
 lean_ctor_set_uint8(v_config_180_, 9, v___x_178_);
 v___x_181_ = l_Lean_Meta_Context_configKey(v_a_80_);
-v___x_182_ = 2ULL;
+v___x_182_ = 3ULL;
 v___x_183_ = lean_uint64_shift_right(v___x_181_, v___x_182_);
 v___x_184_ = ((lean_object*)(l___private_Lean_Meta_Tactic_Unfold_0__Lean_Meta_unfold_pre___closed__0));
 v___x_185_ = lean_unsigned_to_nat(1000u);

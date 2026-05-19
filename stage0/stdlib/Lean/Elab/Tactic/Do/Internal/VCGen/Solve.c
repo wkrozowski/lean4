@@ -5713,7 +5713,7 @@ v_reusejp_2055_:
 uint64_t v___x_2057_; uint64_t v___x_2058_; uint64_t v___x_2059_; uint64_t v___x_2060_; uint64_t v___x_2061_; uint64_t v_key_2062_; lean_object* v___x_2063_; lean_object* v___x_2064_; lean_object* v___x_2065_; 
 lean_ctor_set_uint8(v_config_2056_, 9, v___x_2054_);
 v___x_2057_ = l_Lean_Meta_Context_configKey(v_a_2008_);
-v___x_2058_ = 2ULL;
+v___x_2058_ = 3ULL;
 v___x_2059_ = lean_uint64_shift_right(v___x_2057_, v___x_2058_);
 v___x_2060_ = lean_uint64_shift_left(v___x_2059_, v___x_2058_);
 v___x_2061_ = lean_uint64_once(&l___private_Lean_Elab_Tactic_Do_Internal_VCGen_Solve_0__Lean_Elab_Tactic_Do_Internal_VCGen_trySplit___closed__0, &l___private_Lean_Elab_Tactic_Do_Internal_VCGen_Solve_0__Lean_Elab_Tactic_Do_Internal_VCGen_trySplit___closed__0_once, _init_l___private_Lean_Elab_Tactic_Do_Internal_VCGen_Solve_0__Lean_Elab_Tactic_Do_Internal_VCGen_trySplit___closed__0);

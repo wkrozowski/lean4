@@ -2477,7 +2477,7 @@ v_reusejp_802_:
 uint64_t v___x_804_; uint64_t v___x_805_; uint64_t v___x_806_; uint64_t v___x_807_; uint64_t v___x_808_; uint64_t v_key_809_; lean_object* v___x_810_; lean_object* v___x_811_; lean_object* v___x_812_; 
 lean_ctor_set_uint8(v_config_803_, 9, v___x_801_);
 v___x_804_ = l_Lean_Meta_Context_configKey(v___y_685_);
-v___x_805_ = 2ULL;
+v___x_805_ = 3ULL;
 v___x_806_ = lean_uint64_shift_right(v___x_804_, v___x_805_);
 v___x_807_ = lean_uint64_shift_left(v___x_806_, v___x_805_);
 v___x_808_ = lean_uint64_once(&l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Meta_Check_0__Lean_Meta_addPPExplicitToExposeDiff_visit_spec__5___redArg___lam__0___closed__0, &l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Meta_Check_0__Lean_Meta_addPPExplicitToExposeDiff_visit_spec__5___redArg___lam__0___closed__0_once, _init_l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Meta_Check_0__Lean_Meta_addPPExplicitToExposeDiff_visit_spec__5___redArg___lam__0___closed__0);
@@ -3016,7 +3016,7 @@ v_reusejp_920_:
 uint64_t v___x_922_; uint64_t v___x_923_; uint64_t v___x_924_; uint64_t v___x_925_; uint64_t v___x_926_; uint64_t v_key_927_; lean_object* v___x_928_; lean_object* v___x_929_; lean_object* v___x_930_; 
 lean_ctor_set_uint8(v_config_921_, 9, v___x_919_);
 v___x_922_ = l_Lean_Meta_Context_configKey(v___y_848_);
-v___x_923_ = 2ULL;
+v___x_923_ = 3ULL;
 v___x_924_ = lean_uint64_shift_right(v___x_922_, v___x_923_);
 v___x_925_ = lean_uint64_shift_left(v___x_924_, v___x_923_);
 v___x_926_ = lean_uint64_once(&l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Meta_Check_0__Lean_Meta_addPPExplicitToExposeDiff_visit_spec__5___redArg___lam__0___closed__0, &l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Meta_Check_0__Lean_Meta_addPPExplicitToExposeDiff_visit_spec__5___redArg___lam__0___closed__0_once, _init_l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Meta_Check_0__Lean_Meta_addPPExplicitToExposeDiff_visit_spec__5___redArg___lam__0___closed__0);
@@ -13251,7 +13251,7 @@ v_reusejp_4265_:
 uint64_t v___x_4267_; uint64_t v___x_4268_; uint64_t v___x_4269_; uint64_t v___x_4270_; uint64_t v___x_4271_; uint64_t v_key_4272_; lean_object* v___x_4273_; lean_object* v___x_4274_; lean_object* v___x_4275_; 
 lean_ctor_set_uint8(v_config_4266_, 9, v_transparency_4225_);
 v___x_4267_ = l_Lean_Meta_Context_configKey(v_a_4226_);
-v___x_4268_ = 2ULL;
+v___x_4268_ = 3ULL;
 v___x_4269_ = lean_uint64_shift_right(v___x_4267_, v___x_4268_);
 v___x_4270_ = lean_uint64_shift_left(v___x_4269_, v___x_4268_);
 v___x_4271_ = l_Lean_Meta_TransparencyMode_toUInt64(v_transparency_4225_);
@@ -13384,7 +13384,7 @@ v_reusejp_4500_:
 uint64_t v___x_4502_; uint64_t v___x_4503_; uint64_t v___x_4504_; uint64_t v___x_4505_; uint64_t v___x_4506_; uint64_t v_key_4507_; lean_object* v___x_4508_; lean_object* v___x_4509_; lean_object* v___x_4510_; 
 lean_ctor_set_uint8(v_config_4501_, 9, v_transparency_4225_);
 v___x_4502_ = l_Lean_Meta_Context_configKey(v_a_4226_);
-v___x_4503_ = 2ULL;
+v___x_4503_ = 3ULL;
 v___x_4504_ = lean_uint64_shift_right(v___x_4502_, v___x_4503_);
 v___x_4505_ = lean_uint64_shift_left(v___x_4504_, v___x_4503_);
 v___x_4506_ = l_Lean_Meta_TransparencyMode_toUInt64(v_transparency_4225_);
@@ -13880,7 +13880,7 @@ v_reusejp_4401_:
 uint64_t v___x_4403_; uint64_t v___x_4404_; uint64_t v___x_4405_; uint64_t v___x_4406_; uint64_t v___x_4407_; uint64_t v_key_4408_; lean_object* v___x_4409_; lean_object* v___x_4410_; lean_object* v___x_4411_; 
 lean_ctor_set_uint8(v_config_4402_, 9, v_transparency_4225_);
 v___x_4403_ = l_Lean_Meta_Context_configKey(v_a_4226_);
-v___x_4404_ = 2ULL;
+v___x_4404_ = 3ULL;
 v___x_4405_ = lean_uint64_shift_right(v___x_4403_, v___x_4404_);
 v___x_4406_ = lean_uint64_shift_left(v___x_4405_, v___x_4404_);
 v___x_4407_ = l_Lean_Meta_TransparencyMode_toUInt64(v_transparency_4225_);
@@ -14031,7 +14031,7 @@ v_reusejp_4450_:
 uint64_t v___x_4452_; uint64_t v___x_4453_; uint64_t v___x_4454_; uint64_t v___x_4455_; uint64_t v___x_4456_; uint64_t v_key_4457_; lean_object* v___x_4458_; lean_object* v___x_4459_; lean_object* v___x_4460_; 
 lean_ctor_set_uint8(v_config_4451_, 9, v_transparency_4225_);
 v___x_4452_ = l_Lean_Meta_Context_configKey(v_a_4226_);
-v___x_4453_ = 2ULL;
+v___x_4453_ = 3ULL;
 v___x_4454_ = lean_uint64_shift_right(v___x_4452_, v___x_4453_);
 v___x_4455_ = lean_uint64_shift_left(v___x_4454_, v___x_4453_);
 v___x_4456_ = l_Lean_Meta_TransparencyMode_toUInt64(v_transparency_4225_);

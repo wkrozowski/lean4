@@ -9669,8 +9669,8 @@ lean_dec_ref(v___x_2972_);
 v___x_2974_ = l_Lean_Environment_mainModule(v_env_2961_);
 v___x_2975_ = ((lean_object*)(l_main___closed__12));
 v___x_2976_ = l_Lean_Name_append(v___x_2974_, v___x_2975_);
-lean_inc(v_head_2899_);
 v___x_2977_ = l_Lean_saveModuleData(v_head_2899_, v___x_2976_, v_a_2973_);
+lean_dec(v_a_2973_);
 lean_dec(v___x_2976_);
 if (lean_obj_tag(v___x_2977_) == 0)
 {

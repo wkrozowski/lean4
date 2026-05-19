@@ -313,7 +313,7 @@ return v___x_95_;
 LEAN_EXPORT uint64_t l_Lean_Compiler_LCNF_hashCode(uint8_t v_pu_96_, lean_object* v_code_97_){
 _start:
 {
-uint64_t v___y_99_; lean_object* v___y_100_; uint64_t v___y_101_; uint64_t v___y_102_; uint8_t v___y_108_; uint64_t v___y_109_; lean_object* v___y_110_; uint64_t v___y_111_; lean_object* v_fvarId_115_; lean_object* v_n_116_; uint8_t v_check_117_; uint8_t v_persistent_118_; lean_object* v_k_119_; 
+uint64_t v___y_99_; uint64_t v___y_100_; lean_object* v___y_101_; uint64_t v___y_102_; uint64_t v___y_108_; uint8_t v___y_109_; lean_object* v___y_110_; uint64_t v___y_111_; lean_object* v_fvarId_115_; lean_object* v_n_116_; uint8_t v_check_117_; uint8_t v_persistent_118_; lean_object* v_k_119_; 
 switch(lean_obj_tag(v_code_97_))
 {
 case 0:
@@ -580,21 +580,21 @@ return v___x_257_;
 v___jp_98_:
 {
 uint64_t v___x_103_; uint64_t v___x_104_; uint64_t v___x_105_; uint64_t v___x_106_; 
-v___x_103_ = lean_uint64_mix_hash(v___y_101_, v___y_102_);
-v___x_104_ = l_Lean_Compiler_LCNF_hashCode(v_pu_96_, v___y_100_);
+v___x_103_ = lean_uint64_mix_hash(v___y_100_, v___y_102_);
+v___x_104_ = l_Lean_Compiler_LCNF_hashCode(v_pu_96_, v___y_101_);
 v___x_105_ = lean_uint64_mix_hash(v___x_103_, v___x_104_);
 v___x_106_ = lean_uint64_mix_hash(v___y_99_, v___x_105_);
 return v___x_106_;
 }
 v___jp_107_:
 {
-if (v___y_108_ == 0)
+if (v___y_109_ == 0)
 {
 uint64_t v___x_112_; 
 v___x_112_ = 13ULL;
-v___y_99_ = v___y_109_;
-v___y_100_ = v___y_110_;
-v___y_101_ = v___y_111_;
+v___y_99_ = v___y_108_;
+v___y_100_ = v___y_111_;
+v___y_101_ = v___y_110_;
 v___y_102_ = v___x_112_;
 goto v___jp_98_;
 }
@@ -602,9 +602,9 @@ else
 {
 uint64_t v___x_113_; 
 v___x_113_ = 11ULL;
-v___y_99_ = v___y_109_;
-v___y_100_ = v___y_110_;
-v___y_101_ = v___y_111_;
+v___y_99_ = v___y_108_;
+v___y_100_ = v___y_111_;
+v___y_101_ = v___y_110_;
 v___y_102_ = v___x_113_;
 goto v___jp_98_;
 }
@@ -619,8 +619,8 @@ if (v_persistent_118_ == 0)
 {
 uint64_t v___x_123_; 
 v___x_123_ = 13ULL;
-v___y_108_ = v_check_117_;
-v___y_109_ = v___x_122_;
+v___y_108_ = v___x_122_;
+v___y_109_ = v_check_117_;
 v___y_110_ = v_k_119_;
 v___y_111_ = v___x_123_;
 goto v___jp_107_;
@@ -629,8 +629,8 @@ else
 {
 uint64_t v___x_124_; 
 v___x_124_ = 11ULL;
-v___y_108_ = v_check_117_;
-v___y_109_ = v___x_122_;
+v___y_108_ = v___x_122_;
+v___y_109_ = v_check_117_;
 v___y_110_ = v_k_119_;
 v___y_111_ = v___x_124_;
 goto v___jp_107_;

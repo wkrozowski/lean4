@@ -5222,7 +5222,7 @@ v_reusejp_1567_:
 uint64_t v___x_1569_; uint64_t v___x_1570_; uint64_t v___x_1571_; uint64_t v___x_1572_; uint64_t v___x_1573_; uint64_t v_key_1574_; lean_object* v___x_1575_; lean_object* v___x_1576_; lean_object* v___x_1577_; 
 lean_ctor_set_uint8(v_config_1568_, 9, v___y_1534_);
 v___x_1569_ = l_Lean_Meta_Context_configKey(v___y_1481_);
-v___x_1570_ = 2ULL;
+v___x_1570_ = 3ULL;
 v___x_1571_ = lean_uint64_shift_right(v___x_1569_, v___x_1570_);
 v___x_1572_ = lean_uint64_shift_left(v___x_1571_, v___x_1570_);
 v___x_1573_ = l_Lean_Meta_TransparencyMode_toUInt64(v___y_1534_);
@@ -6670,7 +6670,7 @@ v_reusejp_2234_:
 uint64_t v___x_2236_; uint64_t v___x_2237_; uint64_t v___x_2238_; uint64_t v___x_2239_; uint64_t v___x_2240_; uint64_t v_key_2241_; lean_object* v___x_2242_; lean_object* v___x_2243_; lean_object* v___x_2244_; 
 lean_ctor_set_uint8(v_config_2235_, 9, v___y_2202_);
 v___x_2236_ = l_Lean_Meta_Context_configKey(v_a_2190_);
-v___x_2237_ = 2ULL;
+v___x_2237_ = 3ULL;
 v___x_2238_ = lean_uint64_shift_right(v___x_2236_, v___x_2237_);
 v___x_2239_ = lean_uint64_shift_left(v___x_2238_, v___x_2237_);
 v___x_2240_ = l_Lean_Meta_TransparencyMode_toUInt64(v___y_2202_);
@@ -6947,7 +6947,7 @@ v_reusejp_2348_:
 uint64_t v___x_2350_; uint64_t v___x_2351_; uint64_t v___x_2352_; uint64_t v___x_2353_; uint64_t v___x_2354_; uint64_t v_key_2355_; lean_object* v___x_2356_; lean_object* v___x_2357_; lean_object* v___x_2358_; 
 lean_ctor_set_uint8(v_config_2349_, 9, v___y_2315_);
 v___x_2350_ = l_Lean_Meta_Context_configKey(v___y_2309_);
-v___x_2351_ = 2ULL;
+v___x_2351_ = 3ULL;
 v___x_2352_ = lean_uint64_shift_right(v___x_2350_, v___x_2351_);
 v___x_2353_ = lean_uint64_shift_left(v___x_2352_, v___x_2351_);
 v___x_2354_ = l_Lean_Meta_TransparencyMode_toUInt64(v___y_2315_);

@@ -176,7 +176,9 @@ LEAN_EXPORT lean_object* l_String_startValidPos(lean_object*);
 LEAN_EXPORT lean_object* l_String_startValidPos___boxed(lean_object*);
 LEAN_EXPORT lean_object* l_String_endValidPos(lean_object*);
 LEAN_EXPORT lean_object* l_String_endValidPos___boxed(lean_object*);
-LEAN_EXPORT lean_object* l_String_String_bytes(lean_object*);
+LEAN_EXPORT lean_object* l_String_bytes(lean_object*);
+LEAN_EXPORT lean_object* l_String_lengthAssumingAscii(lean_object*);
+LEAN_EXPORT lean_object* l_String_lengthAssumingAscii___boxed(lean_object*);
 LEAN_EXPORT lean_object* l_String_fromUTF8___redArg(lean_object* v_a_1_){
 _start:
 {
@@ -1382,12 +1384,29 @@ lean_dec_ref(v_s_473_);
 return v_res_474_;
 }
 }
-LEAN_EXPORT lean_object* l_String_String_bytes(lean_object* v_s_475_){
+LEAN_EXPORT lean_object* l_String_bytes(lean_object* v_s_475_){
 _start:
 {
 lean_object* v___x_476_; 
 v___x_476_ = lean_string_to_utf8(v_s_475_);
 return v___x_476_;
+}
+}
+LEAN_EXPORT lean_object* l_String_lengthAssumingAscii(lean_object* v_s_477_){
+_start:
+{
+lean_object* v___x_478_; 
+v___x_478_ = lean_string_utf8_byte_size(v_s_477_);
+return v___x_478_;
+}
+}
+LEAN_EXPORT lean_object* l_String_lengthAssumingAscii___boxed(lean_object* v_s_479_){
+_start:
+{
+lean_object* v_res_480_; 
+v_res_480_ = l_String_lengthAssumingAscii(v_s_479_);
+lean_dec_ref(v_s_479_);
+return v_res_480_;
 }
 }
 lean_object* runtime_initialize_Init_Data_String_PosRaw(uint8_t builtin);

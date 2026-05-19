@@ -535,7 +535,7 @@ v_reusejp_102_:
 uint64_t v___x_104_; uint64_t v___x_105_; uint64_t v___x_106_; uint64_t v___x_107_; uint64_t v___x_108_; uint64_t v_key_109_; lean_object* v___x_110_; lean_object* v___x_111_; lean_object* v___x_112_; 
 lean_ctor_set_uint8(v_config_103_, 9, v___x_101_);
 v___x_104_ = l_Lean_Meta_Context_configKey(v_a_64_);
-v___x_105_ = 2ULL;
+v___x_105_ = 3ULL;
 v___x_106_ = lean_uint64_shift_right(v___x_104_, v___x_105_);
 v___x_107_ = lean_uint64_shift_left(v___x_106_, v___x_105_);
 v___x_108_ = lean_uint64_once(&l___private_Lean_Meta_Sym_Arith_Functions_0__Lean_Meta_Sym_Arith_checkInst___closed__0, &l___private_Lean_Meta_Sym_Arith_Functions_0__Lean_Meta_Sym_Arith_checkInst___closed__0_once, _init_l___private_Lean_Meta_Sym_Arith_Functions_0__Lean_Meta_Sym_Arith_checkInst___closed__0);

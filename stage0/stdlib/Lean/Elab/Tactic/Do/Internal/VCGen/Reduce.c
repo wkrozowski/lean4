@@ -834,7 +834,7 @@ v_reusejp_230_:
 uint64_t v___x_232_; uint64_t v___x_233_; uint64_t v___x_234_; lean_object* v___x_235_; lean_object* v___x_236_; lean_object* v___x_237_; uint64_t v___x_238_; uint64_t v___x_239_; uint64_t v_key_240_; lean_object* v___x_241_; lean_object* v___x_242_; lean_object* v___x_243_; 
 lean_ctor_set_uint8(v_config_231_, 9, v___x_229_);
 v___x_232_ = l_Lean_Meta_Context_configKey(v_a_190_);
-v___x_233_ = 2ULL;
+v___x_233_ = 3ULL;
 v___x_234_ = lean_uint64_shift_right(v___x_232_, v___x_233_);
 v___x_235_ = lean_box(0);
 v___x_236_ = lean_mk_empty_array_with_capacity(v___x_228_);

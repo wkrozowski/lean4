@@ -5009,7 +5009,7 @@ v_reusejp_1806_:
 uint64_t v___x_1808_; uint64_t v___x_1809_; uint64_t v___x_1810_; lean_object* v___x_1811_; uint64_t v___x_1812_; uint64_t v___x_1813_; uint64_t v_key_1814_; lean_object* v___x_1815_; lean_object* v___x_1816_; lean_object* v___x_1817_; 
 lean_ctor_set_uint8(v_config_1807_, 9, v___x_1805_);
 v___x_1808_ = l_Lean_Meta_Context_configKey(v___y_1723_);
-v___x_1809_ = 2ULL;
+v___x_1809_ = 3ULL;
 v___x_1810_ = lean_uint64_shift_right(v___x_1808_, v___x_1809_);
 v___x_1811_ = lean_array_fget(v_fieldNames_1744_, v_idx_1735_);
 lean_dec(v_idx_1735_);
