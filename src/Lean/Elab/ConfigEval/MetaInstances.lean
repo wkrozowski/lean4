@@ -7,6 +7,7 @@ module
 
 prelude
 public import Lean.Elab.ConfigEval.Commands
+public import Lean.Elab.ConfigEval.Builtins -- TODO(kmill): remove after stage0 update
 public import Lean.Elab.ConfigEval.Instances
 public import Lean.Elab.DeprecatedSyntax  -- shake: skip (workaround for command elaborators failing to interpret `deprecatedSyntaxExt`, to be fixed #13108)
 
