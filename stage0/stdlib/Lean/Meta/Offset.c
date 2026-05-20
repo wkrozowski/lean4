@@ -4960,8 +4960,8 @@ goto v___jp_1029_;
 }
 else
 {
-lean_dec_ref(v_declName_1044_);
 lean_dec(v_pre_1045_);
+lean_dec_ref(v_declName_1044_);
 goto v___jp_1029_;
 }
 }

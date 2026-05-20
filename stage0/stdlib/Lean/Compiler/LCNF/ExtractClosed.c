@@ -3688,8 +3688,8 @@ goto v___jp_874_;
 }
 else
 {
-lean_dec(v_pre_941_);
 lean_dec_ref(v_pre_940_);
+lean_dec(v_pre_941_);
 lean_dec_ref(v_declName_939_);
 lean_dec_ref(v_value_938_);
 lean_dec_ref(v_decl_937_);
@@ -3701,8 +3701,8 @@ goto v___jp_874_;
 }
 else
 {
-lean_dec_ref(v_declName_939_);
 lean_dec(v_pre_940_);
+lean_dec_ref(v_declName_939_);
 lean_dec_ref(v_value_938_);
 lean_dec_ref(v_decl_937_);
 v_decl_875_ = v_decl_860_;
@@ -3713,8 +3713,8 @@ goto v___jp_874_;
 }
 else
 {
-lean_dec(v_declName_939_);
 lean_dec_ref(v_value_938_);
+lean_dec(v_declName_939_);
 lean_dec_ref(v_decl_937_);
 v_decl_875_ = v_decl_860_;
 v_k_876_ = v_k_861_;
@@ -5209,7 +5209,7 @@ _start:
 lean_object* v___x_1407_; lean_object* v___x_1408_; lean_object* v___x_1409_; lean_object* v___x_1410_; lean_object* v___x_1411_; lean_object* v___x_1412_; 
 v___x_1407_ = ((lean_object*)(l_Lean_Compiler_LCNF_ExtractClosed_visitCode___closed__2));
 v___x_1408_ = lean_unsigned_to_nat(9u);
-v___x_1409_ = lean_unsigned_to_nat(640u);
+v___x_1409_ = lean_unsigned_to_nat(641u);
 v___x_1410_ = ((lean_object*)(l_Lean_Compiler_LCNF_ExtractClosed_visitCode___closed__1));
 v___x_1411_ = ((lean_object*)(l_Lean_Compiler_LCNF_ExtractClosed_visitCode___closed__0));
 v___x_1412_ = l_mkPanicMessageWithDecl(v___x_1411_, v___x_1410_, v___x_1409_, v___x_1408_, v___x_1407_);
@@ -6024,8 +6024,8 @@ v___x_1830_ = lean_ptr_addr(v_a_1828_);
 v___x_1831_ = lean_usize_dec_eq(v___x_1829_, v___x_1830_);
 if (v___x_1831_ == 0)
 {
-v___y_1506_ = v_a_1826_;
-v___y_1507_ = v_a_1828_;
+v___y_1506_ = v_a_1828_;
+v___y_1507_ = v_a_1826_;
 v___y_1508_ = v___x_1831_;
 goto v___jp_1505_;
 }
@@ -6035,8 +6035,8 @@ size_t v___x_1832_; size_t v___x_1833_; uint8_t v___x_1834_;
 v___x_1832_ = lean_ptr_addr(v_decl_1526_);
 v___x_1833_ = lean_ptr_addr(v_a_1826_);
 v___x_1834_ = lean_usize_dec_eq(v___x_1832_, v___x_1833_);
-v___y_1506_ = v_a_1826_;
-v___y_1507_ = v_a_1828_;
+v___y_1506_ = v_a_1828_;
+v___y_1507_ = v_a_1826_;
 v___y_1508_ = v___x_1834_;
 goto v___jp_1505_;
 }
@@ -7463,8 +7463,8 @@ if (v___y_1508_ == 0)
 lean_object* v___x_1509_; lean_object* v___x_1510_; 
 lean_dec_ref(v_code_1415_);
 v___x_1509_ = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(v___x_1509_, 0, v___y_1506_);
-lean_ctor_set(v___x_1509_, 1, v___y_1507_);
+lean_ctor_set(v___x_1509_, 0, v___y_1507_);
+lean_ctor_set(v___x_1509_, 1, v___y_1506_);
 v___x_1510_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_1510_, 0, v___x_1509_);
 return v___x_1510_;

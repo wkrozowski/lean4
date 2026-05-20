@@ -1633,8 +1633,8 @@ return v_uri_417_;
 }
 else
 {
-lean_dec(v_tail_427_);
 lean_dec_ref(v___x_426_);
+lean_dec(v_tail_427_);
 return v_uri_417_;
 }
 }

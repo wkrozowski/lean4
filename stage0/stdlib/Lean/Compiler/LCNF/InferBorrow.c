@@ -1326,18 +1326,18 @@ goto v_reusejp_250_;
 }
 v_reusejp_250_:
 {
-lean_object* v___x_252_; lean_object* v___x_253_; lean_object* v___x_254_; lean_object* v___x_3096__overap_255_; lean_object* v___x_256_; 
+lean_object* v___x_252_; lean_object* v___x_253_; lean_object* v___x_254_; lean_object* v___x_3102__overap_255_; lean_object* v___x_256_; 
 v___x_252_ = l_StateRefT_x27_instMonad___redArg(v___x_251_);
 v___x_253_ = lean_box(0);
 v___x_254_ = l_instInhabitedOfMonad___redArg(v___x_252_, v___x_253_);
-v___x_3096__overap_255_ = lean_panic_fn_borrowed(v___x_254_, v_msg_196_);
+v___x_3102__overap_255_ = lean_panic_fn_borrowed(v___x_254_, v_msg_196_);
 lean_dec(v___x_254_);
 lean_inc(v___y_201_);
 lean_inc_ref(v___y_200_);
 lean_inc(v___y_199_);
 lean_inc_ref(v___y_198_);
 lean_inc(v___y_197_);
-v___x_256_ = lean_apply_6(v___x_3096__overap_255_, v___y_197_, v___y_198_, v___y_199_, v___y_200_, v___y_201_, lean_box(0));
+v___x_256_ = lean_apply_6(v___x_3102__overap_255_, v___y_197_, v___y_198_, v___y_199_, v___y_200_, v___y_201_, lean_box(0));
 return v___x_256_;
 }
 }
@@ -4023,19 +4023,19 @@ goto v_reusejp_1148_;
 }
 v_reusejp_1148_:
 {
-lean_object* v___x_1150_; lean_object* v___x_1151_; lean_object* v___x_1152_; lean_object* v___f_1153_; lean_object* v___x_3444__overap_1154_; lean_object* v___x_1155_; 
+lean_object* v___x_1150_; lean_object* v___x_1151_; lean_object* v___x_1152_; lean_object* v___f_1153_; lean_object* v___x_3453__overap_1154_; lean_object* v___x_1155_; 
 v___x_1150_ = l_StateRefT_x27_instMonad___redArg(v___x_1149_);
 v___x_1151_ = lean_obj_once(&l_panic___at___00__private_Lean_Compiler_LCNF_InferBorrow_0__Lean_Compiler_LCNF_apply_go_spec__3___closed__0, &l_panic___at___00__private_Lean_Compiler_LCNF_InferBorrow_0__Lean_Compiler_LCNF_apply_go_spec__3___closed__0_once, _init_l_panic___at___00__private_Lean_Compiler_LCNF_InferBorrow_0__Lean_Compiler_LCNF_apply_go_spec__3___closed__0);
 v___x_1152_ = l_instInhabitedOfMonad___redArg(v___x_1150_, v___x_1151_);
 v___f_1153_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_1153_, 0, v___x_1152_);
-v___x_3444__overap_1154_ = lean_panic_fn_borrowed(v___f_1153_, v_msg_1119_);
+v___x_3453__overap_1154_ = lean_panic_fn_borrowed(v___f_1153_, v_msg_1119_);
 lean_dec_ref(v___f_1153_);
 lean_inc(v___y_1123_);
 lean_inc_ref(v___y_1122_);
 lean_inc(v___y_1121_);
 lean_inc_ref(v___y_1120_);
-v___x_1155_ = lean_apply_5(v___x_3444__overap_1154_, v___y_1120_, v___y_1121_, v___y_1122_, v___y_1123_, lean_box(0));
+v___x_1155_ = lean_apply_5(v___x_3453__overap_1154_, v___y_1120_, v___y_1121_, v___y_1122_, v___y_1123_, lean_box(0));
 return v___x_1155_;
 }
 }
@@ -12931,13 +12931,13 @@ goto v_reusejp_4012_;
 }
 v_reusejp_4012_:
 {
-lean_object* v___x_4014_; lean_object* v___x_4015_; lean_object* v___x_4016_; lean_object* v___f_4017_; lean_object* v___x_4594__overap_4018_; lean_object* v___x_4019_; 
+lean_object* v___x_4014_; lean_object* v___x_4015_; lean_object* v___x_4016_; lean_object* v___f_4017_; lean_object* v___x_4600__overap_4018_; lean_object* v___x_4019_; 
 v___x_4014_ = l_StateRefT_x27_instMonad___redArg(v___x_4013_);
 v___x_4015_ = lean_box(0);
 v___x_4016_ = l_instInhabitedOfMonad___redArg(v___x_4014_, v___x_4015_);
 v___f_4017_ = lean_alloc_closure((void*)(l_instInhabitedForall___redArg___lam__0___boxed), 2, 1);
 lean_closure_set(v___f_4017_, 0, v___x_4016_);
-v___x_4594__overap_4018_ = lean_panic_fn_borrowed(v___f_4017_, v_msg_3957_);
+v___x_4600__overap_4018_ = lean_panic_fn_borrowed(v___f_4017_, v_msg_3957_);
 lean_dec_ref(v___f_4017_);
 lean_inc(v___y_3963_);
 lean_inc_ref(v___y_3962_);
@@ -12945,7 +12945,7 @@ lean_inc(v___y_3961_);
 lean_inc_ref(v___y_3960_);
 lean_inc(v___y_3959_);
 lean_inc_ref(v___y_3958_);
-v___x_4019_ = lean_apply_7(v___x_4594__overap_4018_, v___y_3958_, v___y_3959_, v___y_3960_, v___y_3961_, v___y_3962_, v___y_3963_, lean_box(0));
+v___x_4019_ = lean_apply_7(v___x_4600__overap_4018_, v___y_3958_, v___y_3959_, v___y_3960_, v___y_3961_, v___y_3962_, v___y_3963_, lean_box(0));
 return v___x_4019_;
 }
 }

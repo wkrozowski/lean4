@@ -1192,9 +1192,9 @@ goto v___jp_201_;
 v___jp_190_:
 {
 lean_object* v___x_194_; lean_object* v___x_196_; 
-v___x_194_ = lean_nat_add(v___y_191_, v___y_193_);
+v___x_194_ = lean_nat_add(v___y_192_, v___y_193_);
 lean_dec(v___y_193_);
-lean_dec(v___y_191_);
+lean_dec(v___y_192_);
 if (v_isShared_187_ == 0)
 {
 lean_ctor_set(v___x_186_, 4, v_r_164_);
@@ -1223,7 +1223,7 @@ lean_object* v___x_198_;
 if (v_isShared_175_ == 0)
 {
 lean_ctor_set(v___x_174_, 4, v___x_196_);
-lean_ctor_set(v___x_174_, 3, v___y_192_);
+lean_ctor_set(v___x_174_, 3, v___y_191_);
 lean_ctor_set(v___x_174_, 2, v_v_178_);
 lean_ctor_set(v___x_174_, 1, v_k_177_);
 lean_ctor_set(v___x_174_, 0, v___x_189_);
@@ -1237,7 +1237,7 @@ v_reuseFailAlloc_199_ = lean_alloc_ctor(0, 5, 0);
 lean_ctor_set(v_reuseFailAlloc_199_, 0, v___x_189_);
 lean_ctor_set(v_reuseFailAlloc_199_, 1, v_k_177_);
 lean_ctor_set(v_reuseFailAlloc_199_, 2, v_v_178_);
-lean_ctor_set(v_reuseFailAlloc_199_, 3, v___y_192_);
+lean_ctor_set(v_reuseFailAlloc_199_, 3, v___y_191_);
 lean_ctor_set(v_reuseFailAlloc_199_, 4, v___x_196_);
 v___x_198_ = v_reuseFailAlloc_199_;
 goto v_reusejp_197_;
@@ -1282,8 +1282,8 @@ if (lean_obj_tag(v_r_180_) == 0)
 lean_object* v_size_207_; 
 v_size_207_ = lean_ctor_get(v_r_180_, 0);
 lean_inc(v_size_207_);
-v___y_191_ = v___x_206_;
-v___y_192_ = v___x_205_;
+v___y_191_ = v___x_205_;
+v___y_192_ = v___x_206_;
 v___y_193_ = v_size_207_;
 goto v___jp_190_;
 }
@@ -1291,8 +1291,8 @@ else
 {
 lean_object* v___x_208_; 
 v___x_208_ = lean_unsigned_to_nat(0u);
-v___y_191_ = v___x_206_;
-v___y_192_ = v___x_205_;
+v___y_191_ = v___x_205_;
+v___y_192_ = v___x_206_;
 v___y_193_ = v___x_208_;
 goto v___jp_190_;
 }
@@ -1868,10 +1868,10 @@ v_lintDriver_364_ = lean_ctor_get(v___x_354_, 14);
 lean_inc_ref(v_lintDriver_364_);
 lean_inc_ref(v_testDriver_363_);
 lean_inc_ref(v___y_362_);
-lean_inc_ref(v___y_358_);
+lean_inc_ref(v___y_357_);
 lean_inc_ref(v___y_359_);
 lean_inc(v___y_361_);
-lean_inc_ref(v___y_357_);
+lean_inc_ref(v___y_358_);
 lean_inc(v___y_360_);
 v___x_365_ = lean_alloc_ctor(0, 23, 0);
 lean_ctor_set(v___x_365_, 0, v___x_350_);
@@ -1890,10 +1890,10 @@ lean_ctor_set(v___x_365_, 12, v___x_355_);
 lean_ctor_set(v___x_365_, 13, v___x_355_);
 lean_ctor_set(v___x_365_, 14, v___x_355_);
 lean_ctor_set(v___x_365_, 15, v___y_360_);
-lean_ctor_set(v___x_365_, 16, v___y_357_);
+lean_ctor_set(v___x_365_, 16, v___y_358_);
 lean_ctor_set(v___x_365_, 17, v___y_361_);
 lean_ctor_set(v___x_365_, 18, v___y_359_);
-lean_ctor_set(v___x_365_, 19, v___y_358_);
+lean_ctor_set(v___x_365_, 19, v___y_357_);
 lean_ctor_set(v___x_365_, 20, v___y_362_);
 lean_ctor_set(v___x_365_, 21, v_testDriver_363_);
 lean_ctor_set(v___x_365_, 22, v_lintDriver_364_);

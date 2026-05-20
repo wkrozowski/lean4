@@ -1219,7 +1219,7 @@ case 12:
 {
 lean_object* v_k_388_; 
 lean_del_object(v___x_345_);
-v_k_388_ = lean_ctor_get(v_c_335_, 2);
+v_k_388_ = lean_ctor_get(v_c_335_, 3);
 v_c_335_ = v_k_388_;
 goto _start;
 }

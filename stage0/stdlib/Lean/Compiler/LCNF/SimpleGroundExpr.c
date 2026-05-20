@@ -9214,8 +9214,8 @@ goto v___jp_2649_;
 }
 else
 {
-lean_dec_ref(v_fn_2672_);
 lean_dec(v_pre_2689_);
+lean_dec_ref(v_fn_2672_);
 lean_dec_ref(v___x_2688_);
 lean_dec(v_fvarId_2687_);
 lean_del_object(v___x_2675_);
