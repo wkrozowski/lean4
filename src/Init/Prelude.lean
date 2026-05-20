@@ -9,7 +9,6 @@ prelude -- Don't import Init, because we're in Init itself
 
 public section
 set_option linter.missingDocs true -- keep it documented
-
 @[expose] section  -- Expose all defs
 
 /-!
