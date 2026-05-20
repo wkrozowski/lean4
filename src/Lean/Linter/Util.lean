@@ -8,6 +8,7 @@ module
 prelude
 public import Lean.Server.InfoUtils
 public import Lean.Linter.Init
+public import Lean.Elab.Term
 
 public section
 
@@ -44,3 +45,15 @@ where
         return some []
     else
       return none)
+
+/-- Get the `parentDecl`s of every elaborated body in the infotree. -/
+def getDeclsByBody (t : InfoTree) : List Name :=
+  t.collectNodesBottomUp fun ctx i _ decls =>
+    match i with
+    | .ofCustomInfo i =>
+      if i.value.typeName == ``Lean.Elab.Term.BodyInfo then
+        if let some decl := ctx.parentDecl? then
+          decl :: decls
+        else decls
+      else decls
+    | _ => decls
