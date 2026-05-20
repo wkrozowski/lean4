@@ -25,18 +25,6 @@ public meta section
 
 namespace Lean.Linter.EnvLinter
 
-/-- A linter for checking whether the correct declaration constructor (`def` or `theorem`)
-has been used. A `def` whose type is a `Prop` should be a `theorem`, and vice versa. -/
-@[builtin_env_linter] def defLemma : EnvLinter where
-  noErrorsFound := "All declarations correctly marked as def/lemma."
-  errorsFound := "INCORRECT DEF/LEMMA:"
-  test declName := do
-    if ← isAutoDecl declName then return none
-    let info ← getConstInfo declName
-    if info.isDefinition then
-      if ← isProp info.type then return some "is a def, should be a lemma/theorem"
-    return none
-
 /--
 `univParamsGrouped e nm₀` computes for each `Level` occurring in `e` the set of level parameters
 that appear in it, returning the collection of such parameter sets.

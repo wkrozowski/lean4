@@ -1,5 +1,9 @@
 import Linters
 
+-- `linter.defLemma` is off by default for bootstrapping reasons; enable it
+-- here so `shouldBeTheoremUnderExtra` still fires when default linters run.
+set_option linter.defLemma true
+
 -- This name ends with 'Extra' — the dummyExtra linter should flag it.
 def badNameExtra : Nat := 1
 

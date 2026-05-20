@@ -131,7 +131,7 @@ def testGetChecksDefault : CoreM (Array Name) := do
   return checks.map (·.name)
 
 -- dummyBadName and checkUnivs are default, dummyExtraLinter is not
-/-- info: #[`checkUnivs, `defLemma, `dummyBadName] -/
+/-- info: #[`checkUnivs, `dummyBadName] -/
 #guard_msgs in
 #eval testGetChecksDefault
 
@@ -140,7 +140,7 @@ def testGetChecksExtra : CoreM (Array Name) := do
   let checks ← getChecks (scope := .extra) (runOnly := none)
   return checks.map (·.name)
 
-/-- info: #[`checkUnivs, `defLemma, `dummyBadName, `dummyExtraLinter] -/
+/-- info: #[`checkUnivs, `dummyBadName, `dummyExtraLinter] -/
 #guard_msgs in
 #eval testGetChecksExtra
 
@@ -149,7 +149,7 @@ def testGetChecksAll : CoreM (Array Name) := do
   let checks ← getChecks (scope := .all) (runOnly := none)
   return checks.map (·.name)
 
-/-- info: #[`checkUnivs, `defLemma, `dummyBadName, `dummyExtraLinter] -/
+/-- info: #[`checkUnivs, `dummyBadName, `dummyExtraLinter] -/
 #guard_msgs in
 #eval testGetChecksAll
 
@@ -181,7 +181,7 @@ def testLintCore : CoreM (Array (Name × Nat)) := do
   let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
   return results.map fun (linter, msgs) => (linter.name, msgs.size)
 
-/-- info: #[(`checkUnivs, 0), (`defLemma, 0), (`dummyBadName, 1)] -/
+/-- info: #[(`checkUnivs, 0), (`dummyBadName, 1)] -/
 #guard_msgs in
 #eval testLintCore
 
@@ -210,7 +210,7 @@ def testFormatResults : CoreM Format := do
   return (← msg.format)
 
 /--
-info: -- Found 1 error in 2 declarations (plus 0 automatically generated ones) in test with 3 linters
+info: -- Found 1 error in 2 declarations (plus 0 automatically generated ones) in test with 2 linters
 
 /- The `dummyBadName` linter reports:
 found bad names -/
@@ -229,7 +229,7 @@ def testFormatResultsClean : CoreM Format := do
   return (← msg.format)
 
 /--
-info: -- Found 0 errors in 1 declarations (plus 0 automatically generated ones) in test with 3 linters
+info: -- Found 0 errors in 1 declarations (plus 0 automatically generated ones) in test with 2 linters
 -/
 #guard_msgs in
 #eval testFormatResultsClean

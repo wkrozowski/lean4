@@ -57,8 +57,9 @@ no_match_pat 'badUnivDecl' produced.out
 # package, so passing any module of a package flips the flag for every module
 # in that package.
 
-# Env linters run post-build against `importModules`-loaded decls, so
-# `defLemma` catches `shouldBeTheoremInSub` regardless of override scope.
+# `defLemma` runs during the build of each module, so its warning for
+# `shouldBeTheoremInSub` is captured in `Main.Sub`'s lint log and re-emitted
+# via `collectTextLints` when `Main` is linted.
 lake_out lint --builtin-lint Main || true
 match_pat 'shouldBeTheoremInSub' produced.out
 
@@ -81,7 +82,7 @@ test_run lint --builtin-only Clean
 
 # Without --extra, the extra linters (both the env linter and the dummy extra
 # text linter in Linters.lean) must not run. Default linters still do, so the
-# `defLemma` violation in this file fires.
+# default `defLemma` linter's violation in this file fires.
 lake_out lint --builtin-only ExtraViolations || true
 no_match_pat 'badNameExtra' produced.out
 no_match_pat 'extra text linter saw a declaration' produced.out
@@ -91,7 +92,7 @@ no_match_pat 'tac1 <;> tac2' produced.out
 no_match_pat 'Dup.Dup.violation' produced.out
 # Builtin extra text linter `unreachableTactic` is non-default, so silent.
 no_match_pat 'this tactic is never executed' produced.out
-# Default env linter `defLemma` runs and flags the def-of-Prop in this file.
+# Default `defLemma` linter runs and flags the def-of-Prop in this file.
 match_pat 'shouldBeTheoremUnderExtra' produced.out
 
 # --extra should run default linters together with the non-default (extra)

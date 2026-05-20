@@ -1,10 +1,14 @@
 import Main.Sub
 
+-- `linter.defLemma` is off by default for bootstrapping reasons; enable it
+-- here so the test scenarios that exercise default lint mode still trigger it.
+set_option linter.defLemma true
+
 -- This uses `def` for a Prop — the `defLemma` linter should flag this.
 def shouldBeTheorem : 1 = 1 := rfl
 
--- This is annotated to be skipped by `defLemma` — no import needed.
-@[builtin_nolint defLemma]
+-- `set_option` disables `defLemma` locally so this violation is not flagged.
+set_option linter.defLemma false in
 def skippedViolation : 2 = 2 := rfl
 
 -- A `@[reducible, instance] def` of Prop type is still elaborated as a `def`,
