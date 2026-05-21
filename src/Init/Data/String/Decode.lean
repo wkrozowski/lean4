@@ -384,25 +384,25 @@ theorem parseFirstByte_eq_invalid_of_isInvalidContinuationByte_eq_false {b : UIn
   | .done =>
     rw [toBitVec_eq_of_parseFirstByte_eq_done h] at hb
     have := congrArg (·[7]) hb
-    simp only at this
+    try simp only at this -- TODO(kmill) remove after stage0 update
     rw [BitVec.getElem_append, BitVec.getElem_append] at this
     simp at this
   | .oneMore =>
     rw [toBitVec_eq_of_parseFirstByte_eq_oneMore h] at hb
     have := congrArg (·[6]) hb
-    simp only at this
+    try simp only at this -- TODO(kmill) remove after stage0 update
     rw [BitVec.getElem_append, BitVec.getElem_append] at this
     simp at this
   | .twoMore =>
     rw [toBitVec_eq_of_parseFirstByte_eq_twoMore h] at hb
     have := congrArg (·[6]) hb
-    simp only at this
+    try simp only at this -- TODO(kmill) remove after stage0 update
     rw [BitVec.getElem_append, BitVec.getElem_append] at this
     simp at this
   | .threeMore =>
     rw [toBitVec_eq_of_parseFirstByte_eq_threeMore h] at hb
     have := congrArg (·[6]) hb
-    simp only at this
+    try simp only at this -- TODO(kmill) remove after stage0 update
     rw [BitVec.getElem_append, BitVec.getElem_append] at this
     simp at this
   | .invalid => rfl
