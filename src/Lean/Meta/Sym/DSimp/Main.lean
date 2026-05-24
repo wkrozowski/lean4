@@ -49,12 +49,18 @@ def dsimpImpl (e₁ : Expr) : DSimpM Result := withIncRecDepth do
   let r ← pre e₁
   let r ← match r with
     | .rfl true | .step _ true  => pure r
-    | .step e₂ false  => dsimp e₂
+    | .step e₂ false  =>
+      match (← dsimp e₂) with
+      | .rfl done     => pure (.step e₂ done)
+      | .step e₃ done => pure (.step e₃ done)
     | .rfl false =>
       let r ← (dsimpStep >> post) e₁
       match r with
       | .rfl _ | .step _ true => pure r
-      | .step e₂ false => dsimp e₂
+      | .step e₂ false =>
+        match (← dsimp e₂) with
+        | .rfl done     => pure (.step e₂ done)
+        | .step e₃ done => pure (.step e₃ done)
   cacheResult e₁ r
 
 end Lean.Meta.Sym.DSimp

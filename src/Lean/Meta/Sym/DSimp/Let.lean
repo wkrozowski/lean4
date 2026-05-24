@@ -33,10 +33,10 @@ where
       match r with
       | .rfl _ =>
         if modified then
-          return .step (← mkLambdaFVarsS fvars e)
+          return .step (← mkLetFVars (generalizeNondepLet := false) (usedLetOnly := false) fvars e)
         else
           return .rfl
       | .step e' _ =>
-        return .step (← mkLambdaFVarsS fvars e')
+        return .step (← mkLetFVars (generalizeNondepLet := false) (usedLetOnly := false) fvars e')
 
 end Lean.Meta.Sym.DSimp
