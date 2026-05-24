@@ -6,7 +6,7 @@ Authors: Leonardo de Moura
 module
 prelude
 public import Lean.Meta.Sym.DSimp.DSimpM
-public import Lean.Meta.Sym.DSimp.Result
+import Lean.Meta.Sym.DSimp.Result
 import Lean.Meta.Sym.AlphaShareBuilder
 import Lean.Meta.Sym.ProofInstInfo
 import Init.Omega

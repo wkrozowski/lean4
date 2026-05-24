@@ -6,11 +6,11 @@ Authors: Leonardo de Moura
 module
 prelude
 public import Lean.Meta.Sym.DSimp.DSimpM
-public import Lean.Meta.Sym.DSimp.DSimproc
-public import Lean.Meta.Sym.DSimp.App
-public import Lean.Meta.Sym.DSimp.Lambda
-public import Lean.Meta.Sym.DSimp.Forall
-public import Lean.Meta.Sym.DSimp.Let
+import Lean.Meta.Sym.DSimp.DSimproc
+import Lean.Meta.Sym.DSimp.App
+import Lean.Meta.Sym.DSimp.Lambda
+import Lean.Meta.Sym.DSimp.Forall
+import Lean.Meta.Sym.DSimp.Let
 import Lean.Meta.Sym.AlphaShareBuilder
 namespace Lean.Meta.Sym.DSimp
 open Internal

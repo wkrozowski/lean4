@@ -6,15 +6,34 @@ Authors: Leonardo de Moura
 module
 prelude
 public import Lean.Meta.Sym.DSimp.DSimpM
+import Lean.Meta.Sym.AbstractS
+import Lean.Meta.Sym.InstantiateS
 namespace Lean.Meta.Sym.DSimp
 
 /--
 Definitionally simplifies a forall expression.
 
-Unlike `Sym.Simp.simpForall`, this should descend into the binder type as well as the
-body. No `dsimpArrow` special case — `→` is handled uniformly with `∀`. To be implemented
-(see `dsimp.md`).
+Unlike `Sym.Simp.simpForall`, it descends into the binder type as well as the
+body.
 -/
-public def dsimpForall : DSimproc := fun _ => return .rfl
+public def dsimpForall : DSimproc := fun e =>
+  go e #[] false
+where
+  go (e : Expr) (fvars : Array Expr) (modified : Bool) : DSimpM Result := do
+    match e with
+    | .forallE n d b c =>
+      match (← dsimp (← instantiateRevBetaS d fvars)) with
+      | .rfl _ => withLocalDecl n c d fun x => go b (fvars.push x) modified
+      | .step d' _ => withLocalDecl n c d' fun x => go b (fvars.push x) true
+    | _ =>
+      let r ← dsimp (← instantiateRevBetaS e fvars)
+      match r with
+      | .rfl _ =>
+        if modified then
+          return .step (← mkForallFVarsS fvars e)
+        else
+          return .rfl
+      | .step e' _ =>
+        return .step (← mkForallFVarsS fvars e')
 
 end Lean.Meta.Sym.DSimp
