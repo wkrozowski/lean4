@@ -80,11 +80,11 @@ def checkUnivsLinter : Linter where run := withSetOptionIn fun _ => do
       let some info := env.find? declName | continue
       let bad := badParams (univParamsGrouped info.type declName).toArray
       unless bad.isEmpty do
+        let univs := MessageData.joinSep (bad.toList.map fun u => m!"`{u}`") ", "
         logLintIf linter.checkUnivs (← getRef)
-          m!"`{.ofConstName declName}`: universes {bad} only occur together. \
-            This usually means there is a `max u v` in the type where neither `u` nor `v` \
-            occur by themselves. Solution: provide the universe level explicitly, or move \
-            the offending argument to a `variable` so the level need not be specified."
+          m!"`{.ofConstName declName}`: universes {univs} only occur together. \
+            This usually means there is a `max` expression in the type where none of these \
+            universes appear on their own."
 
 builtin_initialize addLinter checkUnivsLinter
 

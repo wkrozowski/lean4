@@ -18,8 +18,7 @@ def goodUnivsDominated (α : Type u) (β : Type (max u v)) : Type (max u v) := �
 
 -- Bad: neither `u` nor `v` occur alone in `badUnivs`'s type.
 /--
-warning: `badUnivs`: universes [u,
- v] only occur together. This usually means there is a `max u v` in the type where neither `u` nor `v` occur by themselves. Solution: provide the universe level explicitly, or move the offending argument to a `variable` so the level need not be specified.
+warning: `badUnivs`: universes `u`, `v` only occur together. This usually means there is a `max` expression in the type where none of these universes appear on their own.
 
 Note: This linter can be disabled with `set_option linter.checkUnivs false`
 -/
@@ -33,8 +32,7 @@ def badUnivsSuppressed (α : Type (max u v)) : Type (max u v) := α
 
 -- Inductives are also checked.
 /--
-warning: `BadInd`: universes [u,
- v] only occur together. This usually means there is a `max u v` in the type where neither `u` nor `v` occur by themselves. Solution: provide the universe level explicitly, or move the offending argument to a `variable` so the level need not be specified.
+warning: `BadInd`: universes `u`, `v` only occur together. This usually means there is a `max` expression in the type where none of these universes appear on their own.
 
 Note: This linter can be disabled with `set_option linter.checkUnivs false`
 -/
