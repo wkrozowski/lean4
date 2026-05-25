@@ -65,7 +65,14 @@ public def run (args : Args) : IO UInt32 := do
   let mut anyFailed := false
   for mod in mods do
     unsafe Lean.enableInitializersExecution
-    let env ← importModules #[{ module := mod }, envLinterModule] {} (trustLevel := 1024) (loadExts := true)
+    -- Peek at the .olean header to learn whether `mod` participates in the module system.
+    -- If so, import at the public (`exported`) level, mirroring `processHeaderCore`.
+    let modFile ← findOLean mod
+    let (modData, region) ← readModuleData modFile
+    let level := if modData.isModule then OLeanLevel.exported else OLeanLevel.private
+    unsafe region.free
+    let env ← importModules #[{ module := mod }, envLinterModule] {}
+      (trustLevel := 1024) (loadExts := true) (level := level)
 
     let textEntries := collectTextLints env args mod.getRoot
     let textFailed := !textEntries.isEmpty
