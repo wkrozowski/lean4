@@ -217,9 +217,11 @@ match_pat 'shouldBeTheorem' produced.out
 
 # --- builtinLint = true with a lint driver ---
 
-# builtinLint = true + lint driver + clean module: both builtin lints and driver run
+# builtinLint = true + lint driver + clean module: both builtin lints and driver run.
+# With no default env linters registered in core, the builtin-lint pass reports
+# "No environment linters registered" rather than "Linting passed".
 lake_out lint -f with-driver.lean Clean || true
-match_pat 'Linting passed for Clean' produced.out
+match_pat 'No environment linters registered for Clean' produced.out
 match_pat 'lint-driver:' produced.out
 
 # builtinLint = true + lint driver + violations: both run, exit code is nonzero
