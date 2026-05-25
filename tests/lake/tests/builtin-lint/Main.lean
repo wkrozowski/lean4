@@ -1,18 +1,18 @@
 import Main.Sub
 
--- `linter.defLemma` is off by default for bootstrapping reasons; enable it
+-- `linter.defProp` is off by default for bootstrapping reasons; enable it
 -- here so the test scenarios that exercise default lint mode still trigger it.
-set_option linter.defLemma true
+set_option linter.defProp true
 
--- This uses `def` for a Prop — the `defLemma` linter should flag this.
+-- This uses `def` for a Prop — the `defProp` linter should flag this.
 def shouldBeTheorem : 1 = 1 := rfl
 
--- `set_option` disables `defLemma` locally so this violation is not flagged.
-set_option linter.defLemma false in
+-- `set_option` disables `defProp` locally so this violation is not flagged.
+set_option linter.defProp false in
 def skippedViolation : 2 = 2 := rfl
 
 -- A `@[reducible, instance] def` of Prop type is still elaborated as a `def`,
--- so `defLemma` should flag it.
+-- so `defProp` should flag it.
 @[reducible, instance]
 def reducibleInstShouldBeTheorem : Nonempty Bool := ⟨true⟩
 

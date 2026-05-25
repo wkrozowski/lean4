@@ -1,9 +1,9 @@
--- `linter.defLemma` is off by default for bootstrapping reasons; enable it
+-- `linter.defProp` is off by default for bootstrapping reasons; enable it
 -- here so this transitive-import test still captures the violation in the
 -- module's lint log.
-set_option linter.defLemma true
+set_option linter.defProp true
 
--- `def` on a Prop — caught by the `defLemma` linter at build time.
+-- `def` on a Prop — caught by the `defProp` linter at build time.
 def shouldBeTheoremInSub : 1 = 1 := rfl
 
 -- Default text-linter violation: `linter.unusedVariables` has `defValue := true`,

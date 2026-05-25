@@ -19,22 +19,22 @@ namespace Lean.Linter
 open Elab Command Meta Term
 
 /--
-Enables the `defLemma` linter, which warns when a `def` is used to introduce a
+Enables the `defProp` linter, which warns when a `def` is used to introduce a
 declaration whose type is a `Prop`. Such a declaration should be written using
-`theorem`/`lemma` instead.
+`theorem` instead.
 -/
-register_builtin_option linter.defLemma : Bool := {
+register_builtin_option linter.defProp : Bool := {
   defValue := false
-  descr := "enable the `defLemma` linter, which warns when a `def` is used to introduce \
+  descr := "enable the `defProp` linter, which warns when a `def` is used to introduce \
     a declaration whose type is a `Prop`; such a declaration should be written using \
-    `theorem`/`lemma` instead."
+    `theorem` instead."
 }
 
-namespace DefLemma
+namespace DefProp
 
-@[inherit_doc linter.defLemma]
-def defLemmaLinter : Linter where run := withSetOptionIn fun _ => do
-  unless getLinterValue linter.defLemma (← getLinterOptions) do
+@[inherit_doc linter.defProp]
+def defPropLinter : Linter where run := withSetOptionIn fun _ => do
+  unless getLinterValue linter.defProp (← getLinterOptions) do
     return
   if (← get).messages.hasErrors then
     return
@@ -45,10 +45,10 @@ def defLemmaLinter : Linter where run := withSetOptionIn fun _ => do
       unless info.isDefinition do continue
       let isPropType ← liftTermElabM <| isProp info.type
       if isPropType then
-        logLintIf linter.defLemma (← getRef) m!"\
+        logLintIf linter.defProp (← getRef) m!"\
           Definition `{.ofConstName declName}` is a proposition; use `theorem` instead of `def`"
 
-builtin_initialize addLinter defLemmaLinter
+builtin_initialize addLinter defPropLinter
 
-end DefLemma
+end DefProp
 end Lean.Linter
