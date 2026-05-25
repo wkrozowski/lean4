@@ -34,8 +34,7 @@ namespace DefLemma
 
 @[inherit_doc linter.defLemma]
 def defLemmaLinter : Linter where run := withSetOptionIn fun _ => do
-  unless getLinterValue linter.defLemma (← getLinterOptions)
-      && (← getInfoState).enabled do
+  unless getLinterValue linter.defLemma (← getLinterOptions) do
     return
   if (← get).messages.hasErrors then
     return
@@ -47,7 +46,7 @@ def defLemmaLinter : Linter where run := withSetOptionIn fun _ => do
       let isPropType ← liftTermElabM <| isProp info.type
       if isPropType then
         logLintIf linter.defLemma (← getRef) m!"\
-          `{.ofConstName declName}` is a def, should be a lemma/theorem"
+          Definition `{.ofConstName declName}` is a proposition; use `theorem` instead of `def`"
 
 builtin_initialize addLinter defLemmaLinter
 
