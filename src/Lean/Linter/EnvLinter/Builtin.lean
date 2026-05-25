@@ -32,18 +32,16 @@ In pseudo-mathematical form, this returns `{{p : parameter | p ∈ u} | (u : lev
 Ignores `nm₀.proof_*` sub-constants.
 -/
 private def univParamsGrouped (e : Expr) (nm₀ : Name) : Std.HashSet (Array Name) :=
-  runST fun σ => do
-    let res ← ST.mkRef (σ := σ) {}
-    e.forEach fun
+  runST fun _ =>
+    let go : StateRefT (Std.HashSet (Array Name)) (ST _) Unit := e.forEach fun
       | .sort u =>
-        res.modify (·.insert (CollectLevelParams.visitLevel u {}).params)
+        modify (·.insert (CollectLevelParams.visitLevel u {}).params)
       | .const n us => do
-        if let .str n s .. := n then
-          if n == nm₀ && s.startsWith "proof_" then
-            return
-        res.modify <| us.foldl (·.insert <| CollectLevelParams.visitLevel · {} |>.params)
+        if let .str n s := n then
+          if n == nm₀ && s.startsWith "proof_" then return
+        modify (us.foldl (·.insert <| CollectLevelParams.visitLevel · {} |>.params))
       | _ => pure ()
-    res.get
+    Prod.snd <$> go.run {}
 
 /--
 The good parameters are the parameters that occur somewhere in the set as a singleton or
@@ -55,7 +53,7 @@ private partial def badParams (l : Array (Array Name)) : Array Name :=
     | #[u] => some u
     | _ => none
   if goodLevels.isEmpty then
-    l.flatten.toList.eraseDups.toArray
+    l.flatten.foldl (init := #[]) fun acc x => if acc.contains x then acc else acc.push x
   else
     badParams <| l.map (·.filter (!goodLevels.contains ·))
 
