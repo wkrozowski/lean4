@@ -20,4 +20,5 @@ public import Lean.Elab.Tactic.Grind.SimprocDSL
 public import Lean.Elab.Tactic.Grind.SimprocDSLBuiltin
 public import Lean.Elab.Tactic.Grind.RegisterSymSimp
 public import Lean.Elab.Tactic.Grind.DSimprocDSL
+public import Lean.Elab.Tactic.Grind.DSimprocDSLBuiltin
 public import Lean.Elab.Tactic.Grind.RegisterSymDSimp

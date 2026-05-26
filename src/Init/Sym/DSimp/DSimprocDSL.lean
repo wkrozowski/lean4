@@ -31,6 +31,9 @@ declare_syntax_cat sym_dsimproc (behavior := both)
 
 -- Simproc primitives
 
+/-- Do nothing -/
+syntax (name := none) "none" : sym_dsimproc
+
 /-- Evaluate ground (fully concrete) terms. -/
 syntax (name := ground) "ground" : sym_dsimproc
 
