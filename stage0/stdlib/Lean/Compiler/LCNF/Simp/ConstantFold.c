@@ -40100,8 +40100,8 @@ goto v___jp_12832_;
 }
 else
 {
-lean_dec_ref_known(v_declName_12841_, 2);
 lean_dec(v_pre_12842_);
+lean_dec_ref_known(v_declName_12841_, 2);
 lean_dec_ref_known(v_val_12837_, 3);
 lean_del_object(v___x_12839_);
 lean_del_object(v___x_12824_);

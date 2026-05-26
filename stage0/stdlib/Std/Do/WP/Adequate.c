@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Std.Do.WP.Adequate
-// Imports: public import Std.Do.WP.Monad public import Init.Control.Ensures
+// Imports: public import Std.Do.WP.Monad public import Std.Do.Internal.Ensures.Def
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -360,7 +360,7 @@ return v___x_117_;
 }
 }
 lean_object* runtime_initialize_Std_Do_WP_Monad(uint8_t builtin);
-lean_object* runtime_initialize_Init_Control_Ensures(uint8_t builtin);
+lean_object* runtime_initialize_Std_Do_Internal_Ensures_Def(uint8_t builtin);
 static bool _G_runtime_initialized = false;
 LEAN_EXPORT lean_object* runtime_initialize_Std_Do_WP_Adequate(uint8_t builtin) {
 lean_object * res;
@@ -369,7 +369,7 @@ _G_runtime_initialized = true;
 res = runtime_initialize_Std_Do_WP_Monad(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = runtime_initialize_Init_Control_Ensures(builtin);
+res = runtime_initialize_Std_Do_Internal_Ensures_Def(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 return lean_io_result_mk_ok(lean_box(0));
@@ -382,7 +382,7 @@ _G_meta_initialized = true;
 return lean_io_result_mk_ok(lean_box(0));
 }
 lean_object* initialize_Std_Do_WP_Monad(uint8_t builtin);
-lean_object* initialize_Init_Control_Ensures(uint8_t builtin);
+lean_object* initialize_Std_Do_Internal_Ensures_Def(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Std_Do_WP_Adequate(uint8_t builtin) {
 lean_object * res;
@@ -391,7 +391,7 @@ _G_initialized = true;
 res = initialize_Std_Do_WP_Monad(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Init_Control_Ensures(builtin);
+res = initialize_Std_Do_Internal_Ensures_Def(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Std_Do_WP_Adequate(builtin);

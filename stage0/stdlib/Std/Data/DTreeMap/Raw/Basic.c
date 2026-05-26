@@ -9221,9 +9221,9 @@ goto v___jp_3695_;
 v___jp_3683_:
 {
 lean_object* v___x_3687_; lean_object* v___x_3689_; 
-v___x_3687_ = lean_nat_add(v___y_3684_, v___y_3686_);
+v___x_3687_ = lean_nat_add(v___y_3685_, v___y_3686_);
 lean_dec(v___y_3686_);
-lean_dec(v___y_3684_);
+lean_dec(v___y_3685_);
 if (v_isShared_3680_ == 0)
 {
 lean_ctor_set(v___x_3679_, 4, v_r_3644_);
@@ -9252,7 +9252,7 @@ lean_object* v___x_3691_;
 if (v_isShared_3668_ == 0)
 {
 lean_ctor_set(v___x_3667_, 4, v___x_3689_);
-lean_ctor_set(v___x_3667_, 3, v___y_3685_);
+lean_ctor_set(v___x_3667_, 3, v___y_3684_);
 lean_ctor_set(v___x_3667_, 2, v_v_3672_);
 lean_ctor_set(v___x_3667_, 1, v_k_3671_);
 lean_ctor_set(v___x_3667_, 0, v___x_3682_);
@@ -9266,7 +9266,7 @@ v_reuseFailAlloc_3692_ = lean_alloc_ctor(0, 5, 0);
 lean_ctor_set(v_reuseFailAlloc_3692_, 0, v___x_3682_);
 lean_ctor_set(v_reuseFailAlloc_3692_, 1, v_k_3671_);
 lean_ctor_set(v_reuseFailAlloc_3692_, 2, v_v_3672_);
-lean_ctor_set(v_reuseFailAlloc_3692_, 3, v___y_3685_);
+lean_ctor_set(v_reuseFailAlloc_3692_, 3, v___y_3684_);
 lean_ctor_set(v_reuseFailAlloc_3692_, 4, v___x_3689_);
 v___x_3691_ = v_reuseFailAlloc_3692_;
 goto v_reusejp_3690_;
@@ -9314,8 +9314,8 @@ if (lean_obj_tag(v_r_3674_) == 0)
 lean_object* v_size_3701_; 
 v_size_3701_ = lean_ctor_get(v_r_3674_, 0);
 lean_inc(v_size_3701_);
-v___y_3684_ = v___x_3700_;
-v___y_3685_ = v___x_3699_;
+v___y_3684_ = v___x_3699_;
+v___y_3685_ = v___x_3700_;
 v___y_3686_ = v_size_3701_;
 goto v___jp_3683_;
 }
@@ -9323,8 +9323,8 @@ else
 {
 lean_object* v___x_3702_; 
 v___x_3702_ = lean_unsigned_to_nat(0u);
-v___y_3684_ = v___x_3700_;
-v___y_3685_ = v___x_3699_;
+v___y_3684_ = v___x_3699_;
+v___y_3685_ = v___x_3700_;
 v___y_3686_ = v___x_3702_;
 goto v___jp_3683_;
 }
@@ -12128,8 +12128,8 @@ else
 lean_object* v___x_4406_; lean_object* v___x_4407_; 
 lean_del_object(v___x_4349_);
 lean_dec(v_v_4337_);
-lean_dec(v_k_4336_);
 lean_dec_ref_known(v_tree_4335_, 5);
+lean_dec(v_k_4336_);
 lean_del_object(v___x_4332_);
 lean_dec(v_r_4329_);
 lean_dec(v_v_4327_);
