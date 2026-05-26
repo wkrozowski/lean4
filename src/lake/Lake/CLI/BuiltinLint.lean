@@ -36,7 +36,8 @@ public def leanOptOverrides (args : Args) : LeanOptions :=
     | .all     => LeanOptions.ofArray enableAll
 
 private def collectTextLints
-    (env : Environment) (args : Args) (pkgRoot : Name) : Array Linter.LintEntry :=
+    (env : Environment) (args : Args) (pkgRoot : Name) :
+    Array (Name × Array Linter.LintEntry) :=
   let matchOnly (linter : Name) : Bool :=
     args.only.isEmpty || args.only.any (fun n => n.isSuffixOf linter)
   let matchScope (linter : Name) : Bool :=
@@ -47,8 +48,8 @@ private def collectTextLints
       | .all     => true
   Linter.getAllLints env |>.foldl (init := #[]) fun acc (mod, entries) =>
     if pkgRoot.isPrefixOf mod then
-      entries.foldl (init := acc) fun acc e =>
-        if matchOnly e.linter && matchScope e.linter then acc.push e else acc
+      let filtered := entries.filter fun e => matchOnly e.linter && matchScope e.linter
+      if filtered.isEmpty then acc else acc.push (mod, filtered)
     else
       acc
 
@@ -67,11 +68,11 @@ public def run (args : Args) : IO UInt32 := do
     unsafe Lean.enableInitializersExecution
     let env ← importModules #[{ module := mod }, envLinterModule] {} (trustLevel := 1024) (loadExts := true)
 
-    let textEntries := collectTextLints env args mod.getRoot
-    let textFailed := !textEntries.isEmpty
-    if textFailed then
-      IO.println s!"-- Text linter diagnostics in {mod}:"
-      for e in textEntries do
+    let textGroups := collectTextLints env args mod.getRoot
+    let textFailed := !textGroups.isEmpty
+    for (m, entries) in textGroups do
+      IO.println s!"-- Text linter diagnostics in {m}:"
+      for e in entries do
         IO.print e.message.toString
 
     let (declFailed, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
