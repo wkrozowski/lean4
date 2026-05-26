@@ -51,21 +51,19 @@ use `register_builtin_linter_set` rather than calling this directly. -/
 def addBuiltinLinterSet (setName : Name) (linterNames : NameSet) : IO Unit := do
   builtinLinterSetsRef.modify (·.push (setName, linterNames))
 
-private def foldBuiltinsInto (init : LinterSets) : IO LinterSets := do
-  let mut s := init
-  for (n, ms) in (← builtinLinterSetsRef.get) do
-    s := insertLinterSetEntry s n ms
-  return s
-
 builtin_initialize linterSetsExt :
     PersistentEnvExtension (Name × NameSet) (Name × NameSet) LinterSetsState ←
   registerPersistentEnvExtension {
-    mkInitial := return { merged := (← foldBuiltinsInto {}), localEntries := #[] }
+    mkInitial := do
+      let merged := (← builtinLinterSetsRef.get).foldl (init := {}) fun s (n, ms) =>
+        insertLinterSetEntry s n ms
+      return { merged, localEntries := #[] }
     addImportedFn := fun ess => do
-      let mut s ← foldBuiltinsInto {}
-      for es in ess do for (n, ms) in es do
-        s := insertLinterSetEntry s n ms
-      return { merged := s, localEntries := #[] }
+      let s := (← builtinLinterSetsRef.get).foldl (init := {}) fun s (n, ms) =>
+        insertLinterSetEntry s n ms
+      let merged := ess.foldl (init := s) fun s es =>
+        es.foldl (init := s) fun s (n, ms) => insertLinterSetEntry s n ms
+      return { merged, localEntries := #[] }
     addEntryFn := fun st (n, ms) =>
       { merged := insertLinterSetEntry st.merged n ms, localEntries := st.localEntries.push (n, ms) }
     exportEntriesFn := fun st => st.localEntries
