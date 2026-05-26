@@ -28,11 +28,48 @@ def insertLinterSetEntry (map : LinterSets) (setName : Name) (options : NameSet)
   options.foldl (init := map) fun map linterName =>
     map.insert linterName ((map.getD linterName #[]).push setName)
 
-builtin_initialize linterSetsExt : SimplePersistentEnvExtension (Name × NameSet) LinterSets ← Lean.registerSimplePersistentEnvExtension {
-  addImportedFn := mkStateFromImportedEntries (Function.uncurry <| insertLinterSetEntry ·) {}
-  addEntryFn := (Function.uncurry <| insertLinterSetEntry ·)
-  toArrayFn es := es.toArray
-}
+/-- State of `linterSetsExt`.
+
+`merged` is the queryable union of all sources (builtins folded in at env creation,
+imported entries from oleans, and locally added entries). `localEntries` tracks entries
+added in the current module so they can be exported into the olean.
+-/
+structure LinterSetsState where
+  merged : LinterSets := {}
+  localEntries : Array (Name × NameSet) := #[]
+  deriving Inhabited
+
+/-- Builtin linter sets registered from `builtin_initialize` blocks in core code.
+
+Entries here are folded into every `LinterSetsState` produced by `linterSetsExt`, so they
+participate in `getLinterValue` like any user-declared set.
+-/
+builtin_initialize builtinLinterSetsRef : IO.Ref (Array (Name × NameSet)) ← IO.mkRef #[]
+
+/-- Register a builtin linter set entry. Only valid during initialization;
+use `register_builtin_linter_set` rather than calling this directly. -/
+def addBuiltinLinterSet (setName : Name) (linterNames : NameSet) : IO Unit := do
+  builtinLinterSetsRef.modify (·.push (setName, linterNames))
+
+private def foldBuiltinsInto (init : LinterSets) : IO LinterSets := do
+  let mut s := init
+  for (n, ms) in (← builtinLinterSetsRef.get) do
+    s := insertLinterSetEntry s n ms
+  return s
+
+builtin_initialize linterSetsExt :
+    PersistentEnvExtension (Name × NameSet) (Name × NameSet) LinterSetsState ←
+  registerPersistentEnvExtension {
+    mkInitial := return { merged := (← foldBuiltinsInto {}), localEntries := #[] }
+    addImportedFn := fun ess => do
+      let mut s ← foldBuiltinsInto {}
+      for es in ess do for (n, ms) in es do
+        s := insertLinterSetEntry s n ms
+      return { merged := s, localEntries := #[] }
+    addEntryFn := fun st (n, ms) =>
+      { merged := insertLinterSetEntry st.merged n ms, localEntries := st.localEntries.push (n, ms) }
+    exportEntriesFn := fun st => st.localEntries
+  }
 
 /-- The `LinterOptions` structure is used to determine whether given linters are enabled.
 
@@ -50,7 +87,7 @@ def LinterOptions.get [KVMap.Value α] (o : LinterOptions) := o.toOptions.get (�
 def LinterOptions.get? [KVMap.Value α] (o : LinterOptions) := o.toOptions.get? (α := α)
 
 def _root_.Lean.Options.toLinterOptions [Monad m] [MonadEnv m] (o : Options) : m LinterOptions := do
-  let linterSets := linterSetsExt.getState (← getEnv)
+  let linterSets := (linterSetsExt.getState (← getEnv)).merged
   return { toOptions := o, linterSets }
 
 /-- Return the set of linter sets that this option is contained in. -/
