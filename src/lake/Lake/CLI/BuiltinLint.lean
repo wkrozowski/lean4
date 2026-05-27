@@ -52,6 +52,9 @@ private def collectTextLints
     else
       acc
 
+@[noinline] private def getIsModule (modData : Lean.ModuleData) : BaseIO Bool :=
+  return modData.isModule
+
 public def run (args : Args) : IO UInt32 := do
   let mods := args.mods
   if mods.isEmpty then
@@ -69,7 +72,8 @@ public def run (args : Args) : IO UInt32 := do
     -- If so, import at the public (`exported`) level, mirroring `processHeaderCore`.
     let modFile ← findOLean mod
     let (modData, region) ← readModuleData modFile
-    let level := if modData.isModule then OLeanLevel.exported else OLeanLevel.private
+    let isModule ← getIsModule modData
+    let level := if isModule then OLeanLevel.exported else OLeanLevel.private
     unsafe region.free
     let env ← importModules #[{ module := mod }, envLinterModule] {}
       (trustLevel := 1024) (loadExts := true) (level := level)
