@@ -53,6 +53,9 @@ private def collectTextLints
     else
       acc
 
+@[noinline] private def getIsModule (modData : Lean.ModuleData) : BaseIO Bool :=
+  return modData.isModule
+
 public def run (args : Args) : IO UInt32 := do
   let mods := args.mods
   if mods.isEmpty then
@@ -66,7 +69,15 @@ public def run (args : Args) : IO UInt32 := do
   let mut anyFailed := false
   for mod in mods do
     unsafe Lean.enableInitializersExecution
-    let env ← importModules #[{ module := mod }, envLinterModule] {} (trustLevel := 1024) (loadExts := true)
+    -- Peek at the .olean header to learn whether `mod` participates in the module system.
+    -- If so, import at the public (`exported`) level, mirroring `processHeaderCore`.
+    let modFile ← findOLean mod
+    let (modData, region) ← readModuleData modFile
+    let isModule ← getIsModule modData
+    let level := if isModule then OLeanLevel.exported else OLeanLevel.private
+    unsafe region.free
+    let env ← importModules #[{ module := mod }, envLinterModule] {}
+      (trustLevel := 1024) (loadExts := true) (level := level)
 
     let textGroups := collectTextLints env args mod.getRoot
     let textFailed := !textGroups.isEmpty
