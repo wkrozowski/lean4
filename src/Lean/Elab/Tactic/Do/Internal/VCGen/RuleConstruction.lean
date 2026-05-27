@@ -258,9 +258,6 @@ public def mkBackwardRuleFromSimpSpec (specThm : SpecTheoremNew) (m σs ps instW
     if x.isMVar && !(← x.mvarId!.isAssigned) then
       let xType ← Meta.inferType x
       try liftMetaM <| Meta.synthInstance xType >>= x.mvarId!.assign catch _ => pure ()
-  let eqPrf ← instantiateMVarsS eqPrf
-  let lhs ← instantiateMVarsS lhs
-  let rhs ← instantiateMVarsS rhs
   -- Reduce projections (e.g., `inst.1` → `getThe σ` when inst is a concrete dictionary).
   let rhs ← liftMetaM <| Meta.transform rhs (pre := fun e => do
     if let .proj .. := e then
@@ -288,7 +285,7 @@ public def mkBackwardRuleFromSimpSpec (specThm : SpecTheoremNew) (m σs ps instW
     withLocalDeclD `h premiseType fun h => do
     -- Build: Eq.mpr (congrArg motive eqPrf) h
     -- motive = fun prog => P ⊢ₛ wp⟦prog⟧ Q s₁ ... sₙ
-    let mα ← instantiateMVarsS (mkApp m α)
+    let mα ← preprocessExpr (mkApp m α)
     let motiveBody := mkApp3 (mkConst ``SPred.entails [u]) σs P
       (mkAppN (mkApp4 (mkConst ``PredTrans.apply [u]) ps α
         (mkApp5 (mkConst ``WP.wp [u, v]) m ps instWP α (.bvar 0)) Q) ss)
