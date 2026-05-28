@@ -32,11 +32,12 @@ inductive LintVerbosity
   | high
   deriving Inhabited, DecidableEq, Repr
 
-/-- `getChecks` produces the list of registered environment linters, sorted by option name.
+/-- Returns every registered environment linter, sorted by option name.
 
-Per-declaration enabling is decided later by `lintCore` using the option-resolution snapshot
-stored in `envLinterSnapshotExt`. -/
-def getChecks : CoreM (Array NamedEnvLinter) := do
+Resolves the `envLinterExt` entries via `evalConstCheck` so callers get live `EnvLinter`
+values (test function + metadata). Per-declaration enabling is decided later by `lintCore`
+using the option-resolution snapshot stored in `envLinterSnapshotExt`. -/
+def getEnvLinters : CoreM (Array NamedEnvLinter) := do
   let mut result := #[]
   for (optName, declName) in envLinterExt.getState (← getEnv) do
     let linter ← getEnvLinter optName declName

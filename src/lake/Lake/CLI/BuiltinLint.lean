@@ -76,7 +76,7 @@ public def run (args : Args) : IO UInt32 := do
 
     let (declFailed, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
       let decls ← Linter.EnvLinter.getDeclsInPackage mod.getRoot
-      let linters ← Linter.EnvLinter.getChecks
+      let linters ← Linter.EnvLinter.getEnvLinters
       if linters.isEmpty then
         IO.println s!"-- No environment linters registered for {mod}."
         return false
