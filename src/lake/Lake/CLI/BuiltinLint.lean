@@ -39,7 +39,7 @@ public def leanOptOverrides (args : Args) : LeanOptions :=
   match args.mode with
   | .default => {}
   | .extra   => LeanOptions.ofArray #[⟨`linter.extra, .ofBool true⟩]
-  | .all     => LeanOptions.ofArray #[⟨`linter.extra, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
+  | .all     => LeanOptions.ofArray #[⟨`linter.all, .ofBool true⟩]
 
 /-- Collects persisted text-linter entries for modules under `pkgRoot`. Whatever fired during
 the build is what we report — selection happens at build time (e.g. `linter.extra*` linters
@@ -95,7 +95,7 @@ public def run (args : Args) : IO UInt32 := do
             (groupByFilename := true) (useErrorFormat := true)
             s!"in {mod}" .medium linters.size
         IO.print (← fmtResults.toString)
-      else unless textFailed do
+      else
         IO.println s!"-- Linting passed for {mod}."
       return failed
 
