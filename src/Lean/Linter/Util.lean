@@ -63,7 +63,7 @@ def getDeclsByBody (t : InfoTree) : List Name :=
 A declaration introduces a `TermInfo` with `isBinder := true` whose `expr` is the constant
 being declared. This covers `def`/`theorem`/`axiom`, inductive types and their constructors,
 and structure fields and parent projections — including mutual blocks where each member
-emits its own binder. 
+emits its own binder.
 -/
 def getNewDecls (t : InfoTree) : List Name :=
   t.collectNodesBottomUp fun _ i _ acc =>
