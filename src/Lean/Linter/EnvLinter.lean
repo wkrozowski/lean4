@@ -6,5 +6,6 @@ Authors: Wojciech Różowski
 module
 
 prelude
+public import Lean.Linter.EnvLinter.Snapshot
 public import Lean.Linter.EnvLinter.Basic
 public import Lean.Linter.EnvLinter.Frontend

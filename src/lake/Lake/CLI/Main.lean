@@ -314,13 +314,9 @@ def lakeLongOption : (opt : String) → CliM PUnit
 | "--builtin-lint" => modifyThe LakeOptions ({· with runBuiltinLint := true})
 | "--builtin-only" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinOnly := true})
 | "--extra" => modifyThe LakeOptions ({· with
-    runBuiltinLint := true, builtinLint.scope := .extra, builtinLint.only := #[]})
+    runBuiltinLint := true, builtinLint.mode := .extra})
 | "--lint-all" => modifyThe LakeOptions ({· with
-    runBuiltinLint := true, builtinLint.scope := .all, builtinLint.only := #[]})
-| "--lint-only" => do
-  let name ← takeOptArg "--lint-only" "linter name"
-  modifyThe LakeOptions fun opts =>
-    {opts with runBuiltinLint := true, builtinLint.only := opts.builtinLint.only.push name.toName}
+    runBuiltinLint := true, builtinLint.mode := .all})
 -- Shared options
 | "--force" => modifyThe LakeOptions ({· with shake.force := true})
 -- Shake options

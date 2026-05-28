@@ -1,9 +1,21 @@
 import Lean.Linter.EnvLinter
+import Lean.Linter.Sets
 
 open Lean Meta Lean.Linter Lean.Elab.Command
 
+register_option linter.dummyExtra : Bool := {
+  defValue := false
+  descr := "flag declarations whose name ends with 'Extra'"
+}
+
+initialize addEnvLinterOption linter.dummyExtra
+
+-- Add `linter.dummyExtra` to the `linter.extra` set so `--extra` turns it on.
+extend_linter_set linter.extra with linter.dummyExtra
+
 -- A dummy extra linter that flags any declaration whose name ends with "Extra".
-@[builtin_env_linter extra] public meta def dummyExtra : Lean.Linter.EnvLinter.EnvLinter where
+@[builtin_env_linter linter.dummyExtra]
+public meta def dummyExtra : Lean.Linter.EnvLinter.EnvLinter where
   noErrorsFound := "No declarations ending with 'Extra' found."
   errorsFound := "EXTRA VIOLATIONS:"
   test declName := do

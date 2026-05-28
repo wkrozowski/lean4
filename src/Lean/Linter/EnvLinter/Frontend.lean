@@ -32,48 +32,37 @@ inductive LintVerbosity
   | high
   deriving Inhabited, DecidableEq, Repr
 
-/-- Which set of linters to run. -/
-inductive LintScope
-  /-- Run only default linters. -/
-  | default
-  /-- Run default linters together with the non-default (extra) linters. -/
-  | extra
-  /-- Run all linters (default + extra). -/
-  | all
-  deriving Inhabited, DecidableEq, Repr
+/-- `getChecks` produces the list of registered environment linters, sorted by option name.
 
-/-- `getChecks` produces a list of linters to run.
-
-If `runOnly` is populated, only those named linters are run (regardless of `scope`).
-Otherwise, linter selection depends on `scope`:
-- `default`: only linters with `isDefault = true`
-- `extra`: linters with `isDefault = true` together with linters with `isDefault = false`
-- `all`: all linters -/
-def getChecks (scope : LintScope := .default) (runOnly : Option (List Name) := none) :
-    CoreM (Array NamedEnvLinter) := do
+Per-declaration enabling is decided later by `lintCore` using the option-resolution snapshot
+stored in `envLinterSnapshotExt`. -/
+def getChecks : CoreM (Array NamedEnvLinter) := do
   let mut result := #[]
-  for (name, declName, isDefault) in envLinterExt.getState (← getEnv) do
-    let shouldRun := match runOnly with
-      | some only => only.contains name
-      | none => match scope with
-        | .default => isDefault
-        | .extra => true
-        | .all => true
-    if shouldRun then
-      let linter ← getEnvLinter name declName
-      result := result.binInsert (·.name.lt ·.name) linter
+  for (optName, declName) in envLinterExt.getState (← getEnv) do
+    let linter ← getEnvLinter optName declName
+    result := result.binInsert (·.optName.lt ·.optName) linter
   pure result
 
+/-- Returns true iff the snapshot taken at `decl`'s add time records the linter's option as
+enabled. Returns false when the snapshot is missing (e.g. the declaration predates the linter,
+or was filtered out of snapshotting). -/
+def isLinterEnabledFor (env : Environment) (linter : NamedEnvLinter) (decl : Name) : Bool :=
+  match getEnvLinterSnapshotEntry? env decl linter.optName with
+  | some b => b
+  | none => false
 
 /--
 Runs all the specified linters on all the specified declarations in parallel,
-producing a list of results.
+producing a list of results. Each (linter, declaration) pair is gated on the per-declaration
+snapshot in `envLinterSnapshotExt`: a linter runs against `decl` only if the snapshot
+records its option as enabled at the moment `decl` was added.
 -/
 def lintCore (decls : Array Name) (linters : Array NamedEnvLinter) :
     CoreM (Array (NamedEnvLinter × Std.HashMap Name MessageData)) := do
+  let env ← getEnv
   let tasks : Array (NamedEnvLinter × Array (Name × Task (Except Exception <| Option MessageData))) ←
     linters.mapM fun linter => do
-      let decls ← decls.filterM (shouldBeLinted linter.name)
+      let decls := decls.filter (isLinterEnabledFor env linter ·)
       (linter, ·) <$> decls.mapM fun decl => (decl, ·) <$> do
         let act : MetaM (Option MessageData) := do
           linter.test decl
@@ -148,7 +137,7 @@ def formatLinterResults
     (results : Array (NamedEnvLinter × Std.HashMap Name MessageData))
     (decls : Array Name)
     (groupByFilename : Bool)
-    (whereDesc : String) (scope : LintScope := .default)
+    (whereDesc : String)
     (verbose : LintVerbosity) (numLinters : Nat) (useErrorFormat : Bool := false) :
     CoreM MessageData := do
   let formattedResults ← results.filterMapM fun (linter, results) => do
@@ -158,7 +147,7 @@ def formatLinterResults
           groupedByFilename results (useErrorFormat := useErrorFormat)
         else
           printWarnings results
-      pure $ some m!"/- The `{linter.name}` linter reports:\n{linter.errorsFound} -/\n{warnings}\n"
+      pure $ some m!"/- The `{linter.optName}` linter reports:\n{linter.errorsFound} -/\n{warnings}\n"
     else if verbose = LintVerbosity.high then
       pure $ some m!"/- OK: {linter.noErrorsFound} -/"
     else
@@ -171,10 +160,6 @@ def formatLinterResults
       } in {decls.size - numAutoDecls} declarations (plus {
       numAutoDecls} automatically generated ones) {whereDesc
       } with {numLinters} linters\n\n{s}"
-  match scope with
-  | .default => s := m!"{s}-- (non-default linters skipped)\n"
-  | .extra => pure ()
-  | .all => pure ()
   pure s
 
 /-- Get the list of declarations in the current module. -/

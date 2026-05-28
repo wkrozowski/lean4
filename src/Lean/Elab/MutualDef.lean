@@ -1269,6 +1269,10 @@ where
         guard (!isPrivateName declId.declName || (← ResolveName.backward.privateInPublic.getM)) *>
         some .axiom)
     setEnv async.mainEnv
+    -- The inner `addDecl` from `finishElab` will run on `async.asyncEnv`, where extension
+    -- modifications are not reported back (`reportExts := false`). Snapshot env-linter
+    -- options here on the main env so `lake builtin-lint` sees them.
+    Lean.Linter.EnvLinter.snapshotEnvLinterOptions declId.declName
 
     -- TODO: parallelize header elaboration as well? Would have to refactor auto implicits catch,
     -- makes `@[simp]` etc harder?

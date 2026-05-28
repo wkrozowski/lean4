@@ -1,11 +1,32 @@
 import Lean
 
+/-!
+Tests for the environment-linter framework:
+- registering an env-linter option (via `register_builtin_option` + `addEnvLinterOption`)
+- attaching it to an `EnvLinter` via `@[builtin_env_linter linter.X]`
+- `isAutoDecl` filtering
+- attribute rejection of unknown options
+- duplicate linter detection
+
+End-to-end behaviour (snapshot population, `lintCore` filtering by snapshot) requires the
+`initialize addEnvLinterOption` block of the linter's containing module to fire, which only
+happens when that module is loaded by an importer. That scenario is exercised by the
+multi-file `tests/lake/tests/builtin-lint*` fixtures.
+-/
+
 open Lean Linter EnvLinter Meta
 
-/-! ## Dummy env linter for testing -/
+/-! ## Linter setup -/
+
+register_builtin_option linter.dummyBadName : Bool := {
+  defValue := true
+  descr := "flag declarations whose last name component starts with 'bad'"
+}
+
+initialize addEnvLinterOption linter.dummyBadName
 
 /-- A dummy linter that flags any declaration whose last name component starts with "bad". -/
-@[builtin_env_linter]
+@[builtin_env_linter linter.dummyBadName]
 public meta def dummyBadName : EnvLinter where
   test declName := do
     if let .str _ s := declName then
@@ -15,98 +36,46 @@ public meta def dummyBadName : EnvLinter where
   noErrorsFound := "no bad names found"
   errorsFound := "found bad names"
 
-/-! ## Test: extension registration -/
+/-! ## Test: envLinterExt is keyed by option name -/
 
-def testExtContains (name : Name) : CoreM Bool := do
+def testExtContains (optName : Name) : CoreM Bool := do
   let ext := envLinterExt.getState (← getEnv)
-  return ext.contains name
+  return ext.contains optName
 
 /-- info: true -/
 #guard_msgs in
-#eval testExtContains `dummyBadName
+#eval testExtContains `linter.dummyBadName
 
 /-- info: false -/
 #guard_msgs in
-#eval testExtContains `nonexistentLinter
+#eval testExtContains `linter.nonexistent
 
-/-! ## Test: getEnvLinter resolves the linter -/
+/-! ## Test: envLinterExt stores the linter's declName for each option -/
 
-def testResolveLinter : CoreM String := do
-  let some (declName, _) := (envLinterExt.getState (← getEnv)).find? `dummyBadName
-    | throwError "not found"
-  let linter ← getEnvLinter `dummyBadName declName
-  return toString linter.name
+def testDeclName (optName : Name) : CoreM (Option Name) := do
+  return (envLinterExt.getState (← getEnv)).find? optName
 
-/-- info: "dummyBadName" -/
+/-- info: some `dummyBadName -/
 #guard_msgs in
-#eval testResolveLinter
+#eval testDeclName `linter.dummyBadName
 
-/-! ## Test: dummy linter detects bad names -/
-
-def badDef : Nat := 42
-def goodDef : Nat := 42
-
-def testLinterDetects (declName : Name) : MetaM Bool := do
-  let some (linterDeclName, _) := (envLinterExt.getState (← getEnv)).find? `dummyBadName
-    | throwError "not found"
-  let linter ← getEnvLinter `dummyBadName linterDeclName
-  return (← linter.test declName).isSome
-
-/-- info: true -/
-#guard_msgs in
-#eval testLinterDetects `badDef
-
-/-- info: false -/
-#guard_msgs in
-#eval testLinterDetects `goodDef
-
-/-! ## Test: builtin_nolint -/
-
-@[builtin_nolint dummyBadName]
-def badButNolinted : Nat := 99
-
-def testShouldBeLinted (linter decl : Name) : CoreM Bool := do
-  shouldBeLinted linter decl
-
-/-- info: false -/
-#guard_msgs in
-#eval testShouldBeLinted `dummyBadName `badButNolinted
-
-/-- info: true -/
-#guard_msgs in
-#eval testShouldBeLinted `dummyBadName `badDef
-
-/-! ## Test: builtin_env_linter extra -/
-
-@[builtin_env_linter extra]
-public meta def dummyExtraLinter : EnvLinter where
-  test _ := return none
-  noErrorsFound := "ok"
-  errorsFound := "err"
-
--- The extension stores (declName, isDefault). Extra means isDefault = false.
-
-def testIsDefault (name : Name) : CoreM (Option Bool) := do
-  let ext := envLinterExt.getState (← getEnv)
-  match ext.find? name with
-  | some (_, isDefault) => return some isDefault
-  | none => return none
-
-/-- info: some false -/
-#guard_msgs in
-#eval testIsDefault `dummyExtraLinter
-
-/-- info: some true -/
-#guard_msgs in
-#eval testIsDefault `dummyBadName
-
-/-! ## Test: duplicate linter name is rejected -/
+/-! ## Test: option already controlling a linter is rejected -/
 
 /--
-error: invalid attribute `builtin_env_linter`, linter `dummyBadName` has already been declared
+error: invalid attribute `builtin_env_linter`, option `linter.dummyBadName` is already controlling linter `dummyBadName`
 -/
 #guard_msgs in
-@[builtin_env_linter] public meta def Other.dummyBadName : EnvLinter :=
+@[builtin_env_linter linter.dummyBadName] public meta def Other.dummyBadName2 : EnvLinter :=
+  { test := fun _ => return none, noErrorsFound := "", errorsFound := "" }
+
+/-! ## Test: builtin_env_linter rejects unknown option name -/
+
+/--
+error: invalid attribute `builtin_env_linter`, no constant named `linter.totallyUnknown`; did you forget `register_builtin_option linter.totallyUnknown : Bool := ...`?
+-/
+#guard_msgs in
+@[builtin_env_linter linter.totallyUnknown]
+public meta def unknownOpt : EnvLinter :=
   { test := fun _ => return none, noErrorsFound := "", errorsFound := "" }
 
 /-! ## Test: isAutoDecl -/
@@ -122,114 +91,3 @@ error: invalid attribute `builtin_env_linter`, linter `dummyBadName` has already
 /-- info: false -/
 #guard_msgs in
 #eval isAutoDecl `Nat.add
-
-/-! ## Test: getChecks -/
-
--- Default mode: only isDefault=true linters
-def testGetChecksDefault : CoreM (Array Name) := do
-  let checks ← getChecks (scope := .default) (runOnly := none)
-  return checks.map (·.name)
-
--- dummyBadName is default, dummyExtraLinter is not
-/-- info: #[`dummyBadName] -/
-#guard_msgs in
-#eval testGetChecksDefault
-
--- Extra mode: default linters together with non-default ones
-def testGetChecksExtra : CoreM (Array Name) := do
-  let checks ← getChecks (scope := .extra) (runOnly := none)
-  return checks.map (·.name)
-
-/-- info: #[`dummyBadName, `dummyExtraLinter] -/
-#guard_msgs in
-#eval testGetChecksExtra
-
--- All mode: all linters
-def testGetChecksAll : CoreM (Array Name) := do
-  let checks ← getChecks (scope := .all) (runOnly := none)
-  return checks.map (·.name)
-
-/-- info: #[`dummyBadName, `dummyExtraLinter] -/
-#guard_msgs in
-#eval testGetChecksAll
-
--- runOnly: only specified linters
-def testGetChecksRunOnly : CoreM (Array Name) := do
-  let checks ← getChecks (runOnly := some [`dummyExtraLinter])
-  return checks.map (·.name)
-
-/-- info: #[`dummyExtraLinter] -/
-#guard_msgs in
-#eval testGetChecksRunOnly
-
-/-! ## Test: getDeclsInCurrModule -/
-
-def testDeclsInCurrModule : CoreM Bool := do
-  let decls ← getDeclsInCurrModule
-  -- Our test declarations should be in the current module
-  return decls.contains `badDef && decls.contains `goodDef && decls.contains `badButNolinted
-
-/-- info: true -/
-#guard_msgs in
-#eval testDeclsInCurrModule
-
-/-! ## Test: lintCore -/
-
--- lintCore should find badDef but not goodDef or badButNolinted
-def testLintCore : CoreM (Array (Name × Nat)) := do
-  let linters ← getChecks (scope := .default) (runOnly := none)
-  let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
-  return results.map fun (linter, msgs) => (linter.name, msgs.size)
-
-/-- info: #[(`dummyBadName, 1)] -/
-#guard_msgs in
-#eval testLintCore
-
--- Verify which declaration was flagged
-def testLintCoreDetail : CoreM (Array Name) := do
-  let linters ← getChecks (scope := .default) (runOnly := none)
-  let results ← lintCore #[`badDef, `goodDef, `badButNolinted] linters
-  let mut flagged := #[]
-  for (_, msgs) in results do
-    for (name, _) in msgs.toArray do
-      flagged := flagged.push name
-  return flagged
-
-/-- info: #[`badDef] -/
-#guard_msgs in
-#eval testLintCoreDetail
-
-/-! ## Test: formatLinterResults -/
-
-def testFormatResults : CoreM Format := do
-  let linters ← getChecks (scope := .default) (runOnly := none)
-  let results ← lintCore #[`badDef, `goodDef] linters
-  let msg ← formatLinterResults results #[`badDef, `goodDef]
-    (groupByFilename := false) (whereDesc := "in test") (scope := .all)
-    (verbose := .medium) (numLinters := linters.size)
-  return (← msg.format)
-
-/--
-info: -- Found 1 error in 2 declarations (plus 0 automatically generated ones) in test with 1 linters
-
-/- The `dummyBadName` linter reports:
-found bad names -/
-#check badDef /- declaration name starts with 'bad' -/
--/
-#guard_msgs in
-#eval testFormatResults
-
--- No errors case
-def testFormatResultsClean : CoreM Format := do
-  let linters ← getChecks (scope := .default) (runOnly := none)
-  let results ← lintCore #[`goodDef] linters
-  let msg ← formatLinterResults results #[`goodDef]
-    (groupByFilename := false) (whereDesc := "in test") (scope := .all)
-    (verbose := .medium) (numLinters := linters.size)
-  return (← msg.format)
-
-/--
-info: -- Found 0 errors in 1 declarations (plus 0 automatically generated ones) in test with 1 linters
--/
-#guard_msgs in
-#eval testFormatResultsClean

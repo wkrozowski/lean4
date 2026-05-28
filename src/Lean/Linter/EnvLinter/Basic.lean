@@ -12,8 +12,10 @@ module
 prelude
 public import Lean.Structure
 public import Lean.Elab.InfoTree.Main
+public import Lean.AutoDecl
+public import Lean.Linter.EnvLinter.Snapshot
+public import Lean.Attributes
 import Lean.ExtraModUses
-public import Lean.Linter.EnvLinter.Nolint
 
 public section
 
@@ -22,53 +24,39 @@ open Lean Meta
 namespace Lean.Linter.EnvLinter
 
 /-!
-# Basic environment linter types and attributes
+# Environment linter framework
 
-This file defines the basic types and attributes used by the environment
-linting framework. An environment linter consists of a function
-`(declaration : Name) → MetaM (Option MessageData)`, this function together with some
-metadata is stored in the `EnvLinter` structure. We define two attributes:
+An environment linter is a check on a single declaration, designed for `lake builtin-lint`
+to inspect the whole environment post-build. Each env linter is associated with a
+`Lean.Option Bool`:
 
- * `@[builtin_env_linter]` applies to a declaration of type `EnvLinter`
-   and adds it to the default linter set.
+```
+register_builtin_option linter.X : Bool := { defValue := true, descr := "..." }
+initialize Lean.Linter.addEnvLinterOption linter.X
 
- * `@[builtin_nolint linterName]` omits the tagged declaration from being checked by
-   the linter with name `linterName`.
+@[builtin_env_linter linter.X]
+public meta def myLinter : EnvLinter where
+  test := fun declName => ...
+  noErrorsFound := "..."
+  errorsFound := "..."
+```
+
+`addEnvLinterOption linter.X` (in an `initialize` block) records the option in
+`envLinterOptionsRef`, so that `Lean.addDecl` will snapshot its resolved value for each
+non-auto declaration in any downstream module that imports this one. The
+`@[builtin_env_linter linter.X]` attribute records the linter in `envLinterExt` at elab time
+(so it persists in the olean for `lake builtin-lint` to consume).
+
+To opt a single declaration out of a particular linter, use
+`set_option linter.X false in <decl>`. The setting is captured by the snapshot.
+
+**Module-system note:** downstream modules that want env linters from a module-system
+library must import it with `meta` qualification — e.g., `public meta import MyLintersLib`.
+A plain `public import` does not fire the library's `initialize addEnvLinterOption` blocks,
+so the snapshot is built with an empty options registry and the linter never sees any
+declarations. This matches how `meta`-imports run initializers as part of metaprogram
+execution at elab time.
 -/
-
-/--
-Returns true if `decl` is an automatically generated declaration.
-
-Also returns true if `decl` is an internal name or created during macro
-expansion.
--/
-def isAutoDecl (decl : Name) : CoreM Bool := do
-  if decl.hasMacroScopes then return true
-  if decl.isInternal then return true
-  let env ← getEnv
-  if isReservedName env decl then return true
-  if let Name.str n s := decl then
-    if (← isAutoDecl n) then return true
-    if s.startsWith "proof_"
-        || s.startsWith "match_"
-        || s.startsWith "unsafe_"
-        || s.startsWith "grind_"
-    then return true
-    if env.isConstructor n && s ∈ ["injEq", "inj", "sizeOf_spec", "elim", "noConfusion"] then
-      return true
-    if let ConstantInfo.inductInfo _ := env.find? n then
-      if s.startsWith "brecOn_" || s.startsWith "below_" then return true
-      if s ∈ [casesOnSuffix, recOnSuffix, brecOnSuffix, belowSuffix,
-          "ndrec", "ndrecOn", "noConfusionType", "noConfusion", "ofNat", "toCtorIdx", "ctorIdx",
-          "ctorElim", "ctorElimType"] then
-        return true
-      if let some _ := isSubobjectField? env n (.mkSimple s) then
-        return true
-    -- Coinductive/inductive lattice-theoretic predicates:
-    if let ConstantInfo.inductInfo _ := env.find? (Name.str n "_functor") then
-      if s == "functor_unfold" || s == casesOnSuffix || s == "mutual" then return true
-      if env.isConstructor (Name.str (Name.str n "_functor") s) then return true
-  pure false
 
 /-- An environment linting test for the `lake builtin-lint` command. -/
 structure EnvLinter where
@@ -79,51 +67,51 @@ structure EnvLinter where
   noErrorsFound : MessageData
   /-- `errorsFound` is printed when at least one test is positive -/
   errorsFound : MessageData
-  /-- If `isDefault` is false, this linter is only run when `--extra` is passed. -/
-  isDefault := true
 
-/-- A `NamedEnvLinter` is an environment linter associated to a particular declaration. -/
+/-- An `EnvLinter` paired with the option that controls it and the underlying declaration
+name. Identity is the option name; that is what appears in CLI flags, diagnostic headers,
+and `set_option`. -/
 structure NamedEnvLinter extends EnvLinter where
-  /-- The name of the named linter. This is just the declaration name without the namespace. -/
-  name : Name
-  /-- The linter declaration name -/
+  /-- The name of the `Lean.Option Bool` that controls the linter; also the linter's
+  user-facing identifier. -/
+  optName : Name
+  /-- The full declaration name of the linter (used to look up its `test` function). -/
   declName : Name
 
-/-- Gets an environment linter by declaration name. -/
-def getEnvLinter (name declName : Name) : CoreM NamedEnvLinter := unsafe
-  return { ← evalConstCheck EnvLinter ``EnvLinter declName with name, declName }
-
-/-- Defines the `envLinterExt` extension for adding an environment linter to the default set. -/
-builtin_initialize envLinterExt :
-    SimplePersistentEnvExtension (Name × Bool) (NameMap (Name × Bool)) ←
-  let addEntryFn := fun m (n, b) => m.insert (n.updatePrefix .anonymous) (n, b)
-  registerSimplePersistentEnvExtension {
-    addImportedFn := fun nss =>
-      nss.foldl (init := {}) fun m ns => ns.foldl (init := m) addEntryFn
-    addEntryFn
-  }
+/-- Resolves a registered environment linter into a `NamedEnvLinter` by evaluating the linter's
+declaration. -/
+def getEnvLinter (optName declName : Name) : CoreM NamedEnvLinter := unsafe do
+  let linter ← evalConstCheck EnvLinter ``EnvLinter declName
+  return { linter with optName, declName }
 
 /--
-Defines the `@[builtin_env_linter]` attribute for adding a linter to the default set.
-The form `@[builtin_env_linter extra]` will not add the linter to the default set,
-but it can be selected by `lake builtin-lint --extra`.
+Defines the `@[builtin_env_linter linter.X]` attribute for registering an environment linter.
 
-Linters are named using their declaration names, without the namespace. These must be distinct.
+The argument names the controlling `Lean.Option Bool`, which must be a declared constant of
+type `Lean.Option Bool`. (Typically declared via `register_builtin_option` or `register_option`
+together with `initialize addEnvLinterOption linter.X`.) Each option may be the target of at
+most one linter (the option is the linter's identity).
 -/
-syntax (name := builtin_env_linter) "builtin_env_linter" &" extra"? : attr
+syntax (name := builtin_env_linter) "builtin_env_linter " ident : attr
 
 builtin_initialize registerBuiltinAttribute {
   name := `builtin_env_linter
   descr := "Use this declaration as a linting test in `lake builtin-lint`"
   add   := fun decl stx kind => do
-    let dflt := stx[1].isNone
     unless kind == .global do throwError "invalid attribute `builtin_env_linter`, must be global"
-    let shortName := decl.updatePrefix .anonymous
-    if let some (declName, _) := (envLinterExt.getState (← getEnv)).find? shortName then
+    let optName ← match stx with
+      | `(attr| builtin_env_linter $id:ident) => pure id.getId
+      | _ => throwError "invalid `builtin_env_linter` syntax: expected an option name argument"
+    let env ← getEnv
+    unless env.contains optName do
+      throwError "invalid attribute `builtin_env_linter`, no constant named `{optName}`; \
+        did you forget `register_builtin_option {optName} : Bool := ...`?"
+    if let some declName := (envLinterExt.getState env).find? optName then
       Elab.addConstInfo stx declName
       throwError
-        "invalid attribute `builtin_env_linter`, linter `{shortName}` has already been declared"
-    let isPublic := !isPrivateName decl; let isMeta := isMarkedMeta (← getEnv) decl
+        "invalid attribute `builtin_env_linter`, option `{optName}` is already controlling \
+        linter `{declName}`"
+    let isPublic := !isPrivateName decl; let isMeta := isMarkedMeta env decl
     unless isPublic && isMeta do
       throwError "invalid attribute `builtin_env_linter`, \
         declaration `{.ofConstName decl}` must be marked as `public` and `meta`\
@@ -133,7 +121,7 @@ builtin_initialize registerBuiltinAttribute {
     unless ← (isDefEq constInfo.type (mkConst ``EnvLinter)).run' do
       throwError "`{.ofConstName decl}` must have type `{.ofConstName ``EnvLinter}`, got \
         `{constInfo.type}`"
-    modifyEnv fun env => envLinterExt.addEntry env (decl, dflt)
+    modifyEnv fun env => envLinterExt.addEntry env (optName, decl)
 }
 
 end Lean.Linter.EnvLinter

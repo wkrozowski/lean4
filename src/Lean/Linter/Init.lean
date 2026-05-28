@@ -51,6 +51,7 @@ use `register_builtin_linter_set` rather than calling this directly. -/
 def addBuiltinLinterSet (setName : Name) (linterNames : NameSet) : IO Unit := do
   builtinLinterSetsRef.modify (·.push (setName, linterNames))
 
+
 builtin_initialize linterSetsExt :
     PersistentEnvExtension (Name × NameSet) (Name × NameSet) LinterSetsState ←
   registerPersistentEnvExtension {
@@ -105,6 +106,32 @@ register_builtin_option linter.extra : Bool := {
   descr := "enables the set of extra linters — linters that are turned off by default and \
     only available via `lake lint`. An extra linter early-returns unless this option is true."
 }
+
+/-- Options that control environment linters.
+
+Populated by callers (in their own modules) via an `initialize addEnvLinterOption linter.X`
+block alongside `register_builtin_option linter.X : Bool := ...`. The push fires when the
+linter's module is loaded by an importer, so that downstream files which elaborate
+declarations under this module's import closure include `linter.X`'s resolved value in the
+snapshot recorded by `Lean.addDecl`.
+
+Only the snapshot helper (running in `addDecl` during a downstream-module build) reads this
+ref — and at that point the linter's module has been imported and its `initialize` block has
+fired. The `lake builtin-lint` process does NOT read this ref; it works from env-extension
+state only.
+
+**Module-system note:** the `initialize` block only fires for downstream modules that import
+the linter's module with `meta` qualification (`public meta import LintersModule` or
+`meta import LintersModule`). A plain `public import` loads the regular interface of the
+linter module without running its initializers, so the ref stays empty and the snapshot is
+incomplete. Module-system consumers of env linters must use `meta` imports. -/
+builtin_initialize envLinterOptionsRef : IO.Ref (Array (Lean.Option Bool)) ← IO.mkRef #[]
+
+/-- Records that `opt` controls an environment linter. Call this in an `initialize` block
+alongside the `register_builtin_option`/`register_option` that declares `opt`. -/
+def addEnvLinterOption (opt : Lean.Option Bool) : IO Unit :=
+  envLinterOptionsRef.modify (·.push opt)
+
 
 def getLinterAll (o : LinterOptions) (defValue := linter.all.defValue) : Bool :=
     o.get linter.all.name defValue

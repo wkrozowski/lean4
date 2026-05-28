@@ -15,43 +15,40 @@ open Lean Lean.Core Meta
 
 namespace Lake.BuiltinLint
 
+/-- Selection mode for env-linter / text-linter dispatch, set by CLI flags. -/
+public inductive LintMode where
+  /-- Default: run only env linters whose option is on (or pulled in by a linter set
+  whose default fallback is true), and text linters not tagged `linter.extra*`. -/
+  | default
+  /-- `--extra`: also enable the `linter.extra` linter set when building, and include
+  `linter.extra*`-tagged text linters. -/
+  | extra
+  /-- `--lint-all`: enable both `linter.all` and `linter.extra` when building, and
+  include every text linter regardless of tag. -/
+  | all
+  deriving Inhabited, DecidableEq, Repr
+
 /-- Arguments for builtin linting via `lake lint --builtin-lint`. -/
 public structure Args where
-  /-- Which set of linters to run (set by `--extra` / `--lint-all`; default if neither). -/
-  scope : Linter.EnvLinter.LintScope := .default
-  /-- Run only the specified linters. -/
-  only : Array Name := #[]
+  /-- Selection mode (set by `--extra` / `--lint-all`; default if neither). -/
+  mode : LintMode := .default
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
 
 public def leanOptOverrides (args : Args) : LeanOptions :=
-  let enableAll : Array LeanOption :=
-    #[⟨`linter.extra, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
-  if !args.only.isEmpty then
-    LeanOptions.ofArray enableAll
-  else
-    match args.scope with
-    | .default => {}
-    | .extra   => LeanOptions.ofArray #[⟨`linter.extra, .ofBool true⟩]
-    | .all     => LeanOptions.ofArray enableAll
+  match args.mode with
+  | .default => {}
+  | .extra   => LeanOptions.ofArray #[⟨`linter.extra, .ofBool true⟩]
+  | .all     => LeanOptions.ofArray #[⟨`linter.extra, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
 
+/-- Collects persisted text-linter entries for modules under `pkgRoot`. Whatever fired during
+the build is what we report — selection happens at build time (e.g. `linter.extra*` linters
+early-return unless `linter.extra` is on), so we do not filter the output here. -/
 private def collectTextLints
-    (env : Environment) (args : Args) (pkgRoot : Name) :
+    (env : Environment) (pkgRoot : Name) :
     Array (Name × Array Linter.LintEntry) :=
-  let matchOnly (linter : Name) : Bool :=
-    args.only.isEmpty || args.only.any (fun n => n.isSuffixOf linter)
-  let matchScope (linter : Name) : Bool :=
-    if !args.only.isEmpty then true
-    else match args.scope with
-      | .default => !(`linter.extra).isPrefixOf linter
-      | .extra   => true
-      | .all     => true
   Linter.getAllLints env |>.foldl (init := #[]) fun acc (mod, entries) =>
-    if pkgRoot.isPrefixOf mod then
-      let filtered := entries.filter fun e => matchOnly e.linter && matchScope e.linter
-      if filtered.isEmpty then acc else acc.push (mod, filtered)
-    else
-      acc
+    if pkgRoot.isPrefixOf mod && !entries.isEmpty then acc.push (mod, entries) else acc
 
 @[noinline] private def getIsModule (modData : Lean.ModuleData) : BaseIO Bool :=
   return modData.isModule
@@ -62,8 +59,6 @@ public def run (args : Args) : IO UInt32 := do
     IO.eprintln "lake lint: no modules specified for builtin linting"
     return 1
 
-  let runOnly := if args.only.isEmpty then none else some args.only.toList
-  let scope := args.scope
   let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
 
   let mut anyFailed := false
@@ -79,7 +74,7 @@ public def run (args : Args) : IO UInt32 := do
     let env ← importModules #[{ module := mod }, envLinterModule] {}
       (trustLevel := 1024) (loadExts := true) (level := level)
 
-    let textGroups := collectTextLints env args mod.getRoot
+    let textGroups := collectTextLints env mod.getRoot
     let textFailed := !textGroups.isEmpty
     for (m, entries) in textGroups do
       IO.println s!"-- Text linter diagnostics in {m}:"
@@ -88,7 +83,7 @@ public def run (args : Args) : IO UInt32 := do
 
     let (declFailed, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
       let decls ← Linter.EnvLinter.getDeclsInPackage mod.getRoot
-      let linters ← Linter.EnvLinter.getChecks (scope := scope) (runOnly := runOnly)
+      let linters ← Linter.EnvLinter.getChecks
       if linters.isEmpty then
         IO.println s!"-- No environment linters registered for {mod}."
         return false
@@ -98,7 +93,7 @@ public def run (args : Args) : IO UInt32 := do
         let fmtResults ←
           Linter.EnvLinter.formatLinterResults results decls
             (groupByFilename := true) (useErrorFormat := true)
-            s!"in {mod}" (scope := if args.only.isEmpty then scope else .all) .medium linters.size
+            s!"in {mod}" .medium linters.size
         IO.print (← fmtResults.toString)
       else unless textFailed do
         IO.println s!"-- Linting passed for {mod}."

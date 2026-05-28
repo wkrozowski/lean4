@@ -1,6 +1,6 @@
 module
 
-public import Linters
+public meta import Linters
 
 -- Public def whose name ends with the dummy linter's marker suffix. The
 -- dummy env linter (registered in `Linters.lean`, default-on) reads only

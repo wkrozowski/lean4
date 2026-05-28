@@ -9,6 +9,7 @@ prelude
 public import Lean.Meta.Sorry
 public import Lean.Util.CollectAxioms
 public import Lean.OriginalConstKind
+public import Lean.Linter.EnvLinter.Snapshot
 import Lean.Compiler.MetaAttr
 import all Lean.OriginalConstKind  -- for accessing `privateConstKindsExt`
 
@@ -85,8 +86,11 @@ Adds the given declaration to the environment's private scope, deriving a suitab
 the public scope if under the module system and if the declaration is not private. If `forceExpose`
 is true, exposes the declaration body, i.e. preserves the full representation in the public scope,
 independently of `Environment.isExporting` and even for theorems.
+
+This is the implementation; the public `addDecl` wraps it to snapshot environment-linter options
+for each newly added declaration (see `Lean.Linter.EnvLinter.snapshotEnvLinterOptions`).
 -/
-def addDecl (decl : Declaration) (forceExpose := false) : CoreM Unit :=
+private def addDeclCore (decl : Declaration) (forceExpose := false) : CoreM Unit :=
   withTraceNode `addDecl (fun _ => return m!"adding declarations {decl.getNames}") do
   -- register namespaces for newly added constants; this used to be done by the kernel itself
   -- but that is incompatible with moving it to a separate task
@@ -208,6 +212,22 @@ where
         return
       catch _ => pure ()
 
+
+/--
+Adds the given declaration to the environment's private scope, deriving a suitable presentation in
+the public scope if under the module system and if the declaration is not private. If `forceExpose`
+is true, exposes the declaration body, i.e. preserves the full representation in the public scope,
+independently of `Environment.isExporting` and even for theorems.
+
+After the declaration is added, this snapshots the resolved value of every environment-linter
+option (registered via `register_env_linter_option`) for each new constant. The snapshot is
+written on the main environment, before any async kernel-check task is dispatched, so that the
+result is visible to subsequent `getEnv` calls without waiting on the async branch.
+-/
+def addDecl (decl : Declaration) (forceExpose := false) : CoreM Unit := do
+  addDeclCore decl forceExpose
+  for name in decl.getNames do
+    Linter.EnvLinter.snapshotEnvLinterOptions name
 
 def addAndCompile (decl : Declaration) (logCompileErrors : Bool := true)
     (markMeta : Bool := false) : CoreM Unit := do
