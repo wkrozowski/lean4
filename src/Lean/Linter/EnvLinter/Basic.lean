@@ -111,12 +111,13 @@ builtin_initialize registerBuiltinAttribute {
       throwError
         "invalid attribute `builtin_env_linter`, option `{optName}` is already controlling \
         linter `{declName}`"
-    let isPublic := !isPrivateName decl; let isMeta := isMarkedMeta env decl
-    unless isPublic && isMeta do
-      throwError "invalid attribute `builtin_env_linter`, \
-        declaration `{.ofConstName decl}` must be marked as `public` and `meta`\
-        {if isPublic then " but is only marked `public`" else ""}\
-        {if isMeta then " but is only marked `meta`" else ""}"
+    let isNotPrivate := !isPrivateName decl; let isMeta := isMarkedMeta env decl
+    unless isNotPrivate && isMeta do
+      throwError "invalid attribute `builtin_env_linter`, declaration \
+        `{.ofConstName decl}` must be marked as `meta` and must not be `private` (and must be \
+        `public` under the module system).\n\
+        Currently {if isNotPrivate then "non-private" else "private"} and \
+        {if isMeta then "meta" else "non-meta"}."
     let constInfo ← getConstInfo decl
     unless ← (isDefEq constInfo.type (mkConst ``EnvLinter)).run' do
       throwError "`{.ofConstName decl}` must have type `{.ofConstName ``EnvLinter}`, got \

@@ -16,7 +16,7 @@ register_linter_set linter.userExtra := linter.dummyExtra
 
 -- A dummy extra linter that flags any declaration whose name ends with "Extra".
 @[builtin_env_linter linter.dummyExtra]
-public meta def dummyExtra : Lean.Linter.EnvLinter.EnvLinter where
+meta def dummyExtra : Lean.Linter.EnvLinter.EnvLinter where
   noErrorsFound := "No declarations ending with 'Extra' found."
   errorsFound := "EXTRA VIOLATIONS:"
   test declName := do
