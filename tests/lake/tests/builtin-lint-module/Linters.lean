@@ -1,9 +1,8 @@
 module
 
-public import Lean.Linter.EnvLinter
-public import Lean.Elab.Command
+public meta import Lean.Linter.EnvLinter
 
-open Lean Meta Lean.Linter Lean.Elab.Command
+open Lean Meta Lean.Linter
 
 /-- Dummy env linter for the `lake lint --builtin-lint` module-system test.
 Default scope (no `extra`), and the test reads only the declaration name so
