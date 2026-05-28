@@ -15,35 +15,28 @@ open Lean Lean.Core Meta
 
 namespace Lake.BuiltinLint
 
-/-- Selection mode for env-linter / text-linter dispatch, set by CLI flags. -/
-public inductive LintMode where
-  /-- Default: run only env linters whose option is on (or pulled in by a linter set
-  whose default fallback is true), and text linters not tagged `linter.extra*`. -/
-  | default
-  /-- `--extra`: also enable the `linter.extra` linter set when building, and include
-  `linter.extra*`-tagged text linters. -/
-  | extra
-  /-- `--lint-all`: enable both `linter.all` and `linter.extra` when building, and
-  include every text linter regardless of tag. -/
-  | all
-  deriving Inhabited, DecidableEq, Repr
-
 /-- Arguments for builtin linting via `lake lint --builtin-lint`. -/
 public structure Args where
-  /-- Selection mode (set by `--extra` / `--lint-all`; default if neither). -/
-  mode : LintMode := .default
+  /-- Explicit linter-option overrides, applied to the build of each module.
+
+  Each entry sets a `Lean.Option Bool` to the given value. Later entries override earlier
+  ones at the same name. Populated from `--linters=linter.X,-linter.Y,...` on the CLI. -/
+  linterOverrides : Array (Name × Bool) := #[]
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
 
+/-- Produce the `LeanOptions` that should be passed to `lean` when building modules subject
+to `lake builtin-lint`. Resolves duplicate option names by letting later entries win. Each
+override is emitted with the `weak.` CLI prefix so that modules in the package which do not
+yet have the option declared (typically the module declaring it) ignore the flag instead of
+erroring. -/
 public def leanOptOverrides (args : Args) : LeanOptions :=
-  match args.mode with
-  | .default => {}
-  | .extra   => LeanOptions.ofArray #[⟨`linter.extra, .ofBool true⟩]
-  | .all     => LeanOptions.ofArray #[⟨`linter.all, .ofBool true⟩]
+  let merged : NameMap Bool := args.linterOverrides.foldl (init := {}) fun m (n, b) => m.insert n b
+  LeanOptions.ofArray <| merged.toArray.map fun (n, b) =>
+    ⟨`weak ++ n, .ofBool b⟩
 
 /-- Collects persisted text-linter entries for modules under `pkgRoot`. Whatever fired during
-the build is what we report — selection happens at build time (e.g. `linter.extra*` linters
-early-return unless `linter.extra` is on), so we do not filter the output here. -/
+the build is what we report — selection happens at build time, so we do not filter here. -/
 private def collectTextLints
     (env : Environment) (pkgRoot : Name) :
     Array (Name × Array Linter.LintEntry) :=

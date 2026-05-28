@@ -10,8 +10,9 @@ register_option linter.dummyExtra : Bool := {
 
 initialize addEnvLinterOption linter.dummyExtra
 
--- Add `linter.dummyExtra` to the `linter.extra` set so `--extra` turns it on.
-extend_linter_set linter.extra with linter.dummyExtra
+-- Declare a `linter.userExtra` set that enables `linter.dummyExtra`. Downstream tests turn
+-- this set on by passing `--linters=linter.userExtra` to `lake lint`.
+register_linter_set linter.userExtra := linter.dummyExtra
 
 -- A dummy extra linter that flags any declaration whose name ends with "Extra".
 @[builtin_env_linter linter.dummyExtra]
@@ -23,13 +24,12 @@ public meta def dummyExtra : Lean.Linter.EnvLinter.EnvLinter where
       return some "declaration name ends with 'Extra'"
     return none
 
--- A dummy extra text linter: fires on every `declaration` command, but only
--- when `linter.extra = true`. Tags its warnings with `linter.extra` via
--- `logLint`, which is how `lake lint --extra` identifies extra-scope entries.
-def dummyExtraTextLinter : Linter where
+-- A dummy text linter gated by `linter.userExtra`: fires on every `declaration` command
+-- when the set is enabled. Tags its warnings with `linter.userExtra` via `logLint`.
+def dummyUserExtraTextLinter : Linter where
   run cmdStx := do
-    unless getLinterValue linter.extra (← getLinterOptions) do return
+    unless getLinterValue linter.userExtra (← getLinterOptions) do return
     unless cmdStx.getKind == ``Lean.Parser.Command.declaration do return
-    logLint linter.extra cmdStx m!"extra text linter saw a declaration"
+    logLint linter.userExtra cmdStx m!"user extra text linter saw a declaration"
 
-initialize addLinter dummyExtraTextLinter
+initialize addLinter dummyUserExtraTextLinter

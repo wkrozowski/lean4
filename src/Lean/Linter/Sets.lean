@@ -36,12 +36,4 @@ elab doc?:(docComment)? "register_linter_set" name:ident " := " decl:ident* : co
   let initializer ← `($[$doc?]? meta initialize $name : Lean.Option Bool ← Lean.Linter.registerSet $(quote name.getId))
   withMacroExpansion (← getRef) initializer <| elabCommand initializer
 
-open Lean.Elab.Command in
-/-- Add linters to an existing linter set, persisting the membership into the current module's
-olean. Unlike `register_linter_set`, this does not declare a new option for the set itself —
-the set option must already be registered (e.g., as a `register_builtin_option` in core code, or
-created in another module via `register_linter_set`). -/
-elab "extend_linter_set" setName:ident "with " decl:ident* : command =>
-  insertLinterSet setName.getId <| decl.foldl (init := ∅) fun names n => names.insert n.getId
-
 end Lean.Linter

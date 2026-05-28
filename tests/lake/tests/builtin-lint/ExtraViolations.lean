@@ -8,19 +8,18 @@ set_option linter.defProp true
 def badNameExtra : Nat := 1
 
 -- The `<;>` here is unnecessary because `skip` produces only one subgoal —
--- `skip; skip` would do the same thing. The builtin extra
--- `unnecessarySeqFocus` text linter should flag it.
+-- `skip; skip` would do the same thing. The `linter.extra.unnecessarySeqFocus`
+-- text linter (in the builtin `linter.extra` set) should flag it when enabled.
 example : True := by
   skip <;> skip
   trivial
 -- The component `Dup` appears consecutively in this declaration's name —
--- the builtin extra `dupNamespace` text linter should flag it.
+-- `linter.extra.dupNamespace` (in `linter.extra`) should flag it when enabled.
 def Dup.Dup.violation : Nat := 2
 
--- This uses `def` for a Prop — the default `defProp` linter should flag this
--- whenever default linters run, including under `--extra`.
+-- This uses `def` for a Prop — the default `defProp` linter should flag this.
 def shouldBeTheoremUnderExtra : 1 = 1 := rfl
 
 -- The `done` here is unreachable because `trivial` produces no subgoals.
--- The builtin extra `unreachableTactic` text linter should flag it.
+-- `linter.extra.unreachableTactic` (in `linter.extra`) should flag it when enabled.
 def unreachableTacticViolation : True := by trivial <;> done

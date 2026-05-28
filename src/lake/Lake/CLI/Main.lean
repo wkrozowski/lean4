@@ -239,6 +239,22 @@ where
   isValidRepoChar (c : Char) : Bool :=
     c.isAlphanum || c == '-' || c == '_' || c == '.' || c == '/'
 
+/-- Parse a `--linters=spec` / `--linters spec` value into per-option overrides and append
+them to the current `LakeOptions.builtinLint.linterOverrides`. Each comma-separated entry sets
+a `Lean.Option Bool`: a leading `-` means `false`, otherwise `true`. Multiple `--linters`
+flags accumulate; later entries override earlier ones at the same option name (resolved in
+`BuiltinLint.leanOptOverrides`). -/
+def applyLintersSpec (spec : String) : CliM PUnit := do
+  let mut entries : Array (Lean.Name × Bool) := #[]
+  for raw in spec.split (· == ',') do
+    let s := raw.trimAscii
+    if s.isEmpty then continue
+    else if s.startsWith "-" then entries := entries.push ((s.drop 1).toString.toName, false)
+    else entries := entries.push (s.toString.toName, true)
+  modifyThe LakeOptions fun opts =>
+    { opts with runBuiltinLint := true, builtinLint.linterOverrides :=
+        opts.builtinLint.linterOverrides ++ entries }
+
 def lakeLongOption : (opt : String) → CliM PUnit
 | "--quiet"       => modifyThe LakeOptions ({· with verbosity := .quiet})
 | "--verbose"     => modifyThe LakeOptions ({· with verbosity := .verbose})
@@ -313,10 +329,9 @@ def lakeLongOption : (opt : String) → CliM PUnit
 -- Builtin lint options (using any of these implicitly enables --builtin-lint)
 | "--builtin-lint" => modifyThe LakeOptions ({· with runBuiltinLint := true})
 | "--builtin-only" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinOnly := true})
-| "--extra" => modifyThe LakeOptions ({· with
-    runBuiltinLint := true, builtinLint.mode := .extra})
-| "--lint-all" => modifyThe LakeOptions ({· with
-    runBuiltinLint := true, builtinLint.mode := .all})
+| "--linters" => do
+  let spec ← takeOptArg "--linters" "comma-separated linter spec"
+  applyLintersSpec spec
 -- Shared options
 | "--force" => modifyThe LakeOptions ({· with shake.force := true})
 -- Shake options
@@ -332,7 +347,11 @@ def lakeLongOption : (opt : String) → CliM PUnit
   let mod ← takeOptArg "--only" "minimize only this module"
   modifyThe LakeOptions fun opts =>
     {opts with shake.onlyMods := opts.shake.onlyMods.push mod.toName}
-| opt             =>  throw <| CliError.unknownLongOption opt
+| opt =>
+  if opt.startsWith "--linters=" then
+    applyLintersSpec (opt.drop "--linters=".length).toString
+  else
+    throw <| CliError.unknownLongOption opt
 
 def lakeOption :=
   option {
