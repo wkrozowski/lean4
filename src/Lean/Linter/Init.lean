@@ -106,6 +106,15 @@ register_builtin_option linter.extra : Bool := {
     only available via `lake lint`. An extra linter early-returns unless this option is true."
 }
 
+/--
+Global registry of options associated with environment linters.
+These are precisely options, whose value will be snapshotted during `addDecl`.
+-/
+builtin_initialize envLinterOptionsRef : IO.Ref (Array (Lean.Option Bool)) ← IO.mkRef #[]
+
+def addEnvLinterOption (opt : Lean.Option Bool) : IO Unit :=
+  envLinterOptionsRef.modify (·.push opt)
+
 def getLinterAll (o : LinterOptions) (defValue := linter.all.defValue) : Bool :=
     o.get linter.all.name defValue
 

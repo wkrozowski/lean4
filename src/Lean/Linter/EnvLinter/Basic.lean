@@ -13,7 +13,6 @@ prelude
 public import Lean.Structure
 public import Lean.Elab.InfoTree.Main
 import Lean.ExtraModUses
-public import Lean.Linter.EnvLinter.Nolint
 
 public section
 

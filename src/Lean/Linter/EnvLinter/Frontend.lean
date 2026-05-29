@@ -73,7 +73,8 @@ def lintCore (decls : Array Name) (linters : Array NamedEnvLinter) :
     CoreM (Array (NamedEnvLinter × Std.HashMap Name MessageData)) := do
   let tasks : Array (NamedEnvLinter × Array (Name × Task (Except Exception <| Option MessageData))) ←
     linters.mapM fun linter => do
-      let decls ← decls.filterM (shouldBeLinted linter.name)
+      -- Here will be a callback to check if a declaration should be linted
+      --let decls ← decls.filterM (shouldBeLinted linter.name)
       (linter, ·) <$> decls.mapM fun decl => (decl, ·) <$> do
         let act : MetaM (Option MessageData) := do
           linter.test decl
