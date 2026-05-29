@@ -9,6 +9,7 @@ prelude
 public import Lean.Meta.Sorry
 public import Lean.Util.CollectAxioms
 public import Lean.OriginalConstKind
+public import Lean.AutoDecl
 import Lean.Linter.Init
 import Lean.Compiler.MetaAttr
 import all Lean.OriginalConstKind  -- for accessing `privateConstKindsExt`
@@ -34,11 +35,11 @@ def snapshotEnvLinterOptions (declName : Name) : CoreM Unit := do
   let envLinterOpts ← envLinterOptionsRef.get
   let linterOptions ← getLinterOptions
   unless envLinterOpts.isEmpty do
-    -- I could possibly add a check here if it is autodecl
-    let mut snapshot : NameMap Bool := {}
-    for opt in envLinterOpts do
-      snapshot := snapshot.insert opt.name (getLinterValue opt linterOptions)
-    modifyEnv (envLinterSnapshotExt.addEntry · (declName, snapshot))
+    unless ← isAutoDecl declName do
+      let mut snapshot : NameMap Bool := {}
+      for opt in envLinterOpts do
+        snapshot := snapshot.insert opt.name (getLinterValue opt linterOptions)
+      modifyEnv (envLinterSnapshotExt.addEntry · (declName, snapshot))
 
 private def isNamespaceName : Name → Bool
   | .str .anonymous _ => true
