@@ -49,19 +49,19 @@ structure EnvLinter where
 
 /-- A `NamedEnvLinter` is an environment linter associated to a particular declaration. -/
 structure NamedEnvLinter extends EnvLinter where
-  /-- The name of the named linter. This is just the declaration name without the namespace. -/
-  name : Name
+  /-- The option name associated to the linter. -/
+  optName : Name
   /-- The linter declaration name -/
   declName : Name
 
-/-- Gets an environment linter by declaration name. -/
-def getEnvLinter (name declName : Name) : CoreM NamedEnvLinter := unsafe
-  return { ← evalConstCheck EnvLinter ``EnvLinter declName with name, declName }
+/-- Gets an environment linter by option name. -/
+def getEnvLinter (optName declName : Name) : CoreM NamedEnvLinter := unsafe
+  return { ← evalConstCheck EnvLinter ``EnvLinter declName with optName, declName }
 
 /-- Defines the `envLinterExt` extension for adding an environment linter to the default set. -/
 builtin_initialize envLinterExt :
-    SimplePersistentEnvExtension (Name × Bool) (NameMap (Name × Bool)) ←
-  let addEntryFn := fun m (n, b) => m.insert (n.updatePrefix .anonymous) (n, b)
+    SimplePersistentEnvExtension (Name × Name) (NameMap Name) ←
+  let addEntryFn := fun m (optName, declName) => m.insert optName declName
   registerSimplePersistentEnvExtension {
     addImportedFn := fun nss =>
       nss.foldl (init := {}) fun m ns => ns.foldl (init := m) addEntryFn
@@ -75,19 +75,24 @@ but it can be selected by `lake builtin-lint --extra`.
 
 Linters are named using their declaration names, without the namespace. These must be distinct.
 -/
-syntax (name := builtin_env_linter) "builtin_env_linter" &" extra"? : attr
+syntax (name := builtin_env_linter) "builtin_env_linter " ident : attr
 
 builtin_initialize registerBuiltinAttribute {
   name := `builtin_env_linter
   descr := "Use this declaration as a linting test in `lake builtin-lint`"
   add   := fun decl stx kind => do
-    let dflt := stx[1].isNone
     unless kind == .global do throwError "invalid attribute `builtin_env_linter`, must be global"
-    let shortName := decl.updatePrefix .anonymous
-    if let some (declName, _) := (envLinterExt.getState (← getEnv)).find? shortName then
+    let optName ← match stx with
+    | `(attr| builtin_env_linter $id:ident) => pure id.getId
+    | _ => throwError "invalid `builtin_env_linter` syntax: expected an option name argument"
+    let env ← getEnv
+    unless env.contains optName do
+      throwError "invalid attribute `builtin_env_linter`, no constant named `{optName}`; \
+        did you forget `register_builtin_option {optName} : Bool := ...`?"
+    if let some declName := (envLinterExt.getState (← getEnv)).find? optName then
       Elab.addConstInfo stx declName
       throwError
-        "invalid attribute `builtin_env_linter`, linter `{shortName}` has already been declared"
+        "invalid attribute `builtin_env_linter`, linter `{optName}` has already been declared"
     let isPublic := !isPrivateName decl; let isMeta := isMarkedMeta (← getEnv) decl
     unless isPublic && isMeta do
       throwError "invalid attribute `builtin_env_linter`, \
@@ -98,7 +103,7 @@ builtin_initialize registerBuiltinAttribute {
     unless ← (isDefEq constInfo.type (mkConst ``EnvLinter)).run' do
       throwError "`{.ofConstName decl}` must have type `{.ofConstName ``EnvLinter}`, got \
         `{constInfo.type}`"
-    modifyEnv fun env => envLinterExt.addEntry env (decl, dflt)
+    modifyEnv fun env => envLinterExt.addEntry env (optName, decl)
 }
 
 end Lean.Linter.EnvLinter

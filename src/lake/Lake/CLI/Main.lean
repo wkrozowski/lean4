@@ -239,6 +239,17 @@ where
   isValidRepoChar (c : Char) : Bool :=
     c.isAlphanum || c == '-' || c == '_' || c == '.' || c == '/'
 
+def parseLintersSpec (spec : String) : CliM PUnit := do
+  let mut entries : Array (Lean.Name × Bool) := #[]
+  for raw in spec.split (· == ',') do
+    let s := raw.trimAscii
+    if s.isEmpty then continue
+    else if s.startsWith "-" then entries := entries.push ((s.drop 1).trimAscii.toString.toName, false)
+    else entries := entries.push (s.toString.toName, true)
+  modifyThe LakeOptions fun opts =>
+    { opts with runBuiltinLint := true, builtinLint.linterOverrides :=
+        opts.builtinLint.linterOverrides ++ entries }
+
 def lakeLongOption : (opt : String) → CliM PUnit
 | "--quiet"       => modifyThe LakeOptions ({· with verbosity := .quiet})
 | "--verbose"     => modifyThe LakeOptions ({· with verbosity := .verbose})
@@ -313,14 +324,9 @@ def lakeLongOption : (opt : String) → CliM PUnit
 -- Builtin lint options (using any of these implicitly enables --builtin-lint)
 | "--builtin-lint" => modifyThe LakeOptions ({· with runBuiltinLint := true})
 | "--builtin-only" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinOnly := true})
-| "--extra" => modifyThe LakeOptions ({· with
-    runBuiltinLint := true, builtinLint.scope := .extra, builtinLint.only := #[]})
-| "--lint-all" => modifyThe LakeOptions ({· with
-    runBuiltinLint := true, builtinLint.scope := .all, builtinLint.only := #[]})
-| "--lint-only" => do
-  let name ← takeOptArg "--lint-only" "linter name"
-  modifyThe LakeOptions fun opts =>
-    {opts with runBuiltinLint := true, builtinLint.only := opts.builtinLint.only.push name.toName}
+| "--linters" => do
+  let spec ← takeOptArg "--linters" "comma-separated linter spec"
+  parseLintersSpec spec
 -- Shared options
 | "--force" => modifyThe LakeOptions ({· with shake.force := true})
 -- Shake options

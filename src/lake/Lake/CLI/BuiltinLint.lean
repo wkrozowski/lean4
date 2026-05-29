@@ -17,41 +17,24 @@ namespace Lake.BuiltinLint
 
 /-- Arguments for builtin linting via `lake lint --builtin-lint`. -/
 public structure Args where
-  /-- Which set of linters to run (set by `--extra` / `--lint-all`; default if neither). -/
-  scope : Linter.EnvLinter.LintScope := .default
-  /-- Run only the specified linters. -/
-  only : Array Name := #[]
+  /-- Explicit linter-option overrides, applied to the build of each module.
+
+  Each entry sets a `Lean.Option Bool` to the given value. Later entries override earlier
+  ones at the same name. Populated from `--linters=linter.X,-linter.Y,...` on the CLI. -/
+  linterOverrides : Array (Name × Bool) := #[]
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
 
 public def leanOptOverrides (args : Args) : LeanOptions :=
-  let enableAll : Array LeanOption :=
-    #[⟨`linter.extra, .ofBool true⟩, ⟨`linter.all, .ofBool true⟩]
-  if !args.only.isEmpty then
-    LeanOptions.ofArray enableAll
-  else
-    match args.scope with
-    | .default => {}
-    | .extra   => LeanOptions.ofArray #[⟨`linter.extra, .ofBool true⟩]
-    | .all     => LeanOptions.ofArray enableAll
+  let merged : NameMap Bool := args.linterOverrides.foldl (init := {}) fun m (n, b) => m.insert n b
+  LeanOptions.ofArray <| merged.toArray.map fun (n, b) =>
+    ⟨`weak ++ n, .ofBool b⟩
 
 private def collectTextLints
-    (env : Environment) (args : Args) (pkgRoot : Name) :
+    (env : Environment) (pkgRoot : Name) :
     Array (Name × Array Linter.LintEntry) :=
-  let matchOnly (linter : Name) : Bool :=
-    args.only.isEmpty || args.only.any (fun n => n.isSuffixOf linter)
-  let matchScope (linter : Name) : Bool :=
-    if !args.only.isEmpty then true
-    else match args.scope with
-      | .default => !(`linter.extra).isPrefixOf linter
-      | .extra   => true
-      | .all     => true
   Linter.getAllLints env |>.foldl (init := #[]) fun acc (mod, entries) =>
-    if pkgRoot.isPrefixOf mod then
-      let filtered := entries.filter fun e => matchOnly e.linter && matchScope e.linter
-      if filtered.isEmpty then acc else acc.push (mod, filtered)
-    else
-      acc
+    if pkgRoot.isPrefixOf mod && !entries.isEmpty then acc.push (mod, entries) else acc
 
 @[noinline] private def getIsModule (modData : Lean.ModuleData) : BaseIO Bool :=
   return modData.isModule
@@ -61,9 +44,6 @@ public def run (args : Args) : IO UInt32 := do
   if mods.isEmpty then
     IO.eprintln "lake lint: no modules specified for builtin linting"
     return 1
-
-  let runOnly := if args.only.isEmpty then none else some args.only.toList
-  let scope := args.scope
   let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
 
   let mut anyFailed := false
@@ -79,7 +59,7 @@ public def run (args : Args) : IO UInt32 := do
     let env ← importModules #[{ module := mod }, envLinterModule] {}
       (trustLevel := 1024) (loadExts := true) (level := level)
 
-    let textGroups := collectTextLints env args mod.getRoot
+    let textGroups := collectTextLints env mod.getRoot
     let textFailed := !textGroups.isEmpty
     for (m, entries) in textGroups do
       IO.println s!"-- Text linter diagnostics in {m}:"
@@ -88,7 +68,7 @@ public def run (args : Args) : IO UInt32 := do
 
     let (declFailed, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
       let decls ← Linter.EnvLinter.getDeclsInPackage mod.getRoot
-      let linters ← Linter.EnvLinter.getChecks (scope := scope) (runOnly := runOnly)
+      let linters ← Linter.EnvLinter.getEnvLinters
       if linters.isEmpty then
         IO.println s!"-- No environment linters registered for {mod}."
         return false
@@ -98,7 +78,7 @@ public def run (args : Args) : IO UInt32 := do
         let fmtResults ←
           Linter.EnvLinter.formatLinterResults results decls
             (groupByFilename := true) (useErrorFormat := true)
-            s!"in {mod}" (scope := if args.only.isEmpty then scope else .all) .medium linters.size
+            s!"in {mod}" .medium linters.size
         IO.print (← fmtResults.toString)
       else unless textFailed do
         IO.println s!"-- Linting passed for {mod}."
