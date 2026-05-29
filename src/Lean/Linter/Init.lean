@@ -153,3 +153,16 @@ Whether a linter option is enabled or not is determined by the following sequenc
 def logLintIf [Monad m] [MonadLog m] [AddMessageContext m] [MonadOptions m] [MonadEnv m]
     (linterOption : Lean.Option Bool) (stx : Syntax) (msg : MessageData) : m Unit := do
   if getLinterValue linterOption (← getLinterOptions) then logLint linterOption stx msg
+
+abbrev EnvLinterSnapshot := NameMap Bool
+
+builtin_initialize envLinterSnapshotExt :
+  SimplePersistentEnvExtension (Name × EnvLinterSnapshot) (NameMap EnvLinterSnapshot) ←
+    let addEntryFn (m : NameMap EnvLinterSnapshot) := fun (n, s) => m.insert n s
+    registerSimplePersistentEnvExtension {
+      addEntryFn
+      addImportedFn nss := nss.foldl (init := {}) fun m ns => ns.foldl (init := m) addEntryFn
+    }
+
+def getEnvLinterSnapshotEntry? (env : Environment) (declName optName : Name) : Option Bool :=
+  (envLinterSnapshotExt.getState env).find? declName >>= (·.find? optName)

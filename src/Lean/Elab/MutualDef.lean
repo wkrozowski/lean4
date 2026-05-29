@@ -1269,6 +1269,9 @@ where
         guard (!isPrivateName declId.declName || (← ResolveName.backward.privateInPublic.getM)) *>
         some .axiom)
     setEnv async.mainEnv
+    -- Inner `addDecl` from `finishElab` will run on `async.asyncEnv`, where extension modifications
+    -- are not reported back (`reportExts := false`)
+    snapshotEnvLinterOptions declId.declName
 
     -- TODO: parallelize header elaboration as well? Would have to refactor auto implicits catch,
     -- makes `@[simp]` etc harder?
