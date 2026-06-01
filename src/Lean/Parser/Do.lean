@@ -21,8 +21,10 @@ builtin_initialize registerBuiltinDynamicParserAttribute `doElem_parser `doElem
 
 namespace Term
 def leftArrow : Parser := unicodeSymbol "← " "<- "
-@[builtin_term_parser] def liftMethod := leading_parser:minPrec
+@[builtin_term_parser] def nestedAction := leading_parser:minPrec
   leftArrow >> termParser
+
+def liftMethod := nestedAction -- remove after stage0 update
 
 def doSeqItem      := leading_parser
   ppLine >> doElemParser >> optional "; "

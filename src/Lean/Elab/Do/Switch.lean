@@ -42,8 +42,8 @@ def elabDo : TermElab := fun stx expectedType? => do
   else
     Elab.Do.elabDo stx expectedType?
 
-@[builtin_term_elab liftMethod] def elabTermLiftMethod : TermElab := fun stx ty => do
+@[builtin_term_elab nestedAction] def elabTermNestedAction : TermElab := fun stx ty => do
   if backward.do.legacy.get (← getOptions) then
-    Term.elabLiftMethod stx ty
+    Term.elabNestedAction stx ty
   else
     Elab.Do.elabNestedAction stx ty

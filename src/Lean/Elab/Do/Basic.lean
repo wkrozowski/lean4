@@ -770,8 +770,8 @@ private def letDeclArgHasBinders (letDeclArg : Syntax) : Bool :=
 private def letDeclHasBinders (letDecl : Syntax) : Bool :=
   letDeclArgHasBinders letDecl[0]
 
-/-- Return true if we should generate an error message when lifting a method over this kind of syntax. -/
-private def liftMethodForbiddenBinder (stx : Syntax) : Bool :=
+/-- Return true if we should generate an error message when lifting a nested action over this kind of syntax. -/
+private def nestedActionForbiddenBinder (stx : Syntax) : Bool :=
   let k := stx.getKind
   -- TODO: make this extensible in the future.
   if k == ``Parser.Term.fun || k == ``Parser.Term.matchAlts ||
@@ -784,13 +784,16 @@ private def liftMethodForbiddenBinder (stx : Syntax) : Bool :=
   else
     false
 
+private def isNestedActionParserName (k : Name) : Bool :=
+  k == ``Parser.Term.nestedAction || k == ``Parser.Term.liftMethod
+
 -- TODO: we must track whether we are inside a quotation or not.
 private partial def hasNestedActionsToLift : Syntax → Bool
   | Syntax.node _ k args =>
     if liftNestedActionDelimiter k then false
     -- NOTE: We don't check for lifts in quotations here, which doesn't break anything but merely makes this rare case a
     -- bit slower
-    else if k == ``Parser.Term.liftMethod then true
+    else if isNestedActionParserName k then true
     -- For `pure` if-then-else, we only lift `(<- ...)` occurring in the condition.
     else if k == ``termDepIfThenElse || k == ``termIfThenElse then args.size >= 2 && hasNestedActionsToLift args[1]!
     else args.any hasNestedActionsToLift
@@ -814,7 +817,7 @@ private partial def expandNestedActionsAux (baseId : Name) (inQuot : Bool) (inBi
       let arg1 ← expandNestedActionsAux baseId (inQuot && !inAntiquot || stx.isQuot) inBinder args[1]
       let args := args.set! 1 arg1
       return Syntax.node i k args
-    else if k == ``Parser.Term.liftMethod && !inQuot then withFreshMacroScope do
+    else if isNestedActionParserName k && !inQuot then withFreshMacroScope do
       if inBinder then
         throwErrorAt stx "Cannot lift nested action `{stx}` over a binder.\nThis error usually happens when you are trying to lift a method nested in a `fun`, `let`, or `match`-alternative, and it can often be fixed by adding a missing `do`."
       let term := args[1]!
@@ -826,7 +829,7 @@ private partial def expandNestedActionsAux (baseId : Name) (inQuot : Bool) (inBi
       return id
     else do
       let inAntiquot := stx.isAntiquot && !stx.isEscapedAntiquot
-      let inBinder   := inBinder || (!inQuot && liftMethodForbiddenBinder stx)
+      let inBinder   := inBinder || (!inQuot && nestedActionForbiddenBinder stx)
       let args ← args.mapM (expandNestedActionsAux baseId (inQuot && !inAntiquot || stx.isQuot) inBinder)
       return Syntax.node i k args
   | stx => return stx
@@ -950,7 +953,7 @@ partial def elabDoSeq (doSeq : TSyntax ``doSeq) (cont : DoElemCont) (catchExPost
         throw ex
     | _ => throw ex
 
--- @[builtin_term_elab liftMethod]
+-- @[builtin_term_elab nestedAction]
 def elabNestedAction : Term.TermElab := fun stx _ty? => do
   let `(← $_rhs) := stx | throwUnsupportedSyntax
   throwErrorAt stx "Nested action `{stx}` must be nested inside a `do` expression."
