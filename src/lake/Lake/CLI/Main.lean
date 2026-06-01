@@ -239,6 +239,11 @@ where
   isValidRepoChar (c : Char) : Bool :=
     c.isAlphanum || c == '-' || c == '_' || c == '.' || c == '/'
 
+/--
+Parses a comma-separated list of Boolean-valued `Lean.Option` names.
+If the name is prefixed with `-`, this means that option will be set to `false`.
+Otherwise, it will be `true`.
+-/
 def parseLintersSpec (spec : String) : CliM PUnit := do
   let mut entries : Array (Lean.Name × Bool) := #[]
   for raw in spec.split (· == ',') do

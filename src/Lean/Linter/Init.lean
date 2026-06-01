@@ -154,8 +154,13 @@ def logLintIf [Monad m] [MonadLog m] [AddMessageContext m] [MonadOptions m] [Mon
     (linterOption : Lean.Option Bool) (stx : Syntax) (msg : MessageData) : m Unit := do
   if getLinterValue linterOption (← getLinterOptions) then logLint linterOption stx msg
 
+
 abbrev EnvLinterSnapshot := NameMap Bool
 
+/--
+The `envLinterSnapshotExt` extension saves the state of all (Boolean-valued) `Lean.Option`s
+associated with environment linters.
+-/
 builtin_initialize envLinterSnapshotExt :
   SimplePersistentEnvExtension (Name × EnvLinterSnapshot) (NameMap EnvLinterSnapshot) ←
     let addEntryFn (m : NameMap EnvLinterSnapshot) := fun (n, s) => m.insert n s

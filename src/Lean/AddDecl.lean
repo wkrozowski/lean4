@@ -31,6 +31,9 @@ private def Environment.addDeclAux (env : Environment) (opts : Options) (decl : 
   env.addDeclCore (Core.getMaxHeartbeats opts).toUSize decl cancelTk? (!debug.skipKernelTC.get opts)
 
 open Linter in
+/--
+Saves the state of `Lean.Option`s associated with environment linters into `envLinterSnapshotExt`
+-/
 def snapshotEnvLinterOptions (declName : Name) : CoreM Unit := do
   let envLinterOpts ← envLinterOptionsRef.get
   let linterOptions ← getLinterOptions
@@ -91,12 +94,6 @@ def warnIfUsesSorry (decl : Declaration) : CoreM Unit := do
 builtin_initialize
   registerTraceClass `addDecl
 
-/--
-Adds the given declaration to the environment's private scope, deriving a suitable presentation in
-the public scope if under the module system and if the declaration is not private. If `forceExpose`
-is true, exposes the declaration body, i.e. preserves the full representation in the public scope,
-independently of `Environment.isExporting` and even for theorems.
--/
 private def addDeclCore (decl : Declaration) (forceExpose : Bool) : CoreM Unit :=
   withTraceNode `addDecl (fun _ => return m!"adding declarations {decl.getNames}") do
   -- register namespaces for newly added constants; this used to be done by the kernel itself
@@ -219,6 +216,12 @@ where
         return
       catch _ => pure ()
 
+/--
+Adds the given declaration to the environment's private scope, deriving a suitable presentation in
+the public scope if under the module system and if the declaration is not private. If `forceExpose`
+is true, exposes the declaration body, i.e. preserves the full representation in the public scope,
+independently of `Environment.isExporting` and even for theorems.
+-/
 def addDecl (decl : Declaration) (forceExpose := false) : CoreM Unit := do
   addDeclCore decl forceExpose
   discard <| decl.getTopLevelNames.mapM snapshotEnvLinterOptions

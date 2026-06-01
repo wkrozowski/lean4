@@ -25,6 +25,10 @@ public structure Args where
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
 
+/--
+Turns the `lake lint` extra arguments into an array of `Lean.Option`, that needs to be enabled
+for the rebuild of the package, in order to turn on the appropriate linters.
+-/
 public def leanOptOverrides (args : Args) : LeanOptions :=
   let merged : NameMap Bool := args.linterOverrides.foldl (init := {}) fun m (n, b) => m.insert n b
   LeanOptions.ofArray <| merged.toArray.map fun (n, b) =>

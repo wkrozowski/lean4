@@ -32,6 +32,9 @@ inductive LintVerbosity
   | high
   deriving Inhabited, DecidableEq, Repr
 
+/--
+Getter for the registered environment linters. The result is sorted by the linter option name.
+-/
 def getEnvLinters : CoreM (Array NamedEnvLinter) := do
   let mut result := #[]
   for (optName, declName) in envLinterExt.getState (← getEnv) do
@@ -39,6 +42,10 @@ def getEnvLinters : CoreM (Array NamedEnvLinter) := do
       result := result.binInsert (·.optName.lt ·.optName) linter
   pure result
 
+/-
+Queries the `envLinterSnapshotExt` to see if a given environment linter is enabled for the given
+declaration.
+-/
 def isLinterEnabledFor (env : Environment) (linter : NamedEnvLinter) (decl : Name) : Bool :=
   match getEnvLinterSnapshotEntry? env decl linter.optName with
   | some b => b
