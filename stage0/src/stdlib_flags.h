@@ -1,7 +1,5 @@
 #include "util/options.h"
 
-// trigger stage0 update for `Parser.Term.liftMethod` → `Parser.Term.nestedAction` rename
-
 namespace lean {
 options get_default_options() {
     options opts;
