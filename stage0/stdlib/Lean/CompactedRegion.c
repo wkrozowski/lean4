@@ -20,8 +20,8 @@ LEAN_EXPORT lean_object* l_Lean_CompactedRegion_size___boxed(lean_object*);
 lean_object* lean_compacted_region_free(size_t);
 LEAN_EXPORT lean_object* l_Lean_CompactedRegion_free___boxed(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l___private_Lean_CompactedRegion_0__Lean_CompactorSpec;
-lean_object* lean_compacted_region_save(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* l_Lean_CompactedRegion_save___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* lean_compacted_region_save(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, uint8_t);
+LEAN_EXPORT lean_object* l_Lean_CompactedRegion_save___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_compacted_region_read(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_CompactedRegion_read___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_CompactedRegion_isMemoryMapped___boxed(lean_object* v_a_00___x40___internal___hyg_2_){
@@ -64,26 +64,27 @@ v___x_17_ = lean_box(0);
 return v___x_17_;
 }
 }
-LEAN_EXPORT lean_object* l_Lean_CompactedRegion_save___boxed(lean_object* v_00_u03b1_25_, lean_object* v_fname_26_, lean_object* v_key_27_, lean_object* v_data_28_, lean_object* v_depRegions_29_, lean_object* v_prev_30_, lean_object* v_a_00___x40___internal___hyg_31_){
+LEAN_EXPORT lean_object* l_Lean_CompactedRegion_save___boxed(lean_object* v_00_u03b1_26_, lean_object* v_fname_27_, lean_object* v_key_28_, lean_object* v_data_29_, lean_object* v_depRegions_30_, lean_object* v_prev_31_, lean_object* v_allowClosures_32_, lean_object* v_a_00___x40___internal___hyg_33_){
 _start:
 {
-lean_object* v_res_32_; 
-v_res_32_ = lean_compacted_region_save(v_fname_26_, v_key_27_, v_data_28_, v_depRegions_29_, v_prev_30_);
-lean_dec_ref(v_depRegions_29_);
-lean_dec(v_data_28_);
-lean_dec(v_key_27_);
-lean_dec_ref(v_fname_26_);
-return v_res_32_;
+uint8_t v_allowClosures_boxed_34_; lean_object* v_res_35_; 
+v_allowClosures_boxed_34_ = lean_unbox(v_allowClosures_32_);
+v_res_35_ = lean_compacted_region_save(v_fname_27_, v_key_28_, v_data_29_, v_depRegions_30_, v_prev_31_, v_allowClosures_boxed_34_);
+lean_dec_ref(v_depRegions_30_);
+lean_dec(v_data_29_);
+lean_dec(v_key_28_);
+lean_dec_ref(v_fname_27_);
+return v_res_35_;
 }
 }
-LEAN_EXPORT lean_object* l_Lean_CompactedRegion_read___boxed(lean_object* v_00_u03b1_37_, lean_object* v_fname_38_, lean_object* v_depRegions_39_, lean_object* v_a_00___x40___internal___hyg_40_){
+LEAN_EXPORT lean_object* l_Lean_CompactedRegion_read___boxed(lean_object* v_00_u03b1_40_, lean_object* v_fname_41_, lean_object* v_depRegions_42_, lean_object* v_a_00___x40___internal___hyg_43_){
 _start:
 {
-lean_object* v_res_41_; 
-v_res_41_ = lean_compacted_region_read(v_fname_38_, v_depRegions_39_);
-lean_dec_ref(v_depRegions_39_);
-lean_dec_ref(v_fname_38_);
-return v_res_41_;
+lean_object* v_res_44_; 
+v_res_44_ = lean_compacted_region_read(v_fname_41_, v_depRegions_42_);
+lean_dec_ref(v_depRegions_42_);
+lean_dec_ref(v_fname_41_);
+return v_res_44_;
 }
 }
 lean_object* runtime_initialize_Init_System_IO(uint8_t builtin);
