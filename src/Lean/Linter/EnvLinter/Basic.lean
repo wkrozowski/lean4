@@ -69,11 +69,10 @@ builtin_initialize envLinterExt :
   }
 
 /--
-Defines the `@[builtin_env_linter]` attribute for adding a linter to the default set.
-The form `@[builtin_env_linter extra]` will not add the linter to the default set,
-but it can be selected by `lake builtin-lint --extra`.
-
-Linters are named using their declaration names, without the namespace. These must be distinct.
+Defines the `builtin_env_linter` attribute for registering an environment linter.
+Each environment linter needs to have a registered Boolean-value `Lean.Option` that will be
+associated with it by providing the option name in the attribute, i.e.
+`@[builtin_env_linter linter.envLinter.myLinter]`.
 -/
 syntax (name := builtin_env_linter) "builtin_env_linter " ident : attr
 
@@ -89,11 +88,11 @@ builtin_initialize registerBuiltinAttribute {
     unless env.contains optName do
       throwError "invalid attribute `builtin_env_linter`, no constant named `{optName}`; \
         did you forget `register_builtin_option {optName} : Bool := ...`?"
-    if let some declName := (envLinterExt.getState (← getEnv)).find? optName then
+    if let some declName := (envLinterExt.getState env).find? optName then
       Elab.addConstInfo stx declName
       throwError
         "invalid attribute `builtin_env_linter`, linter `{optName}` has already been declared"
-    let isPublic := !isPrivateName decl; let isMeta := isMarkedMeta (← getEnv) decl
+    let isPublic := !isPrivateName decl; let isMeta := isMarkedMeta env decl
     unless isPublic && isMeta do
       throwError "invalid attribute `builtin_env_linter`, \
         declaration `{.ofConstName decl}` must be marked as `public` and `meta`\

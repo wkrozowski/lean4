@@ -7,6 +7,7 @@ module
 
 prelude
 public import Lean.MonadEnv
+public import Lean.EnvExtension
 import Init.Data.Function
 
 public section
@@ -161,13 +162,10 @@ abbrev EnvLinterSnapshot := NameMap Bool
 The `envLinterSnapshotExt` extension saves the state of all (Boolean-valued) `Lean.Option`s
 associated with environment linters.
 -/
-builtin_initialize envLinterSnapshotExt :
-  SimplePersistentEnvExtension (Name × EnvLinterSnapshot) (NameMap EnvLinterSnapshot) ←
-    let addEntryFn (m : NameMap EnvLinterSnapshot) := fun (n, s) => m.insert n s
-    registerSimplePersistentEnvExtension {
-      addEntryFn
-      addImportedFn nss := nss.foldl (init := {}) fun m ns => ns.foldl (init := m) addEntryFn
-    }
+builtin_initialize envLinterSnapshotExt : MapDeclarationExtension EnvLinterSnapshot ←
+  -- `.asyncEnv`: the snapshot is written from within the declaration's own (async) elaboration
+  -- via `addDecl`, so the modification happens on the declaration's async branch, not a parent.
+  mkMapDeclarationExtension `envLinterSnapshotExt (asyncMode := .sync)
 
 def getEnvLinterSnapshotEntry? (env : Environment) (declName optName : Name) : Option Bool :=
-  (envLinterSnapshotExt.getState env).find? declName >>= (·.find? optName)
+  envLinterSnapshotExt.find? env declName >>= (·.find? optName)

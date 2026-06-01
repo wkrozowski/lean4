@@ -36,13 +36,13 @@ Saves the state of `Lean.Option`s associated with environment linters into `envL
 -/
 def snapshotEnvLinterOptions (declName : Name) : CoreM Unit := do
   let envLinterOpts ← envLinterOptionsRef.get
-  let linterOptions ← getLinterOptions
   unless envLinterOpts.isEmpty do
+    let linterOptions ← getLinterOptions
     unless ← isAutoDecl declName do
       let mut snapshot : NameMap Bool := {}
       for opt in envLinterOpts do
         snapshot := snapshot.insert opt.name (getLinterValue opt linterOptions)
-      modifyEnv (envLinterSnapshotExt.addEntry · (declName, snapshot))
+      modifyEnv (envLinterSnapshotExt.insert · declName snapshot)
 
 private def isNamespaceName : Name → Bool
   | .str .anonymous _ => true

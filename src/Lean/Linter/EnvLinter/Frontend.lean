@@ -42,7 +42,7 @@ def getEnvLinters : CoreM (Array NamedEnvLinter) := do
       result := result.binInsert (·.optName.lt ·.optName) linter
   pure result
 
-/-
+/--
 Queries the `envLinterSnapshotExt` to see if a given environment linter is enabled for the given
 declaration.
 -/
