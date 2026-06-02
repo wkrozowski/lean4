@@ -159,6 +159,42 @@ no_match_pat "declaration name ends with 'Extra'" produced.out
 lake_out lint --linters=linter.dummyExtra --linters=-linter.dummyExtra ExtraViolations || true
 no_match_pat "declaration name ends with 'Extra'" produced.out
 
+# --- Short `.linterName` spelling ---
+# A leading `.` is sugar for the `linter.` prefix, so `.X` means `linter.X`.
+# These mirror the long-form assertions above to prove the spellings are equivalent.
+
+# `.missingDocs` enables missingDocs just like `linter.missingDocs`.
+lake_out lint --linters=.missingDocs TextLints || true
+match_pat 'missing doc string for public def undocumentedPublicDef' produced.out
+match_pat 'Variable name `unusedLet` is not explicitly referenced' produced.out
+
+# Short form with a `-` prefix disables: `-.unusedVariables` turns off the
+# default-on linter while `.missingDocs` enables missingDocs.
+lake_out lint --linters=.missingDocs,-.unusedVariables TextLints || true
+match_pat 'missing doc string for public def undocumentedPublicDef' produced.out
+no_match_pat 'is not explicitly referenced' produced.out
+
+# `.all` enables every linter, so missingDocs fires too.
+lake_out lint --linters=.all TextLints || true
+match_pat 'missing doc string for public def undocumentedPublicDef' produced.out
+match_pat 'Variable name `unusedLet` is not explicitly referenced' produced.out
+
+# Short form for the dummy ENV linter: `.dummyExtra` == `linter.dummyExtra`.
+lake_out lint --linters=.dummyExtra ExtraViolations || true
+match_pat 'badNameExtra' produced.out
+match_pat "declaration name ends with 'Extra'" produced.out
+
+# Short form for a nested name: `.extra.unnecessarySeqFocus`.
+lake_out lint --linters=.extra.unnecessarySeqFocus ExtraViolations || true
+match_pat 'tac1 <;> tac2' produced.out
+no_match_pat 'badNameExtra' produced.out
+
+# Short and long spellings mix freely within a single spec.
+lake_out lint --linters=.dummyExtra,linter.extra.dupNamespace ExtraViolations || true
+match_pat 'badNameExtra' produced.out
+match_pat 'Dup.Dup.violation' produced.out
+no_match_pat 'tac1 <;> tac2' produced.out
+
 # --builtin-only should skip the lint driver
 lake_out lint -f with-driver.lean --builtin-only Main || true
 match_pat 'shouldBeTheorem' produced.out

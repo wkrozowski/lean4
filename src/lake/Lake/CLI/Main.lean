@@ -247,10 +247,15 @@ Otherwise, it will be `true`.
 def parseLintersSpec (spec : String) : CliM PUnit := do
   let mut entries : Array (Lean.Name × Bool) := #[]
   for raw in spec.split (· == ',') do
-    let s := raw.trimAscii
+    let mut s := raw.trimAscii
+    let mut optionValue := true
     if s.isEmpty then continue
-    else if s.startsWith "-" then entries := entries.push ((s.drop 1).trimAscii.toString.toName, false)
-    else entries := entries.push (s.toString.toName, true)
+    if s.startsWith "-" then
+      s := (s.drop 1).trimAscii
+      optionValue := false
+    if s.startsWith "." then
+      s := "linter" ++ s
+    entries := entries.push (s.toName, optionValue)
   modifyThe LakeOptions fun opts =>
     { opts with runBuiltinLint := true, builtinLint.linterOverrides :=
         opts.builtinLint.linterOverrides ++ entries }
