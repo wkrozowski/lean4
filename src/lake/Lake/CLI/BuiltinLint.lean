@@ -24,6 +24,8 @@ public structure Args where
   linterOverrides : Array (Name × Bool) := #[]
   /-- The list of root modules to lint. -/
   mods : Array Name := #[]
+  /-- Whether to only run the user provided linters -/
+  lintOnly : Bool := false
 
 /--
 Turns the `lake lint` extra arguments into an array of `Lean.Option`, that needs to be enabled
@@ -62,8 +64,20 @@ public def run (args : Args) : IO UInt32 := do
     unsafe region.free
     let env ← importModules #[{ module := mod }, envLinterModule] {}
       (trustLevel := 1024) (loadExts := true) (level := level)
+    -- We create `LinterOptions` out of the passed overrides
+    let linterOpts : Lean.Linter.LinterOptions := {
+      toOptions := args.linterOverrides.foldl (init := {}) fun o (n, b) => o.setBool n b
+      linterSets := (Lean.Linter.linterSetsExt.getState env).merged
+    }
 
     let textGroups := collectTextLints env mod.getRoot
+    let textGroups :=
+      if args.lintOnly then
+        textGroups.filterMap fun (m, entries) =>
+          let entries := entries.filter fun e =>
+            Lean.Linter.isLinterEnabledByOptions e.linter linterOpts
+          if entries.isEmpty then none else some (m, entries)
+      else textGroups
     let textFailed := !textGroups.isEmpty
     for (m, entries) in textGroups do
       IO.println s!"-- Text linter diagnostics in {m}:"
@@ -72,9 +86,9 @@ public def run (args : Args) : IO UInt32 := do
 
     let (declFailed, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
       let decls ← Linter.EnvLinter.getDeclsInPackage mod.getRoot
-      let linters ← Linter.EnvLinter.getEnvLinters
+      let linters ← Linter.EnvLinter.getEnvLinters (if args.lintOnly then some linterOpts else none)
       if linters.isEmpty then
-        IO.println s!"-- No environment linters registered for {mod}."
+        IO.println s!"-- No environment linters were run for {mod}."
         return false
       let results ← Linter.EnvLinter.lintCore decls linters
       let failed := results.any (!·.2.isEmpty)

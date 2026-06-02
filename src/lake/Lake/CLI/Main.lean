@@ -239,6 +239,14 @@ where
   isValidRepoChar (c : Char) : Bool :=
     c.isAlphanum || c == '-' || c == '_' || c == '.' || c == '/'
 
+def flushLinterOptions : CliM PUnit := do
+  modifyThe LakeOptions fun opts =>
+    { opts with builtinLint.linterOverrides := #[] }
+
+def modifyLintOnlyFlag (b : Bool) : CliM PUnit := do
+  modifyThe LakeOptions fun opts =>
+    { opts with builtinLint := {opts.builtinLint with lintOnly := b} }
+
 /--
 Parses a comma-separated list of Boolean-valued `Lean.Option` names.
 If the name is prefixed with `-`, this means that option will be set to `false`.
@@ -335,8 +343,20 @@ def lakeLongOption : (opt : String) → CliM PUnit
 | "--builtin-lint" => modifyThe LakeOptions ({· with runBuiltinLint := true})
 | "--builtin-only" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinOnly := true})
 | "--linters" => do
+  let opts ← getThe LakeOptions
+  if opts.builtinLint.lintOnly then
+    flushLinterOptions
+    modifyLintOnlyFlag false
   let spec ← takeOptArg "--linters" "comma-separated linter spec"
   parseLintersSpec spec
+| "--lint-only" => do
+  let opts ← getThe LakeOptions
+  if !opts.builtinLint.lintOnly then
+    flushLinterOptions
+    modifyLintOnlyFlag true
+  let spec ← takeOptArg "--lint-only" "comma-separated linter spec"
+  parseLintersSpec spec
+
 -- Shared options
 | "--force" => modifyThe LakeOptions ({· with shake.force := true})
 -- Shake options

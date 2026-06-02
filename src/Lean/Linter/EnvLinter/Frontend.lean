@@ -11,6 +11,7 @@ module
 
 prelude
 public import Lean.Linter.EnvLinter.Basic
+public import Lean.Linter.Init
 import Lean.DeclarationRange
 import Lean.Util.Path
 import Lean.CoreM
@@ -35,11 +36,12 @@ inductive LintVerbosity
 /--
 Getter for the registered environment linters. The result is sorted by the linter option name.
 -/
-def getEnvLinters : CoreM (Array NamedEnvLinter) := do
+def getEnvLinters (opts? : Option LinterOptions := none) : CoreM (Array NamedEnvLinter) := do
   let mut result := #[]
   for (optName, declName) in envLinterExt.getState (← getEnv) do
-      let linter ← getEnvLinter optName declName
-      result := result.binInsert (·.optName.lt ·.optName) linter
+      if opts?.all (isLinterEnabledByOptions optName) then
+        let linter ← getEnvLinter optName declName
+        result := result.binInsert (·.optName.lt ·.optName) linter
   pure result
 
 /--

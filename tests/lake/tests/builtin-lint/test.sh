@@ -195,6 +195,85 @@ match_pat 'badNameExtra' produced.out
 match_pat 'Dup.Dup.violation' produced.out
 no_match_pat 'tac1 <;> tac2' produced.out
 
+# --- `--lint-only`: restrict OUTPUT to exactly the linters the options enable ---
+# `--lint-only` takes the same spec as `--linters` and enables those linters for
+# the build in the same way, but it additionally suppresses every linter the spec
+# does not *positively* enable (the linter's own default value is ignored). So
+# unlike `--linters`, default-on linters that aren't named do not appear. Note
+# `ExtraViolations.lean` forces `set_option linter.defProp true`, so `defProp`
+# fires during the build regardless — only the display filter can hide it.
+
+# NOTE: `shouldBeTheoremUnderExtra` is an ambiguous marker — its *name* ends in
+# "Extra", so the `dummyExtra` env linter also flags it. To probe `defProp`
+# specifically (the default-on linter we expect only-mode to hide), match its own
+# message `is a proposition` instead of the declaration name.
+
+# Headline contrast with `--linters=.missingDocs` above (which keeps the
+# default-on `unusedVariables`): `--lint-only` shows missingDocs and nothing else.
+lake_out lint --lint-only=linter.missingDocs TextLints || true
+match_pat 'missing doc string for public def undocumentedPublicDef' produced.out
+no_match_pat 'is not explicitly referenced' produced.out
+
+# Env linter only: `dummyExtra` fires, but the default-on `defProp` violation is
+# suppressed — `linter.defProp` is not whitelisted. (`shouldBeTheoremUnderExtra`
+# still appears, flagged by `dummyExtra` for ending in "Extra", not by defProp.)
+lake_out lint --lint-only=linter.dummyExtra ExtraViolations || true
+match_pat 'badNameExtra' produced.out
+match_pat "declaration name ends with 'Extra'" produced.out
+no_match_pat 'is a proposition' produced.out
+no_match_pat 'extra text linter saw a declaration' produced.out
+no_match_pat 'tac1 <;> tac2' produced.out
+no_match_pat 'Dup.Dup.violation' produced.out
+# Per-declaration opt-out is still respected even in only-mode.
+no_match_pat 'skippedNameExtra' produced.out
+
+# Group expansion: `linter.extra` enables its members for display, but the
+# default `defProp` stays suppressed (contrast `--linters=linter.extra` above,
+# which keeps it).
+lake_out lint --lint-only=linter.extra ExtraViolations || true
+match_pat 'extra text linter saw a declaration' produced.out
+match_pat 'tac1 <;> tac2' produced.out
+match_pat 'Dup.Dup.violation' produced.out
+match_pat 'this tactic is never executed' produced.out
+no_match_pat 'is a proposition' produced.out
+# The env linter is not a member of `linter.extra`, so it stays silent.
+no_match_pat "declaration name ends with 'Extra'" produced.out
+
+# A single member by name shows only that linter.
+lake_out lint --lint-only=linter.extra.unnecessarySeqFocus ExtraViolations || true
+match_pat 'tac1 <;> tac2' produced.out
+no_match_pat 'Dup.Dup.violation' produced.out
+no_match_pat 'extra text linter saw a declaration' produced.out
+no_match_pat 'badNameExtra' produced.out
+no_match_pat 'is a proposition' produced.out
+
+# `linter.all` enables everything, so only-mode then shows the defaults too,
+# including the `defProp` violation.
+lake_out lint --lint-only=linter.all ExtraViolations || true
+match_pat 'badNameExtra' produced.out
+match_pat 'extra text linter saw a declaration' produced.out
+match_pat 'tac1 <;> tac2' produced.out
+match_pat 'is a proposition' produced.out
+
+# Carve-out within a single spec: `linter.all` minus `linter.defProp` shows
+# everything except the `defProp` message. (`badNameExtra` still comes from the
+# env linter, enabled via `linter.all`.)
+lake_out lint --lint-only=linter.all,-linter.defProp ExtraViolations || true
+match_pat 'badNameExtra' produced.out
+match_pat 'tac1 <;> tac2' produced.out
+no_match_pat 'is a proposition' produced.out
+
+# A trailing `--lint-only` flushes the preceding `--linters` spec: only
+# `unusedVariables` remains, so `missingDocs` (from `--linters`) is dropped.
+lake_out lint --linters=linter.missingDocs --lint-only=linter.unusedVariables TextLints || true
+match_pat 'is not explicitly referenced' produced.out
+no_match_pat 'missing doc string' produced.out
+
+# Short `.linterName` spelling works for `--lint-only` too.
+lake_out lint --lint-only=.dummyExtra ExtraViolations || true
+match_pat 'badNameExtra' produced.out
+no_match_pat 'is a proposition' produced.out
+
 # --builtin-only should skip the lint driver
 lake_out lint -f with-driver.lean --builtin-only Main || true
 match_pat 'shouldBeTheorem' produced.out
@@ -240,9 +319,9 @@ match_pat 'shouldBeTheorem' produced.out
 # builtinLint = true + lint driver + clean module: both builtin lints and driver run.
 # `Clean` does not import the dummy env linter, so no env linters are registered
 # in its environment and the builtin-lint pass reports "No environment linters
-# registered" rather than "Linting passed".
+# were run" rather than "Linting passed".
 lake_out lint -f with-driver.lean Clean || true
-match_pat 'No environment linters registered for Clean' produced.out
+match_pat 'No environment linters were run for Clean' produced.out
 match_pat 'lint-driver:' produced.out
 
 # builtinLint = true + lint driver + violations: both run, exit code is nonzero

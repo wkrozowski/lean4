@@ -122,6 +122,9 @@ def getLinterAll (o : LinterOptions) (defValue := linter.all.defValue) : Bool :=
 def getLinterValue (opt : Lean.Option Bool) (o : LinterOptions) : Bool :=
   o.get opt.name (getLinterAll o <| (o.getSet opt).any (o.get? · == some true) || opt.defValue)
 
+def isLinterEnabledByOptions (name : Name) (o : LinterOptions) : Bool :=
+  o.get name (getLinterAll o <| (o.linterSets.getD name #[]).any (o.get? · == some true))
+
 /--
 Tag attached by `logLint` to every linter warning so consumers
 (e.g. `Lean.Linter.recordLints`) can distinguish linter-produced messages
