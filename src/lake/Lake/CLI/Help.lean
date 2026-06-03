@@ -272,9 +272,11 @@ OPTIONS:
   --builtin-only        run only builtin linters, skip the lint driver
   --linters <spec>      override linter options for the lint build; <spec> is a
                         comma-separated list of linter option names, each
-                        optionally prefixed with `-` to disable it, e.g.
-                        `--linters=linter.foo,-linter.bar`. Repeatable;
-                        later entries override earlier ones for the same linter
+                        optionally prefixed with `-` to disable it. A name
+                        beginning with `.` is shorthand for the `linter.`
+                        prefix, so `.foo` means `linter.foo`. E.g.
+                        `--linters=.foo,-linter.bar`. Repeatable; later
+                        entries override earlier ones for the same linter
   --lint-only <spec>    like `--linters`, but report ONLY the linters the spec
                         positively enables, suppressing every other linter
                         (including default-on linters that are not named).
