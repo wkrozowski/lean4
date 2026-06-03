@@ -199,7 +199,7 @@ def runFrontend
     profileitIO ".olean serialization" finalOpts do
       let allMessages := snaps.getAll.foldl
         (init := (.empty : MessageLog)) (fun acc s => acc ++ s.diagnostics.msgLog)
-      let env ← Linter.recordLints env allMessages
+      let env ← Linter.recordLints inputCtx.fileMap env allMessages
       writeModule (writeIR := !Compiler.compiler.postponeCompile.get finalOpts) env oleanFileName
 
   if let some ileanFileName := ileanFileName? then
