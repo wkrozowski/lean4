@@ -144,7 +144,7 @@ inductive MessageData where
   This is used to filter out certain messages. -/
   | ofLazy (f : Option PPContext → BaseIO Dynamic) (hasSyntheticSorry : MetavarContext → Bool)
   /--
-  Preserves the position of the orginating declaration range.
+  Preserves the originating syntax of the message.
   -/
   | ofOriginatingSyntax : Syntax → MessageData → MessageData
   deriving Inhabited, TypeName
@@ -201,6 +201,10 @@ def kind : MessageData → Name
   | trace data _ _            => data.cls
   | ofOriginatingSyntax _ msg  => kind msg
   | _                         => .anonymous
+
+def originatingSyntax? : MessageData → Option Syntax × MessageData
+  | ofOriginatingSyntax stx msg => (some stx, msg)
+  | msg => (none, msg)
 
 def isTrace : MessageData → Bool
   | withContext _ msg         => msg.isTrace

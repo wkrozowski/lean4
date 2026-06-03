@@ -36,9 +36,11 @@ def recordLints (env : Environment) (messages : MessageLog) : BaseIO Environment
     unless m.data.isLinterMessage do
       return env
     let kind := m.data.kind
+    let (_stx?, data) := m.data.originatingSyntax?
+    let msg : Message := { m with data := data }
     if kind.isAnonymous then
       return env
-    let sm ← m.serialize
+    let sm ← msg.serialize
     return lintLogExt.addEntry env { linter := kind, message := sm }
 
 end Lean.Linter
