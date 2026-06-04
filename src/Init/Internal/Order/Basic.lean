@@ -114,8 +114,7 @@ theorem le_csup {c : α → Prop} (hc : chain c) {y : α} (hy : c y) : y ⊑ csu
 
 def empty_chain (α) : α → Prop := fun _ => False
 
-set_option linter.defProp false in
-def chain_empty (α : Sort u) [PartialOrder α] : chain (empty_chain α) := by
+theorem chain_empty (α : Sort u) [PartialOrder α] : chain (empty_chain α) := by
   intro x y hx hy; contradiction
 
 /--
@@ -291,8 +290,7 @@ theorem admissible_or (P Q : α → Prop)
     intro x ⟨hcx, hQx⟩
     exact hQx
 
-set_option linter.defProp false in
-def admissible_pi (P : α → β → Prop)
+theorem admissible_pi (P : α → β → Prop)
   (hadm₁ : ∀ y, admissible (fun x => P x y)) : admissible (fun x => ∀ y, P x y) :=
     fun c hchain h y => hadm₁ y c hchain fun x hx => h x hx y
 
@@ -570,8 +568,7 @@ theorem fun_sup_eq [∀ x, CompleteLattice (β x)] (c : (∀ x, β x) → Prop) 
   · apply fun_sup_is_sup
   · apply CompleteLattice.sup_spec
 
-set_option linter.defProp false in
-def admissible_apply [∀ x, CCPO (β x)] (P : ∀ x, β x → Prop) (x : α)
+theorem admissible_apply [∀ x, CCPO (β x)] (P : ∀ x, β x → Prop) (x : α)
   (hadm : admissible (P x)) : admissible (fun (f : ∀ x, β x) => P x (f x)) := by
   intro c hchain h
   rw [← fun_csup_eq]
@@ -579,8 +576,7 @@ def admissible_apply [∀ x, CCPO (β x)] (P : ∀ x, β x → Prop) (x : α)
   rintro _ ⟨f, hcf, rfl⟩
   apply h _ hcf
 
-set_option linter.defProp false in
-def admissible_pi_apply [∀ x, CCPO (β x)] (P : ∀ x, β x → Prop) (hadm : ∀ x, admissible (P x)) :
+theorem admissible_pi_apply [∀ x, CCPO (β x)] (P : ∀ x, β x → Prop) (hadm : ∀ x, admissible (P x)) :
     admissible (fun (f : ∀ x, β x) => ∀ x, P x (f x)) := by
   apply admissible_pi
   intro

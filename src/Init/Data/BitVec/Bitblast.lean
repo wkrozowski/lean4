@@ -872,9 +872,8 @@ structure DivModState.Lawful {w : Nat} (args : DivModArgs w) (qr : DivModState w
   /-- The low `(w - wn)` bits of `n` obey the invariant for division. -/
   hdiv : args.n.toNat >>> qr.wn = args.d.toNat * qr.q.toNat + qr.r.toNat
 
-set_option linter.defProp false in
 /-- A lawful DivModState implies `w > 0`. -/
-def DivModState.Lawful.hw {args : DivModArgs w} {qr : DivModState w}
+theorem DivModState.Lawful.hw {args : DivModArgs w} {qr : DivModState w}
     {h : DivModState.Lawful args qr} : 0 < w := by
   have hd := h.hdPos
   rcases w with rfl | w
@@ -891,9 +890,8 @@ def DivModState.init (w : Nat) : DivModState w := {
   r := 0#w
 }
 
-set_option linter.defProp false in
 /-- The initial state is lawful. -/
-def DivModState.lawful_init {w : Nat} (args : DivModArgs w) (hd : 0#w < args.d) :
+theorem DivModState.lawful_init {w : Nat} (args : DivModArgs w) (hd : 0#w < args.d) :
     DivModState.Lawful args (DivModState.init w) := by
   simp only [BitVec.DivModState.init]
   exact {
@@ -949,12 +947,11 @@ structure DivModState.Poised {w : Nat} (args : DivModArgs w) (qr : DivModState w
   /-- Only perform a round of shift-subtract if we have dividend bits. -/
   hwn_lt : 0 < qr.wn
 
-set_option linter.defProp false in
 /--
 In the shift subtract input, the dividend is at least one bit long (`wn > 0`), so
 the remainder has bits to be computed (`wr < w`).
 -/
-def DivModState.wr_lt_w {qr : DivModState w} (h : qr.Poised args) : qr.wr < w := by
+theorem DivModState.wr_lt_w {qr : DivModState w} (h : qr.Poised args) : qr.wr < w := by
   have hwrn := h.hwrn
   have hwn_lt := h.hwn_lt
   omega

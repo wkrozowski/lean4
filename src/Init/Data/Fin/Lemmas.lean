@@ -520,9 +520,6 @@ theorem coe_cast (h : n = m) (i : Fin n) : (i.cast h : Nat) = i := rfl
 @[simp, grind =] theorem cast_cast {k : Nat} (h : n = m) (h' : m = k) {i : Fin n} :
     (i.cast h).cast h' = i.cast (Eq.trans h h') := rfl
 
-set_option linter.defProp false in
-@[deprecated cast_cast (since := "2025-09-03")] abbrev cast_trans := @cast_cast
-
 theorem castLE_of_eq {m n : Nat} (h : m = n) {h' : m ≤ n} : castLE h' = Fin.cast h := rfl
 
 @[simp, grind =] theorem val_castAdd (m : Nat) (i : Fin n) : (castAdd m i : Nat) = i := rfl

@@ -111,12 +111,11 @@ This typeclass states that `Min.min a b` returns one of its arguments, either `a
 public class MinEqOr (α : Type u) [Min α] where
   min_eq_or : ∀ a b : α, min a b = a ∨ min a b = b
 
-set_option linter.defProp false in
 /--
 If both `a` and `b` satisfy some property `P`, then so does `min a b`, because it is equal to
 either `a` or `b`.
 -/
-public def MinEqOr.elim {α : Type u} [Min α] [MinEqOr α] {P : α → Prop} {a b : α} (ha : P a) (hb : P b) :
+public theorem MinEqOr.elim {α : Type u} [Min α] [MinEqOr α] {P : α → Prop} {a b : α} (ha : P a) (hb : P b) :
     P (min a b) := by
   cases MinEqOr.min_eq_or a b <;> rename_i h
   case inl => exact h.symm ▸ ha
@@ -156,12 +155,11 @@ This typeclass states that `Max.max a b` returns one of its arguments, either `a
 public class MaxEqOr (α : Type u) [Max α] where
   max_eq_or : ∀ a b : α, max a b = a ∨ max a b = b
 
-set_option linter.defProp false in
 /--
 If both `a` and `b` satisfy some property `P`, then so does `max a b`, because it is equal to
 either `a` or `b`.
 -/
-public def MaxEqOr.elim {α : Type u} [Max α] [MaxEqOr α] {P : α → Prop} {a b : α} (ha : P a) (hb : P b) :
+public theorem MaxEqOr.elim {α : Type u} [Max α] [MaxEqOr α] {P : α → Prop} {a b : α} (ha : P a) (hb : P b) :
     P (max a b) := by
   cases MaxEqOr.max_eq_or a b <;> rename_i h
   case inl => exact h.symm ▸ ha
