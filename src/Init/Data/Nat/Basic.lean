@@ -542,9 +542,9 @@ example : (default : Nat) = 0 := rfl
 
 protected theorem lt_asymm {a b : Nat} (h : a < b) : ¬ b < a := Nat.not_lt.2 (Nat.le_of_lt h)
 /-- Alias for `Nat.lt_asymm`. -/
-protected theorem not_lt_of_gt {a b : Nat} (h : a < b) : ¬b < a := Nat.lt_asymm h
+protected abbrev not_lt_of_gt := @Nat.lt_asymm
 /-- Alias for `Nat.lt_asymm`. -/
-protected theorem not_lt_of_lt {a b : Nat} (h : a < b) : ¬b < a := Nat.lt_asymm h
+protected abbrev not_lt_of_lt := @Nat.lt_asymm
 
 protected theorem lt_iff_le_and_not_ge {m n : Nat} : m < n ↔ m ≤ n ∧ ¬ n ≤ m :=
   ⟨fun h => ⟨Nat.le_of_lt h, Nat.not_le_of_gt h⟩, fun ⟨_, h⟩ => Nat.lt_of_not_ge h⟩
@@ -561,13 +561,13 @@ protected theorem ne_iff_lt_or_gt {a b : Nat} : a ≠ b ↔ a < b ∨ b < a :=
   ⟨Nat.lt_or_gt_of_ne, fun | .inl h => Nat.ne_of_lt h | .inr h => Nat.ne_of_gt h⟩
 
 /-- Alias for `Nat.ne_iff_lt_or_gt`. -/
-protected theorem lt_or_gt {a b : Nat} : a ≠ b ↔ a < b ∨ b < a := Nat.ne_iff_lt_or_gt
+protected abbrev lt_or_gt := @Nat.ne_iff_lt_or_gt
 
 /-- Alias for `Nat.le_total`. -/
-protected theorem le_or_ge (m n : Nat) : m ≤ n ∨ n ≤ m := Nat.le_total m n
+protected abbrev le_or_ge := @Nat.le_total
 
 /-- Alias for `Nat.le_total`. -/
-protected theorem le_or_le (m n : Nat) : m ≤ n ∨ n ≤ m := Nat.le_total m n
+protected abbrev le_or_le := @Nat.le_total
 
 protected theorem eq_or_lt_of_not_lt {a b : Nat} (hnlt : ¬ a < b) : a = b ∨ b < a :=
   (Nat.lt_trichotomy ..).resolve_left hnlt
@@ -600,7 +600,7 @@ protected theorem eq_of_le_of_lt_succ (h₁ : n ≤ m) (h₂ : m < n + 1) : m = 
 theorem le_zero : i ≤ 0 ↔ i = 0 := ⟨Nat.eq_zero_of_le_zero, fun | rfl => Nat.le_refl _⟩
 
 /-- Alias for `Nat.zero_lt_one`. -/
-protected theorem one_pos : 0 < 1:= @Nat.zero_lt_one
+protected abbrev one_pos := @Nat.zero_lt_one
 
 protected theorem two_pos : 0 < 2 := Nat.zero_lt_succ _
 

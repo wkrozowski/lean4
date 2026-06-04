@@ -43,6 +43,7 @@ def defPropLinter : Linter where run := withSetOptionIn fun _ => do
     for declName in getDeclsByBody t do
       let some info := env.find? declName | continue
       unless info.isDefinition do continue
+      if info.hints.isAbbrev then continue
       let isPropType ← liftTermElabM <| isProp info.type
       if isPropType then
         logLintIf linter.defProp (← getRef) m!"\
