@@ -536,10 +536,12 @@ def unusedVariables : Linter where
       -- If this is a global declaration then it is (potentially) used after the command
       if s.constDecls.contains range then continue
 
-      -- Get the syntax stack for this variable declaration.
-      -- We stop traversing as soon soon as we find a node whose children do not include the range
-      let some ((id', _) :: stack) := cmdStx.findStack? (·.getRange?.any (·.includes range))
-          (accept := fun stx => !stx.getArgs.any (·.getRange?.any (·.includes range)))
+      -- Get the syntax stack for this variable declaration. An anonymous instance binder is reported
+      -- on its whole `instBinder`, so we instead accept the tightest node still enclosing `range`.
+      let accept := fun stx =>
+        if isAnonymousInstance then !stx.getArgs.any (·.getRange?.any (·.includes range))
+        else !stx.hasArgs
+      let some ((id', _) :: stack) := cmdStx.findStack? (·.getRange?.any (·.includes range)) (accept := accept)
         | continue
 
       -- If it is blacklisted by an `ignoreFn` then skip it
