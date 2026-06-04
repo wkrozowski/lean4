@@ -544,7 +544,10 @@ def unusedVariables : Linter where
 
       -- If it is blacklisted by an `ignoreFn` then skip it
       let linterOpts ← opts.toLinterOptions
-      if id'.isIdent && ignoreFns.any (· declStx stack linterOpts) then continue
+      -- For an anonymous instance binder, we appropriately reconstruct the stack
+      -- so that the ignore functions apply correctly to it.
+      let stack := if isAnonymousInstance then (id'[1], 0) :: (id', 1) :: stack else stack
+      if (id'.isIdent || isAnonymousInstance) && ignoreFns.any (· declStx stack linterOpts) then continue
 
       -- Evaluate ignore functions again on macro expansion outputs
       if ← infoTrees.anyM fun tree => do
