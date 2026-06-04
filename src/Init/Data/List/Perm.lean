@@ -521,6 +521,7 @@ theorem Perm.eq_of_pairwise : ∀ {l₁ l₂ : List α}
       h₁.tail h₂.tail h
     simp_all
 
+set_option linter.defProp false in
 @[deprecated Perm.eq_of_pairwise (since := "2025-10-23")]
 abbrev Perm.eq_of_sorted := @Perm.eq_of_pairwise
 

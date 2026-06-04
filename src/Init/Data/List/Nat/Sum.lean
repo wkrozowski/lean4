@@ -29,6 +29,7 @@ protected theorem sum_pos_iff_exists_pos_nat {l : List Nat} : 0 < l.sum ↔ ∃ 
     simp [← ih]
     omega
 
+set_option linter.defProp false in
 @[deprecated List.sum_pos_iff_exists_pos_nat (since := "2025-01-15")]
 protected def _root_.Nat.sum_pos_iff_exists_pos := @List.sum_pos_iff_exists_pos_nat
 
@@ -37,6 +38,7 @@ protected theorem sum_eq_zero_iff_forall_eq_nat {xs : List Nat} :
   rw [← Decidable.not_iff_not]
   simp [← Nat.pos_iff_ne_zero, List.sum_pos_iff_exists_pos_nat]
 
+set_option linter.defProp false in
 @[deprecated List.sum_pos_iff_exists_pos_nat (since := "2025-01-15")]
 protected def _root_.Nat.sum_eq_zero_iff_forall_eq := @List.sum_eq_zero_iff_forall_eq_nat
 

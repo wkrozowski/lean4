@@ -12,6 +12,7 @@ import Init.Classical
 public section
 namespace Lean.Grind
 
+set_option linter.defProp false in
 /-- A helper gadget for annotating nested proofs in goals. -/
 def nestedProof (p : Prop) {h : p} : p := h
 

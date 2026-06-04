@@ -176,6 +176,7 @@ theorem num_divInt_den (a : Rat) : a.num /. a.den = a := by rw [divInt_ofNat, mk
 @[deprecated mk_eq_divInt (since := "2025-10-29")]
 theorem mk'_eq_divInt {n d h c} : (⟨n, d, h, c⟩ : Rat) = n /. d := (num_divInt_den _).symm
 
+set_option linter.defProp false in
 @[deprecated num_divInt_den (since := "2025-08-22")]
 abbrev divInt_self := @num_divInt_den
 
@@ -202,6 +203,7 @@ theorem divInt_eq_divInt_iff (z₁ : d₁ ≠ 0) (z₂ : d₂ ≠ 0) :
   simp_all [divInt_neg', Int.neg_eq_zero,
     mkRat_eq_iff, Int.neg_mul, Int.mul_neg, Int.eq_neg_comm, eq_comm]
 
+set_option linter.defProp false in
 @[deprecated divInt_eq_divInt_iff (since := "2025-08-22")]
 abbrev divInt_eq_iff := @divInt_eq_divInt_iff
 
@@ -280,8 +282,10 @@ def numDenCasesOn''.{u} {C : Rat → Sort u} (a : Rat)
 @[simp] theorem num_natCast (n : Nat) : (n : Rat).num = n := rfl
 @[simp] theorem den_natCast (n : Nat) : (n : Rat).den = 1 := rfl
 
+set_option linter.defProp false in
 @[deprecated num_ofNat (since := "2025-08-22")]
 abbrev ofNat_num := @num_ofNat
+set_option linter.defProp false in
 @[deprecated den_ofNat (since := "2025-08-22")]
 abbrev ofNat_den := @den_ofNat
 
@@ -996,8 +1000,10 @@ protected theorem lt_div_iff' {a b c : Rat} (hc : 0 < c) : a < b / c ↔ c * a <
 
 @[simp] theorem num_intCast (a : Int) : (a : Rat).num = a := rfl
 
+set_option linter.defProp false in
 @[deprecated den_intCast (since := "2025-08-22")]
 abbrev intCast_den := @den_intCast
+set_option linter.defProp false in
 @[deprecated num_intCast (since := "2025-08-22")]
 abbrev intCast_num := @num_intCast
 

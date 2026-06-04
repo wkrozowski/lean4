@@ -88,6 +88,7 @@ theorem splitInTwo_fst_pairwise (l : { l : List α // l.length = n }) (h : Pairw
   rw [splitInTwo_fst]
   exact h.take
 
+set_option linter.defProp false in
 @[deprecated splitInTwo_fst_pairwise (since := "2025-10-23")]
 abbrev splitInTwo_fst_sorted := @splitInTwo_fst_pairwise
 
@@ -95,6 +96,7 @@ theorem splitInTwo_snd_pairwise (l : { l : List α // l.length = n }) (h : Pairw
   rw [splitInTwo_snd]
   exact h.drop
 
+set_option linter.defProp false in
 @[deprecated splitInTwo_snd_pairwise (since := "2025-10-23")]
 abbrev splitInTwo_snd_sorted := @splitInTwo_fst_pairwise
 
@@ -251,6 +253,7 @@ theorem pairwise_merge
           · exact rel_of_pairwise_cons h₂ m
         · exact ih₂ h₂.tail
 
+set_option linter.defProp false in
 @[deprecated pairwise_merge (since := "2025-10-23")]
 abbrev sorted_merge := @pairwise_merge
 
@@ -324,6 +327,7 @@ theorem pairwise_mergeSort
     apply pairwise_mergeSort trans total
 termination_by l => l.length
 
+set_option linter.defProp false in
 @[deprecated pairwise_mergeSort (since := "2025-10-23")]
 abbrev sorted_mergeSort := @pairwise_mergeSort
 
@@ -343,6 +347,7 @@ theorem mergeSort_of_pairwise : ∀ {l : List α} (_ : Pairwise le l), mergeSort
     rw [splitInTwo_fst_append_splitInTwo_snd]
 termination_by l => l.length
 
+set_option linter.defProp false in
 @[deprecated mergeSort_of_pairwise (since := "2025-10-23")]
 abbrev mergeSort_of_sorted := @mergeSort_of_pairwise
 

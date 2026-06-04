@@ -872,6 +872,7 @@ structure DivModState.Lawful {w : Nat} (args : DivModArgs w) (qr : DivModState w
   /-- The low `(w - wn)` bits of `n` obey the invariant for division. -/
   hdiv : args.n.toNat >>> qr.wn = args.d.toNat * qr.q.toNat + qr.r.toNat
 
+set_option linter.defProp false in
 /-- A lawful DivModState implies `w > 0`. -/
 def DivModState.Lawful.hw {args : DivModArgs w} {qr : DivModState w}
     {h : DivModState.Lawful args qr} : 0 < w := by
@@ -890,6 +891,7 @@ def DivModState.init (w : Nat) : DivModState w := {
   r := 0#w
 }
 
+set_option linter.defProp false in
 /-- The initial state is lawful. -/
 def DivModState.lawful_init {w : Nat} (args : DivModArgs w) (hd : 0#w < args.d) :
     DivModState.Lawful args (DivModState.init w) := by
@@ -947,6 +949,7 @@ structure DivModState.Poised {w : Nat} (args : DivModArgs w) (qr : DivModState w
   /-- Only perform a round of shift-subtract if we have dividend bits. -/
   hwn_lt : 0 < qr.wn
 
+set_option linter.defProp false in
 /--
 In the shift subtract input, the dividend is at least one bit long (`wn > 0`), so
 the remainder has bits to be computed (`wr < w`).

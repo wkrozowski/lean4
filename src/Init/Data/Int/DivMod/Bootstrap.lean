@@ -111,24 +111,28 @@ where
       ← Int.neg_neg (_-_), Int.neg_sub, Int.sub_sub_self, Int.add_right_comm]
     exact congrArg (fun x => -(ofNat x + 1)) (Nat.mod_add_div ..)
 
+set_option linter.defProp false in
 @[deprecated emod_add_mul_ediv (since := "2025-09-01")]
 def emod_add_ediv := @emod_add_mul_ediv
 
 theorem emod_add_ediv_mul (a b : Int) : a % b + a / b * b = a := by
   rw [Int.mul_comm]; exact emod_add_mul_ediv ..
 
+set_option linter.defProp false in
 @[deprecated emod_add_ediv_mul (since := "2025-09-01")]
 def emod_add_ediv' := @emod_add_ediv_mul
 
 theorem mul_ediv_add_emod (a b : Int) : b * (a / b) + a % b = a := by
   rw [Int.add_comm]; exact emod_add_mul_ediv ..
 
+set_option linter.defProp false in
 @[deprecated mul_ediv_add_emod (since := "2025-09-01")]
 def ediv_add_emod := @mul_ediv_add_emod
 
 theorem ediv_mul_add_emod (a b : Int) : a / b * b + a % b = a := by
   rw [Int.mul_comm]; exact mul_ediv_add_emod ..
 
+set_option linter.defProp false in
 @[deprecated ediv_mul_add_emod (since := "2025-09-01")]
 def ediv_add_emod' := @ediv_mul_add_emod
 

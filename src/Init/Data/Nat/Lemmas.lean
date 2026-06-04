@@ -355,6 +355,7 @@ protected theorem sub_le_sub_iff_left {n m k : Nat} (h : n ≤ k) : k - m ≤ k 
 
 protected theorem sub_lt_of_pos_le (h₀ : 0 < a) (h₁ : a ≤ b) : b - a < b :=
   Nat.sub_lt (Nat.lt_of_lt_of_le h₀ h₁) h₀
+set_option linter.defProp false in
 protected abbrev sub_lt_self := @Nat.sub_lt_of_pos_le
 
 theorem add_lt_of_lt_sub' {a b c : Nat} : b < c - a → a + b < c := by

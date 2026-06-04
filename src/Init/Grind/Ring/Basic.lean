@@ -500,6 +500,7 @@ private theorem mk'_aux {x y : Nat} (p : Nat) (h : y ≤ x) :
       simp [Nat.mul_sub, Nat.mul_comm p k₁, Nat.mul_comm p k₂]
       omega
 
+set_option linter.defProp false in
 /-- Alternative constructor when `α` is a `Ring`. -/
 @[implicit_reducible]
 def mk' (p : Nat) (α : Type u) [Ring α]

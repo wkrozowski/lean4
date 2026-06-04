@@ -48,6 +48,7 @@ postconditions.
 def PredTrans.Conjunctive (t : PostCond α ps → Assertion ps) : Prop :=
   ∀ Q₁ Q₂, t (Q₁ ∧ₚ Q₂) ⊣⊢ₛ t Q₁ ∧ t Q₂
 
+set_option linter.defProp false in
 /-- Any predicate transformer that is conjunctive is also monotonic. -/
 def PredTrans.Conjunctive.mono (t : PostCond α ps → Assertion ps) (h : PredTrans.Conjunctive t) : PredTrans.Monotonic t := by
   intro Q₁ Q₂ hq
