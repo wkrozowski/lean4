@@ -28,11 +28,46 @@ def insertLinterSetEntry (map : LinterSets) (setName : Name) (options : NameSet)
   options.foldl (init := map) fun map linterName =>
     map.insert linterName ((map.getD linterName #[]).push setName)
 
-builtin_initialize linterSetsExt : SimplePersistentEnvExtension (Name × NameSet) LinterSets ← Lean.registerSimplePersistentEnvExtension {
-  addImportedFn := mkStateFromImportedEntries (Function.uncurry <| insertLinterSetEntry ·) {}
-  addEntryFn := (Function.uncurry <| insertLinterSetEntry ·)
-  toArrayFn es := es.toArray
-}
+/-- State of `linterSetsExt`.
+
+`merged` is the queryable union of all sources (builtins folded in at env creation,
+imported entries from oleans, and locally added entries). `localEntries` tracks entries
+added in the current module so they can be exported into the olean.
+-/
+structure LinterSetsState where
+  merged : LinterSets := {}
+  localEntries : Array (Name × NameSet) := #[]
+  deriving Inhabited
+
+/-- Builtin linter sets registered from `builtin_initialize` blocks in core code.
+
+Entries here are folded into every `LinterSetsState` produced by `linterSetsExt`, so they
+participate in `getLinterValue` like any user-declared set.
+-/
+builtin_initialize builtinLinterSetsRef : IO.Ref (Array (Name × NameSet)) ← IO.mkRef #[]
+
+/-- Register a builtin linter set entry. Only valid during initialization;
+use `register_builtin_linter_set` rather than calling this directly. -/
+def addBuiltinLinterSet (setName : Name) (linterNames : NameSet) : IO Unit := do
+  builtinLinterSetsRef.modify (·.push (setName, linterNames))
+
+builtin_initialize linterSetsExt :
+    PersistentEnvExtension (Name × NameSet) (Name × NameSet) LinterSetsState ←
+  registerPersistentEnvExtension {
+    mkInitial := do
+      let merged := (← builtinLinterSetsRef.get).foldl (init := {}) fun s (n, ms) =>
+        insertLinterSetEntry s n ms
+      return { merged, localEntries := #[] }
+    addImportedFn := fun ess => do
+      let s := (← builtinLinterSetsRef.get).foldl (init := {}) fun s (n, ms) =>
+        insertLinterSetEntry s n ms
+      let merged := ess.foldl (init := s) fun s es =>
+        es.foldl (init := s) fun s (n, ms) => insertLinterSetEntry s n ms
+      return { merged, localEntries := #[] }
+    addEntryFn := fun st (n, ms) =>
+      { merged := insertLinterSetEntry st.merged n ms, localEntries := st.localEntries.push (n, ms) }
+    exportEntriesFn := fun st => st.localEntries
+  }
 
 /-- The `LinterOptions` structure is used to determine whether given linters are enabled.
 
@@ -50,7 +85,7 @@ def LinterOptions.get [KVMap.Value α] (o : LinterOptions) := o.toOptions.get (�
 def LinterOptions.get? [KVMap.Value α] (o : LinterOptions) := o.toOptions.get? (α := α)
 
 def _root_.Lean.Options.toLinterOptions [Monad m] [MonadEnv m] (o : Options) : m LinterOptions := do
-  let linterSets := linterSetsExt.getState (← getEnv)
+  let linterSets := (linterSetsExt.getState (← getEnv)).merged
   return { toOptions := o, linterSets }
 
 /-- Return the set of linter sets that this option is contained in. -/
@@ -74,17 +109,8 @@ register_builtin_option linter.extra : Bool := {
 def getLinterAll (o : LinterOptions) (defValue := linter.all.defValue) : Bool :=
     o.get linter.all.name defValue
 
-def getLinterExtra (o : LinterOptions) (defValue := linter.extra.defValue) : Bool :=
-  o.get linter.extra.name defValue
-
 def getLinterValue (opt : Lean.Option Bool) (o : LinterOptions) : Bool :=
   o.get opt.name (getLinterAll o <| (o.getSet opt).any (o.get? · == some true) || opt.defValue)
-
-/--
-Like `getLinterValue`, but the cross-linter fallback is `linter.extra` instead of `linter.all`.
--/
-def getLinterValueExtra (opt : Lean.Option Bool) (o : LinterOptions) : Bool :=
-  o.get opt.name (getLinterExtra o opt.defValue)
 
 /--
 Tag attached by `logLint` to every linter warning so consumers
@@ -118,12 +144,3 @@ Whether a linter option is enabled or not is determined by the following sequenc
 def logLintIf [Monad m] [MonadLog m] [AddMessageContext m] [MonadOptions m] [MonadEnv m]
     (linterOption : Lean.Option Bool) (stx : Syntax) (msg : MessageData) : m Unit := do
   if getLinterValue linterOption (← getLinterOptions) then logLint linterOption stx msg
-
-/--
-Like `logLintIf`, but uses `getLinterValueExtra` to gate emission on the extra fallback.
-Use for extra linters: emits the warning iff `linterOption` is on under the extra
-selection rules described on `getLinterValueExtra`.
--/
-def logLintIfExtra [Monad m] [MonadLog m] [AddMessageContext m] [MonadOptions m] [MonadEnv m]
-    (linterOption : Lean.Option Bool) (stx : Syntax) (msg : MessageData) : m Unit := do
-  if getLinterValueExtra linterOption (← getLinterOptions) then logLint linterOption stx msg
