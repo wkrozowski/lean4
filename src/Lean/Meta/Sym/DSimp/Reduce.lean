@@ -61,9 +61,7 @@ public def dsimpMatch : DSimproc := fun e => do
   -- Iota-reduction may expose kernel `Expr.proj` terms via struct-eta,
   -- which the structural simplifier cannot consume directly.
   let e'' ← Sym.foldProjs e'
-  if isSameExpr e' e'' then
-    return .rfl
-  else
-    return .step (← share e'')
+  let e'' ← share e''
+  return .step e''
 
 end Lean.Meta.Sym.DSimp
