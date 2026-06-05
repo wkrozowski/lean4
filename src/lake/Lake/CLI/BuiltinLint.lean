@@ -76,6 +76,48 @@ private def collectTextLints
 @[noinline] private def getIsModule (modData : Lean.ModuleData) : BaseIO Bool :=
   return modData.isModule
 
+private def recordedMarker : String := "-- recorded by `lake lint --record-exceptions`"
+
+private def isIndentChar (c : Char) : Bool := c == ' ' || c == '\t'
+
+private def leadingWhitespace (line : String) : String :=
+  (line.toRawSubstring.takeWhile isIndentChar).toString
+
+/--
+Applies the collected exceptions to the source files: for each file, inserts a
+`set_option <linter> false in <marker>` line before every flagged declaration.
+-/
+private def recordExceptionsToFiles (records : Array ExceptionRecord) : IO Unit := do
+  let mut byFile : Std.HashMap String (System.FilePath × Array (Nat × Name)) := {}
+  for r in records do
+    let key := r.file.toString
+    let (fp, arr) := byFile.getD key (r.file, #[])
+    byFile := byFile.insert key (fp, arr.push (r.pos.line, r.option))
+  for (_, file, lineOpts) in byFile.toArray do
+    -- Deduplicate options per line.
+    let mut perLine : Std.HashMap Nat (Array Name) := {}
+    for (ln, opt) in lineOpts do
+      let cur := perLine.getD ln #[]
+      unless cur.contains opt do
+        perLine := perLine.insert ln (cur.push opt)
+    let some content ← (some <$> IO.FS.readFile file) <|> pure none
+      | IO.eprintln s!"warning: could not read `{file}`; skipping its {lineOpts.size} exception(s)"
+    let mut lines := (content.split '\n').toArray.map toString
+    -- Process target lines back-to-front so insertions do not invalidate earlier line numbers.
+    let targets := perLine.toArray.qsort (fun a b => a.1 > b.1)
+    let mut fileInserted := 0
+    for (ln, opts) in targets do
+      let idx := ln - 1
+      if h : idx < lines.size then
+        let indent := leadingWhitespace lines[idx]
+        let opts := opts.qsort (fun a b => toString a < toString b)
+        let newLines := opts.map fun o => s!"{indent}set_option {o} false in {recordedMarker}"
+        lines := lines.extract 0 idx ++ newLines ++ lines.extract idx lines.size
+        fileInserted := fileInserted + newLines.size
+    if fileInserted > 0 then
+      IO.println s!"recording {fileInserted} exception{if fileInserted == 1 then "" else "s"} in {file}"
+      IO.FS.writeFile file ("\n".intercalate lines.toList)
+
 public def run (args : Args) : IO UInt32 := do
   let mods := args.mods
   if mods.isEmpty then
@@ -186,10 +228,7 @@ public def run (args : Args) : IO UInt32 := do
       anyFailed := true
 
   if args.recordExceptions then
-    -- TODO(step 3): aggregate `records` per file and edit the sources in place.
-    IO.println s!"-- Collected {records.size} linter exception(s) to record."
-    for r in records do
-      IO.println s!"--   {r.file}:{r.pos.line}:{r.pos.column + 1} set_option {r.option} false in"
+    recordExceptionsToFiles records
     return if anyUnlocated then 1 else 0
 
   return if anyFailed then 1 else 0
