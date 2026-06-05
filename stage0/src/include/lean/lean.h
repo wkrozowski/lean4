@@ -9,6 +9,7 @@ Author: Leonardo de Moura
 #include <stdbool.h>
 #include <stdint.h>
 #include <limits.h>
+#include <float.h>
 
 #include <lean/config.h>
 
@@ -78,6 +79,14 @@ void lean_notify_assert(const char * fileName, int line, const char * condition)
 #define LEAN_EXPORT
 #endif
 
+// `FLT_EVAL_METHOD` is mandated to exist by the standard since C++11 and C99, but if we're in danger of triggering this
+// error, all bets are probably off and we should check whether it exists to avoid falling back to `0`.
+// We also perform this check in `lean.h` rather than in one of the runtime files because it is only valid per translation
+// unit, so we try to be safe and check it in all translation units.
+#if !defined(FLT_EVAL_METHOD) || (FLT_EVAL_METHOD != 0)
+#error Lean requires `FLT_EVAL_METHOD = 0` to ensure predictable semantics for floating-point operations.
+#endif
+
 #define LEAN_BYTE(Var, Index) *(((uint8_t*)&Var)+Index)
 
 #define LeanMaxCtorTag  243
@@ -123,8 +132,11 @@ mimalloc, so there we always use `m_cs_sz`; reusing it for the deletion list is 
 we do not need the size after an object has been marked for deletion (see `lean_free_small_object`).
 
 During deallocation and 64-bit machines, the fields `m_rc` and `m_cs_sz` store the next object in the deletion TODO list.
-These two fields together have 48-bits, and this is enough for modern computers.
+These two fields together have 48-bits, and this is enough for most modern computers.
 In 32-bit machines, the field `m_rc` is sufficient.
+Note that as a result, this code is not compatible with ARM MTE or HWASAN,
+which use extra pointer bits which do not fit (https://github.com/leanprover/lean4/issues/13113).
+
 
 The field `m_other` is used to store the number of fields in a constructor object and the element size in a scalar array.
 */

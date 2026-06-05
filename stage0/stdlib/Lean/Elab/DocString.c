@@ -2684,7 +2684,7 @@ static const lean_string_object l___private_Lean_Elab_DocString_0__Lean_Doc_thro
 static const lean_object* l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__0 = (const lean_object*)&l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__0_value;
 static lean_once_cell_t l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__1_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__1;
-static const lean_string_object l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__2_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 28, .m_capacity = 28, .m_length = 27, .m_data = "` is not registered as a a "};
+static const lean_string_object l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__2_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 26, .m_capacity = 26, .m_length = 25, .m_data = "` is not registered as a "};
 static const lean_object* l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__2 = (const lean_object*)&l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__2_value;
 static lean_once_cell_t l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__3_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l___private_Lean_Elab_DocString_0__Lean_Doc_throwUnknownDocElem___redArg___closed__3;

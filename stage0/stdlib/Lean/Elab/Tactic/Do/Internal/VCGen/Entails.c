@@ -1158,7 +1158,7 @@ LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_Do_Internal_VCGen_tripleOfWP___lam__
 _start:
 {
 lean_object* v_tripleOfEntailsWPRule_405_; lean_object* v___x_406_; lean_object* v___x_407_; 
-v_tripleOfEntailsWPRule_405_ = lean_ctor_get(v___y_393_, 15);
+v_tripleOfEntailsWPRule_405_ = lean_ctor_get(v___y_393_, 14);
 v___x_406_ = lean_box(0);
 lean_inc(v_goal_392_);
 lean_inc_ref(v_tripleOfEntailsWPRule_405_);
@@ -1568,10 +1568,10 @@ goto v_resetjp_622_;
 v_resetjp_622_:
 {
 lean_object* v_exceptCondsEntailsRflRule_630_; lean_object* v_exceptCondsEntailsPureRule_631_; lean_object* v_exceptCondsEntailsFalseRule_632_; lean_object* v_exceptCondsEntailsTrueRule_633_; lean_object* v___x_634_; lean_object* v___y_636_; lean_object* v_exceptCondsEntailsRflRule_637_; lean_object* v___y_638_; lean_object* v___y_639_; lean_object* v___y_640_; lean_object* v___y_641_; lean_object* v___y_642_; lean_object* v___y_643_; lean_object* v___y_644_; lean_object* v___y_645_; lean_object* v___y_646_; lean_object* v___y_647_; lean_object* v___y_662_; lean_object* v_exceptCondsEntailsRflRule_663_; lean_object* v_exceptCondsEntailsTrueRule_664_; lean_object* v___y_665_; lean_object* v___y_666_; lean_object* v___y_667_; lean_object* v___y_668_; lean_object* v___y_669_; lean_object* v___y_670_; lean_object* v___y_671_; lean_object* v___y_672_; lean_object* v___y_673_; lean_object* v___y_674_; lean_object* v___x_688_; 
-v_exceptCondsEntailsRflRule_630_ = lean_ctor_get(v___y_580_, 11);
-v_exceptCondsEntailsPureRule_631_ = lean_ctor_get(v___y_580_, 12);
-v_exceptCondsEntailsFalseRule_632_ = lean_ctor_get(v___y_580_, 13);
-v_exceptCondsEntailsTrueRule_633_ = lean_ctor_get(v___y_580_, 14);
+v_exceptCondsEntailsRflRule_630_ = lean_ctor_get(v___y_580_, 10);
+v_exceptCondsEntailsPureRule_631_ = lean_ctor_get(v___y_580_, 11);
+v_exceptCondsEntailsFalseRule_632_ = lean_ctor_get(v___y_580_, 12);
+v_exceptCondsEntailsTrueRule_633_ = lean_ctor_get(v___y_580_, 13);
 v___x_634_ = lean_box(0);
 lean_inc(v_a_621_);
 lean_inc_ref(v_exceptCondsEntailsPureRule_631_);
@@ -2935,8 +2935,8 @@ else
 {
 lean_object* v_postCondEntailsRflRule_1010_; lean_object* v_postCondEntailsMkRule_1011_; lean_object* v___x_1012_; lean_object* v___x_1013_; 
 lean_del_object(v___x_978_);
-v_postCondEntailsRflRule_1010_ = lean_ctor_get(v___y_957_, 9);
-v_postCondEntailsMkRule_1011_ = lean_ctor_get(v___y_957_, 10);
+v_postCondEntailsRflRule_1010_ = lean_ctor_get(v___y_957_, 8);
+v_postCondEntailsMkRule_1011_ = lean_ctor_get(v___y_957_, 9);
 v___x_1012_ = lean_box(0);
 lean_inc(v_goal_956_);
 lean_inc_ref(v_postCondEntailsRflRule_1010_);
@@ -3285,8 +3285,8 @@ goto v___jp_985_;
 }
 else
 {
-lean_dec_ref_known(v_mvarIds_1033_, 2);
 lean_dec(v_tail_1034_);
+lean_dec_ref_known(v_mvarIds_1033_, 2);
 v___y_986_ = v___y_1027_;
 v___y_987_ = v___y_1028_;
 v___y_988_ = v___y_1029_;
@@ -3587,9 +3587,9 @@ LEAN_EXPORT lean_object* l_Lean_Elab_Tactic_Do_Internal_VCGen_consIntroAndSimpSt
 _start:
 {
 lean_object* v_goal_1179_; lean_object* v_entailsConsIntroRule_1182_; lean_object* v_applyPureConsEntailsLRule_1183_; lean_object* v_applyPureConsEntailsRRule_1184_; lean_object* v___x_1185_; lean_object* v___x_1186_; 
-v_entailsConsIntroRule_1182_ = lean_ctor_get(v_a_1166_, 1);
-v_applyPureConsEntailsLRule_1183_ = lean_ctor_get(v_a_1166_, 4);
-v_applyPureConsEntailsRRule_1184_ = lean_ctor_get(v_a_1166_, 5);
+v_entailsConsIntroRule_1182_ = lean_ctor_get(v_a_1166_, 0);
+v_applyPureConsEntailsLRule_1183_ = lean_ctor_get(v_a_1166_, 3);
+v_applyPureConsEntailsRRule_1184_ = lean_ctor_get(v_a_1166_, 4);
 v___x_1185_ = lean_box(0);
 lean_inc_ref(v_entailsConsIntroRule_1182_);
 v___x_1186_ = l_Lean_Elab_Tactic_Do_Internal_Lean_Meta_Sym_BackwardRule_applyChecked(v_entailsConsIntroRule_1182_, v_goal_1165_, v___x_1185_, v_a_1166_, v_a_1167_, v_a_1168_, v_a_1169_, v_a_1170_, v_a_1171_, v_a_1172_, v_a_1173_, v_a_1174_, v_a_1175_, v_a_1176_);
@@ -4966,9 +4966,9 @@ goto v___jp_2035_;
 v___jp_1707_:
 {
 lean_object* v_downPureIntroRule_1722_; lean_object* v_pureElimRule_1723_; lean_object* v_pureIntroRule_1724_; lean_object* v___x_1725_; lean_object* v___x_1726_; 
-v_downPureIntroRule_1722_ = lean_ctor_get(v___y_1719_, 6);
-v_pureElimRule_1723_ = lean_ctor_get(v___y_1719_, 7);
-v_pureIntroRule_1724_ = lean_ctor_get(v___y_1719_, 8);
+v_downPureIntroRule_1722_ = lean_ctor_get(v___y_1719_, 5);
+v_pureElimRule_1723_ = lean_ctor_get(v___y_1719_, 6);
+v_pureIntroRule_1724_ = lean_ctor_get(v___y_1719_, 7);
 v___x_1725_ = lean_box(0);
 lean_inc(v___y_1709_);
 lean_inc_ref(v_pureElimRule_1723_);
@@ -5284,8 +5284,8 @@ if (v___x_1786_ == 0)
 {
 lean_object* v_entailsNilIntroRule_1787_; lean_object* v_downPureIntroRule_1788_; lean_object* v___x_1789_; lean_object* v___x_1790_; 
 lean_dec_ref(v_arg_1780_);
-v_entailsNilIntroRule_1787_ = lean_ctor_get(v___y_1757_, 3);
-v_downPureIntroRule_1788_ = lean_ctor_get(v___y_1757_, 6);
+v_entailsNilIntroRule_1787_ = lean_ctor_get(v___y_1757_, 2);
+v_downPureIntroRule_1788_ = lean_ctor_get(v___y_1757_, 5);
 v___x_1789_ = lean_box(0);
 lean_inc(v_snd_1773_);
 lean_inc_ref(v_entailsNilIntroRule_1787_);
@@ -5562,8 +5562,8 @@ goto v___jp_1707_;
 else
 {
 lean_object* v_downPureIntroRule_1823_; lean_object* v_pureIntroRule_1824_; uint8_t v___x_1825_; 
-v_downPureIntroRule_1823_ = lean_ctor_get(v___y_1757_, 6);
-v_pureIntroRule_1824_ = lean_ctor_get(v___y_1757_, 8);
+v_downPureIntroRule_1823_ = lean_ctor_get(v___y_1757_, 5);
+v_pureIntroRule_1824_ = lean_ctor_get(v___y_1757_, 7);
 v___x_1825_ = lean_unbox(v_fst_1772_);
 lean_dec(v_fst_1772_);
 v___y_1635_ = v___x_1784_;
@@ -5895,7 +5895,7 @@ goto v_resetjp_1893_;
 v_resetjp_1893_:
 {
 lean_object* v_pureIntroRule_1896_; lean_object* v___x_1897_; lean_object* v___x_1898_; 
-v_pureIntroRule_1896_ = lean_ctor_get(v___y_1882_, 8);
+v_pureIntroRule_1896_ = lean_ctor_get(v___y_1882_, 7);
 v___x_1897_ = lean_box(0);
 lean_inc(v_goal_1881_);
 lean_inc_ref(v_pureIntroRule_1896_);
@@ -6248,7 +6248,7 @@ goto v___jp_1923_;
 else
 {
 lean_object* v_pureElimRule_1990_; lean_object* v___x_1991_; lean_object* v___x_1992_; 
-v_pureElimRule_1990_ = lean_ctor_get(v___y_1979_, 7);
+v_pureElimRule_1990_ = lean_ctor_get(v___y_1979_, 6);
 v___x_1991_ = lean_box(0);
 lean_inc(v_goal_1584_);
 lean_inc_ref(v_pureElimRule_1990_);
