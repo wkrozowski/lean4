@@ -26,6 +26,9 @@ public structure Args where
   mods : Array Name := #[]
   /-- Whether to only run the user provided linters -/
   lintOnly : Bool := false
+  /-- Whether to record linter warnings as `set_option <linter> false in` exceptions
+  by editing the source files in place. -/
+  recordExceptions : Bool := false
 
 /--
 Turns the `lake lint` extra arguments into an array of `Lean.Option`, that needs to be enabled
