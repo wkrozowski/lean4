@@ -135,6 +135,16 @@ def process (input : String) (env : Environment) (opts : Options) (fileName : Op
   let s ← IO.processCommands inputCtx { : Parser.ModuleParserState } (Command.mkState env {} opts)
   pure (s.commandState.env, s.commandState.messages)
 
+/--
+Walks the snapshot tree, pairing each node's diagnostics with the syntax of the command that
+produced them.
+-/
+private partial def collectCommandLints (t : Language.SnapshotTree) (cmdStx? : Option Syntax)
+    (acc : Array (Option Syntax × MessageLog)) : Array (Option Syntax × MessageLog) :=
+  let acc := acc.push (cmdStx?, t.element.diagnostics.msgLog)
+  t.children.foldl (init := acc) fun acc child =>
+    collectCommandLints child.get (child.stx? <|> cmdStx?) acc
+
 def runFrontend
     (input : String)
     (opts : Options)
@@ -197,9 +207,8 @@ def runFrontend
 
   if let some oleanFileName := oleanFileName? then
     profileitIO ".olean serialization" finalOpts do
-      let allMessages := snaps.getAll.foldl
-        (init := (.empty : MessageLog)) (fun acc s => acc ++ s.diagnostics.msgLog)
-      let env ← Linter.recordLints inputCtx.fileMap env allMessages
+      let commandLints := collectCommandLints snaps none #[]
+      let env ← Linter.recordLints inputCtx.fileMap env commandLints
       writeModule (writeIR := !Compiler.compiler.postponeCompile.get finalOpts) env oleanFileName
 
   if let some ileanFileName := ileanFileName? then
