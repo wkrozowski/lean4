@@ -368,6 +368,17 @@ if(NOT LEAN_STANDALONE)
   string(APPEND LEAN_EXTRA_LINKER_FLAGS " ${LIBUV_LDFLAGS}")
 endif()
 
+# OpenSSL
+if(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "Emscripten")
+  find_package(OpenSSL 3 REQUIRED COMPONENTS Crypto SSL)
+  set(OPENSSL_LIBRARIES ${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY})
+  include_directories(${OPENSSL_INCLUDE_DIR})
+  string(JOIN " " OPENSSL_LIBRARIES_STR ${OPENSSL_LIBRARIES})
+  if(NOT LEAN_STANDALONE)
+    string(APPEND LEAN_EXTRA_LINKER_FLAGS " ${OPENSSL_LIBRARIES_STR}")
+  endif()
+endif()
+
 # Windows SDK (for ICU)
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
   # Pass 'tools' to skip MSVC version check (as MSVC/Visual Studio is not necessarily installed)
