@@ -23,13 +23,13 @@ Returns true if `decl` is an automatically generated declaration.
 Also returns true if `decl` is an internal name or created during macro
 expansion.
 -/
-def isAutoDecl (decl : Name) : CoreM Bool := do
+def isAutoDeclOrPrivate_Internal (decl : Name) : CoreM Bool := do
   if decl.hasMacroScopes then return true
   if decl.isInternal then return true
   let env ← getEnv
   if isReservedName env decl then return true
   if let Name.str n s := decl then
-    if (← isAutoDecl n) then return true
+    if (← isAutoDeclOrPrivate_Internal n) then return true
     if s.startsWith "proof_"
         || s.startsWith "match_"
         || s.startsWith "unsafe_"

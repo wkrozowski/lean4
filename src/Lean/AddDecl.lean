@@ -38,7 +38,7 @@ def snapshotEnvLinterOptions (declName : Name) : CoreM Unit := do
   let envLinterOpts ← envLinterOptionsRef.get
   unless envLinterOpts.isEmpty do
     let linterOptions ← getLinterOptions
-    unless ← isAutoDecl declName do
+    unless ← isAutoDeclOrPrivate_Internal declName do
       let mut snapshot : NameMap Bool := {}
       for opt in envLinterOpts do
         snapshot := snapshot.insert opt.name (getLinterValue opt linterOptions)
