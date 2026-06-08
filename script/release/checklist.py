@@ -100,7 +100,9 @@ class DownstreamChecker(RepoChecker):
 
     def check_toolchain(self) -> bool:
         expected = util.get_toolchain_for(self.version)
-        actual = util.get_toolchain(self.grepo, self.grepo.default_branch)
+        actual = util.get_toolchain(
+            self.grepo, self.grepo.default_branch, self.rrepo.toolchain_file
+        )
 
         if expected == actual:
             self.cl.success(f"Toolchain is [b]{e(actual)}[/b]")
@@ -676,7 +678,7 @@ class LeanChecker(RepoChecker):
         tag_sha = release_tag.object.sha
         runs = self.grepo.get_workflow_runs(event="push", head_sha=tag_sha).get_page(0)
         if len(runs) == 0:
-            self.cl.fail("Release workflow run not found")
+            self.cl.fatal("Release workflow run not found")
             return
 
         run = runs[0]
