@@ -3047,7 +3047,7 @@ lean_object* v___x_682_; lean_object* v___x_683_; lean_object* v___x_684_;
 v___x_682_ = l_Array_toSubarray___redArg(v_args_635_, v_lower_680_, v_upper_681_);
 lean_inc_ref(v___x_682_);
 v___x_683_ = l_Subarray_copy___redArg(v___x_682_);
-v___x_684_ = l___private_Lean_Elab_Tactic_Conv_Congr_0__Lean_Elab_Tactic_Conv_mkCongrThm(v_origTag_633_, v_fst_671_, v___x_683_, v_addImplicitArgs_636_, v_nameSubgoals_637_, v___y_679_, v___y_676_, v___y_678_, v___y_677_);
+v___x_684_ = l___private_Lean_Elab_Tactic_Conv_Congr_0__Lean_Elab_Tactic_Conv_mkCongrThm(v_origTag_633_, v_fst_671_, v___x_683_, v_addImplicitArgs_636_, v_nameSubgoals_637_, v___y_679_, v___y_678_, v___y_676_, v___y_677_);
 if (lean_obj_tag(v___x_684_) == 0)
 {
 lean_object* v_a_685_; lean_object* v_snd_686_; lean_object* v_fst_687_; lean_object* v_fst_688_; lean_object* v_snd_689_; lean_object* v___x_690_; 
@@ -3064,14 +3064,14 @@ lean_inc(v_fst_688_);
 v_snd_689_ = lean_ctor_get(v_snd_686_, 1);
 lean_inc(v_snd_689_);
 lean_dec(v_snd_686_);
-v___x_690_ = l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Elab_Tactic_Conv_Congr_0__Lean_Elab_Tactic_Conv_mkCongrThm_spec__0___redArg(v___x_682_, v_fst_672_, v___y_679_, v___y_676_, v___y_678_, v___y_677_);
+v___x_690_ = l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Elab_Tactic_Conv_Congr_0__Lean_Elab_Tactic_Conv_mkCongrThm_spec__0___redArg(v___x_682_, v_fst_672_, v___y_679_, v___y_678_, v___y_676_, v___y_677_);
 if (lean_obj_tag(v___x_690_) == 0)
 {
 lean_object* v_a_691_; lean_object* v___x_692_; 
 v_a_691_ = lean_ctor_get(v___x_690_, 0);
 lean_inc(v_a_691_);
 lean_dec_ref_known(v___x_690_, 1);
-v___x_692_ = l_Lean_Meta_mkEqTrans(v_a_691_, v_fst_687_, v___y_679_, v___y_676_, v___y_678_, v___y_677_);
+v___x_692_ = l_Lean_Meta_mkEqTrans(v_a_691_, v_fst_687_, v___y_679_, v___y_678_, v___y_676_, v___y_677_);
 if (lean_obj_tag(v___x_692_) == 0)
 {
 lean_object* v_a_693_; lean_object* v___x_694_; lean_object* v___x_695_; 
@@ -3197,9 +3197,9 @@ lean_dec(v_a_652_);
 v___x_718_ = lean_nat_dec_le(v___x_717_, v___x_661_);
 if (v___x_718_ == 0)
 {
-v___y_676_ = v___y_714_;
+v___y_676_ = v___y_715_;
 v___y_677_ = v___y_716_;
-v___y_678_ = v___y_715_;
+v___y_678_ = v___y_714_;
 v___y_679_ = v___y_713_;
 v_lower_680_ = v___x_717_;
 v_upper_681_ = v___x_650_;
@@ -3208,9 +3208,9 @@ goto v___jp_675_;
 else
 {
 lean_dec(v___x_717_);
-v___y_676_ = v___y_714_;
+v___y_676_ = v___y_715_;
 v___y_677_ = v___y_716_;
-v___y_678_ = v___y_715_;
+v___y_678_ = v___y_714_;
 v___y_679_ = v___y_713_;
 v_lower_680_ = v___x_661_;
 v_upper_681_ = v___x_650_;

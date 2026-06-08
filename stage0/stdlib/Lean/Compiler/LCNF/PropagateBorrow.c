@@ -2550,8 +2550,8 @@ goto v___jp_738_;
 }
 else
 {
-lean_dec_ref_known(v_fn_736_, 2);
 lean_dec(v_pre_745_);
+lean_dec_ref_known(v_fn_736_, 2);
 v___y_739_ = v_a_628_;
 goto v___jp_738_;
 }
