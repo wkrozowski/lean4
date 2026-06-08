@@ -171,15 +171,15 @@ error: invalid attribute `builtin_env_linter`, linter `linter.dummyBadName` has 
 
 /-- info: true -/
 #guard_msgs in
-#eval isAutoDecl `Nat.casesOn
+#eval isAutoDeclOrPrivate_Internal `Nat.casesOn
 
 /-- info: true -/
 #guard_msgs in
-#eval isAutoDecl `Nat.recOn
+#eval isAutoDeclOrPrivate_Internal `Nat.recOn
 
 /-- info: false -/
 #guard_msgs in
-#eval isAutoDecl `Nat.add
+#eval isAutoDeclOrPrivate_Internal `Nat.add
 
 /-! ## Test: getEnvLinters returns all registered linters, sorted by option name -/
 
