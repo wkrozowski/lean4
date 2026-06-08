@@ -7,6 +7,7 @@ module
 
 prelude
 public import Lean.MonadEnv
+public import Lean.EnvExtension
 import Init.Data.Function
 
 public section
@@ -106,11 +107,23 @@ register_builtin_option linter.extra : Bool := {
     only available via `lake lint`. An extra linter early-returns unless this option is true."
 }
 
+/--
+Global registry of options associated with environment linters.
+These are precisely options, whose value will be snapshotted during `addDecl`.
+-/
+builtin_initialize envLinterOptionsRef : IO.Ref (Array (Lean.Option Bool)) ← IO.mkRef #[]
+
+def addEnvLinterOption (opt : Lean.Option Bool) : IO Unit :=
+  envLinterOptionsRef.modify (·.push opt)
+
 def getLinterAll (o : LinterOptions) (defValue := linter.all.defValue) : Bool :=
     o.get linter.all.name defValue
 
 def getLinterValue (opt : Lean.Option Bool) (o : LinterOptions) : Bool :=
   o.get opt.name (getLinterAll o <| (o.getSet opt).any (o.get? · == some true) || opt.defValue)
+
+def isLinterEnabledByOptions (name : Name) (o : LinterOptions) : Bool :=
+  o.get name (getLinterAll o <| (o.linterSets.getD name #[]).any (o.get? · == some true))
 
 /--
 Tag attached by `logLint` to every linter warning so consumers
@@ -144,3 +157,17 @@ Whether a linter option is enabled or not is determined by the following sequenc
 def logLintIf [Monad m] [MonadLog m] [AddMessageContext m] [MonadOptions m] [MonadEnv m]
     (linterOption : Lean.Option Bool) (stx : Syntax) (msg : MessageData) : m Unit := do
   if getLinterValue linterOption (← getLinterOptions) then logLint linterOption stx msg
+
+abbrev EnvLinterSnapshot := NameMap Bool
+
+/--
+The `envLinterSnapshotExt` extension saves the state of all (Boolean-valued) `Lean.Option`s
+associated with environment linters.
+-/
+builtin_initialize envLinterSnapshotExt : MapDeclarationExtension EnvLinterSnapshot ←
+  -- `.asyncEnv`: the snapshot is written from within the declaration's own (async) elaboration
+  -- via `addDecl`, so the modification happens on the declaration's async branch, not a parent.
+  mkMapDeclarationExtension `envLinterSnapshotExt (asyncMode := .sync)
+
+def getEnvLinterSnapshotEntry? (env : Environment) (declName optName : Name) : Option Bool :=
+  envLinterSnapshotExt.find? env declName >>= (·.find? optName)
