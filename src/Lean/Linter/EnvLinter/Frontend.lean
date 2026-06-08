@@ -153,7 +153,7 @@ def formatLinterResults
     else
       pure none
   let mut s := MessageData.joinSep formattedResults.toList Format.line
-  let numAutoDecls := (← decls.filterM isAutoDecl).size
+  let numAutoDecls := (← decls.filterM isAutoDeclOrPrivate_Internal).size
   let failed := results.map (·.2.size) |>.foldl (·+·) 0
   unless verbose matches LintVerbosity.low do
     s := m!"-- Found {failed} error{if failed == 1 then "" else "s"
