@@ -704,6 +704,7 @@ After running the loop body, the invariant then holds after shifting `x` to the 
 def Invariant {α : Type u₁} (xs : List α) (β : Type u₂) (ps : PostShape.{max u₁ u₂}) :=
   PostCond (List.Cursor xs × β) ps
 
+set_option linter.checkUnivs false in
 /--
 Helper definition for specifying loop invariants for loops with early return.
 
@@ -732,6 +733,7 @@ abbrev Invariant.withEarlyReturn {α} {xs : List α} {γ : Type (max u₁ u₂)}
       ∨ (∃ r, ⌜x = some r⌝ ∧ ⌜xs.suffix = []⌝ ∧ onReturn r b)),
    onExcept⟩
 
+set_option linter.checkUnivs false in
 /-- Like `Invariant.withEarlyReturn`, but for the new `do` elaborator which uses `Prod`
 instead of `MProd` for the state tuple. -/
 abbrev Invariant.withEarlyReturnNewDo {α} {xs : List α} {γ : Type (max u₁ u₂)}
@@ -2034,6 +2036,7 @@ A loop invariant is a `PostCond` that takes as parameters
 def StringInvariant (s : String) (β : Type u) (ps : PostShape.{u}) :=
   PostCond (s.Pos × β) ps
 
+set_option linter.checkUnivs false in
 /--
 Helper definition for specifying loop invariants for loops with early return.
 
@@ -2063,6 +2066,7 @@ abbrev StringInvariant.withEarlyReturn {s : String}
       ∨ (∃ r, ⌜x = some r⌝ ∧ ⌜pos = s.endPos⌝ ∧ onReturn r b)),
    onExcept⟩
 
+set_option linter.checkUnivs false in
 /-- Like `StringInvariant.withEarlyReturn`, but for the new `do` elaborator which uses `Prod`
 instead of `MProd` for the state tuple. -/
 abbrev StringInvariant.withEarlyReturnNewDo {s : String}
@@ -2119,6 +2123,7 @@ A loop invariant is a `PostCond` that takes as parameters
 def StringSliceInvariant (s : String.Slice) (β : Type u) (ps : PostShape.{u}) :=
   PostCond (s.Pos × β) ps
 
+set_option linter.checkUnivs false in
 /--
 Helper definition for specifying loop invariants for loops with early return.
 
@@ -2148,6 +2153,7 @@ abbrev StringSliceInvariant.withEarlyReturn {s : String.Slice}
       ∨ (∃ r, ⌜x = some r⌝ ∧ ⌜pos = s.endPos⌝ ∧ onReturn r b)),
    onExcept⟩
 
+set_option linter.checkUnivs false in
 /-- Like `StringSliceInvariant.withEarlyReturn`, but for the new `do` elaborator which uses `Prod`
 instead of `MProd` for the state tuple. -/
 abbrev StringSliceInvariant.withEarlyReturnNewDo {s : String.Slice}

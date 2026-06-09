@@ -103,7 +103,7 @@ def Q.liftOn₂ (q₁ q₂ : Q α)
 
 attribute [local simp] Q.mk Q.liftOn₂
 
-def Q.ind {β : Q α → Prop} (mk : ∀ (a : α × α), β (Q.mk a)) (q : Q α) : β q :=
+theorem Q.ind {β : Q α → Prop} (mk : ∀ (a : α × α), β (Q.mk a)) (q : Q α) : β q :=
   Quot.ind mk q
 
 @[local simp] def natCast (n : Nat) : Q α :=

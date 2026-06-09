@@ -4348,6 +4348,7 @@ theorem sum_toList [Add α] [Zero α] {as : Array α} : as.toList.sum = as.sum :
   cases as
   simp [Array.sum, List.sum]
 
+set_option linter.defProp false in
 @[deprecated sum_toList (since := "2026-01-14")]
 def sum_eq_sum_toList := @sum_toList
 
