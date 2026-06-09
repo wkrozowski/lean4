@@ -9350,8 +9350,8 @@ else
 {
 lean_object* v___x_2846_; lean_object* v___x_2848_; 
 lean_dec_ref(v_children_2805_);
-lean_dec_ref(v_i_2804_);
 lean_dec_ref_known(v_ctx_x3f_2796_, 1);
+lean_dec_ref(v_i_2804_);
 v___x_2846_ = ((lean_object*)(l_Lean_Elab_InfoTree_format___closed__3));
 if (v_isShared_2808_ == 0)
 {

@@ -211,6 +211,10 @@ endif()
 # We want explicit stack probes in huge Lean stack frames for robust stack overflow detection
 string(APPEND LEANC_EXTRA_CC_FLAGS " -fstack-clash-protection")
 
+# Disable contraction of floating-point operations to ensure predictable semantics
+string(APPEND LEANC_EXTRA_CC_FLAGS " -ffp-contract=off")
+string(APPEND LEAN_EXTRA_CXX_FLAGS " -ffp-contract=off")
+
 if(NOT MULTI_THREAD)
   message(STATUS "Disabled multi-thread support, it will not be safe to run multiple threads in parallel")
   set(AUTO_THREAD_FINALIZATION OFF)
@@ -362,6 +366,17 @@ include_directories(${LIBUV_INCLUDE_DIRS})
 if(NOT LEAN_STANDALONE)
   string(JOIN " " LIBUV_LDFLAGS ${LIBUV_LDFLAGS})
   string(APPEND LEAN_EXTRA_LINKER_FLAGS " ${LIBUV_LDFLAGS}")
+endif()
+
+# OpenSSL
+if(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "Emscripten")
+  find_package(OpenSSL 3 REQUIRED COMPONENTS Crypto SSL)
+  set(OPENSSL_LIBRARIES ${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY})
+  include_directories(${OPENSSL_INCLUDE_DIR})
+  string(JOIN " " OPENSSL_LIBRARIES_STR ${OPENSSL_LIBRARIES})
+  if(NOT LEAN_STANDALONE)
+    string(APPEND LEAN_EXTRA_LINKER_FLAGS " ${OPENSSL_LIBRARIES_STR}")
+  endif()
 endif()
 
 # Windows SDK (for ICU)

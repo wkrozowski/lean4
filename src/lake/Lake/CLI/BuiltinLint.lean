@@ -37,6 +37,12 @@ public structure Args where
 /--
 Turns the `lake lint` extra arguments into an array of `Lean.Option`, that needs to be enabled
 for the rebuild of the package, in order to turn on the appropriate linters.
+-/  /-- Whether to only run the user provided linters -/
+  lintOnly : Bool := false
+
+/--
+Turns the `lake lint` extra arguments into an array of `Lean.Option`, that needs to be enabled
+for the rebuild of the package, in order to turn on the appropriate linters.
 -/
 public def leanOptOverrides (args : Args) : LeanOptions :=
   let merged : NameMap Bool := args.linterOverrides.foldl (init := {}) fun m (n, b) => m.insert n b

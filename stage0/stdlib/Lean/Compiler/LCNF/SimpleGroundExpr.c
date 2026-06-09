@@ -1647,7 +1647,7 @@ _start:
 lean_object* v___x_389_; lean_object* v___x_390_; lean_object* v___x_391_; lean_object* v___x_392_; lean_object* v___x_393_; lean_object* v___x_394_; 
 v___x_389_ = ((lean_object*)(l_List_foldl___at___00__private_Lean_Compiler_LCNF_SimpleGroundExpr_0__Lean_Compiler_LCNF_initFn_00___x40_Lean_Compiler_LCNF_SimpleGroundExpr_160484116____hygCtx___hyg_2__spec__3___closed__2));
 v___x_390_ = lean_unsigned_to_nat(14u);
-v___x_391_ = lean_unsigned_to_nat(177u);
+v___x_391_ = lean_unsigned_to_nat(178u);
 v___x_392_ = ((lean_object*)(l_List_foldl___at___00__private_Lean_Compiler_LCNF_SimpleGroundExpr_0__Lean_Compiler_LCNF_initFn_00___x40_Lean_Compiler_LCNF_SimpleGroundExpr_160484116____hygCtx___hyg_2__spec__3___closed__1));
 v___x_393_ = ((lean_object*)(l_List_foldl___at___00__private_Lean_Compiler_LCNF_SimpleGroundExpr_0__Lean_Compiler_LCNF_initFn_00___x40_Lean_Compiler_LCNF_SimpleGroundExpr_160484116____hygCtx___hyg_2__spec__3___closed__0));
 v___x_394_ = l_mkPanicMessageWithDecl(v___x_393_, v___x_392_, v___x_391_, v___x_390_, v___x_389_);
@@ -9366,8 +9366,8 @@ goto v___jp_2649_;
 }
 else
 {
-lean_dec_ref_known(v_fn_2672_, 2);
 lean_dec(v_pre_2735_);
+lean_dec_ref_known(v_fn_2672_, 2);
 lean_dec_ref_known(v___x_2734_, 1);
 lean_dec(v_fvarId_2652_);
 lean_dec_ref(v_k_2636_);
@@ -9619,8 +9619,8 @@ goto v___jp_2643_;
 }
 else
 {
-lean_dec(v_declName_2762_);
 lean_dec_ref_known(v_type_2653_, 2);
+lean_dec(v_declName_2762_);
 lean_dec_ref_known(v_value_2758_, 1);
 lean_del_object(v___x_2760_);
 lean_dec(v_fvarId_2652_);

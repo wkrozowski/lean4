@@ -262,6 +262,7 @@ theorem cmod_eq_zero_iff_emod_eq_zero (a b : Int) : cmod a b = 0 ↔ a%b = 0 := 
   simp only [emod_self, sub_emod_left] at this
   rw [Int.neg_eq_zero, ← this, Eq.comm]
 
+set_option linter.defProp false in
 private abbrev div_mul_cancel_of_mod_zero :=
   @Int.ediv_mul_cancel_of_emod_eq_zero
 

@@ -3952,8 +3952,8 @@ else
 {
 lean_object* v_a_1157_; 
 lean_dec(v_snd_980_);
-lean_dec_ref_known(v_a_978_, 2);
 lean_dec(v_head_979_);
+lean_dec_ref_known(v_a_978_, 2);
 lean_dec_ref(v_snd_973_);
 lean_dec(v_pat_963_);
 lean_dec(v_attrKind_962_);

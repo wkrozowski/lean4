@@ -1103,23 +1103,23 @@ goto v___jp_238_;
 v___jp_250_:
 {
 uint8_t v___x_255_; 
-v___x_255_ = lean_nat_dec_le(v___y_254_, v___y_251_);
+v___x_255_ = lean_nat_dec_le(v___y_254_, v___y_252_);
 if (v___x_255_ == 0)
 {
-lean_dec(v___y_251_);
+lean_dec(v___y_252_);
 lean_inc(v___y_254_);
 v___y_245_ = v___y_254_;
-v___y_246_ = v___y_253_;
-v___y_247_ = v___y_252_;
+v___y_246_ = v___y_251_;
+v___y_247_ = v___y_253_;
 v___y_248_ = v___y_254_;
 goto v___jp_244_;
 }
 else
 {
 v___y_245_ = v___y_254_;
-v___y_246_ = v___y_253_;
-v___y_247_ = v___y_252_;
-v___y_248_ = v___y_251_;
+v___y_246_ = v___y_251_;
+v___y_247_ = v___y_253_;
+v___y_248_ = v___y_252_;
 goto v___jp_244_;
 }
 }
@@ -1138,17 +1138,17 @@ v___x_263_ = lean_nat_dec_le(v___x_259_, v___x_262_);
 if (v___x_263_ == 0)
 {
 lean_inc(v___x_262_);
-v___y_251_ = v___x_262_;
-v___y_252_ = v___x_258_;
-v___y_253_ = v___y_257_;
+v___y_251_ = v___y_257_;
+v___y_252_ = v___x_262_;
+v___y_253_ = v___x_258_;
 v___y_254_ = v___x_262_;
 goto v___jp_250_;
 }
 else
 {
-v___y_251_ = v___x_262_;
-v___y_252_ = v___x_258_;
-v___y_253_ = v___y_257_;
+v___y_251_ = v___y_257_;
+v___y_252_ = v___x_262_;
+v___y_253_ = v___x_258_;
 v___y_254_ = v___x_259_;
 goto v___jp_250_;
 }
@@ -2015,8 +2015,8 @@ return v___x_688_;
 else
 {
 lean_object* v___x_689_; 
-lean_dec_ref_known(v_fst_659_, 2);
 lean_dec(v_pre_660_);
+lean_dec_ref_known(v_fst_659_, 2);
 lean_dec_ref(v___x_658_);
 v___x_689_ = l_Lean_Expr_int_x3f(v_n_657_);
 return v___x_689_;
@@ -2364,8 +2364,8 @@ return v___x_802_;
 else
 {
 lean_object* v___x_803_; 
-lean_dec(v_pre_709_);
 lean_dec_ref_known(v_fst_708_, 2);
+lean_dec(v_pre_709_);
 lean_dec_ref(v___x_707_);
 v___x_803_ = l_Lean_Expr_nat_x3f(v_e_706_);
 return v___x_803_;
@@ -4653,8 +4653,8 @@ goto v___jp_1228_;
 }
 else
 {
-lean_dec(v_pre_1314_);
 lean_dec_ref_known(v_fst_1313_, 2);
+lean_dec(v_pre_1314_);
 lean_dec_ref(v___x_1312_);
 lean_dec(v___x_1298_);
 goto v___jp_1228_;
@@ -4683,8 +4683,8 @@ goto v___jp_1225_;
 }
 else
 {
-lean_dec(v_pre_1301_);
 lean_dec_ref_known(v_fst_1300_, 2);
+lean_dec(v_pre_1301_);
 lean_dec_ref(v___x_1299_);
 lean_dec(v___x_1298_);
 lean_del_object(v___x_1240_);
@@ -5342,8 +5342,8 @@ return v___x_1690_;
 else
 {
 lean_object* v___x_1691_; 
-lean_dec(v_pre_1626_);
 lean_dec_ref_known(v_fst_1625_, 2);
+lean_dec(v_pre_1626_);
 lean_dec_ref(v___x_1624_);
 lean_del_object(v___x_1240_);
 v___x_1691_ = lean_alloc_ctor(0, 1, 0);

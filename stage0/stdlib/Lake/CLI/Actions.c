@@ -477,7 +477,7 @@ lean_object* v_args_161_; lean_object* v___y_162_; lean_object* v_dir_171_; lean
 v_dir_171_ = lean_ctor_get(v_pkg_156_, 4);
 v_config_172_ = lean_ctor_get(v_pkg_156_, 6);
 lean_inc_ref(v_config_172_);
-v_buildArchive_173_ = lean_ctor_get(v_pkg_156_, 20);
+v_buildArchive_173_ = lean_ctor_get(v_pkg_156_, 21);
 lean_inc_ref_n(v_buildArchive_173_, 2);
 v___x_174_ = l_Lake_defaultLakeDir;
 lean_inc_ref(v_dir_171_);
@@ -1166,7 +1166,7 @@ _start:
 lean_object* v_config_465_; lean_object* v_testDriver_466_; lean_object* v___x_467_; lean_object* v___x_468_; 
 v_config_465_ = lean_ctor_get(v_pkg_460_, 6);
 lean_inc_ref(v_config_465_);
-v_testDriver_466_ = lean_ctor_get(v_pkg_460_, 21);
+v_testDriver_466_ = lean_ctor_get(v_pkg_460_, 22);
 lean_inc_ref(v_testDriver_466_);
 v___x_467_ = ((lean_object*)(l_Lake_Package_test___closed__0));
 v___x_468_ = l_Lake_Package_resolveDriver(v_pkg_460_, v___x_467_, v_testDriver_466_, v_a_463_);
@@ -1203,7 +1203,7 @@ lean_dec_ref(v_config_465_);
 v_baseName_476_ = lean_ctor_get(v_fst_473_, 1);
 v_keyName_477_ = lean_ctor_get(v_fst_473_, 2);
 lean_inc(v_keyName_477_);
-v_scripts_478_ = lean_ctor_get(v_fst_473_, 17);
+v_scripts_478_ = lean_ctor_get(v_fst_473_, 18);
 v___x_558_ = l_String_toName(v_snd_474_);
 v___x_559_ = l_Std_DTreeMap_Internal_Impl_Const_get_x3f___at___00Lean_NameMap_find_x3f_spec__0___redArg(v_scripts_478_, v___x_558_);
 if (lean_obj_tag(v___x_559_) == 1)
@@ -1724,7 +1724,7 @@ _start:
 lean_object* v_config_608_; lean_object* v_lintDriver_609_; lean_object* v___x_610_; lean_object* v___x_611_; 
 v_config_608_ = lean_ctor_get(v_pkg_603_, 6);
 lean_inc_ref(v_config_608_);
-v_lintDriver_609_ = lean_ctor_get(v_pkg_603_, 22);
+v_lintDriver_609_ = lean_ctor_get(v_pkg_603_, 23);
 lean_inc_ref(v_lintDriver_609_);
 v___x_610_ = ((lean_object*)(l_Lake_Package_lint___closed__0));
 v___x_611_ = l_Lake_Package_resolveDriver(v_pkg_603_, v___x_610_, v_lintDriver_609_, v_a_606_);
@@ -1761,7 +1761,7 @@ lean_dec_ref(v_config_608_);
 v_baseName_619_ = lean_ctor_get(v_fst_616_, 1);
 v_keyName_620_ = lean_ctor_get(v_fst_616_, 2);
 lean_inc(v_keyName_620_);
-v_scripts_621_ = lean_ctor_get(v_fst_616_, 17);
+v_scripts_621_ = lean_ctor_get(v_fst_616_, 18);
 v___x_634_ = l_String_toName(v_snd_617_);
 v___x_635_ = l_Std_DTreeMap_Internal_Impl_Const_get_x3f___at___00Lean_NameMap_find_x3f_spec__0___redArg(v_scripts_621_, v___x_634_);
 if (lean_obj_tag(v___x_635_) == 1)

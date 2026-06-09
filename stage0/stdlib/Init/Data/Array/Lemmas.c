@@ -23,7 +23,7 @@ lean_object* l_Lean_Name_mkStr4(lean_object*, lean_object*, lean_object*, lean_o
 lean_object* l_Lean_mkAtom(lean_object*);
 lean_object* lean_array_fget_borrowed(lean_object*, lean_object*);
 lean_object* lean_array_get_size(lean_object*);
-uint8_t l_Nat_decidableBallLT___redArg(lean_object*, lean_object*);
+uint8_t l_Nat_decidableBallLTTR___redArg(lean_object*, lean_object*);
 lean_object* l_Id_instMonad___lam__4___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Id_instMonad___lam__6(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Id_instMonad___lam__5___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
@@ -34,7 +34,7 @@ uint8_t lean_nat_dec_lt(lean_object*, lean_object*);
 uint8_t lean_nat_dec_le(lean_object*, lean_object*);
 size_t lean_usize_of_nat(lean_object*);
 lean_object* l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold___redArg(lean_object*, lean_object*, lean_object*, size_t, size_t, lean_object*);
-uint8_t l_Nat_decidableExistsLT_x27___redArg(lean_object*, lean_object*);
+uint8_t l_Nat_decidableExistsLT_x27TR___redArg(lean_object*, lean_object*);
 uint8_t l_Array_contains___redArg(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT uint8_t l_Array_instDecidableForallForallMemOfDecidablePred___redArg___lam__0(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Array_instDecidableForallForallMemOfDecidablePred___redArg___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
@@ -233,7 +233,7 @@ lean_closure_set(v___f_16_, 0, v_xs_14_);
 lean_closure_set(v___f_16_, 1, v_inst_15_);
 v___x_17_ = lean_array_get_size(v_xs_14_);
 lean_dec_ref(v_xs_14_);
-v___x_18_ = l_Nat_decidableBallLT___redArg(v___x_17_, v___f_16_);
+v___x_18_ = l_Nat_decidableBallLTTR___redArg(v___x_17_, v___f_16_);
 return v___x_18_;
 }
 }
@@ -295,7 +295,7 @@ lean_closure_set(v___f_49_, 0, v_xs_47_);
 lean_closure_set(v___f_49_, 1, v_inst_48_);
 v___x_50_ = lean_array_get_size(v_xs_47_);
 lean_dec_ref(v_xs_47_);
-v___x_51_ = l_Nat_decidableExistsLT_x27___redArg(v___x_50_, v___f_49_);
+v___x_51_ = l_Nat_decidableExistsLT_x27TR___redArg(v___x_50_, v___f_49_);
 return v___x_51_;
 }
 }

@@ -6671,7 +6671,7 @@ v___x_2283_ = lean_usize_of_nat(v___y_2279_);
 lean_dec(v___y_2279_);
 v___x_2284_ = lean_usize_of_nat(v___y_2281_);
 lean_dec(v___y_2281_);
-v___x_2285_ = l___private_Init_Data_Array_Basic_0__Array_anyMUnsafe_any(lean_box(0), lean_box(0), v___y_2277_, v___y_2280_, v___y_2278_, v___x_2283_, v___x_2284_);
+v___x_2285_ = l___private_Init_Data_Array_Basic_0__Array_anyMUnsafe_any(lean_box(0), lean_box(0), v___y_2277_, v___y_2278_, v___y_2280_, v___x_2283_, v___x_2284_);
 v___x_2286_ = lean_unbox(v___x_2285_);
 lean_dec(v___x_2285_);
 if (v___x_2286_ == 0)
@@ -6736,18 +6736,18 @@ if (v___x_2302_ == 0)
 {
 lean_dec(v_stop_2297_);
 v___y_2277_ = v___x_2256_;
-v___y_2278_ = v_array_2295_;
+v___y_2278_ = v___f_2300_;
 v___y_2279_ = v_start_2296_;
-v___y_2280_ = v___f_2300_;
+v___y_2280_ = v_array_2295_;
 v___y_2281_ = v___x_2301_;
 goto v___jp_2276_;
 }
 else
 {
 v___y_2277_ = v___x_2256_;
-v___y_2278_ = v_array_2295_;
+v___y_2278_ = v___f_2300_;
 v___y_2279_ = v_start_2296_;
-v___y_2280_ = v___f_2300_;
+v___y_2280_ = v_array_2295_;
 v___y_2281_ = v_stop_2297_;
 goto v___jp_2276_;
 }
@@ -7291,15 +7291,15 @@ goto v___jp_2531_;
 v___jp_2548_:
 {
 uint8_t v___x_2554_; 
-v___x_2554_ = lean_nat_dec_le(v___y_2553_, v___y_2552_);
+v___x_2554_ = lean_nat_dec_le(v___y_2553_, v___y_2551_);
 if (v___x_2554_ == 0)
 {
-lean_dec(v___y_2552_);
+lean_dec(v___y_2551_);
 lean_inc(v___y_2553_);
 v___y_2542_ = v___y_2553_;
 v___y_2543_ = v___y_2549_;
 v___y_2544_ = v___y_2550_;
-v___y_2545_ = v___y_2551_;
+v___y_2545_ = v___y_2552_;
 v___y_2546_ = v___y_2553_;
 goto v___jp_2541_;
 }
@@ -7308,8 +7308,8 @@ else
 v___y_2542_ = v___y_2553_;
 v___y_2543_ = v___y_2549_;
 v___y_2544_ = v___y_2550_;
-v___y_2545_ = v___y_2551_;
-v___y_2546_ = v___y_2552_;
+v___y_2545_ = v___y_2552_;
+v___y_2546_ = v___y_2551_;
 goto v___jp_2541_;
 }
 }
@@ -7334,8 +7334,8 @@ if (v___x_2565_ == 0)
 lean_inc(v___x_2564_);
 v___y_2549_ = v___x_2560_;
 v___y_2550_ = v___x_2563_;
-v___y_2551_ = v___x_2561_;
-v___y_2552_ = v___x_2564_;
+v___y_2551_ = v___x_2564_;
+v___y_2552_ = v___x_2561_;
 v___y_2553_ = v___x_2564_;
 goto v___jp_2548_;
 }
@@ -7344,8 +7344,8 @@ else
 lean_inc(v___x_2491_);
 v___y_2549_ = v___x_2560_;
 v___y_2550_ = v___x_2563_;
-v___y_2551_ = v___x_2561_;
-v___y_2552_ = v___x_2564_;
+v___y_2551_ = v___x_2564_;
+v___y_2552_ = v___x_2561_;
 v___y_2553_ = v___x_2491_;
 goto v___jp_2548_;
 }
@@ -7379,8 +7379,8 @@ v___jp_2501_:
 {
 lean_object* v___x_2505_; lean_object* v___x_2506_; lean_object* v___x_2507_; lean_object* v___x_2508_; 
 v___x_2505_ = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(v___x_2505_, 0, v___y_2502_);
-lean_ctor_set(v___x_2505_, 1, v___y_2503_);
+lean_ctor_set(v___x_2505_, 0, v___y_2503_);
+lean_ctor_set(v___x_2505_, 1, v___y_2502_);
 v___x_2506_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_2506_, 0, v___y_2504_);
 lean_ctor_set(v___x_2506_, 1, v___x_2505_);
@@ -7405,8 +7405,8 @@ if (v___x_2522_ == 0)
 {
 lean_dec(v___x_2519_);
 lean_dec_ref(v___f_2494_);
-v___y_2502_ = v___x_2515_;
-v___y_2503_ = v_defects_2514_;
+v___y_2502_ = v_defects_2514_;
+v___y_2503_ = v___x_2515_;
 v___y_2504_ = v___x_2521_;
 goto v___jp_2501_;
 }
@@ -7420,8 +7420,8 @@ if (v___x_2522_ == 0)
 {
 lean_dec(v___x_2519_);
 lean_dec_ref(v___f_2494_);
-v___y_2502_ = v___x_2515_;
-v___y_2503_ = v_defects_2514_;
+v___y_2502_ = v_defects_2514_;
+v___y_2503_ = v___x_2515_;
 v___y_2504_ = v___x_2521_;
 goto v___jp_2501_;
 }
@@ -7430,8 +7430,8 @@ else
 size_t v___x_2524_; lean_object* v___x_2525_; 
 v___x_2524_ = lean_usize_of_nat(v___x_2520_);
 v___x_2525_ = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold(lean_box(0), lean_box(0), lean_box(0), v___x_2516_, v___f_2494_, v___x_2519_, v___x_2518_, v___x_2524_, v___x_2521_);
-v___y_2502_ = v___x_2515_;
-v___y_2503_ = v_defects_2514_;
+v___y_2502_ = v_defects_2514_;
+v___y_2503_ = v___x_2515_;
 v___y_2504_ = v___x_2525_;
 goto v___jp_2501_;
 }
@@ -7441,8 +7441,8 @@ else
 size_t v___x_2526_; lean_object* v___x_2527_; 
 v___x_2526_ = lean_usize_of_nat(v___x_2520_);
 v___x_2527_ = l___private_Init_Data_Array_Basic_0__Array_foldlMUnsafe_fold(lean_box(0), lean_box(0), lean_box(0), v___x_2516_, v___f_2494_, v___x_2519_, v___x_2518_, v___x_2526_, v___x_2521_);
-v___y_2502_ = v___x_2515_;
-v___y_2503_ = v_defects_2514_;
+v___y_2502_ = v_defects_2514_;
+v___y_2503_ = v___x_2515_;
 v___y_2504_ = v___x_2527_;
 goto v___jp_2501_;
 }

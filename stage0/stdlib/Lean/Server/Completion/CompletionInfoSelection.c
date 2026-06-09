@@ -767,8 +767,8 @@ lean_inc_ref_n(v_i_170_, 2);
 v___x_178_ = l___private_Lean_Server_Completion_CompletionInfoSelection_0__Lean_Server_Completion_findCompletionInfosAt_containsHoverPos(v_hoverPos_165_, v_i_170_);
 if (v___x_178_ == 0)
 {
-lean_dec_ref(v_i_170_);
 lean_dec_ref_known(v_info_168_, 1);
+lean_dec_ref(v_i_170_);
 lean_dec_ref(v_ctx_167_);
 lean_dec_ref(v_fileMap_164_);
 return v_best_169_;

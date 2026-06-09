@@ -7083,8 +7083,8 @@ goto v___jp_3302_;
 else
 {
 lean_object* v_a_3376_; lean_object* v___x_3378_; uint8_t v_isShared_3379_; uint8_t v_isSharedCheck_3383_; 
-lean_dec_ref_known(v_a_3131_, 1);
 lean_dec(v_a_3368_);
+lean_dec_ref_known(v_a_3131_, 1);
 lean_dec_ref_known(v_a_2613_, 1);
 lean_dec_ref_known(v___x_3364_, 2);
 lean_dec_ref_known(v___x_3363_, 2);

@@ -15810,17 +15810,17 @@ v___jp_5467_:
 lean_object* v___x_5476_; 
 lean_inc_ref(v_f_5457_);
 lean_inc_ref(v_p_5456_);
-v___x_5476_ = l___private_Lean_Util_ForEachExprWhere_0__Lean_ForEachExprWhere_visit_go___at___00Lean_ForEachExprWhere_visit___at___00__private_Lean_Meta_Tactic_BVDecide_Normalize_Enums_0__Lean_Meta_Tactic_BVDecide_Normalize_enumsPass_postprocess_spec__4_spec__6(v_p_5456_, v_f_5457_, v_stopWhenVisited_5458_, v_d_5473_, v___y_5475_, v___y_5470_, v___y_5469_, v___y_5468_, v___y_5472_, v___y_5471_);
+v___x_5476_ = l___private_Lean_Util_ForEachExprWhere_0__Lean_ForEachExprWhere_visit_go___at___00Lean_ForEachExprWhere_visit___at___00__private_Lean_Meta_Tactic_BVDecide_Normalize_Enums_0__Lean_Meta_Tactic_BVDecide_Normalize_enumsPass_postprocess_spec__4_spec__6(v_p_5456_, v_f_5457_, v_stopWhenVisited_5458_, v_d_5473_, v___y_5475_, v___y_5472_, v___y_5469_, v___y_5468_, v___y_5471_, v___y_5470_);
 if (lean_obj_tag(v___x_5476_) == 0)
 {
 lean_dec_ref_known(v___x_5476_, 1);
 v_e_5459_ = v_b_5474_;
 v_a_5460_ = v___y_5475_;
-v___y_5461_ = v___y_5470_;
+v___y_5461_ = v___y_5472_;
 v___y_5462_ = v___y_5469_;
 v___y_5463_ = v___y_5468_;
-v___y_5464_ = v___y_5472_;
-v___y_5465_ = v___y_5471_;
+v___y_5464_ = v___y_5471_;
+v___y_5465_ = v___y_5470_;
 goto _start;
 }
 else
@@ -15845,9 +15845,9 @@ lean_inc_ref(v_body_5486_);
 lean_dec_ref_known(v_e_5459_, 3);
 v___y_5468_ = v___y_5482_;
 v___y_5469_ = v___y_5481_;
-v___y_5470_ = v___y_5480_;
-v___y_5471_ = v___y_5484_;
-v___y_5472_ = v___y_5483_;
+v___y_5470_ = v___y_5484_;
+v___y_5471_ = v___y_5483_;
+v___y_5472_ = v___y_5480_;
 v_d_5473_ = v_binderType_5485_;
 v_b_5474_ = v_body_5486_;
 v___y_5475_ = v___y_5479_;
@@ -15863,9 +15863,9 @@ lean_inc_ref(v_body_5488_);
 lean_dec_ref_known(v_e_5459_, 3);
 v___y_5468_ = v___y_5482_;
 v___y_5469_ = v___y_5481_;
-v___y_5470_ = v___y_5480_;
-v___y_5471_ = v___y_5484_;
-v___y_5472_ = v___y_5483_;
+v___y_5470_ = v___y_5484_;
+v___y_5471_ = v___y_5483_;
+v___y_5472_ = v___y_5480_;
 v_d_5473_ = v_binderType_5487_;
 v_b_5474_ = v_body_5488_;
 v___y_5475_ = v___y_5479_;

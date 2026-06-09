@@ -224,6 +224,7 @@ theorem natCast_div_of_dvd {x y : Nat} (h : y ∣ x) (w : (y : α) ≠ 0) :
       mul_inv_cancel w, Semiring.mul_one]
 
 -- This is expensive as an instance. Let's see what breaks without it.
+set_option linter.defProp false in
 @[implicit_reducible]
 def noNatZeroDivisors.ofIsCharPZero [IsCharP α 0] : NoNatZeroDivisors α := NoNatZeroDivisors.mk' <| by
   intro a b h w
