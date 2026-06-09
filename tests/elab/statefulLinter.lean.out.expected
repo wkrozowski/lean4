@@ -1,0 +1,12 @@
+1 : Nat
+A: count = 1
+B: A's previous count = 0
+C: A's current count = 1
+2 : Nat
+A: count = 2
+B: A's previous count = 1
+C: A's current count = 2
+3 : Nat
+A: count = 3
+B: A's previous count = 2
+C: A's current count = 3
