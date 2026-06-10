@@ -89,8 +89,11 @@ instance : Literal String where
   mkLit := mkStringLit
 
 def getBoolLit (fvarId : FVarId) : CompilerM (Option Bool) := do
-  let some (.const ctor [] #[]) ← findLetValue? fvarId | return none
-  return ctor == ``Bool.true
+  let some (.const name [] #[]) ← findLetValue? fvarId | return none
+  match name with
+  | ``Bool.true => return some true
+  | ``Bool.false => return some false
+  | _ => return none
 
 def mkBoolLit (b : Bool) : FolderM (LetValue .pure) :=
   let ctor := if b then ``Bool.true else ``Bool.false
