@@ -42,12 +42,6 @@ public def leanOptOverrides (args : Args) : LeanOptions :=
   let merged : NameMap Bool := args.linterOverrides.foldl (init := {}) fun m (n, b) => m.insert n b
   let base : Array LeanOption :=
     merged.toArray.map fun (n, b) => ⟨`weak ++ n, .ofBool b⟩
-  -- When recording exceptions we need each text linter warning's *command* declaration range.
-  -- `recordLints` recovers it from the command syntax stored on the snapshot tree, but cmdline
-  -- builds normally discard that syntax (`internal.cmdlineSnapshots`). Disabling the minimization
-  -- for the lint build keeps the syntax around so the ranges can be computed. This also forces a
-  -- rebuild of the targeted modules (the option differs from a normal build), which is exactly
-  -- what we want so the freshly recorded positions land in their `.olean`s.
   let base :=
     if args.recordExceptions then
       base.push ⟨`internal.cmdlineSnapshots, .ofBool false⟩
