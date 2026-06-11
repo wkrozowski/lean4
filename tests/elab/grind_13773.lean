@@ -15,3 +15,16 @@ theorem ex
     | true, true => True
     | _, _ => False := by
   grind
+
+theorem ex2
+    (p : Prop)
+    (a b : Bool)
+    (h : match a, b with
+      | false, false => True
+      | true, true => p
+      | _, _ => False) :
+    match a, b with
+    | false, false => True
+    | true, true => p
+    | _, _ => False := by
+  grind
