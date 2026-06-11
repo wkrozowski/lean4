@@ -8,6 +8,7 @@ prelude
 public import Lean.Meta.Tactic.Grind.Types
 import Lean.Util.CollectLevelMVars
 import Lean.Meta.Tactic.Grind.Util
+import Lean.Meta.Tactic.Grind.CasesMatch
 import Lean.Meta.Tactic.Grind.MatchDiscrOnly
 import Lean.Meta.Tactic.Grind.ProveEq
 import Lean.Meta.Tactic.Grind.SynthInstance
@@ -365,10 +366,15 @@ private def processContinue (c : Choice) (p : Expr) : M Unit := do
 /--
 Given a proposition `prop` corresponding to an equational theorem.
 Annotate the conditions using `Grind.MatchCond`. See `MatchCond.lean`.
+
+Only hypotheses that have the `match`-condition shape `∀ …, _ = _ → … → False` are
+annotated (see `isMatchCondCandidate`). Equational theorems may have other propositional
+hypotheses (e.g., the discriminant equalities of a `match` with proof discriminants),
+and the `MatchCond` propagators assume the annotated conditions have this shape.
 -/
 private partial def annotateEqnTypeConds (prop : Expr) (k : Expr → M Expr := pure) : M Expr := do
   if let .forallE n d b bi := prop then
-    let d := if (← isProp d) then
+    let d := if isMatchCondCandidate d then
       markAsPreMatchCond d
     else
       d
