@@ -84,6 +84,12 @@ inductive TraceResult where
   | error
   deriving Inhabited, BEq, Repr
 
+/-- Convert a `TraceResult` to its emoji representation. -/
+def TraceResult.toEmoji : TraceResult → String
+  | .success => "✅️"
+  | .failure => "❌️"
+  | .error   => "💥️"
+
 structure TraceData where
   /-- Trace class, e.g. `Elab.step`. -/
   cls       : Name
@@ -371,7 +377,11 @@ partial def formatAux : NamingContext → Option MessageDataContext → MessageD
     let mut msg := f!"[{data.cls}]"
     if data.startTime != 0 then
       msg := f!"{msg} [{data.stopTime - data.startTime}]"
-    msg := f!"{msg} {(← formatAux nCtx ctx header).nest 2}"
+    let headerFmt ← formatAux nCtx ctx header
+    let headerFmt := match data.result? with
+      | some r => f!"{r.toEmoji} {headerFmt}"
+      | none => headerFmt
+    msg := f!"{msg} {headerFmt.nest 2}"
     let mut children := children
     if let some maxNum := ctx.map (maxTraceChildren.get ·.opts) then
       if maxNum > 0 && children.size > maxNum then
