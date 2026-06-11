@@ -841,6 +841,12 @@ def find? (env : Environment) (n : Name) (skipRealize := false) : Option Constan
     return c
   env.findAsyncCore? n (skipRealize := skipRealize) |>.map (·.toConstantInfo)
 
+/-- Checks if, in the public scope (`Environment.isExporting`), the given name refers to a
+definition with a visible body, i.e. `ConstantInfo.hasValue`. Recall that outside the module
+system, this is any definition. -/
+def hasExposedBody (env : Environment) (n : Name) : Bool :=
+  env.setExporting true |>.find? n |>.any (·.hasValue)
+
 /--
 Allows `realizeConst` calls for the given declaration in all derived environment branches.
 Realizations will run using the given environment and options to ensure deterministic results. Note
