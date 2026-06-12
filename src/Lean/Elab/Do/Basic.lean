@@ -217,7 +217,7 @@ It is ``elabTerm `(do $e; $rest) = elabDoElem e dec``, where `elabDoElem e ·` i
 `do` element `e`, and `dec` is the `DoElemCont` describing the elaboration of the rest of the block
 `rest`.
 -/
-abbrev DoElab := TSyntax `doElem → DoElemCont → DoElabM Expr
+abbrev DoElab := DoElem → DoElemCont → DoElabM Expr
 
 structure ReturnCont where
   resultType : Expr
@@ -830,7 +830,7 @@ private partial def hasNestedActionsToLift : Syntax → Bool
     else args.any hasNestedActionsToLift
   | _ => false
 
-private partial def expandNestedActionsAux (baseId : Name) (inQuot : Bool) (inBinder : Bool) : Syntax → StateT (Array (TSyntax `doElem)) DoElabM Syntax
+private partial def expandNestedActionsAux (baseId : Name) (inQuot : Bool) (inBinder : Bool) : Syntax → StateT (Array DoElem) DoElabM Syntax
   | stx@(Syntax.node i k args) =>
     if k == choiceKind then do
       -- choice node: check that lifts are consistent
@@ -856,7 +856,7 @@ private partial def expandNestedActionsAux (baseId : Name) (inQuot : Bool) (inBi
       -- Wrap raw terms in `doExpr` so the subsequent `let _ ← _` quotation parses correctly.
       let isDoElem :=
         (Parser.getParserCategory? (← getEnv) `doElem).any (·.kinds.contains arg.getKind)
-      let act : TSyntax `doElem ←
+      let act : DoElem ←
         if isDoElem then pure ⟨arg⟩
         else let t : Term := ⟨arg⟩; `(doElem| $t:term)
       -- keep name deterministic across choice branches
@@ -871,7 +871,7 @@ private partial def expandNestedActionsAux (baseId : Name) (inQuot : Bool) (inBi
       return Syntax.node i k args
   | stx => return stx
 
-def expandNestedActions (stx : TSyntax kind) : DoElabM (Array (TSyntax `doElem) × TSyntax kind) := do
+def expandNestedActions (stx : TSyntax kind) : DoElabM (Array DoElem × TSyntax kind) := do
   if !hasNestedActionsToLift stx then
     return (#[], stx)
   else
@@ -907,7 +907,7 @@ private def withTermInfoContext' (elaborator : Name) (stx : Syntax) (expectedTyp
   controlAtTermElabM fun runInBase =>
     Term.withTermInfoContext' elaborator stx (expectedType? := expectedType) (runInBase x)
 
-private def elabDoElemFns (stx : TSyntax `doElem) (cont : DoElemCont)
+private def elabDoElemFns (stx : DoElem) (cont : DoElemCont)
     (fns : List (KeyedDeclsAttribute.AttributeEntry DoElab)) (catchExPostpone : Bool := true) : DoElabM Expr := do
   let s ← saveState
   match fns with
@@ -935,7 +935,7 @@ private def DoElemCont.mkUnit (k : DoElabM Expr) : DoElabM DoElemCont := do
   return DoElemCont.mk r unit k .nonDuplicable
 
 mutual
-partial def elabDoElem (stx : TSyntax `doElem) (cont : DoElemCont) (catchExPostpone : Bool := true) : DoElabM Expr := do
+partial def elabDoElem (stx : DoElem) (cont : DoElemCont) (catchExPostpone : Bool := true) : DoElabM Expr := do
   let k := stx.raw.getKind
   trace[Elab.do.step] "do element: {stx}"
   checkSystem "do element elaborator"
@@ -963,7 +963,7 @@ partial def elabDoElem (stx : TSyntax `doElem) (cont : DoElemCont) (catchExPostp
   | []      => throwError "elaboration function for `{k}` has not been implemented{indentD stx}"
   | elabFns => elabDoElemFns stx cont elabFns catchExPostpone
 
-partial def elabDoElems1 (doElems : Array (TSyntax `doElem)) (cont : DoElemCont) (catchExPostpone : Bool := true) : DoElabM Expr := do
+partial def elabDoElems1 (doElems : Array DoElem) (cont : DoElemCont) (catchExPostpone : Bool := true) : DoElabM Expr := do
   if h : doElems.size = 0 then
     throwError "Empty array of `do` elements passed to `elabDoElems1`."
   else
@@ -976,7 +976,7 @@ partial def elabDoElems1 (doElems : Array (TSyntax `doElem)) (cont : DoElemCont)
   res
 end
 
-partial def elabDoSeq (doSeq : TSyntax ``doSeq) (cont : DoElemCont) (catchExPostpone : Bool := true) : DoElabM Expr := do
+partial def elabDoSeq (doSeq : DoSeq) (cont : DoElemCont) (catchExPostpone : Bool := true) : DoElabM Expr := do
   let s ← saveState
   try
     elabDoElems1 (getDoElems doSeq) cont catchExPostpone
@@ -996,7 +996,7 @@ def elabNestedAction : Term.TermElab := fun stx _ty? => do
   throwErrorAt stx "Nested action `{stx}` must be nested inside a `do` expression."
 
 /-- Elaborate `doSeq` using `ops` for pure/bind construction. -/
-def elabDoWith (ops : DoOps) (doSeq : TSyntax ``doSeq)
+def elabDoWith (ops : DoOps) (doSeq : DoSeq)
     (expectedType? : Option Expr) : TermElabM Expr := do
   Term.tryPostponeIfNoneOrMVar expectedType?
   let ctx ← mkContext expectedType? (ops := ops)

@@ -23,7 +23,7 @@ open Lean.Parser.Term
 open Lean.Meta
 open Lean.Meta.Match
 
-private def elabDoSeqWithRefinedType (type : Expr) (doSeq : TSyntax ``doSeq) (dec : DoElemCont) : DoElabM Expr := do
+private def elabDoSeqWithRefinedType (type : Expr) (doSeq : DoSeq) (dec : DoElemCont) : DoElabM Expr := do
   let newDoBlockResultType ← withNewMCtxDepth do
     let γ ← mkFreshExprMVar (mkSort (← read).monadInfo.u.succ)
     unless ← isDefEqGuarded type (← mkMonadApp γ) do

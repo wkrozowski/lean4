@@ -49,7 +49,7 @@ builtin_initialize
   register_parser_alias doSeq
   register_parser_alias termBeforeDo
 
-def getDoElems (doSeq : TSyntax ``doSeq) : Array (TSyntax `doElem) :=
+def getDoElems (doSeq : DoSeq) : Array DoElem :=
   if doSeq.raw.getKind == ``Parser.Term.doSeqBracketed then
     doSeq.raw[1].getArgs.map fun arg => ⟨arg[0]⟩
   else if doSeq.raw.getKind == ``Parser.Term.doSeqIndent then

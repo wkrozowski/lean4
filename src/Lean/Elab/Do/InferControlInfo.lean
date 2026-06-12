@@ -97,7 +97,7 @@ instance : ToMessageData ControlInfo where
     noFallthrough: {info.noFallthrough}, reassigns: {info.reassigns.toList}"
 
 /-- A handler for inferring `ControlInfo` from a `doElem` syntax. Register with `@[doElem_control_info parserName]`. -/
-abbrev ControlInfoHandler := TSyntax `doElem → TermElabM ControlInfo
+abbrev ControlInfoHandler := DoElem → TermElabM ControlInfo
 
 unsafe def mkControlInfoElemAttributeUnsafe (ref : Name) : IO (KeyedDeclsAttribute ControlInfoHandler) :=
   mkElabAttribute ControlInfoHandler `builtin_doElem_control_info `doElem_control_info
@@ -109,7 +109,7 @@ opaque mkControlInfoElemAttribute (ref : Name) : IO (KeyedDeclsAttribute Control
 /--
 Registers a `ControlInfo` inference handler for the given `doElem` syntax node kind.
 
-A handler should have type `ControlInfoHandler` (i.e. `TSyntax \`doElem → TermElabM ControlInfo`).
+A handler should have type `ControlInfoHandler` (i.e. `DoElem → TermElabM ControlInfo`).
 For pure handlers, use `fun stx => return ControlInfo.pure`.
 -/
 @[builtin_doc]
@@ -121,7 +121,7 @@ namespace InferControlInfo
 open InternalSyntax in
 mutual
 
-partial def ofElem (stx : TSyntax `doElem) : TermElabM ControlInfo := do
+partial def ofElem (stx : DoElem) : TermElabM ControlInfo := do
   let env ← getEnv
   if let some (_decl, stxNew?) ← liftMacroM (expandMacroImpl? env stx) then
     let stxNew ← liftMacroM <| liftExcept stxNew?
@@ -251,7 +251,7 @@ partial def ofLetOrReassignArrow (reassignment : Bool) (decl : TSyntax [``doIdDe
     ofLetOrReassign reassigns rhs otherwise? body??.join
   | _ => throwError "Not a let or reassignment declaration: {toString decl}"
 
-partial def ofLetOrReassign (reassigned : Array Ident) (rhs? : Option (TSyntax `doElem))
+partial def ofLetOrReassign (reassigned : Array Ident) (rhs? : Option DoElem)
     (otherwise? : Option (TSyntax ``doSeqIndent)) (body? : Option (TSyntax ``doSeqIndent))
     : TermElabM ControlInfo := do
   let rhs ← match rhs? with | none => pure { : ControlInfo } | some rhs => ofElem rhs
@@ -260,13 +260,13 @@ partial def ofLetOrReassign (reassigned : Array Ident) (rhs? : Option (TSyntax `
   let info := rhs.sequence (body.alternative otherwise)
   return { info with reassigns := (reassigned.map TSyntax.getId).foldl NameSet.insert info.reassigns }
 
-partial def ofSeq (stx : TSyntax ``doSeq) : TermElabM ControlInfo := do
+partial def ofSeq (stx : DoSeq) : TermElabM ControlInfo := do
   let mut info : ControlInfo := {}
   for elem in getDoElems stx do
     info := info.sequence (← ofElem elem)
   return info
 
-partial def ofOptionSeq (stx? : Option (TSyntax ``doSeq)) : TermElabM ControlInfo := do
+partial def ofOptionSeq (stx? : Option DoSeq) : TermElabM ControlInfo := do
   match stx? with | none => pure { : ControlInfo } | some stx => ofSeq stx
 
 end
@@ -274,9 +274,9 @@ end
 end InferControlInfo
 
 /-- Infer the `ControlInfo` of `doSeq`. -/
-def inferControlInfoSeq (doSeq : TSyntax ``doSeq) : TermElabM ControlInfo :=
+def inferControlInfoSeq (doSeq : DoSeq) : TermElabM ControlInfo :=
   InferControlInfo.ofSeq doSeq
 
 /-- Infer the `ControlInfo` of a single doElem. -/
-def inferControlInfoElem (doElem : TSyntax `doElem) : TermElabM ControlInfo :=
+def inferControlInfoElem (doElem : DoElem) : TermElabM ControlInfo :=
   InferControlInfo.ofElem doElem
