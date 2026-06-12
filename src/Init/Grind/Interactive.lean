@@ -113,12 +113,20 @@ syntax (name := showGoals) "show_goals" : grind
 declare_syntax_cat grind_ref (behavior := both)
 
 syntax:max anchor : grind_ref
+/--
+Anchor with an ordinal disambiguator. Distinct case-split candidates may have the same anchor.
+For example, two candidates that differ only in inaccessible variables have identical anchors.
+`#a56e/2` refers to the second candidate (in the case-split candidate list) matching the anchor `#a56e`.
+-/
+syntax:max anchor noWs "/" noWs num : grind_ref
 syntax term : grind_ref
 
 /--
 Performs a case-split on a logical connective, `match`-expression, `if-then-else`-expression,
 or inductive predicate. The argument is an anchor referencing one of the case-split candidates
 in the `grind` state. You can use `cases?` to select a specific candidate using a code action.
+If multiple candidates match the anchor (e.g., they differ only in inaccessible variables),
+an ordinal reference such as `#a56e/2` selects the second matching candidate.
 -/
 syntax (name := cases) "cases " grind_ref : grind
 
