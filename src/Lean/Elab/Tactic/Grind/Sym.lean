@@ -295,22 +295,11 @@ def elabDSimpVariant (variantName : Name) (args : DSimpArgs) : GrindTacticM (Sym
       goal.mvarId.assign mvarNew
       replaceMainGoal [{ goal with mvarId := mvarNew.mvarId! }]
 
-/-- Resolve the hypothesis identifiers of a `cbv at` location to `FVarId`s. -/
-private def resolveLocFVarIds (hyps : Array Syntax) : GrindTacticM (Array FVarId) := do
-  let lctx ← getLCtx
-  hyps.mapM fun hyp => do
-    let some decl := lctx.findFromUserName? hyp.getId
-      | throwError "unknown hypothesis `{hyp}`"
-    return decl.fvarId
-
-@[builtin_grind_tactic Parser.Tactic.Grind.symCbv] def evalSymCbv : GrindTactic := fun stx => withMainContext do
+@[builtin_grind_tactic Parser.Tactic.Grind.symCbv] def evalSymCbv : GrindTactic := fun _ => withMainContext do
   ensureSym
   let goal ← getMainGoal
-  let (fvarIds, simplifyTarget) ← match expandOptLocation stx[1] with
-    | .targets hyps simplifyTarget => pure (← resolveLocFVarIds hyps, simplifyTarget)
-    | .wildcard => pure (← goal.mvarId.getNondepPropHyps, true)
   let result ← liftGrindM <|
-    Lean.Meta.Tactic.Cbv.cbvGoalCore goal.mvarId simplifyTarget fvarIds
+    Lean.Meta.Tactic.Cbv.cbvGoalCore goal.mvarId
   match result with
   | none => replaceMainGoal []
   | some mvarId => replaceMainGoal [{ goal with mvarId }]
