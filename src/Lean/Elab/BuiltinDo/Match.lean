@@ -36,7 +36,7 @@ private def elabDoSeqWithRefinedType (type : Expr) (doSeq : DoSeq) (dec : DoElem
   withDoBlockResultType newDoBlockResultType (elabDoSeq doSeq dec)
 
 /--
-Expand a `doMatch` into a term `match` term. We do this for `match_syntax` and
+Expand a `doMatch` into a term-level `match`. We do this for `match_syntax` and
 `match (dependent := true)`. For the latter, the functionality is very restricted to effectively
 ban join points.
 Reason: In case of a dependent match, it is hard to guarantee that generalization of join points and

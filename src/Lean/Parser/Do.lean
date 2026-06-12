@@ -177,9 +177,9 @@ def doIfCond    :=
 def doForDecl := leading_parser
   optional (atomic (ident >> " : ")) >> termParser >> " in " >> withForbidden "do" termParser
 /--
-`for x in e do s`  iterates over `e` assuming `e`'s type has an instance of the `ForIn` typeclass.
+`for x in e do s` iterates over `e` assuming `e`'s type has an instance of the `ForIn` typeclass.
 `break` and `continue` are supported inside `for` loops.
-`for x in e, x2 in e2, ... do s` iterates of the given collections in parallel,
+`for x in e, x2 in e2, ... do s` iterates over the given collections in parallel,
 until at least one of them is exhausted.
 The types of `e2` etc. must implement the `Std.ToStream` typeclass.
 -/
@@ -271,11 +271,11 @@ the program need to be recompiled and restarted.
 
 # Known Limitations
 
-* The program will poll for the server for up to 10 minutes and needs to be killed manually
+* The program will poll the server for up to 10 minutes and needs to be killed manually
   otherwise.
 * Use of multiple `idbg` at once untested, likely too much overhead from overlapping imports without
   further changes.
-* `LEAN_PATH` must be properly set up so compiled program can import its origin module.
+* `LEAN_PATH` must be properly set up so the compiled program can import its origin module.
 * Untested on Windows and macOS.
 -/
 @[builtin_doElem_parser] def doIdbg      := leading_parser:leadPrec
