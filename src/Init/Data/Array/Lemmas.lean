@@ -4693,6 +4693,29 @@ theorem toList_fst_unzip {xs : Array (α × β)} :
 theorem toList_snd_unzip {xs : Array (α × β)} :
     xs.unzip.2.toList = xs.toList.unzip.2 := by simp
 
+theorem getElem?_eq_some_getElem! [Inhabited α] (xs : Array α) (i : Nat)
+    (h : i < xs.size) : xs[i]? = some xs[i]! := by
+  rw [getElem!_pos xs i h]
+  exact getElem?_pos xs i h
+
+theorem size_set! (xs : Array α) (i : Nat) (x : α) :
+    (xs.set! i x).size = xs.size := by
+  simp only [set!_eq_setIfInBounds, size_setIfInBounds]
+
+theorem getElem!_set!_self [Inhabited α] (xs : Array α) (i : Nat) (x : α) (hi : i < xs.size) :
+    (xs.set! i x)[i]! = x := by
+  simp only [set!_eq_setIfInBounds, getElem!_eq_getD, getD_eq_getD_getElem?,
+    getElem?_setIfInBounds_self_of_lt hi, Option.getD_some]
+
+theorem getElem!_set!_ne [Inhabited α] (xs : Array α) (i j : Nat) (x : α) (hij : i ≠ j) :
+    (xs.set! i x)[j]! = xs[j]! := by
+  simp only [set!_eq_setIfInBounds, getElem!_eq_getD, getD_eq_getD_getElem?,
+    getElem?_setIfInBounds_ne hij]
+
+@[simp] theorem toList_set! {xs : Array α} {i : Nat} {x : α} :
+    (xs.set! i x).toList = xs.toList.set i x := by
+  simp [set!_eq_setIfInBounds]
+
 end Array
 
 namespace List
