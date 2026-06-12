@@ -9,17 +9,22 @@ example (h : a = 8) : Nat.succ 7 = a := by
     cbv
     exact h.symm
 
-example (h : Nat.succ 7 = a) : 8 = a := by
-  sym =>
-    cbv at h
-    exact h
+example :
+  have v :=
+    BitVec.ofNat 64 ((BitVec.ofNat (64 - 0) ((BitVec.setWidth 64 (Int64.toBitVec 2)).toNat >>> 0)).toNat >>> 0) - 1;
+  have v_1 := BitVec.ofNat 64 ((BitVec.ofNat (64 - 0) (v.toNat >>> 0)).toNat >>> 0) - 1;
+  v ≠ v_1
+:= by
+  cbv
+  intro hyp
+  trivial
 
-example (h : Nat.succ 7 = a) : Nat.succ 7 = a := by
+example :
+  have v :=
+    BitVec.ofNat 64 ((BitVec.ofNat (64 - 0) ((BitVec.setWidth 64 (Int64.toBitVec 2)).toNat >>> 0)).toNat >>> 0) - 1;
+  have v_1 := BitVec.ofNat 64 ((BitVec.ofNat (64 - 0) (v.toNat >>> 0)).toNat >>> 0) - 1;
+  v ≠ v_1
+:= by
   sym =>
-    cbv at h ⊢
-    exact h
-
-example (h : Nat.succ 7 = a) : Nat.succ 7 = a := by
-  sym =>
-    cbv at *
-    exact h
+    cbv
+    intro hyp
