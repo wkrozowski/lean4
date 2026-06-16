@@ -383,6 +383,7 @@ def Package.discriminant (self : Package) :=
 set_option linter.unusedVariables.funArgs false in
 def fetchImportInfo
   (fileName : String) (pkgName modName : Name) (header : ModuleHeader)
+  (allowNonModules : Bool := false)
 : FetchM (Job ModuleImportInfo) := do
   let nonModule := !header.isModule
   let info := ModuleImportInfo.nil modName
@@ -392,6 +393,15 @@ def fetchImportInfo
       logError s!"{fileName}: module imports itself"
       return .error
     let mods ← findModules imp.module
+    if nonModule && !allowNonModules then
+      if let some mod := mods.find? (·.requiresModuleSystem) then
+        if pkgName == mod.pkg.keyName then
+          logWarning s!"{fileName}: missing `module` header as required \
+            by the `requiresModuleSystem` option"
+        else
+          logWarning s!"{fileName}: imports `{imp.module}` from package \
+            `{mod.pkg.prettyName}`, which is designed for use with the module \
+            system; consider adding `module` to the start of this file"
     let n := mods.size
     if h : n = 0 then
       return s
@@ -444,6 +454,7 @@ public def Module.importInfoFacetConfig : ModuleFacetConfig importInfoFacet :=
   mkFacetJobConfig fun mod => do
     let header ← (← mod.header.fetch).await
     fetchImportInfo mod.relLeanFile.toString mod.pkg.keyName mod.name header
+      (allowNonModules := mod.allowNonModules)
 
 def noServerOLeanError :=
   "No server olean generated. Ensure the module system is enabled."
@@ -1270,6 +1281,7 @@ def setupEditedModule
   let fileName := mod.relLeanFile.toString
   let localImports := directImports.filterMap (·.module?)
   let impInfoJob ← fetchImportInfo fileName mod.pkg.keyName mod.name header
+    (allowNonModules := mod.allowNonModules)
   let precompileImports ←
     if mod.shouldPrecompile then
       (← computeTransImportsAux fileName localImports).await
