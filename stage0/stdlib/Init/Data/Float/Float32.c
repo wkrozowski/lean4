@@ -1,6 +1,6 @@
 // Lean compiler output
-// Module: Init.Data.Float32
-// Imports: public import Init.Data.Float
+// Module: Init.Data.Float.Float32
+// Imports: public import Init.Data.Float.Float
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -920,13 +920,13 @@ v_r_363_ = lean_box_float32(v_res_362_);
 return v_r_363_;
 }
 }
-lean_object* runtime_initialize_Init_Data_Float(uint8_t builtin);
+lean_object* runtime_initialize_Init_Data_Float_Float(uint8_t builtin);
 static bool _G_runtime_initialized = false;
-LEAN_EXPORT lean_object* runtime_initialize_Init_Data_Float32(uint8_t builtin) {
+LEAN_EXPORT lean_object* runtime_initialize_Init_Data_Float_Float32(uint8_t builtin) {
 lean_object * res;
 if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_runtime_initialized = true;
-res = runtime_initialize_Init_Data_Float(builtin);
+res = runtime_initialize_Init_Data_Float_Float(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 l_instLTFloat32 = _init_l_instLTFloat32();
@@ -939,28 +939,28 @@ lean_mark_persistent(l_instReprAtomFloat32);
 return lean_io_result_mk_ok(lean_box(0));
 }
 static bool _G_meta_initialized = false;
-LEAN_EXPORT lean_object* meta_initialize_Init_Data_Float32(uint8_t builtin) {
+LEAN_EXPORT lean_object* meta_initialize_Init_Data_Float_Float32(uint8_t builtin) {
 lean_object * res;
 if (_G_meta_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_meta_initialized = true;
 return lean_io_result_mk_ok(lean_box(0));
 }
-lean_object* initialize_Init_Data_Float(uint8_t builtin);
+lean_object* initialize_Init_Data_Float_Float(uint8_t builtin);
 static bool _G_initialized = false;
-LEAN_EXPORT lean_object* initialize_Init_Data_Float32(uint8_t builtin) {
+LEAN_EXPORT lean_object* initialize_Init_Data_Float_Float32(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
-res = initialize_Init_Data_Float(builtin);
+res = initialize_Init_Data_Float_Float(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = runtime_initialize_Init_Data_Float32(builtin);
+res = runtime_initialize_Init_Data_Float_Float32(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = meta_initialize_Init_Data_Float32(builtin);
+res = meta_initialize_Init_Data_Float_Float32(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-return initialize_Init_Data_Float32(builtin);
+return initialize_Init_Data_Float_Float32(builtin);
 }
 #ifdef __cplusplus
 }
