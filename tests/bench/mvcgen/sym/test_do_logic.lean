@@ -729,3 +729,28 @@ theorem incr_poly (amounts : List Nat) :
 
 
 end TopBetaReduction
+
+namespace RepeatInvariantOfInvariantAndBreak
+
+/-! Verifies a `while` loop whose `mvcgen'` invariant is supplied via
+`RepeatInvariant.ofInvariantAndBreak`: a loop invariant `inv` that holds after every iteration plus
+an `onBreak` condition (here the negated loop condition) that additionally holds once the loop
+exits. -/
+
+/-- Counts `i` down from `n`, incrementing the state on each iteration, so the final state is `n`. -/
+def countdown (n : Nat) : StateT Nat Id Unit := do
+  let mut i := n
+  while i > 0 do
+    i := i - 1
+    modify (· + 1)
+  return
+
+theorem countdown_spec (n : Nat) :
+    ⦃ fun s => s = 0 ⦄ countdown n ⦃ fun _ s => s = n ⦄ := by
+  mvcgen' [countdown]
+  case inv1 => exact RepeatInvariant.ofInvariantAndBreak (fun i s => s + i = n) (fun i _ => i = 0)
+  case inv2 => exact fun i => i
+  any_goals simp at *
+  all_goals grind
+
+end RepeatInvariantOfInvariantAndBreak

@@ -2418,28 +2418,28 @@ variable [Monad m] [Lean.Order.MonadTail m] [Assertion Pred] [Assertion EPred]
   [WPMonad m Pred EPred]
 
 /--
-An invariant for a `whileM` loop, given as a predicate over the `α ⊕ β` cursor:
+An invariant for a `repeatM` loop, given as a predicate over the `α ⊕ β` cursor:
 `.inl a` is the `continue` case at `a`; `.inr b` is the `break` case with result `b`.
 -/
 @[spec_invariant_type, simp, grind =]
-def WhileInvariant (α β : Type u) (Pred : Type u) :=
+def RepeatInvariant (α β : Type u) (Pred : Type u) :=
   α ⊕ β → Pred
 
-/-- A termination measure for a `whileM` loop. -/
+/-- A termination measure for a `repeatM` loop. -/
 @[spec_invariant_type]
-def WhileVariant (α : Type u) :=
+def RepeatVariant (α : Type u) :=
   α → Nat
 
 /--
-Specification for `whileM`. The user supplies a termination `measure`, an invariant, and a step
+Specification for `repeatM`. The user supplies a termination `measure`, an invariant, and a step
 `Triple` whose post either continues with a strictly smaller measure or finishes with the `.inr`
 invariant.
 -/
 @[spec]
-theorem Spec.whileM
+theorem Spec.repeatM
     {init : α} {f : α → m (α ⊕ β)} [Nonempty β]
-    (measure : WhileVariant α)
-    (inv : WhileInvariant α β Pred)
+    (measure : RepeatVariant α)
+    (inv : RepeatInvariant α β Pred)
     (einv : EPred)
     (step : ∀ a,
       Triple
@@ -2451,13 +2451,13 @@ theorem Spec.whileM
         einv) :
     Triple
       (inv (.inl init))
-      (whileM f init)
+      (repeatM f init)
       (fun b => inv (.inr b))
       einv := by
   suffices key : ∀ (n : Nat) (a : α), measure a ≤ n →
       Triple
         (inv (.inl a))
-        (_root_.whileM f a)
+        (_root_.repeatM f a)
         (fun b => inv (.inr b))
         einv
     from key (measure init) init (Nat.le_refl _)
@@ -2465,9 +2465,9 @@ theorem Spec.whileM
   induction n using Nat.strongRecOn with
   | _ n ih =>
     intro a hle
-    rw [whileM_eq_of_monadTail (f := f) a]
+    rw [repeatM_eq_of_monadTail (f := f) a]
     refine Triple.bind (f := fun x => match x with
-      | .inl a' => _root_.whileM f a'
+      | .inl a' => _root_.repeatM f a'
       | .inr b => Pure.pure b)
       (f a) (fun r => match r with
         | .inl a' => ⌜measure a' < measure a⌝ ⊓ inv (.inl a')
@@ -2481,14 +2481,28 @@ theorem Spec.whileM
     · exact Triple.pure b Lean.Order.PartialOrder.rel_refl
 
 /--
+Construct an invariant from a loop invariant `inv` and a break condition `onBreak`.
+
+`inv` holds at the end of every loop iteration (including the breaking one), and `onBreak` holds in
+addition to `inv` once the loop is done. For a normal `while` loop `onBreak` can be taken as the
+negation of the loop condition.
+-/
+@[simp]
+noncomputable abbrev RepeatInvariant.ofInvariantAndBreak {α : Type u} {Pred : Type u} [Assertion Pred]
+    (inv : α → Pred) (onBreak : α → Pred) : RepeatInvariant α α Pred
+  | .inl a => inv a
+  | .inr a => inv a ⊓ onBreak a
+
+
+/--
 Specification for `forIn` over a `Lean.Loop`. The cursor is `β ⊕ β`: `.inl b` means
 "still iterating with `b`", `.inr b` means "finished with result `b`".
 -/
 @[spec]
 theorem Spec.forIn_loop
     {l : Lean.Loop} {init : β} {f : Unit → β → m (ForInStep β)}
-    (measure : WhileVariant β)
-    (inv : WhileInvariant β β Pred)
+    (measure : RepeatVariant β)
+    (inv : RepeatInvariant β β Pred)
     (einv : EPred)
     (step : ∀ b,
       Triple
@@ -2507,7 +2521,7 @@ theorem Spec.forIn_loop
   change Triple (pre := inv (.inl init)) (_root_.Lean.Loop.forIn l init f)
     (fun b => inv (.inr b)) einv
   simp only [_root_.Lean.Loop.forIn]
-  apply Spec.whileM (measure := measure) (inv := inv) (einv := einv)
+  apply Spec.repeatM (measure := measure) (inv := inv) (einv := einv)
   intro b
   apply Triple.bind
   · exact step b
