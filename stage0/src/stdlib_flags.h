@@ -1,5 +1,7 @@
 #include "util/options.h"
 
+// Trigger update-stage0 for: add builtin `lia` grind attribute (so it can be applied in `src/Init`)
+
 namespace lean {
 options get_default_options() {
     options opts;
