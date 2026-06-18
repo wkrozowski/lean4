@@ -1,7 +1,5 @@
 #include "util/options.h"
 
-// Trigger update-stage0 for: add builtin `lia` grind attribute (so it can be applied in `src/Init`)
-
 namespace lean {
 options get_default_options() {
     options opts;
@@ -25,7 +23,6 @@ options get_default_options() {
 
     opts = opts.update({"pp", "rawOnError"}, true);
 
-    // trigger update-stage0 for the structural `selectProg` spec keying change
 #endif
     return opts;
 }
