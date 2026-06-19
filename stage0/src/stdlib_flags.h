@@ -23,8 +23,6 @@ options get_default_options() {
 
     opts = opts.update({"pp", "rawOnError"}, true);
 
-    // trigger stage0 update: `@[spec]` registers under the new `Triple`/`wp` arity
-
 #endif
     return opts;
 }
