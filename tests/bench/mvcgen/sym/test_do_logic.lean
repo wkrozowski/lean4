@@ -752,3 +752,21 @@ theorem countdown_spec (n : Nat) :
   all_goals grind
 
 end RepeatInvariantOfInvariantAndBreak
+namespace WithGrindError
+
+/-! The `with` clause of `mvcgen'` only accepts a `grind`-mode step (e.g. `finish`, `intro`). A
+general tactic such as `grind` parses but is rejected with a helpful error in the elaborator,
+rather than a raw `unexpected identifier; expected grind` parser error. -/
+
+def trivial_test (n : Nat) : Id Nat := pure n
+
+/--
+error: `mvcgen' … with` expects a `grind`-mode discharging step, not a general tactic
+
+Hint: Examples: `mvcgen' … with finish`, `mvcgen' … with intro`.
+-/
+#guard_msgs in
+example : ⦃ True ⦄ trivial_test 0 ⦃fun r => r = 0⦄ := by
+  mvcgen' [trivial_test] with grind
+
+end WithGrindError

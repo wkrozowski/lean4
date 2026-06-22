@@ -441,13 +441,24 @@ syntax (name := mvcgenHint) "mvcgen?" optConfig
 -- mode to share the internalised goal context with the user-supplied grind step (the only
 -- way to do so from tactic mode). `$g` is a single grind-mode step, so passing a
 -- multi-step sequence requires explicit grouping (e.g. `with (s₁; s₂)`).
+
+/--
+The discharging step in `mvcgen' … with`. It is a single `grind`-mode tactic (e.g. `finish`,
+`intro`) so it can share `mvcgen'`'s internalised E-graph. The `tactic` alternative is a
+lower-priority catch-all so that a non-`grind` step (e.g. `with grind`, `with simp`) still parses
+and the elaborator can report a helpful error instead of a raw `expected grind` parser error.
+-/
+declare_syntax_cat mvcgenWith
+syntax (name := mvcgenWithGrind) grind : mvcgenWith
+syntax (name := mvcgenWithTactic) (priority := low) tactic : mvcgenWith
+
 @[tactic_alt Lean.Parser.Tactic.mvcgen'Macro]
 syntax (name := mvcgen') "mvcgen'" optConfig
   (" [" withoutPosition((simpStar <|> simpErase <|> simpLemma),*,?) "] ")?
   (&" until " term)?
   (invariantAlts)?
   (&" simplifying_assumptions" (ppSpace colGt ident)? (" [" ident,* "]")?)?
-  (&" with " grind)? : tactic
+  (&" with " mvcgenWith)? : tactic
 
 namespace Grind
 

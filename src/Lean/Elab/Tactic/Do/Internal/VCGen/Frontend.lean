@@ -330,6 +330,22 @@ def evalSymMVCGen' : Lean.Elab.Tactic.Grind.GrindTactic := fun stx => do
     return invGoals ++ result.vcs.toList
   Lean.Elab.Tactic.Grind.replaceMainGoal newGoals
 
+/-- Validate the optional `with` clause of `mvcgen'`. It must be a `grind`-mode step so it can share
+`mvcgen'`'s internalised E-graph; the `mvcgenWith` category's `tactic` alternative is a catch-all
+that exists only so a non-`grind` step is reported here with a helpful error rather than a raw
+`expected grind` parser error. -/
+private def elabMvcgenWith (w? : Option (TSyntax `mvcgenWith)) :
+    TacticM (Option (TSyntax `grind)) :=
+  match w? with
+  | none   => return none
+  | some w =>
+    if w.raw.getKind == ``Lean.Parser.Tactic.mvcgenWithGrind then
+      return some ⟨w.raw[0]⟩
+    else
+      throwErrorAt w
+        m!"`mvcgen' … with` expects a `grind`-mode discharging step, not a general tactic"
+          ++ MessageData.hint' m!"Examples: `mvcgen' … with finish`, `mvcgen' … with intro`."
+
 /-- Tactic-level `mvcgen'`. Reuses the grind-mode implementation by re-quoting the
 input as `Grind.mvcgen' …` and running it inside a `GrindTacticM` context built
 without `withProtectedMCtx`, so leftover `Grind.Goal`s flow back as the new tactic
@@ -338,18 +354,19 @@ grind step share an internalised E-graph with `mvcgen'`. -/
 @[builtin_tactic Lean.Parser.Tactic.mvcgen']
 public def elabMVCGen' : Tactic := fun stx => withMainContext do
   let `(tactic| mvcgen'%$tk $cfg:optConfig $[[$lems,*]]? $[until $u:term]? $(invs)?
-        $[simplifying_assumptions $(sa)? $[[$thms,*]]?]? $[with $g:grind]?) := stx
+        $[simplifying_assumptions $(sa)? $[[$thms,*]]?]? $[with $w:mvcgenWith]?) := stx
     | throwUnsupportedSyntax
+  let g? ← elabMvcgenWith w
   -- Without `with`, no downstream grind step will read the E-graph, so opt out of
   -- internalisation; `with` keeps the default `internalize := true`.
-  let cfg ← match g with
+  let cfg ← match g? with
     | some _ => pure cfg
     | none   => do
         let off ← `(optConfig| -internalize)
         pure (Lean.Parser.Tactic.appendConfig off cfg)
   let core ← `(grind| mvcgen'%$tk $cfg:optConfig $[[$lems,*]]? $[until $u:term]? $(invs)?
         $[simplifying_assumptions $(sa)? $[[$thms,*]]?]?)
-  let step ← match g with
+  let step ← match g? with
     | some g => `(grind| $core <;> $g)
     | none   => pure core
   let goal ← getMainGoal
