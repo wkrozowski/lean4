@@ -23,8 +23,6 @@ options get_default_options() {
 
     opts = opts.update({"pp", "rawOnError"}, true);
 
-    // trigger stage0 update: rename the `mvcgen'` tactic to `vcgen`
-
 #endif
     return opts;
 }

@@ -4533,24 +4533,24 @@ static const lean_string_object l_Lean_Parser_Tactic___aux__Init__Tactics______m
 static const lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgenMacro__1___closed__0 = (const lean_object*)&l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgenMacro__1___closed__0_value;
 LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgenMacro__1(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgenMacro__1___boxed(lean_object*, lean_object*, lean_object*);
-static const lean_string_object l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 13, .m_capacity = 13, .m_length = 12, .m_data = "mvcgen'Macro"};
-static const lean_object* l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__0 = (const lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__0_value;
-static const lean_ctor_object l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value_aux_0 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Parser_Tactic_as__aux__lemma___closed__0_value),LEAN_SCALAR_PTR_LITERAL(70, 193, 83, 126, 233, 67, 208, 165)}};
-static const lean_ctor_object l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value_aux_1 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value_aux_0),((lean_object*)&l_Lean_Parser_Tactic_as__aux__lemma___closed__1_value),LEAN_SCALAR_PTR_LITERAL(103, 136, 125, 166, 167, 98, 71, 111)}};
-static const lean_ctor_object l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value_aux_2 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value_aux_1),((lean_object*)&l_Lean_Parser_Tactic_as__aux__lemma___closed__2_value),LEAN_SCALAR_PTR_LITERAL(166, 58, 35, 182, 187, 130, 147, 254)}};
-static const lean_ctor_object l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value_aux_2),((lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__0_value),LEAN_SCALAR_PTR_LITERAL(186, 158, 173, 154, 139, 255, 224, 57)}};
-static const lean_object* l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1 = (const lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value;
-static const lean_string_object l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__2_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 8, .m_capacity = 8, .m_length = 7, .m_data = "mvcgen'"};
-static const lean_object* l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__2 = (const lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__2_value;
-static const lean_ctor_object l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__3_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*1 + 8, .m_other = 1, .m_tag = 6}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__2_value),LEAN_SCALAR_PTR_LITERAL(0, 0, 0, 0, 0, 0, 0, 0)}};
-static const lean_object* l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__3 = (const lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__3_value;
-static const lean_ctor_object l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__4_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*3 + 0, .m_other = 3, .m_tag = 3}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1_value),((lean_object*)(((size_t)(1024) << 1) | 1)),((lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__3_value)}};
-static const lean_object* l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__4 = (const lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__4_value;
-LEAN_EXPORT const lean_object* l_Lean_Parser_Tactic_mvcgen_x27Macro = (const lean_object*)&l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__4_value;
-static const lean_string_object l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 56, .m_capacity = 56, .m_length = 55, .m_data = "to use `mvcgen'`, please include `import Std.Tactic.Do`"};
-static const lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1___closed__0 = (const lean_object*)&l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1___closed__0_value;
-LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1(lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1___boxed(lean_object*, lean_object*, lean_object*);
+static const lean_string_object l_Lean_Parser_Tactic_vcgenMacro___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 11, .m_capacity = 11, .m_length = 10, .m_data = "vcgenMacro"};
+static const lean_object* l_Lean_Parser_Tactic_vcgenMacro___closed__0 = (const lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__0_value;
+static const lean_ctor_object l_Lean_Parser_Tactic_vcgenMacro___closed__1_value_aux_0 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Parser_Tactic_as__aux__lemma___closed__0_value),LEAN_SCALAR_PTR_LITERAL(70, 193, 83, 126, 233, 67, 208, 165)}};
+static const lean_ctor_object l_Lean_Parser_Tactic_vcgenMacro___closed__1_value_aux_1 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__1_value_aux_0),((lean_object*)&l_Lean_Parser_Tactic_as__aux__lemma___closed__1_value),LEAN_SCALAR_PTR_LITERAL(103, 136, 125, 166, 167, 98, 71, 111)}};
+static const lean_ctor_object l_Lean_Parser_Tactic_vcgenMacro___closed__1_value_aux_2 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__1_value_aux_1),((lean_object*)&l_Lean_Parser_Tactic_as__aux__lemma___closed__2_value),LEAN_SCALAR_PTR_LITERAL(166, 58, 35, 182, 187, 130, 147, 254)}};
+static const lean_ctor_object l_Lean_Parser_Tactic_vcgenMacro___closed__1_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__1_value_aux_2),((lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__0_value),LEAN_SCALAR_PTR_LITERAL(49, 153, 99, 132, 83, 31, 98, 221)}};
+static const lean_object* l_Lean_Parser_Tactic_vcgenMacro___closed__1 = (const lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__1_value;
+static const lean_string_object l_Lean_Parser_Tactic_vcgenMacro___closed__2_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 6, .m_capacity = 6, .m_length = 5, .m_data = "vcgen"};
+static const lean_object* l_Lean_Parser_Tactic_vcgenMacro___closed__2 = (const lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__2_value;
+static const lean_ctor_object l_Lean_Parser_Tactic_vcgenMacro___closed__3_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*1 + 8, .m_other = 1, .m_tag = 6}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__2_value),LEAN_SCALAR_PTR_LITERAL(0, 0, 0, 0, 0, 0, 0, 0)}};
+static const lean_object* l_Lean_Parser_Tactic_vcgenMacro___closed__3 = (const lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__3_value;
+static const lean_ctor_object l_Lean_Parser_Tactic_vcgenMacro___closed__4_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*3 + 0, .m_other = 3, .m_tag = 3}, .m_objs = {((lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__1_value),((lean_object*)(((size_t)(1024) << 1) | 1)),((lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__3_value)}};
+static const lean_object* l_Lean_Parser_Tactic_vcgenMacro___closed__4 = (const lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__4_value;
+LEAN_EXPORT const lean_object* l_Lean_Parser_Tactic_vcgenMacro = (const lean_object*)&l_Lean_Parser_Tactic_vcgenMacro___closed__4_value;
+static const lean_string_object l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 54, .m_capacity = 54, .m_length = 53, .m_data = "to use `vcgen`, please include `import Std.Tactic.Do`"};
+static const lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1___closed__0 = (const lean_object*)&l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1___closed__0_value;
+LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1___boxed(lean_object*, lean_object*, lean_object*);
 static const lean_string_object l_Lean_Parser_Tactic_cbv___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 4, .m_capacity = 4, .m_length = 3, .m_data = "cbv"};
 static const lean_object* l_Lean_Parser_Tactic_cbv___closed__0 = (const lean_object*)&l_Lean_Parser_Tactic_cbv___closed__0_value;
 static const lean_ctor_object l_Lean_Parser_Tactic_cbv___closed__1_value_aux_0 = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 1}, .m_objs = {((lean_object*)(((size_t)(0) << 1) | 1)),((lean_object*)&l_Lean_Parser_Tactic_as__aux__lemma___closed__0_value),LEAN_SCALAR_PTR_LITERAL(70, 193, 83, 126, 233, 67, 208, 165)}};
@@ -14081,11 +14081,11 @@ lean_dec_ref(v_a_8334_);
 return v_res_8336_;
 }
 }
-LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1(lean_object* v_x_8353_, lean_object* v_a_8354_, lean_object* v_a_8355_){
+LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1(lean_object* v_x_8353_, lean_object* v_a_8354_, lean_object* v_a_8355_){
 _start:
 {
 lean_object* v___x_8356_; uint8_t v___x_8357_; 
-v___x_8356_ = ((lean_object*)(l_Lean_Parser_Tactic_mvcgen_x27Macro___closed__1));
+v___x_8356_ = ((lean_object*)(l_Lean_Parser_Tactic_vcgenMacro___closed__1));
 v___x_8357_ = l_Lean_Syntax_isOfKind(v_x_8353_, v___x_8356_);
 if (v___x_8357_ == 0)
 {
@@ -14099,7 +14099,7 @@ return v___x_8359_;
 else
 {
 lean_object* v___x_8360_; lean_object* v___x_8361_; 
-v___x_8360_ = ((lean_object*)(l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1___closed__0));
+v___x_8360_ = ((lean_object*)(l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1___closed__0));
 v___x_8361_ = l_Lean_Macro_throwError___redArg(v___x_8360_, v_a_8354_, v_a_8355_);
 if (lean_obj_tag(v___x_8361_) == 0)
 {
@@ -14192,11 +14192,11 @@ return v___x_8377_;
 }
 }
 }
-LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1___boxed(lean_object* v_x_8380_, lean_object* v_a_8381_, lean_object* v_a_8382_){
+LEAN_EXPORT lean_object* l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1___boxed(lean_object* v_x_8380_, lean_object* v_a_8381_, lean_object* v_a_8382_){
 _start:
 {
 lean_object* v_res_8383_; 
-v_res_8383_ = l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__mvcgen_x27Macro__1(v_x_8380_, v_a_8381_, v_a_8382_);
+v_res_8383_ = l_Lean_Parser_Tactic___aux__Init__Tactics______macroRules__Lean__Parser__Tactic__vcgenMacro__1(v_x_8380_, v_a_8381_, v_a_8382_);
 lean_dec_ref(v_a_8381_);
 return v_res_8383_;
 }
