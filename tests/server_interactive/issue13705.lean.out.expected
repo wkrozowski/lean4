@@ -1,0 +1,32 @@
+blocked!
+unblocking!
+{"version": 1,
+ "uri": "file:///issue13705.lean",
+ "isIncremental": false,
+ "diagnostics":
+ [{"source": "Lean 4",
+   "severity": 1,
+   "range":
+   {"start": {"line": 16, "character": 2},
+    "end": {"line": 16, "character": 18}},
+   "message": "blocked",
+   "fullRange":
+   {"start": {"line": 16, "character": 2},
+    "end": {"line": 16, "character": 18}}},
+  {"source": "Lean 4",
+   "severity": 1,
+   "range":
+   {"start": {"line": 16, "character": 2},
+    "end": {"line": 16, "character": 18}},
+   "message": "blocked",
+   "fullRange":
+   {"start": {"line": 16, "character": 2},
+    "end": {"line": 16, "character": 18}}},
+  {"source": "Lean 4",
+   "severity": 1,
+   "range":
+   {"start": {"line": 22, "character": 2}, "end": {"line": 22, "character": 9}},
+   "message": "No goals to be solved",
+   "fullRange":
+   {"start": {"line": 22, "character": 2},
+    "end": {"line": 22, "character": 9}}}]}

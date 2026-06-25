@@ -1152,6 +1152,34 @@ not block.
 def containsOnBranch (env : Environment) (n : Name) : Bool :=
   (env.asyncConsts.find? n |>.isSome) || (env.base.get env).constants.contains n
 
+/--
+Returns the constants added in the current module, in elaboration tree pre-order: the top-level
+declarations in elaboration order, each followed by its asynchronous sub-declarations, recursively.
+The recursive part can optionally be skipped for theorems for when their sub-decls are unimportant
+and visiting them would only add latency by having to wait for proof elaboration to finish.
+
+Unlike iterating `env.constants.map₂`, this does not block on `env.checked`, i.e. kernel checking.
+-/
+partial def getLocalConstantInfos (env : Environment) (skipTheoremSubDecls := false) :
+    BaseIO (Array AsyncConstantInfo) := do
+  let (arr, _) ← go env.asyncConsts #[] {}
+  return arr
+where
+  go (aconsts : AsyncConsts) (acc : Array AsyncConstantInfo) (seen : NameSet) :
+      BaseIO (Array AsyncConstantInfo × NameSet) := do
+    let mut acc := acc
+    let mut seen := seen
+    -- A child's `aconsts` currently inherits the sibling constants that existed when
+    -- its asynchronous elaboration forked, so a recursive walk revisits them; deduplicate by name.
+    -- Can be removed once `AsyncConst.aconsts` only contains the constants actually nested under it.
+    for c in aconsts.revList.reverse do
+      if seen.contains c.constInfo.name then continue
+      seen := seen.insert c.constInfo.name
+      acc := acc.push c.constInfo
+      unless skipTheoremSubDecls && c.constInfo.kind == .thm do
+        (acc, seen) ← go c.aconsts.get acc seen
+    return (acc, seen)
+
 def setMainModule (env : Environment) (m : Name) : Environment := Id.run do
   let env := env.modifyCheckedAsync ({ · with
     header.mainModule := m
