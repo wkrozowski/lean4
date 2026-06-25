@@ -108,9 +108,10 @@ def ofEpochDay (day : Day.Offset) : PlainDate :=
   .ofYearMonthDayClip y (.clip m (by decide)) (.clip d (by decide))
 
 /--
-Returns the unaligned week of the month for a `PlainDate` (day divided by 7, plus 1).
+Returns the aligned week of the month for a `PlainDate`. Weeks are fixed 7-day slots
+starting from day 1: days 1–7 are week 1, days 8–14 are week 2, etc.
 -/
-def weekOfMonth (date : PlainDate) : Bounded.LE 1 5 :=
+def alignedWeekOfMonth (date : PlainDate) : Week.Aligned.Ordinal :=
   date.day.sub 1 |>.ediv 7 (by decide) |>.add 1
 
 /--
@@ -306,11 +307,10 @@ def weekday (date : PlainDate) : Weekday :=
   .ofOrdinal (Bounded.LE.ofNatWrapping res (by decide))
 
 /--
-Determines the week of the month for the given `PlainDate`. The week of the month is calculated based
-on the day of the month and the weekday. Each week starts on Monday because the entire library is
-based on the Gregorian Calendar.
+Returns the week of the month for the given `PlainDate`, where weeks start on `firstDay`.
+The first partial week containing day 1 is week 1, so weeks may span fewer than 7 days.
 -/
-def alignedWeekOfMonth (date : PlainDate) (firstDay : Weekday := .monday) : Week.Ordinal.OfMonth :=
+def weekOfMonth (date : PlainDate) (firstDay : Weekday := .monday) : Week.Ordinal :=
   let day1Ord := (date.withDaysClip 1).weekday.toOrdinal.val
   let offset := (day1Ord - firstDay.toOrdinal.val + 7) % 7
   Bounded.LE.ofNatWrapping ((date.day.val - 1 + offset) / 7 + 1) (by decide)
@@ -337,7 +337,7 @@ def withWeekday (date : PlainDate) (desiredWeekday : Weekday) : PlainDate :=
 /--
 Calculates the week of the year for a given date, using `firstDay` as the first day of the week.
 -/
-def weekOfYear (date : PlainDate) (firstDay : Weekday := .monday) : Week.Ordinal :=
+def weekOfYear (date : PlainDate) (firstDay : Weekday := .monday) : Week.OfYear.Ordinal :=
   let y := date.year
   let posInWeek : Bounded.LE 1 7 :=
     .ofNatWrapping ((date.weekday.toOrdinal.val - firstDay.toOrdinal.val + 7) % 7 + 1) (by decide)

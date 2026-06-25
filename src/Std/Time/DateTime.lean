@@ -188,7 +188,7 @@ def dayOfYear (date : DateTime) : Day.Ordinal.OfYear date.date.get.date.year.isL
 Determines the week of the year for the given `DateTime`, using `firstDay` as the start of the week.
 -/
 @[inline]
-def weekOfYear (date : DateTime) (firstDay : Weekday := .monday) : Week.Ordinal :=
+def weekOfYear (date : DateTime) (firstDay : Weekday := .monday) : Week.OfYear.Ordinal :=
   date.date.get.weekOfYear firstDay
 
 /--
@@ -200,17 +200,19 @@ def weekYear (date : DateTime) (firstDay : Weekday := .monday) : Year.Offset :=
   date.date.get.weekYear firstDay
 
 /--
-Returns the unaligned week of the month for a `DateTime` (day divided by 7, plus 1).
+Returns the aligned week of the month for a `DateTime`. Weeks are fixed 7-day slots
+starting from day 1: days 1–7 are week 1, days 8–14 are week 2, etc.
 -/
-def weekOfMonth (date : DateTime) : Internal.Bounded.LE 1 5 :=
-  date.date.get.weekOfMonth
+def alignedWeekOfMonth (date : DateTime) : Week.Aligned.Ordinal :=
+  date.date.get.alignedWeekOfMonth
 
 /--
-Determines the week of the month for the given `DateTime`, using `firstDay` as the start of the week.
+Returns the week of the month for the given `DateTime`, where weeks start on `firstDay`.
+The first partial week containing day 1 is week 1, so weeks may span fewer than 7 days.
 -/
 @[inline]
-def alignedWeekOfMonth (date : DateTime) (firstDay : Weekday := .monday) : Week.Ordinal.OfMonth :=
-  date.date.get.alignedWeekOfMonth firstDay
+def weekOfMonth (date : DateTime) (firstDay : Weekday := .monday) : Week.Ordinal :=
+  date.date.get.weekOfMonth firstDay
 
 /--
 Determines the quarter of the year for the given `DateTime`.
