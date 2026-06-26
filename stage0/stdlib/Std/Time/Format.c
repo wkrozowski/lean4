@@ -27,9 +27,9 @@ uint8_t l_Std_Time_Year_Offset_era(lean_object*);
 lean_object* l_Std_Time_PlainDate_weekYear(lean_object*, uint8_t);
 lean_object* l_Std_Time_PlainDate_quarter(lean_object*);
 lean_object* l_Std_Time_PlainDate_weekOfYear(lean_object*, uint8_t);
-lean_object* l_Std_Time_PlainDate_alignedWeekOfMonth(lean_object*, uint8_t);
+lean_object* l_Std_Time_PlainDate_weekOfMonth(lean_object*, uint8_t);
 uint8_t l_Std_Time_PlainDate_weekday(lean_object*);
-lean_object* l_Std_Time_PlainDate_weekOfMonth(lean_object*);
+lean_object* l_Std_Time_PlainDate_alignedWeekOfMonth(lean_object*);
 lean_object* lean_thunk_get_own(lean_object*);
 extern lean_object* l_Std_Time_TimeZone_GMT;
 lean_object* l_Std_Time_GenericFormat_parse(lean_object*, lean_object*, lean_object*);
@@ -48,7 +48,7 @@ lean_object* l_Std_Time_PlainTime_toMilliseconds(lean_object*);
 lean_object* l_Std_Time_PlainTime_toNanoseconds(lean_object*);
 lean_object* l_Std_Time_HourMarker_toAbsolute(uint8_t, lean_object*);
 lean_object* l_Std_Time_ValidDate_dayOfYear(uint8_t, lean_object*);
-lean_object* l_Std_Time_PlainDateTime_weekOfMonth(lean_object*);
+lean_object* l_Std_Time_PlainDateTime_alignedWeekOfMonth(lean_object*);
 extern lean_object* l_Std_Time_TimeZone_UTC;
 lean_object* l_Std_Time_PlainDateTime_toWallTime(lean_object*);
 lean_object* l_Std_Time_TimeZone_ZoneRules_findLocalTimeTypeForWallTime(lean_object*, lean_object*);
@@ -1586,7 +1586,7 @@ v_resetjp_821_:
 {
 uint8_t v_firstDayOfWeek_824_; lean_object* v___x_825_; lean_object* v___x_827_; 
 v_firstDayOfWeek_824_ = lean_ctor_get_uint8(v_locale_750_, sizeof(void*)*1);
-v___x_825_ = l_Std_Time_PlainDate_alignedWeekOfMonth(v_date_749_, v_firstDayOfWeek_824_);
+v___x_825_ = l_Std_Time_PlainDate_weekOfMonth(v_date_749_, v_firstDayOfWeek_824_);
 if (v_isShared_823_ == 0)
 {
 lean_ctor_set_tag(v___x_822_, 1);
@@ -1781,7 +1781,7 @@ goto v_resetjp_862_;
 v_resetjp_862_:
 {
 lean_object* v___x_865_; lean_object* v___x_867_; 
-v___x_865_ = l_Std_Time_PlainDate_weekOfMonth(v_date_749_);
+v___x_865_ = l_Std_Time_PlainDate_alignedWeekOfMonth(v_date_749_);
 lean_dec_ref(v_date_749_);
 if (v_isShared_864_ == 0)
 {
@@ -3816,7 +3816,7 @@ v_firstDayOfWeek_1452_ = lean_ctor_get_uint8(v_locale_1337_, sizeof(void*)*1);
 v_date_1453_ = lean_ctor_get(v_date_1336_, 0);
 lean_inc_ref(v_date_1453_);
 lean_dec_ref(v_date_1336_);
-v___x_1454_ = l_Std_Time_PlainDate_alignedWeekOfMonth(v_date_1453_, v_firstDayOfWeek_1452_);
+v___x_1454_ = l_Std_Time_PlainDate_weekOfMonth(v_date_1453_, v_firstDayOfWeek_1452_);
 if (v_isShared_1451_ == 0)
 {
 lean_ctor_set_tag(v___x_1450_, 1);
@@ -4023,7 +4023,7 @@ goto v_resetjp_1495_;
 v_resetjp_1495_:
 {
 lean_object* v___x_1498_; lean_object* v___x_1500_; 
-v___x_1498_ = l_Std_Time_PlainDateTime_weekOfMonth(v_date_1336_);
+v___x_1498_ = l_Std_Time_PlainDateTime_alignedWeekOfMonth(v_date_1336_);
 lean_dec_ref(v_date_1336_);
 if (v_isShared_1497_ == 0)
 {

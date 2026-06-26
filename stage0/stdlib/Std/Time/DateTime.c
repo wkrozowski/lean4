@@ -39,7 +39,7 @@ uint8_t l_Std_Time_Year_Offset_era(lean_object*);
 lean_object* l_Std_Time_PlainDate_rollOver(lean_object*, lean_object*, lean_object*);
 lean_object* l_Rat_ofInt(lean_object*);
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
-lean_object* l_Std_Time_PlainDateTime_weekOfMonth(lean_object*);
+lean_object* l_Std_Time_PlainDate_weekOfMonth(lean_object*, uint8_t);
 lean_object* l_Std_Time_PlainDate_ofEpochDay(lean_object*);
 lean_object* l_Std_Time_Month_Ordinal_days(uint8_t, lean_object*);
 uint8_t lean_int_dec_lt(lean_object*, lean_object*);
@@ -50,7 +50,7 @@ extern lean_object* l_Std_Time_instInhabitedTimestamp_default;
 lean_object* l_Std_Time_PlainDate_quarter(lean_object*);
 uint8_t l_Std_Time_PlainDate_weekday(lean_object*);
 lean_object* l_Std_Time_PlainDateTime_withWeekday(lean_object*, uint8_t);
-lean_object* l_Std_Time_PlainDate_alignedWeekOfMonth(lean_object*, uint8_t);
+lean_object* l_Std_Time_PlainDateTime_alignedWeekOfMonth(lean_object*);
 lean_object* l_Std_Time_PlainDateTime_addMonthsRollOver(lean_object*, lean_object*);
 lean_object* lean_int_emod(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Std_Time_instInhabitedDateTime___private__1___lam__0(lean_object*);
@@ -127,10 +127,10 @@ LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfYear(lean_object*, uint8_t);
 LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfYear___boxed(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekYear(lean_object*, uint8_t);
 LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekYear___boxed(lean_object*, lean_object*);
-LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfMonth(lean_object*);
-LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfMonth___boxed(lean_object*);
-LEAN_EXPORT lean_object* l_Std_Time_DateTime_alignedWeekOfMonth(lean_object*, uint8_t);
-LEAN_EXPORT lean_object* l_Std_Time_DateTime_alignedWeekOfMonth___boxed(lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Std_Time_DateTime_alignedWeekOfMonth(lean_object*);
+LEAN_EXPORT lean_object* l_Std_Time_DateTime_alignedWeekOfMonth___boxed(lean_object*);
+LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfMonth(lean_object*, uint8_t);
+LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfMonth___boxed(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Std_Time_DateTime_quarter(lean_object*);
 LEAN_EXPORT lean_object* l_Std_Time_DateTime_quarter___boxed(lean_object*);
 LEAN_EXPORT lean_object* l_Int_cast___at___00Std_Time_DateTime_addDays_spec__1(lean_object*);
@@ -1309,27 +1309,27 @@ lean_dec_ref(v_date_340_);
 return v_res_343_;
 }
 }
-LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfMonth(lean_object* v_date_344_){
+LEAN_EXPORT lean_object* l_Std_Time_DateTime_alignedWeekOfMonth(lean_object* v_date_344_){
 _start:
 {
 lean_object* v_date_345_; lean_object* v___x_346_; lean_object* v___x_347_; 
 v_date_345_ = lean_ctor_get(v_date_344_, 0);
 v___x_346_ = lean_thunk_get_own(v_date_345_);
-v___x_347_ = l_Std_Time_PlainDateTime_weekOfMonth(v___x_346_);
+v___x_347_ = l_Std_Time_PlainDateTime_alignedWeekOfMonth(v___x_346_);
 lean_dec(v___x_346_);
 return v___x_347_;
 }
 }
-LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfMonth___boxed(lean_object* v_date_348_){
+LEAN_EXPORT lean_object* l_Std_Time_DateTime_alignedWeekOfMonth___boxed(lean_object* v_date_348_){
 _start:
 {
 lean_object* v_res_349_; 
-v_res_349_ = l_Std_Time_DateTime_weekOfMonth(v_date_348_);
+v_res_349_ = l_Std_Time_DateTime_alignedWeekOfMonth(v_date_348_);
 lean_dec_ref(v_date_348_);
 return v_res_349_;
 }
 }
-LEAN_EXPORT lean_object* l_Std_Time_DateTime_alignedWeekOfMonth(lean_object* v_date_350_, uint8_t v_firstDay_351_){
+LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfMonth(lean_object* v_date_350_, uint8_t v_firstDay_351_){
 _start:
 {
 lean_object* v_date_352_; lean_object* v___x_353_; lean_object* v_date_354_; lean_object* v___x_355_; 
@@ -1338,16 +1338,16 @@ v___x_353_ = lean_thunk_get_own(v_date_352_);
 v_date_354_ = lean_ctor_get(v___x_353_, 0);
 lean_inc_ref(v_date_354_);
 lean_dec(v___x_353_);
-v___x_355_ = l_Std_Time_PlainDate_alignedWeekOfMonth(v_date_354_, v_firstDay_351_);
+v___x_355_ = l_Std_Time_PlainDate_weekOfMonth(v_date_354_, v_firstDay_351_);
 return v___x_355_;
 }
 }
-LEAN_EXPORT lean_object* l_Std_Time_DateTime_alignedWeekOfMonth___boxed(lean_object* v_date_356_, lean_object* v_firstDay_357_){
+LEAN_EXPORT lean_object* l_Std_Time_DateTime_weekOfMonth___boxed(lean_object* v_date_356_, lean_object* v_firstDay_357_){
 _start:
 {
 uint8_t v_firstDay_boxed_358_; lean_object* v_res_359_; 
 v_firstDay_boxed_358_ = lean_unbox(v_firstDay_357_);
-v_res_359_ = l_Std_Time_DateTime_alignedWeekOfMonth(v_date_356_, v_firstDay_boxed_358_);
+v_res_359_ = l_Std_Time_DateTime_weekOfMonth(v_date_356_, v_firstDay_boxed_358_);
 lean_dec_ref(v_date_356_);
 return v_res_359_;
 }
