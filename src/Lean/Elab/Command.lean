@@ -17,6 +17,16 @@ public section
 
 namespace Lean.Elab.Command
 
+
+/-- Opaque stateful linter state. Identical to `EnvExtensionSpec` -/
+opaque StatefulLinterStateSpec : (α : Type) × Inhabited α := ⟨Unit, ⟨()⟩⟩ 
+@[expose] def StatefulLinterState : Type := StatefulLinterStateSpec.fst
+instance : Inhabited StatefulLinterState := StatefulLinterStateSpec.snd
+
+structure StatefulLinterCtx where
+  prevTasks : Array (Task StatefulLinterState)
+  currTasks : Array (Task StatefulLinterState)
+
 structure State where
   env            : Environment
   messages       : MessageLog := {}
@@ -29,6 +39,7 @@ structure State where
   infoState      : InfoState := {}
   traceState     : TraceState := {}
   snapshotTasks  : Array (Language.SnapshotTask Language.SnapshotTree) := #[]
+  linterCursors  : Array (Task StatefulLinterState) := #[]
   deriving Nonempty
 
 structure Context where
@@ -68,6 +79,11 @@ structure Linter where
 structure ModuleLinter where
   run : Array Syntax → CommandElabM Unit
   name : Name := by exact decl_name%
+
+structure StatefulLinterStep where
+  init : StatefulLinterState
+  run : Syntax → StatefulLinterState → StatefulLinterCtx → CommandElabM StatefulLinterState
+  name : Name
 
 /-
 Make the compiler generate specialized `pure`/`bind` so we do not have to optimize through the
