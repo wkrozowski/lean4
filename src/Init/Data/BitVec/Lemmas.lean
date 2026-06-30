@@ -5971,7 +5971,7 @@ theorem toInt_abs_eq_ite {x : BitVec w} :
 
 
 
-/-
+/--
 The absolute value of `x : BitVec w` is a case split on the sign of `x`, when `x ≠ intMin w`.
 This is a variant of `toInt_abs_eq_ite`.
 -/
