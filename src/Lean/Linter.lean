@@ -18,6 +18,7 @@ public import Lean.Linter.MissingDocs
 public import Lean.Linter.Omit
 public import Lean.Linter.List
 public import Lean.Linter.Sets
+public import Lean.Linter.StatefulLinter
 public import Lean.Linter.UnusedSimpArgs
 public import Lean.Linter.Coe
 public import Lean.Linter.GlobalAttributeIn

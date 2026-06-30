@@ -1,0 +1,5 @@
+name = "stateful_linter"
+defaultTargets = ["StatefulLinter"]
+
+[[lean_lib]]
+name = "StatefulLinter"
