@@ -3,3 +3,4 @@ defaultTargets = ["StatefulLinter"]
 
 [[lean_lib]]
 name = "StatefulLinter"
+globs = ["StatefulLinter", "StatefulLinterSync"]
