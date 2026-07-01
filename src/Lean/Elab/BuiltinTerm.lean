@@ -403,7 +403,7 @@ private def resynthInstImplicitArgs (type : Expr) : TermElabM Expr := do
     pushScope
     let openDecls ← elabOpenDecl decl
     withTheReader Core.Context (fun ctx => { ctx with openDecls := openDecls }) do
-      elabTerm e expectedType?
+      withSaveInfoContext <| elabTerm e expectedType?
   finally
     popScope
 
@@ -412,7 +412,7 @@ private def resynthInstImplicitArgs (type : Expr) : TermElabM Expr := do
   withRef stx[1] <| Elab.checkDeprecatedOption (stx[1].getId.eraseMacroScopes) decl
   withOptions (fun _ => options) do
     try
-      elabTerm stx[5] expectedType?
+      withSaveInfoContext <| elabTerm stx[5] expectedType?
     finally
       if stx[1].getId == `diagnostics then
         reportDiag
