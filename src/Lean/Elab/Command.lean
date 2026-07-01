@@ -390,9 +390,9 @@ def prepareStatefulLinters : CommandElabM (Array StatefulLinterJob × StatefulLi
       let p ← IO.Promise.new (α := StatefulLinterState)
       let ownPrev := prev[i]?.getD (Task.pure d.init)
       pure (d, p, ownPrev)
-    -- The linter is synchronously on the main thread, so that promises are chained in the right order
+    -- The linter is executed synchronously on the main thread, so that promises are chained in the right order
     let curr : Array (Task _) := jobs.map fun (d, p, _) => p.result?.map (sync := true) (·.getD d.init)
-    -- We roll the cursor, by setting it to the tasks for linting the current command
+    -- We roll the cursor, by setting it to tasks for linting the current command
     modify fun s => {s with linterCursors := curr}
     return (jobs, { prevTasks := prev, currTasks := curr})
 

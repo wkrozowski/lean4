@@ -15,11 +15,13 @@ namespace Lean.Linter.StatefulLinter
 
 open Lean.Elab.Command
 
+/-- A typed handle to a stateful linter.  Carries a registration index and an initial value for the state. -/
 structure StatefulLinterRef (σ : Type) where
   idx : Nat
   init : σ
   deriving Nonempty
 
+/-- On registration the type of the state gets erased to `StatefulLinterStep`-/
 structure StatefulLinter (σ : Type) where
   name : Name := by exact decl_name%
   init : σ
@@ -45,14 +47,12 @@ def registerStatefulLinter {σ : Type} [Nonempty σ] (l : StatefulLinter σ) : I
   unless (← initializing) do
     throw (IO.userError s!"failed to register stateful linter '{l.name}', \
       stateful linters can only be registered during initialization")
-  let arr ← statefulLintersRef.get
-  let idx := arr.size
   let step : StatefulLinterStep := {
     name := l.name
     init := unsafe unsafeCast l.init
     run  := unsafe unsafeCast l.run
   }
-  statefulLintersRef.set (arr.push step)
-    return { idx, init := l.init }
+  let idx ← statefulLintersRef.modifyGet (fun arr => (arr.size, arr.push step))
+  return { idx, init := l.init }
 
 end Lean.Linter.StatefulLinter
