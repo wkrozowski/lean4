@@ -657,6 +657,11 @@ public def restoreArtifact (file : FilePath) (art : Artifact) (exe := false) : L
       -- writing to such paths as this can corrupt the cache if the file was hard linked instead
       let r := {read := true, write := false, execution := exe}
       IO.setAccessRights file ⟨r, r, r⟩
+    else if exe then
+      -- Ensure restored executables are executable
+      -- They may not have been if acquired through `lake cache get`
+      let r := {read := true, write := false, execution := exe}
+      IO.setAccessRights file ⟨r, r, r⟩
     logVerbose s!"restored artifact from cache to: {file}"
     writeFileHash file art.hash
   return art.useLocalFile file
