@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Lean.Meta.Tactic.Grind.Main
-// Imports: public import Lean.Meta.Tactic.Grind.Types public import Lean.Meta.Tactic.Grind.Util public import Lean.Meta.Closure import Lean.PrettyPrinter import Lean.Meta.Tactic.ExposeNames import Lean.Meta.Tactic.Simp.Diagnostics import Lean.Meta.Tactic.Simp.Rewrite import Lean.Meta.Tactic.Grind.RevertAll import Lean.Meta.Tactic.Grind.Proj import Lean.Meta.Tactic.Grind.ForallProp import Lean.Meta.Tactic.Grind.CtorIdx import Lean.Meta.Tactic.Grind.Intro import Lean.Meta.Tactic.Grind.Solve import Lean.Meta.Tactic.Grind.EMatch import Lean.Meta.Tactic.Grind.MarkNestedSubsingletons import Lean.Meta.Tactic.Grind.Internalize import Lean.Meta.Tactic.Grind.SimpUtil import Lean.Meta.Tactic.Grind.LawfulEqCmp import Lean.Meta.Tactic.Grind.ReflCmp import Lean.Meta.Tactic.Grind.PP import Lean.Meta.Tactic.Grind.Core
+// Imports: public import Lean.Meta.Tactic.Grind.Types public import Lean.Meta.Tactic.Grind.Util public import Lean.Meta.Closure import Lean.PrettyPrinter import Lean.Meta.Tactic.ExposeNames import Lean.Meta.Tactic.Simp.Diagnostics import Lean.Meta.Tactic.Simp.Rewrite import Lean.Meta.Tactic.Grind.MarkAccessible import Lean.Meta.Tactic.Grind.Proj import Lean.Meta.Tactic.Grind.ForallProp import Lean.Meta.Tactic.Grind.CtorIdx import Lean.Meta.Tactic.Grind.Intro import Lean.Meta.Tactic.Grind.Solve import Lean.Meta.Tactic.Grind.EMatch import Lean.Meta.Tactic.Grind.MarkNestedSubsingletons import Lean.Meta.Tactic.Grind.Internalize import Lean.Meta.Tactic.Grind.SimpUtil import Lean.Meta.Tactic.Grind.LawfulEqCmp import Lean.Meta.Tactic.Grind.ReflCmp import Lean.Meta.Tactic.Grind.PP import Lean.Meta.Tactic.Grind.Core
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -28947,7 +28947,7 @@ lean_object* runtime_initialize_Lean_PrettyPrinter(uint8_t builtin);
 lean_object* runtime_initialize_Lean_Meta_Tactic_ExposeNames(uint8_t builtin);
 lean_object* runtime_initialize_Lean_Meta_Tactic_Simp_Diagnostics(uint8_t builtin);
 lean_object* runtime_initialize_Lean_Meta_Tactic_Simp_Rewrite(uint8_t builtin);
-lean_object* runtime_initialize_Lean_Meta_Tactic_Grind_RevertAll(uint8_t builtin);
+lean_object* runtime_initialize_Lean_Meta_Tactic_Grind_MarkAccessible(uint8_t builtin);
 lean_object* runtime_initialize_Lean_Meta_Tactic_Grind_Proj(uint8_t builtin);
 lean_object* runtime_initialize_Lean_Meta_Tactic_Grind_ForallProp(uint8_t builtin);
 lean_object* runtime_initialize_Lean_Meta_Tactic_Grind_CtorIdx(uint8_t builtin);
@@ -28987,7 +28987,7 @@ lean_dec_ref(res);
 res = runtime_initialize_Lean_Meta_Tactic_Simp_Rewrite(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = runtime_initialize_Lean_Meta_Tactic_Grind_RevertAll(builtin);
+res = runtime_initialize_Lean_Meta_Tactic_Grind_MarkAccessible(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Lean_Meta_Tactic_Grind_Proj(builtin);
@@ -29045,7 +29045,7 @@ lean_object* initialize_Lean_PrettyPrinter(uint8_t builtin);
 lean_object* initialize_Lean_Meta_Tactic_ExposeNames(uint8_t builtin);
 lean_object* initialize_Lean_Meta_Tactic_Simp_Diagnostics(uint8_t builtin);
 lean_object* initialize_Lean_Meta_Tactic_Simp_Rewrite(uint8_t builtin);
-lean_object* initialize_Lean_Meta_Tactic_Grind_RevertAll(uint8_t builtin);
+lean_object* initialize_Lean_Meta_Tactic_Grind_MarkAccessible(uint8_t builtin);
 lean_object* initialize_Lean_Meta_Tactic_Grind_Proj(uint8_t builtin);
 lean_object* initialize_Lean_Meta_Tactic_Grind_ForallProp(uint8_t builtin);
 lean_object* initialize_Lean_Meta_Tactic_Grind_CtorIdx(uint8_t builtin);
@@ -29085,7 +29085,7 @@ lean_dec_ref(res);
 res = initialize_Lean_Meta_Tactic_Simp_Rewrite(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Lean_Meta_Tactic_Grind_RevertAll(builtin);
+res = initialize_Lean_Meta_Tactic_Grind_MarkAccessible(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Lean_Meta_Tactic_Grind_Proj(builtin);
