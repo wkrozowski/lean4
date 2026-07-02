@@ -33,6 +33,12 @@ register_builtin_option linter.extra.dupNamespace : Bool := {
   descr := "enable the duplicated namespace linter"
 }
 
+register_builtin_option linter.extra.dupNamespace.consecutiveOnly : Bool := {
+  defValue := true
+  descr := "only warn on consecutive duplicated namespaces"
+}
+
+
 namespace DupNamespaceLinter
 
 open Lean Parser Elab Command Meta Linter
@@ -78,10 +84,25 @@ def dupNamespace : Linter where run := withSetOptionIn fun stx ↦ do
       let declName := id.getId
       if declName.hasMacroScopes || isPrivateName declName then continue
       let nm := declName.components
-      let some (dup, _) := nm.zip (nm.tailD []) |>.find? fun (x, y) ↦ x == y
-        | continue
-      Linter.logLintIf linter.extra.dupNamespace id
-        m!"The namespace '{dup}' is duplicated in the declaration '{declName}'"
+      let options ← getOptions
+      let duplicated :=
+        if (← getBoolOption `linter.extra.dupNamespace.consecutiveOnly (defValue := true)) then
+          -- Only check consecutive components
+          nm.zip (nm.tailD []) |>.filterMap fun (x, y) ↦ if x == y then some x else none
+        else
+          -- Collect distinct components which appear more than once.
+          List.eraseDups <| nm.filter (fun comp ↦ nm.count comp > 1)
+      match duplicated with
+      | [] => continue
+      | [ns] =>
+        Linter.logLint linter.extra.dupNamespace id
+          m!"The namespace `{ns}` is duplicated in the declaration \
+          `{.ofConstName (fullNames := true) declName}`."
+      | dup =>
+        let ns := MessageData.andList (duplicated.map (m!"`{·}`"))
+        Linter.logLint linter.extra.dupNamespace id
+          m!"The namespaces {ns} are duplicated in the declaration \
+          `{.ofConstName (fullNames := true) declName}`."
 
 end DupNamespaceLinter
 
