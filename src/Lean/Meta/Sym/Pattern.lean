@@ -108,21 +108,21 @@ def isUVar? (n : Name) : Option Nat := Id.run do
   return some idx
 
 /-- Helper function for implementing `mkPatternFromDecl` and `mkEqPatternFromDecl` -/
-def preprocessDeclPattern (declName : Name) : MetaM (List Name × Expr) := do
+def preprocessDeclPattern (declName : Name) (zetaReduceLHSOnly := false) : MetaM (List Name × Expr) := do
   let info ← getConstInfo declName
   let levelParams := info.levelParams.mapIdx fun i _ => Name.num uvarPrefix i
   let us := levelParams.map mkLevelParam
   let type ← instantiateTypeLevelParams info.toConstantVal us
-  let type ← preprocessType type
+  let type ← preprocessType type (zetaReduceLHSOnly := zetaReduceLHSOnly)
   let type ← normalizeLevels type
   return (levelParams, type)
 
-def preprocessExprPattern (e : Expr) (levelParams₀ : List Name) : MetaM (List Name × Expr) := do
+def preprocessExprPattern (e : Expr) (levelParams₀ : List Name) (zetaReduceLHSOnly := false) : MetaM (List Name × Expr) := do
   let type ← inferType e
   let levelParams := levelParams₀.mapIdx fun i _ => Name.num uvarPrefix i
   let us := levelParams.map mkLevelParam
   let type := type.instantiateLevelParams levelParams₀ us
-  let type ← preprocessType type
+  let type ← preprocessType type (zetaReduceLHSOnly := zetaReduceLHSOnly)
   let type ← normalizeLevels type
   return (levelParams, type)
 
@@ -241,8 +241,8 @@ For a theorem `∀ x₁ ... xₙ, type`, returns a pattern matching the first co
 with `n` pattern variables.
 -/
 @[inline]
-public def mkPatternFromDeclWithKey (declName : Name) (selectKey : Expr → MetaM (Expr × α)) : MetaM (Pattern × α) := do
-  let (levelParams, type) ← preprocessDeclPattern declName
+public def mkPatternFromDeclWithKey (declName : Name) (selectKey : Expr → MetaM (Expr × α)) (zetaReduceLHSOnly := false) : MetaM (Pattern × α) := do
+  let (levelParams, type) ← preprocessDeclPattern declName zetaReduceLHSOnly
   mkPatternFromTypeWithKey levelParams type selectKey
 
 /--
@@ -250,8 +250,8 @@ Like `mkPatternFromDeclWithKey`, but for a complex proof expression instead of t
 theorem.
 -/
 @[inline]
-public def mkPatternFromExprWithKey (e : Expr) (levelParams : List Name := []) (selectKey : Expr → MetaM (Expr × α)) : MetaM (Pattern × α) := do
-  let (levelParams, type) ← preprocessExprPattern e levelParams
+public def mkPatternFromExprWithKey (e : Expr) (levelParams : List Name := []) (selectKey : Expr → MetaM (Expr × α)) (zetaReduceLHSOnly := false) : MetaM (Pattern × α) := do
+  let (levelParams, type) ← preprocessExprPattern e levelParams zetaReduceLHSOnly
   mkPatternFromTypeWithKey levelParams type selectKey
 
 /--
@@ -266,7 +266,7 @@ For a theorem `∀ x₁ ... xₙ, lhs = rhs`, returns a pattern matching `lhs` w
 Throws an error if the theorem's conclusion is not an equality.
 -/
 public def mkEqPatternFromDecl (declName : Name) : MetaM (Pattern × Expr) := do
-  mkPatternFromDeclWithKey declName fun type => do
+  mkPatternFromDeclWithKey declName (zetaReduceLHSOnly := true) fun type => do
     let_expr Eq _ lhs rhs := type | throwError "conclusion is not a equality{indentExpr type}"
     return (lhs, rhs)
 
