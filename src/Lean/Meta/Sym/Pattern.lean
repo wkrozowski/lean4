@@ -98,6 +98,10 @@ def Pattern.isProof (p : Pattern) (i : Nat) : Bool := Id.run do
   let some varInfos := p.varInfos? | return false
   varInfos.argsInfo[i]!.isProof
 
+def isUVar (n : Name) : Bool := Id.run do
+  let .num p _ := n | return false
+  return p == uvarPrefix
+
 def isUVar? (n : Name) : Option Nat := Id.run do
   let .num p idx := n | return none
   unless p == uvarPrefix do return none
@@ -377,7 +381,7 @@ This is an approximation. For example, we ignore the solution `?m := 0`.
 
 **Note**: The same approximation is used at LevelDefEq.lean
 -/
-private def tryApproxSelfMax (u v : Level) : UnifyM Bool := do
+def tryApproxSelfMax (u v : Level) : UnifyM Bool := do
   match u with
   | .max (.param uName) v'
   | .max v' (.param uName) =>
@@ -403,6 +407,27 @@ where
     let u ← decLevel? u
     let v ← decLevel? v
     return mkLevelMax' u v
+
+def hasUVar (u : Level) : Bool :=
+  match u with
+  | .succ u₁    => hasUVar u₁
+  | .max u₁ u₂ | .imax u₁ u₂ => hasUVar u₁ || hasUVar u₂
+  | .param name => isUVar name
+  | _ => false
+
+/--
+Returns `true` and add `u =?= v` to pending list IF
+- `u` is of the form `max .. ..` or `imax .. ..`, and
+- `u` contains `UVars`
+-/
+def tryPostponeMaxCnstr (u : Level) (v : Level) : UnifyM Bool := do
+  match u with
+  | .max u₁ u₂ | .imax u₁ u₂ =>
+    if hasUVar u₁ || hasUVar u₂ then
+      pushLevelPending u v
+      return true
+    return false
+  | _ => return false
 
 partial def processLevel (u : Level) (v : Level) : UnifyM Bool := do
   /-
@@ -456,6 +481,8 @@ where
       if let .succ v := v then
         if let some u := decLevel? u then
           return (← go u v)
+      if (← tryPostponeMaxCnstr u v) then
+        return true
       return false
 
 def processLevels (us : List Level) (vs : List Level) : UnifyM Bool := do
@@ -603,12 +630,26 @@ def tryAssignLevelMVar (u : Level) (v : Level) : MetaM Bool := do
   assignLevelMVar mvarId v
   return true
 
+def substAssignedMVarsAndNormalize (u : Level) : MetaM Level := do
+  unless (← hasAssignedLevelMVar u) do return u.normalize
+  let u ← instantiateLevelMVars u
+  return u.normalize
+
 /--
 Structural definitional equality for universe levels.
 Uses `tryApproxMaxMax` to handle `max` commutativity when one argument matches structurally.
 Attempts metavariable assignment in both directions if structural matching fails.
 -/
-def isLevelDefEqS (u : Level) (v : Level) : MetaM Bool := do
+partial def isLevelDefEqS (u : Level) (v : Level) : MetaM Bool := do
+  let tryNormalizeFirst (k : MetaM Bool) : MetaM Bool := do
+    /-
+    If `u` and `v` have assigned metavariables or can be normalized, apply substitutions and normalize.
+    Otherwise, execute `k`.
+    -/
+    let u' ← substAssignedMVarsAndNormalize u
+    let v' ← substAssignedMVarsAndNormalize v
+    if u' != u || v' != v then isLevelDefEqS u' v'
+    else k
   match u, v with
   | .param u, .param v => return u == v
   | .zero, .zero => return true
@@ -622,9 +663,13 @@ def isLevelDefEqS (u : Level) (v : Level) : MetaM Bool := do
   | .max u₁ u₂, .max v₁ v₂ =>
     if u₂ == v₁ then isLevelDefEqS u₁ v₂
     else if u₁ == v₂ then isLevelDefEqS u₂ v₁
-    else isLevelDefEqS u₁ v₁ <&&> isLevelDefEqS u₂ v₂
+    else tryNormalizeFirst (isLevelDefEqS u₁ v₁ <&&> isLevelDefEqS u₂ v₂)
   | .imax u₁ u₂, .imax v₁ v₂ => isLevelDefEqS u₁ v₁ <&&> isLevelDefEqS u₂ v₂
-  | _, _ => tryAssignLevelMVar u v <||> tryAssignLevelMVar v u
+  | _, _ =>
+    if (← tryAssignLevelMVar u v <||> tryAssignLevelMVar v u) then
+      return true
+    else
+      tryNormalizeFirst (return false)
 
 /--
 Structural definitional equality for lists of universe levels.
