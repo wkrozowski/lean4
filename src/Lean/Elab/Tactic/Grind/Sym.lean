@@ -37,17 +37,18 @@ private def liftSymM (k : Sym.SymM α) : GrindTacticM α := do
 
 private def evalIntroCore (internalize : Bool) (ids : TSyntaxArray `Lean.binderIdent) : GrindTacticM Unit := do
   ensureSym
+  let hygienic := tactic.hygienic.get (← getOptions)
   let goal ← getMainGoal
   let goal ←
     if ids.isEmpty then
-      match (← liftSymM <| Grind.Goal.introN goal 1) with
+      match (← liftSymM <| Grind.Goal.introN goal 1 hygienic) with
       | .goal _ goal => pure goal
       | .failed => throwError "`intro` failed, no binders to introduce"
     else
       let names ← ids.mapM fun id => match id with
         | `(binderIdent| $name:ident) => pure name.getId
         | `(binderIdent| $_) => mkFreshBinderNameForTactic `h
-      match (← liftSymM <| Grind.Goal.intros goal names) with
+      match (← liftSymM <| Grind.Goal.intros goal names hygienic) with
       | .goal _ goal => pure goal
       | .failed => throwError "`intro` failed"
   let goal ← if internalize then liftGrindM <| Grind.Goal.internalizeAll goal else pure goal
@@ -63,8 +64,9 @@ private def evalIntroCore (internalize : Bool) (ids : TSyntaxArray `Lean.binderI
 
 private def evalIntrosCore (internalize : Bool) : GrindTacticM Unit := do
   ensureSym
+  let hygienic := tactic.hygienic.get (← getOptions)
   let goal ← getMainGoal
-  match (← liftSymM <| Grind.Goal.intros goal #[]) with
+  match (← liftSymM <| Grind.Goal.intros goal #[] hygienic) with
   | .goal _ goal =>
     let goal ← if internalize then liftGrindM <| Grind.Goal.internalizeAll goal else pure goal
     replaceMainGoal [goal]
