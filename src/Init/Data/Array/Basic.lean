@@ -380,7 +380,7 @@ Returns the last element of an array, or panics if the array is empty.
 Safer alternatives include `Array.back`, which requires a proof the array is non-empty, and
 `Array.back?`, which returns an `Option`.
 -/
-@[inline]
+@[inline, expose]
 def back! [Inhabited α] (xs : Array α) : α :=
   xs[xs.size - 1]!
 
@@ -390,7 +390,7 @@ Returns the last element of an array, given a proof that the array is not empty.
 See `Array.back!` for the version that panics if the array is empty, or `Array.back?` for the
 version that returns an option.
 -/
-@[inline]
+@[inline, expose]
 def back (xs : Array α) (h : 0 < xs.size := by get_elem_tactic) : α :=
   xs[xs.size - 1]'(Nat.sub_one_lt_of_lt h)
 
@@ -400,7 +400,7 @@ Returns the last element of an array, or `none` if the array is empty.
 See `Array.back!` for the version that panics if the array is empty, or `Array.back` for the version
 that requires a proof the array is non-empty.
 -/
-@[inline]
+@[inline, expose]
 def back? (xs : Array α) : Option α :=
   xs[xs.size - 1]?
 
