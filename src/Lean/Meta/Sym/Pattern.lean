@@ -1016,7 +1016,12 @@ def instantiateLevelParamsS (e : Expr) (paramNames : List Name) (us : List Level
 
 inductive MkPreResultResult where
   | failed
-  | success (mvarsToCheckType : Array MVarId)
+  /--
+  `instMVars` are the metavariables created for instance arguments that `trySynthInstance` could
+  not discharge. They may still be assigned while processing pending constraints; any that remain
+  unassigned mean the pattern was not fully instantiated (see `main`).
+  -/
+  | success (mvarsToCheckType : Array MVarId) (instMVars : Array MVarId)
 
 def mkPreResult : UnifyM MkPreResultResult := do
   let us ← (← get).uAssignment.toList.mapM fun
@@ -1028,6 +1033,7 @@ def mkPreResult : UnifyM MkPreResultResult := do
   let tPending := (← get).tPending
   let mut args := #[]
   let mut mvarsToCheckType := #[]
+  let mut instMVars := #[]
   for h : i in *...eAssignment.size do
     if let .some val := eAssignment[i] then
       if tPending.contains i then
@@ -1050,12 +1056,15 @@ def mkPreResult : UnifyM MkPreResultResult := do
           continue
       let mvar ← mkFreshExprMVar type
       let mvar ← shareCommon mvar
+      if pattern.isInstance i then
+        -- Synthesis failed above; record the placeholder so `main` can verify it gets resolved.
+        instMVars := instMVars.push mvar.mvarId!
       if let some mask := (← read).pattern.checkTypeMask? then
         if mask[i]! then
           mvarsToCheckType := mvarsToCheckType.push mvar.mvarId!
       args := args.push mvar
   modify fun s => { s with args, us }
-  return .success mvarsToCheckType
+  return .success mvarsToCheckType instMVars
 
 def processPendingLevel : UnifyM Bool := do
   let uPending := (← get).uPending
@@ -1114,19 +1123,29 @@ abbrev UnifyM.run (pattern : Pattern) (unify : Bool) (zetaDelta : Bool) (k : Uni
 public structure MatchUnifyResult where
   us : List Level
   args : Array Expr
+  /--
+  Instance arguments that could not be synthesized, nor assigned while processing pending
+  constraints. `args` still holds a fresh, unassigned metavariable for each of them. A consumer that
+  splices `args` into a proof term (e.g. `BackwardRule.apply`) must treat a non-empty array as
+  failure; a purely structural matcher may ignore it.
+  -/
+  unresolvedInsts : Array MVarId := #[]
 
-def mkResult : UnifyM MatchUnifyResult := do
+def mkResult (unresolvedInsts : Array MVarId) : UnifyM MatchUnifyResult := do
   let s ← get
-  return { s with }
+  return { s with unresolvedInsts }
 
 def main (p : Pattern) (e : Expr) (unify : Bool) (zetaDelta : Bool) : SymM (Option (MatchUnifyResult)) :=
   UnifyM.run p unify zetaDelta do
     unless (← process p.pattern e) do return none
     match (← mkPreResult) with
     | .failed => return none
-    | .success mvarsToCheckType =>
+    | .success mvarsToCheckType instMVars =>
       unless (← processPending mvarsToCheckType) do return none
-      return some (← mkResult)
+      -- An instance may still be assigned while processing pending constraints; report only those
+      -- that remain unresolved so the caller decides whether that is fatal.
+      let unresolvedInsts ← instMVars.filterM fun m => return !(← m.isAssigned)
+      return some (← mkResult unresolvedInsts)
 
 /--
 Attempts to match expression `e` against pattern `p` using purely syntactic matching.
@@ -1139,8 +1158,9 @@ Matching fails if:
 - The term contains metavariables (use `unify?` instead)
 - Structural mismatch after reducible unfolding
 
-Instance arguments are deferred for later synthesis. Proof arguments are
-skipped via proof irrelevance.
+Instance arguments are synthesized (or assigned by unification). Any that cannot be resolved are
+reported in `MatchUnifyResult.unresolvedInsts` rather than silently left as loose metavariables in
+`args`. Proof arguments are skipped via proof irrelevance.
 -/
 public def Pattern.match? (p : Pattern) (e : Expr) (zetaDelta := true) : SymM (Option (MatchUnifyResult)) :=
   main p e (unify := false) (zetaDelta := zetaDelta)
@@ -1156,8 +1176,9 @@ Unlike `match?`, this handles terms containing metavariables by deferring
 constraints to Phase 2 unification. Use this when matching against goal
 expressions that may contain unsolved metavariables.
 
-Instance arguments are deferred for later synthesis. Proof arguments are
-skipped via proof irrelevance.
+Instance arguments are synthesized (or assigned by unification). Any that cannot be resolved are
+reported in `MatchUnifyResult.unresolvedInsts` rather than silently left as loose metavariables in
+`args`. Proof arguments are skipped via proof irrelevance.
 -/
 public def Pattern.unify? (p : Pattern) (e : Expr) (zetaDelta := true) : SymM (Option (MatchUnifyResult)) :=
   main p e (unify := true) (zetaDelta := zetaDelta)
