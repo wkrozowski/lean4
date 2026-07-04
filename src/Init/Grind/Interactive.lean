@@ -191,6 +191,15 @@ sequence of `grind` tactics.
 macro dot:unicode("· ", ". ") s:grindSeq : grind => `(grind| next%$dot =>%$dot $s:grindSeq )
 
 /--
+* `case tag => tac` focuses on the goal with case name `tag` and solves it using `tac`,
+  or else fails.
+* `case tag x₁ ... xₙ => tac` additionally renames the `n` most recent hypotheses
+  with inaccessible names to the given names.
+* `case tag₁ | tag₂ => tac` is equivalent to `(case tag₁ => tac); (case tag₂ => tac)`.
+-/
+syntax (name := «case») "case " sepBy1(caseArg, " | ") " => " grindSeq : grind
+
+/--
 `any_goals tac` applies the tactic `tac` to every goal,
 concatenating the resulting goals for successful tactic applications.
 If the tactic fails on all of the goals, the entire `any_goals` tactic fails.
