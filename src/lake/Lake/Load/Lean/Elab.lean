@@ -266,7 +266,6 @@ public def importConfigFile (cfg : LoadConfig) : LogIO Environment := do
     else
       h.lock (exclusive := false)
       let contents ← h.readToEnd
-      let errMsg := "compiled configuration is invalid; run with '-R' to reconfigure"
       match Json.parse contents with
       | .ok json =>
         match fromJson? json with
@@ -285,9 +284,9 @@ public def importConfigFile (cfg : LoadConfig) : LogIO Environment := do
           | .ok (opts : NameMap String) =>
             elabConfig (← acquireTrace h) opts
           | .error _ =>
-            error errMsg
+            elabConfig (← acquireTrace h) cfg.lakeOpts
       | .error _ =>
-        error errMsg
+        elabConfig (← acquireTrace h) cfg.lakeOpts
   if (← traceFile.pathExists) then
     validateTrace <| ← IO.FS.Handle.mk traceFile .read
   else
