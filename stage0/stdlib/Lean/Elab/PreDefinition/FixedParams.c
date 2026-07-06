@@ -13741,23 +13741,23 @@ return v___x_5237_;
 v___jp_5238_:
 {
 uint8_t v___x_5242_; 
-v___x_5242_ = lean_nat_dec_lt(v___y_5239_, v___y_5241_);
+v___x_5242_ = lean_nat_dec_lt(v___y_5240_, v___y_5241_);
 if (v___x_5242_ == 0)
 {
 lean_dec(v___y_5241_);
-lean_dec_ref(v___y_5240_);
-lean_dec(v___y_5239_);
+lean_dec(v___y_5240_);
+lean_dec_ref(v___y_5239_);
 return v_xs_5231_;
 }
 else
 {
 size_t v___x_5243_; size_t v___x_5244_; uint8_t v___x_5245_; 
-v___x_5243_ = lean_usize_of_nat(v___y_5239_);
-lean_dec(v___y_5239_);
+v___x_5243_ = lean_usize_of_nat(v___y_5240_);
+lean_dec(v___y_5240_);
 v___x_5244_ = lean_usize_of_nat(v___y_5241_);
 lean_dec(v___y_5241_);
-v___x_5245_ = l___private_Init_Data_Array_Basic_0__Array_anyMUnsafe_any___at___00__private_Lean_Elab_PreDefinition_FixedParams_0__Lean_Elab_FixedParamPerm_buildArgs_go_spec__0(v___y_5240_, v___x_5243_, v___x_5244_);
-lean_dec_ref(v___y_5240_);
+v___x_5245_ = l___private_Init_Data_Array_Basic_0__Array_anyMUnsafe_any___at___00__private_Lean_Elab_PreDefinition_FixedParams_0__Lean_Elab_FixedParamPerm_buildArgs_go_spec__0(v___y_5239_, v___x_5243_, v___x_5244_);
+lean_dec_ref(v___y_5239_);
 if (v___x_5245_ == 0)
 {
 return v_xs_5231_;
@@ -13799,15 +13799,15 @@ v___x_5257_ = lean_nat_dec_le(v_stop_5254_, v___x_5256_);
 if (v___x_5257_ == 0)
 {
 lean_dec(v_stop_5254_);
-v___y_5239_ = v_start_5253_;
-v___y_5240_ = v_array_5252_;
+v___y_5239_ = v_array_5252_;
+v___y_5240_ = v_start_5253_;
 v___y_5241_ = v___x_5256_;
 goto v___jp_5238_;
 }
 else
 {
-v___y_5239_ = v_start_5253_;
-v___y_5240_ = v_array_5252_;
+v___y_5239_ = v_array_5252_;
+v___y_5240_ = v_start_5253_;
 v___y_5241_ = v_stop_5254_;
 goto v___jp_5238_;
 }

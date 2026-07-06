@@ -4853,8 +4853,8 @@ if (lean_obj_tag(v_a_1428_) == 0)
 {
 uint8_t v_contextDependent_1434_; lean_object* v___x_1435_; lean_object* v___x_1437_; 
 lean_dec_ref(v_arg_1424_);
-lean_dec_ref(v_fn_1423_);
 lean_dec_ref_known(v_e_1410_, 2);
+lean_dec_ref(v_fn_1423_);
 v_contextDependent_1434_ = lean_ctor_get_uint8(v_a_1428_, 1);
 lean_dec_ref_known(v_a_1428_, 0);
 v___x_1435_ = l_Lean_Meta_Sym_Simp_mkRflResultCD(v_contextDependent_1434_);
@@ -4920,8 +4920,8 @@ else
 {
 lean_dec(v_a_1428_);
 lean_dec_ref(v_arg_1424_);
-lean_dec_ref_known(v_e_1410_, 2);
 lean_dec_ref(v_fn_1423_);
+lean_dec_ref_known(v_e_1410_, 2);
 return v___x_1444_;
 }
 }
@@ -4931,8 +4931,8 @@ else
 {
 lean_dec(v___x_1426_);
 lean_dec_ref(v_arg_1424_);
-lean_dec_ref(v_fn_1423_);
 lean_dec_ref_known(v_e_1410_, 2);
+lean_dec_ref(v_fn_1423_);
 return v___x_1427_;
 }
 }
@@ -7450,8 +7450,8 @@ if (lean_obj_tag(v_a_2322_) == 0)
 {
 uint8_t v_contextDependent_2324_; 
 lean_dec_ref(v_arg_2318_);
-lean_dec_ref(v_fn_2317_);
 lean_dec_ref_known(v_e_2299_, 2);
+lean_dec_ref(v_fn_2317_);
 v_contextDependent_2324_ = lean_ctor_get_uint8(v_a_2322_, 1);
 lean_dec_ref_known(v_a_2322_, 0);
 v_cd_2312_ = v_contextDependent_2324_;
@@ -7511,8 +7511,8 @@ if (lean_obj_tag(v_a_2322_) == 0)
 {
 uint8_t v_contextDependent_2353_; 
 lean_dec_ref(v_arg_2318_);
-lean_dec_ref(v_fn_2317_);
 lean_dec_ref_known(v_e_2299_, 2);
+lean_dec_ref(v_fn_2317_);
 v_contextDependent_2353_ = lean_ctor_get_uint8(v_a_2322_, 1);
 lean_dec_ref_known(v_a_2322_, 0);
 v_cd_2312_ = v_contextDependent_2353_;
@@ -7643,8 +7643,8 @@ lean_object* v___x_2358_; lean_object* v___x_2359_;
 lean_dec(v_a_2332_);
 lean_dec(v_a_2322_);
 lean_dec_ref(v_arg_2318_);
-lean_dec_ref_known(v_e_2299_, 2);
 lean_dec_ref(v_fn_2317_);
+lean_dec_ref_known(v_e_2299_, 2);
 v___x_2358_ = lean_obj_once(&l___private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpAppArgRange_visit___closed__1, &l___private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpAppArgRange_visit___closed__1_once, _init_l___private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpAppArgRange_visit___closed__1);
 v___x_2359_ = l_panic___at___00__private_Lean_Meta_Sym_Simp_App_0__Lean_Meta_Sym_Simp_simpOverApplied_visit_spec__0(v___x_2358_, v_a_2301_, v_a_2302_, v_a_2303_, v_a_2304_, v_a_2305_, v_a_2306_, v_a_2307_, v_a_2308_, v_a_2309_);
 return v___x_2359_;

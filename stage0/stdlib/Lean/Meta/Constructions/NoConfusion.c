@@ -18604,7 +18604,7 @@ v___jp_7104_:
 {
 lean_object* v___x_7108_; double v___x_7109_; double v___x_7110_; lean_object* v___x_7111_; lean_object* v___x_7112_; lean_object* v___x_7113_; lean_object* v___x_7114_; lean_object* v___x_7115_; 
 v___x_7108_ = lean_io_get_num_heartbeats();
-v___x_7109_ = lean_float_of_nat(v___y_7105_);
+v___x_7109_ = lean_float_of_nat(v___y_7106_);
 v___x_7110_ = lean_float_of_nat(v___x_7108_);
 v___x_7111_ = lean_box_float(v___x_7109_);
 v___x_7112_ = lean_box_float(v___x_7110_);
@@ -18614,7 +18614,7 @@ lean_ctor_set(v___x_7113_, 1, v___x_7112_);
 v___x_7114_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_7114_, 0, v_a_7107_);
 lean_ctor_set(v___x_7114_, 1, v___x_7113_);
-v___x_7115_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_mkNoConfusion_spec__2(v___x_7067_, v_hasTrace_7051_, v___x_7068_, v_options_7050_, v___x_7070_, v___y_7106_, v___f_7066_, v___x_7114_, v_a_7045_, v_a_7046_, v_a_7047_, v_a_7048_);
+v___x_7115_ = l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_mkNoConfusion_spec__2(v___x_7067_, v_hasTrace_7051_, v___x_7068_, v_options_7050_, v___x_7070_, v___y_7105_, v___f_7066_, v___x_7114_, v_a_7045_, v_a_7046_, v_a_7047_, v_a_7048_);
 return v___x_7115_;
 }
 v___jp_7116_:
@@ -18622,8 +18622,8 @@ v___jp_7116_:
 lean_object* v___x_7120_; 
 v___x_7120_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_7120_, 0, v_a_7119_);
-v___y_7105_ = v___y_7117_;
-v___y_7106_ = v___y_7118_;
+v___y_7105_ = v___y_7118_;
+v___y_7106_ = v___y_7117_;
 v_a_7107_ = v___x_7120_;
 goto v___jp_7104_;
 }
@@ -18667,8 +18667,8 @@ goto v_reusejp_7129_;
 }
 v_reusejp_7129_:
 {
-v___y_7105_ = v___y_7122_;
-v___y_7106_ = v___y_7123_;
+v___y_7105_ = v___y_7123_;
+v___y_7106_ = v___y_7122_;
 v_a_7107_ = v___x_7130_;
 goto v___jp_7104_;
 }

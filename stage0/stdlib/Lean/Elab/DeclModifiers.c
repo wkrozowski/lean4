@@ -8369,11 +8369,11 @@ v___y_2978_ = v___y_3057_;
 v_shortName_2979_ = v_shortName_2964_;
 v_currNamespace_2980_ = v_currNamespace_2962_;
 v___y_2981_ = v___y_3053_;
-v___y_2982_ = v___y_3052_;
+v___y_2982_ = v___y_3051_;
 v___y_2983_ = v___y_3056_;
-v___y_2984_ = v___y_3054_;
+v___y_2984_ = v___y_3052_;
 v___y_2985_ = v___y_3055_;
-v___y_2986_ = v___y_3051_;
+v___y_2986_ = v___y_3054_;
 goto v___jp_2977_;
 }
 else
@@ -8395,11 +8395,11 @@ v___y_2978_ = v___y_3057_;
 v_shortName_2979_ = v_shortName_3061_;
 v_currNamespace_2980_ = v_currNamespace_3062_;
 v___y_2981_ = v___y_3053_;
-v___y_2982_ = v___y_3052_;
+v___y_2982_ = v___y_3051_;
 v___y_2983_ = v___y_3056_;
-v___y_2984_ = v___y_3054_;
+v___y_2984_ = v___y_3052_;
 v___y_2985_ = v___y_3055_;
-v___y_2986_ = v___y_3051_;
+v___y_2986_ = v___y_3054_;
 goto v___jp_2977_;
 }
 else
@@ -8415,7 +8415,7 @@ v___x_3066_ = lean_obj_once(&l_Lean_Elab_checkNotAlreadyDeclared___redArg___lam_
 v___x_3067_ = lean_alloc_ctor(7, 2, 0);
 lean_ctor_set(v___x_3067_, 0, v___x_3065_);
 lean_ctor_set(v___x_3067_, 1, v___x_3066_);
-v___x_3068_ = l_Lean_throwError___at___00Lean_Elab_throwAlreadyDeclaredUniverseLevel___at___00Lean_Elab_expandDeclId_spec__1_spec__1___redArg(v___x_3067_, v___y_3053_, v___y_3052_, v___y_3056_, v___y_3054_, v___y_3055_, v___y_3051_);
+v___x_3068_ = l_Lean_throwError___at___00Lean_Elab_throwAlreadyDeclaredUniverseLevel___at___00Lean_Elab_expandDeclId_spec__1_spec__1___redArg(v___x_3067_, v___y_3053_, v___y_3051_, v___y_3056_, v___y_3052_, v___y_3055_, v___y_3054_);
 v_a_3069_ = lean_ctor_get(v___x_3068_, 0);
 v_isSharedCheck_3076_ = !lean_is_exclusive(v___x_3068_);
 if (v_isSharedCheck_3076_ == 0)
@@ -8468,10 +8468,10 @@ lean_dec(v_imported_3042_);
 lean_inc(v_shortName_2964_);
 lean_inc(v_currNamespace_2962_);
 v___x_3084_ = l_Lean_Name_append(v_currNamespace_2962_, v_shortName_2964_);
-v___y_3051_ = v___y_3083_;
-v___y_3052_ = v___y_3079_;
+v___y_3051_ = v___y_3079_;
+v___y_3052_ = v___y_3081_;
 v___y_3053_ = v___y_3078_;
-v___y_3054_ = v___y_3081_;
+v___y_3054_ = v___y_3083_;
 v___y_3055_ = v___y_3082_;
 v___y_3056_ = v___y_3080_;
 v___y_3057_ = v___x_3084_;
@@ -8504,10 +8504,10 @@ v_reusejp_3087_:
 {
 lean_object* v___x_3089_; 
 v___x_3089_ = l_Lean_MacroScopesView_review(v___x_3088_);
-v___y_3051_ = v___y_3083_;
-v___y_3052_ = v___y_3079_;
+v___y_3051_ = v___y_3079_;
+v___y_3052_ = v___y_3081_;
 v___y_3053_ = v___y_3078_;
-v___y_3054_ = v___y_3081_;
+v___y_3054_ = v___y_3083_;
 v___y_3055_ = v___y_3082_;
 v___y_3056_ = v___y_3080_;
 v___y_3057_ = v___x_3089_;
