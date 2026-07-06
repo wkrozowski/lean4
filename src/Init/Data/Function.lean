@@ -66,7 +66,7 @@ theorem Surjective.comp {α β γ} {g : β → γ} {f : α → β} (hg : Surject
       Exists.intro a (show g (f a) = c from Eq.trans (congrArg g ha) hb)
 
 /-- `LeftInverse g f` means that `g` is a left inverse to `f`. That is, `g ∘ f = id`. -/
-@[expose, grind]
+@[expose, grind, implicit_reducible]
 def LeftInverse {α β} (g : β → α) (f : α → β) : Prop :=
   ∀ x, g (f x) = x
 
@@ -76,7 +76,7 @@ def HasLeftInverse {α β} (f : α → β) : Prop :=
   Exists fun finv : β → α => LeftInverse finv f
 
 /-- `RightInverse g f` means that `g` is a right inverse to `f`. That is, `f ∘ g = id`. -/
-@[expose, grind]
+@[expose, grind, implicit_reducible]
 def RightInverse {α β} (g : β → α) (f : α → β) : Prop :=
   LeftInverse f g
 
