@@ -88,7 +88,7 @@ public def foldProjs (e : Expr) : MetaM Expr := do
 /--
 Instantiates metavariables, unfold reducible, and applies `shareCommon`.
 -/
-def preprocessExpr (e : Expr) : SymM Expr := do
+public def preprocessExpr (e : Expr) : SymM Expr := do
   shareCommon (← unfoldReducible (← instantiateMVars e))
 
 /--
