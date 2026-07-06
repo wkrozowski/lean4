@@ -501,6 +501,9 @@ def isAssignedMVar (e : Expr) : MetaM Bool :=
   | _            => return false
 
 partial def process (p : Expr) (e : Expr) : UnifyM Bool := do
+  -- A pattern subterm internalized into the same table as the target shares its pointer, so a
+  -- pointer match is a closed term equal to the target with no variables left to bind.
+  if isSameExpr p e then return true
   let e' := etaReduce e
   if !isSameExpr e e' then
     -- **Note**: We eagerly eta reduce patterns
