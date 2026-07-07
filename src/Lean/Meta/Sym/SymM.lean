@@ -325,14 +325,15 @@ def getIntExpr : SymM Expr := return (← getSharedExprs).intExpr
 
 /--
 Runs an `AlphaShareCommonM` action over the `SymM` hash-consing state.
-Returns `none` on a check violation; the terms hash-consed before the failure
-are kept in the state, since they individually satisfy the invariants.
+On a check violation, returns the cache accumulated before the failure as `.error`;
+the terms hash-consed before the failure are kept in the state, since they
+individually satisfy the invariants.
 -/
-def runShareCommonM (k : AlphaShareCommonM α) (ctx : AlphaShareCommon.Context) : SymM (Option α) := do
+def runShareCommonM (k : AlphaShareCommonM α) (ctx : AlphaShareCommon.Context) : SymM (Except AlphaShareCommon.Cache α) := do
   let share ← modifyGet fun s => (s.share, { s with share := {} })
   match k ctx share with
-  | .ok a share => modify fun s => { s with share }; return some a
-  | .error _ share => modify fun s => { s with share }; return none
+  | .ok a share => modify fun s => { s with share }; return .ok a
+  | .error cache share => modify fun s => { s with share }; return .error cache
 
 /--
 Runs `x` with the `shareCommon` kernel-projection check disabled.
@@ -375,12 +376,14 @@ private def repairShareViolation (e : Expr) : SymM Expr := do
 Applies hash-consing to `e`. Recall that all expressions in a `grind` goal have
 been hash-consed. We perform this step before we internalize expressions.
 
-This function does not try to `unfoldReducible` and `foldProjs` like `shareCommon`
+This function does not try to `unfoldReducible` and `foldProjs` like `shareCommon`.
+`cache` may contain the results accumulated by a run of `shareCommon` that was
+interrupted by a check violation; see `repairAndShare`.
 -/
-def shareCommonWithoutChecks (e : Expr) : SymM Expr := do
-  match (← runShareCommonM (shareCommonAlpha e) { env := (← getEnv) }) with
-  | some e => return e
-  | none => unreachable!
+def shareCommonWithoutChecks (e : Expr) (cache : AlphaShareCommon.Cache := {}) : SymM Expr := do
+  match (← runShareCommonM (shareCommonAlpha e cache) { env := (← getEnv) }) with
+  | .ok e => return e
+  | .error _ => unreachable!
 
 /--
 Fallback used by `shareCommon` and `shareCommonInc` after a check violation:
@@ -390,13 +393,15 @@ eliminate all violations (e.g., a reducible definition that cannot be unfolded b
 of smart-unfolding blocking reduction), the term is admitted as-is; other parts of the
 system report this kind of issue.
 -/
-private def repairAndShare (e : Expr) : SymM Expr := do
+private def repairAndShare (e : Expr) (cache : AlphaShareCommon.Cache) : SymM Expr := do
   -- `unfoldReducible` and `foldProjs` enter binders using `Meta.transform`, which
   -- requires a closed term. Open terms are admitted without repair.
   -- assert! !e.hasLooseBVars
   if e.hasLooseBVars then throwError "internal error, expression has loose bound variables at `shareCommon`{indentExpr e}"
   let e ← repairShareViolation e
-  shareCommonWithoutChecks e
+  -- The repair only rebuilds the violating parts of the term, so the subterms visited
+  -- by the interrupted run still occur in `e` and their cached results remain valid.
+  shareCommonWithoutChecks e cache
 
 /--
 Applies hash-consing to `e`. Recall that all expressions in a `grind` goal have
@@ -410,8 +415,8 @@ found, the term is repaired using `unfoldReducible`/`foldProjs` and re-processed
 -/
 def shareCommon (e : Expr) : SymM Expr := do
   match (← runShareCommonM (shareCommonAlpha e) (← checkedShareCtx)) with
-  | some e => return e
-  | none => repairAndShare e
+  | .ok e => return e
+  | .error cache => repairAndShare e cache
 
 /--
 Incremental variant of `shareCommon` for expressions constructed from already-shared subterms.
@@ -433,11 +438,12 @@ let result ← shareCommonInc result -- efficiently restore sharing
 -/
 def shareCommonInc (e : Expr) : SymM Expr := do
   match (← runShareCommonM (shareCommonAlphaInc e) (← checkedShareCtx)) with
-  | some e => return e
-  | none =>
+  | .ok e => return e
+  | .error _ =>
     -- The repair destroys the pointer sharing that justified the incremental
-    -- variant, so we fall back to the full `shareCommonAlpha` pass.
-    repairAndShare e
+    -- variant, so we fall back to the full `shareCommonAlpha` pass. The incremental
+    -- variant does not use a cache, so there is nothing to reuse here.
+    repairAndShare e {}
 
 @[inherit_doc shareCommonInc]
 abbrev share (e : Expr) : SymM Expr :=
