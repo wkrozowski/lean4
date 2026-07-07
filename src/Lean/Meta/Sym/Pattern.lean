@@ -1013,9 +1013,16 @@ def noPending : UnifyM Bool := do
   let s ← get
   return s.ePending.isEmpty && s.uPending.isEmpty && s.iPending.isEmpty
 
-def instantiateLevelParamsS (e : Expr) (paramNames : List Name) (us : List Level) : SymM Expr :=
-  -- We do not assume `e` is maximally shared
-  shareCommon (e.instantiateLevelParams paramNames us)
+def instantiateLevelParamsS (e : Expr) (paramNames : List Name) (us : List Level) : SymM Expr := do
+  /-
+  We do not assume `e` is maximally shared.
+  **Note:** We disable checks here because `e` may contain loose bound variables,
+  and the repair procedure only works on closed terms. This is ok because this
+  function only creates temporary terms for performing definitional equality tests
+  and synthesizing instances (see `mkPreResult`). These terms are not internalized;
+  terms that survive into the goal go through checked entry points.
+  -/
+  shareCommonWithoutChecks (e.instantiateLevelParams paramNames us)
 
 inductive MkPreResultResult where
   | failed
