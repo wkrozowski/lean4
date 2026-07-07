@@ -727,6 +727,18 @@ def withDoBlockResultType (doBlockResultType : Expr) (k : DoElabM α) : DoElabM 
   withReader (fun ctx => { ctx with doBlockResultType }) k
 
 /--
+Refine the result type of the `do` block and its `return` continuation for the scope of `k`,
+as needed for a dependent `match` branch where a bare `return` targets the refined branch type.
+
+Relies on the `return` continuation result type coinciding with the `do` block result type, which
+holds for the tail-position dependent `match` this serves.
+-/
+def withRefinedResultType (doBlockResultType : Expr) (k : DoElabM α) : DoElabM α := do
+  let contInfo := (← read).contInfo.toContInfo
+  let contInfo := { contInfo with returnCont.resultType := doBlockResultType }
+  withReader (fun ctx => { ctx with doBlockResultType, contInfo := contInfo.toContInfoRef }) k
+
+/--
 Prepare the context for elaborating the body of a loop.
 This includes setting the return continuation, break continuation, continue continuation, as
 well as the changed result type of the `do` block in the loop body.
