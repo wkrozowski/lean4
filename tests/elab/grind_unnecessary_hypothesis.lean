@@ -56,7 +56,7 @@ set_option linter.unusedVariables true
 warning: Variable name `hi` is not explicitly referenced.
 
 Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
-  _̲hi
+  [apply] _hi
 
 Note: This linter can be disabled with `set_option linter.unusedVariables false`
 -/
