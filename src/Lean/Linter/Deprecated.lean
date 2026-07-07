@@ -10,6 +10,7 @@ public import Lean.Meta.Basic
 import Lean.Linter.Init
 import Lean.Elab.InfoTree.Main
 import Lean.ExtraModUses
+import Lean.Compiler.InitAttr
 import Init.Omega
 
 public section
@@ -31,9 +32,13 @@ builtin_initialize deprecatedAttr : ParametricAttribute DeprecationEntry ←
   registerParametricAttribute {
     name := `deprecated
     descr := "mark declaration as deprecated",
-    getParam := fun _ stx => do
+    getParam := fun declName stx => do
       let `(attr| deprecated $[$id?]? $[$text?]? $[(since := $since?)]?) := stx
         | throwError "Invalid `[deprecated]` attribute syntax"
+      if let some info := (← getEnv).find? declName then
+        if info.type.isAppOf ``Lean.Option && (getRegularInitFnNameFor? (← getEnv) declName).isSome then
+          logWarning m!"`{.ofConstName declName true}` is an option; deprecate it using the \
+            `deprecation?` field of its definition instead of the `[deprecated]` attribute"
       let newName? ← id?.mapM Elab.realizeGlobalConstNoOverloadWithInfo
       if let some newName := newName? then
         recordExtraModUseFromDecl (isMeta := false) newName
