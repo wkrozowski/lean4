@@ -9,6 +9,9 @@
     {
       "name": "release",
       "displayName": "Release build config",
+      "cacheVariables": {
+        "STRIP_BINARIES": "OFF"
+      },
       "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/release"
     },
