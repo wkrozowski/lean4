@@ -260,22 +260,44 @@ structure ParametricAttributeImpl (α : Type) extends AttributeImplCore where
   filterExport : Environment → Name → α → Bool := fun env n _ =>
     env.contains (skipRealize := false) n
 
-def registerParametricAttribute (impl : ParametricAttributeImpl α) : IO (ParametricAttribute α) := do
-  let ext : PersistentEnvExtension (Name × α) (Name × α) (List Name × NameMap α) ← registerPersistentEnvExtension {
-    name            := impl.ref
+/--
+Registers the persistent environment extension backing a parametric attribute.
+
+This takes the extension-relevant fields directly rather than a `ParametricAttributeImpl`, so the
+extension can be created independently of the attribute's `getParam`. This lets `getParam` consult
+the extension (via `getParam?`) for entries set on other declarations — see
+`registerParametricAttributeForExt`.
+-/
+def registerParametricAttributeExt (ref : Name) (preserveOrder : Bool := false)
+    (filterExport : Environment → Name → α → Bool := fun env n _ =>
+      env.contains (skipRealize := false) n) :
+    IO (PersistentEnvExtension (Name × α) (Name × α) (List Name × NameMap α)) :=
+  registerPersistentEnvExtension {
+    name            := ref
     mkInitial       := pure ([], {})
     addImportedFn   := fun _ => pure ([], {})
     addEntryFn      := fun (decls, m) (p : Name × α) => (p.1 :: decls, m.insert p.1 p.2)
     exportEntriesFnEx := fun env (decls, m) => Id.run do
-      let all := if impl.preserveOrder then
+      let all := if preserveOrder then
         decls.toArray.reverse.filterMap (fun n => return (n, ← m.find? n))
       else
         let r := m.foldl (fun a n p => a.push (n, p)) #[]
         r.qsort (fun a b => Name.quickLt a.1 b.1)
-      let exported := all.filter (fun ⟨n, a⟩ => impl.filterExport env n a)
+      let exported := all.filter (fun ⟨n, a⟩ => filterExport env n a)
       { exported, server := exported, «private» := all }
     statsFn         := fun (_, m) => "parametric attribute" ++ Format.line ++ "number of local entries: " ++ format m.size
   }
+
+/--
+Registers a parametric attribute over an already-created extension `ext` (see
+`registerParametricAttributeExt`).
+
+`ext` must have been created with the same `preserveOrder` as `impl`, otherwise `getParam?` and the
+export logic will disagree on how entries are ordered.
+-/
+def registerParametricAttributeForExt (impl : ParametricAttributeImpl α)
+    (ext : PersistentEnvExtension (Name × α) (Name × α) (List Name × NameMap α)) :
+    IO (ParametricAttribute α) := do
   let attrImpl : AttributeImpl := {
     impl.toAttributeImplCore with
     add   := fun decl stx kind => do
@@ -289,6 +311,10 @@ def registerParametricAttribute (impl : ParametricAttributeImpl α) : IO (Parame
   }
   registerBuiltinAttribute attrImpl
   pure { attr := attrImpl, ext, preserveOrder := impl.preserveOrder }
+
+def registerParametricAttribute (impl : ParametricAttributeImpl α) : IO (ParametricAttribute α) := do
+  let ext ← registerParametricAttributeExt (α := α) impl.ref impl.preserveOrder impl.filterExport
+  registerParametricAttributeForExt impl ext
 
 namespace ParametricAttribute
 
