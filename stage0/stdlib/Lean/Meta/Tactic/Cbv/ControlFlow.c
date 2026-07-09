@@ -9532,8 +9532,8 @@ return v___x_2805_;
 else
 {
 lean_object* v_val_2824_; lean_object* v___x_2825_; 
-lean_dec_ref_known(v___x_2750_, 1);
 lean_dec(v_a_2751_);
+lean_dec_ref_known(v___x_2750_, 1);
 lean_dec(v___x_2749_);
 v_val_2824_ = lean_ctor_get(v_canUnfold_x3f_2743_, 0);
 lean_inc(v_val_2824_);

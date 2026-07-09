@@ -54788,12 +54788,12 @@ v___jp_17053_:
 if (v___y_17059_ == 0)
 {
 lean_object* v___x_17061_; 
-lean_dec_ref(v___y_17054_);
+lean_dec_ref(v___y_17055_);
 lean_dec(v_a_17049_);
 if (v_isShared_17052_ == 0)
 {
 lean_ctor_set_tag(v___x_17051_, 1);
-lean_ctor_set(v___x_17051_, 0, v___y_17057_);
+lean_ctor_set(v___x_17051_, 0, v___y_17058_);
 v___x_17061_ = v___x_17051_;
 goto v_reusejp_17060_;
 }
@@ -54801,7 +54801,7 @@ else
 {
 lean_object* v_reuseFailAlloc_17062_; 
 v_reuseFailAlloc_17062_ = lean_alloc_ctor(1, 1, 0);
-lean_ctor_set(v_reuseFailAlloc_17062_, 0, v___y_17057_);
+lean_ctor_set(v_reuseFailAlloc_17062_, 0, v___y_17058_);
 v___x_17061_ = v_reuseFailAlloc_17062_;
 goto v_reusejp_17060_;
 }
@@ -54814,8 +54814,8 @@ else
 {
 lean_object* v___x_17063_; 
 lean_del_object(v___x_17051_);
-v___x_17063_ = l___private_Lean_Elab_Tactic_Simp_0__Lean_Elab_Tactic_withLoopChecking_go___at___00Lean_Elab_Tactic_evalSimp_spec__0___redArg(v_a_17049_, v___y_17059_, v___y_17056_, v___y_17058_, v___y_17054_, v___y_17055_);
-lean_dec_ref(v___y_17054_);
+v___x_17063_ = l___private_Lean_Elab_Tactic_Simp_0__Lean_Elab_Tactic_withLoopChecking_go___at___00Lean_Elab_Tactic_evalSimp_spec__0___redArg(v_a_17049_, v___y_17059_, v___y_17056_, v___y_17054_, v___y_17055_, v___y_17057_);
+lean_dec_ref(v___y_17055_);
 if (lean_obj_tag(v___x_17063_) == 0)
 {
 lean_object* v___x_17065_; uint8_t v_isShared_17066_; uint8_t v_isSharedCheck_17070_; 
@@ -54842,7 +54842,7 @@ lean_object* v___x_17068_;
 if (v_isShared_17066_ == 0)
 {
 lean_ctor_set_tag(v___x_17065_, 1);
-lean_ctor_set(v___x_17065_, 0, v___y_17057_);
+lean_ctor_set(v___x_17065_, 0, v___y_17058_);
 v___x_17068_ = v___x_17065_;
 goto v_reusejp_17067_;
 }
@@ -54850,7 +54850,7 @@ else
 {
 lean_object* v_reuseFailAlloc_17069_; 
 v_reuseFailAlloc_17069_ = lean_alloc_ctor(1, 1, 0);
-lean_ctor_set(v_reuseFailAlloc_17069_, 0, v___y_17057_);
+lean_ctor_set(v_reuseFailAlloc_17069_, 0, v___y_17058_);
 v___x_17068_ = v_reuseFailAlloc_17069_;
 goto v_reusejp_17067_;
 }
@@ -54863,7 +54863,7 @@ return v___x_17068_;
 else
 {
 lean_object* v_a_17072_; lean_object* v___x_17074_; uint8_t v_isShared_17075_; uint8_t v_isSharedCheck_17079_; 
-lean_dec_ref(v___y_17057_);
+lean_dec_ref(v___y_17058_);
 v_a_17072_ = lean_ctor_get(v___x_17063_, 0);
 v_isSharedCheck_17079_ = !lean_is_exclusive(v___x_17063_);
 if (v_isSharedCheck_17079_ == 0)
@@ -54920,10 +54920,10 @@ lean_inc_ref(v_a_17085_);
 v___x_17088_ = l_Lean_Exception_toMessageData(v_a_17085_);
 v___x_17089_ = l_Lean_MessageData_hasTag(v___f_17038_, v___x_17088_);
 v___y_17054_ = v___y_17081_;
-v___y_17055_ = v___y_17083_;
-v___y_17056_ = v___y_17082_;
-v___y_17057_ = v_a_17085_;
-v___y_17058_ = v___y_17084_;
+v___y_17055_ = v___y_17082_;
+v___y_17056_ = v___y_17083_;
+v___y_17057_ = v___y_17084_;
+v___y_17058_ = v_a_17085_;
 v___y_17059_ = v___x_17089_;
 goto v___jp_17053_;
 }
@@ -54931,10 +54931,10 @@ else
 {
 lean_dec_ref(v___f_17038_);
 v___y_17054_ = v___y_17081_;
-v___y_17055_ = v___y_17083_;
-v___y_17056_ = v___y_17082_;
-v___y_17057_ = v_a_17085_;
-v___y_17058_ = v___y_17084_;
+v___y_17055_ = v___y_17082_;
+v___y_17056_ = v___y_17083_;
+v___y_17057_ = v___y_17084_;
+v___y_17058_ = v_a_17085_;
 v___y_17059_ = v___x_17087_;
 goto v___jp_17053_;
 }
@@ -54942,7 +54942,7 @@ goto v___jp_17053_;
 else
 {
 lean_object* v___x_17090_; 
-lean_dec_ref(v___y_17081_);
+lean_dec_ref(v___y_17082_);
 lean_del_object(v___x_17051_);
 lean_dec(v_a_17049_);
 lean_dec_ref(v___f_17038_);
@@ -55602,10 +55602,10 @@ lean_dec(v_stx_17034_);
 v_a_17250_ = lean_ctor_get(v___x_17206_, 0);
 lean_inc(v_a_17250_);
 lean_dec_ref_known(v___x_17206_, 1);
-v___y_17081_ = v___y_17201_;
-v___y_17082_ = v___y_17199_;
-v___y_17083_ = v___y_17202_;
-v___y_17084_ = v___y_17200_;
+v___y_17081_ = v___y_17200_;
+v___y_17082_ = v___y_17201_;
+v___y_17083_ = v___y_17199_;
+v___y_17084_ = v___y_17202_;
 v_a_17085_ = v_a_17250_;
 goto v___jp_17080_;
 }
@@ -55617,10 +55617,10 @@ lean_dec(v_stx_17034_);
 v_a_17251_ = lean_ctor_get(v___x_17203_, 0);
 lean_inc(v_a_17251_);
 lean_dec_ref_known(v___x_17203_, 1);
-v___y_17081_ = v___y_17201_;
-v___y_17082_ = v___y_17199_;
-v___y_17083_ = v___y_17202_;
-v___y_17084_ = v___y_17200_;
+v___y_17081_ = v___y_17200_;
+v___y_17082_ = v___y_17201_;
+v___y_17083_ = v___y_17199_;
+v___y_17084_ = v___y_17202_;
 v_a_17085_ = v_a_17251_;
 goto v___jp_17080_;
 }
