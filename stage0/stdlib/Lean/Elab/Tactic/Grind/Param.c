@@ -45,7 +45,7 @@ lean_object* l_Lean_extractMacroScopes(lean_object*);
 uint8_t l_Lean_Name_isPrefixOf(lean_object*, lean_object*);
 lean_object* l___private_Lean_ResolveName_0__Lean_resolveLocalName_go(lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t l_Lean_MacroScopesView_isSuffixOf(lean_object*, lean_object*);
-lean_object* lean_private_to_user_name(lean_object*);
+lean_object* l_Lean_privateToUserName_x3f(lean_object*);
 uint8_t lean_usize_dec_lt(size_t, size_t);
 lean_object* lean_array_uget(lean_object*, size_t);
 lean_object* lean_array_uset(lean_object*, size_t, lean_object*);
@@ -61,7 +61,7 @@ lean_object* l_Std_DTreeMap_Internal_Impl_Const_get_x3f___at___00Lean_NameMap_fi
 lean_object* l_Lean_MessageData_ofFormat(lean_object*);
 lean_object* l_Lean_MessageData_ofSyntax(lean_object*);
 lean_object* l_Lean_indentD(lean_object*);
-uint8_t lean_get_reducibility_status(lean_object*, lean_object*);
+uint8_t l_Lean_getReducibilityStatusCore(lean_object*, lean_object*);
 lean_object* l_Lean_PersistentArray_push___redArg(lean_object*, lean_object*);
 lean_object* l_Lean_indentExpr(lean_object*);
 uint8_t l_Lean_Expr_isForall(lean_object*);
@@ -121,7 +121,7 @@ lean_object* l_Lean_MessageData_ofList(lean_object*);
 lean_object* l_Lean_Meta_Grind_EMatchTheorems_getKindsFor(lean_object*, lean_object*);
 lean_object* l_List_appendTR___redArg(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Grind_mkEMatchEqTheoremsForDef_x3f(lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* l_Array_toPArray_x27___redArg(lean_object*);
+lean_object* l_Lean_Array_toPArray_x27___redArg(lean_object*);
 lean_object* l_Lean_PersistentArray_append___redArg(lean_object*, lean_object*);
 uint8_t l_Lean_Meta_Grind_EMatchTheoremKind_isEqLhs(lean_object*);
 uint8_t l_Lean_Meta_Grind_EMatchTheoremKind_isDefault(lean_object*);
@@ -4454,7 +4454,7 @@ v___x_1330_ = lean_st_ref_get(v___y_1328_);
 v_env_1331_ = lean_ctor_get(v___x_1330_, 0);
 lean_inc_ref(v_env_1331_);
 lean_dec(v___x_1330_);
-v___x_1332_ = lean_get_reducibility_status(v_env_1331_, v_declName_1327_);
+v___x_1332_ = l_Lean_getReducibilityStatusCore(v_env_1331_, v_declName_1327_);
 v___x_1333_ = lean_box(v___x_1332_);
 v___x_1334_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_1334_, 0, v___x_1333_);
@@ -5071,7 +5071,7 @@ goto v_resetjp_1474_;
 v_resetjp_1474_:
 {
 lean_object* v___x_1477_; lean_object* v___x_1478_; lean_object* v___x_1480_; 
-v___x_1477_ = l_Array_toPArray_x27___redArg(v_val_1464_);
+v___x_1477_ = l_Lean_Array_toPArray_x27___redArg(v_val_1464_);
 lean_dec(v_val_1464_);
 v___x_1478_ = l_Lean_PersistentArray_append___redArg(v_extra_1467_, v___x_1477_);
 lean_dec_ref(v___x_1477_);
@@ -10912,7 +10912,7 @@ lean_dec_ref_known(v___x_3367_, 1);
 v_fullDeclView_3369_ = l_Lean_extractMacroScopes(v_val_3368_);
 v_name_3392_ = lean_ctor_get(v_fullDeclView_3369_, 0);
 lean_inc_n(v_name_3392_, 2);
-v___x_3393_ = lean_private_to_user_name(v_name_3392_);
+v___x_3393_ = l_Lean_privateToUserName_x3f(v_name_3392_);
 if (lean_obj_tag(v___x_3393_) == 0)
 {
 v___y_3371_ = v_name_3392_;

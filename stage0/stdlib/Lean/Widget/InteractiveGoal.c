@@ -73,7 +73,7 @@ uint8_t l_Lean_MetavarKind_isSyntheticOpaque(uint8_t);
 extern lean_object* l_Lean_instInhabitedFileMap_default;
 lean_object* l_Lean_Server_WithRpcRef_mk___redArg(lean_object*);
 lean_object* l_Lean_Meta_getGoalPrefix(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 lean_object* l_Lean_Meta_withLCtx___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_throwError___redArg(lean_object*, lean_object*, lean_object*);
 lean_object* l_List_reverse___redArg(lean_object*);
@@ -13610,8 +13610,7 @@ lean_object* v_a_3745_; lean_object* v___x_3746_; uint8_t v___x_3747_; lean_obje
 v_a_3745_ = lean_ctor_get(v___x_3742_, 0);
 lean_inc(v_a_3745_);
 lean_dec_ref_known(v___x_3742_, 1);
-lean_inc(v_userName_3703_);
-v___x_3746_ = lean_erase_macro_scopes(v_userName_3703_);
+v___x_3746_ = l_Lean_Name_eraseMacroScopes(v_userName_3703_);
 v___x_3747_ = 1;
 v___x_3748_ = l_Lean_Name_toStringWithToken___at___00Lean_Name_toString_spec__0(v___x_3746_, v___x_3747_);
 if (v_isShared_3740_ == 0)

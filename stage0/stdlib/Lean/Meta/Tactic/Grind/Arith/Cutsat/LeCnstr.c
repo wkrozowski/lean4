@@ -10688,10 +10688,10 @@ goto v_resetjp_3319_;
 }
 v_resetjp_3319_:
 {
-uint8_t v___x_3322_; 
-v___x_3322_ = lean_unbox(v_a_3318_);
+uint8_t v_verbose_3322_; 
+v_verbose_3322_ = lean_ctor_get_uint8(v_a_3318_, 0);
 lean_dec(v_a_3318_);
-if (v___x_3322_ == 0)
+if (v_verbose_3322_ == 0)
 {
 lean_object* v___x_3323_; lean_object* v___x_3325_; 
 lean_dec_ref(v_e_3309_);

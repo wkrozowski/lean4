@@ -189,10 +189,10 @@ lean_object* l_EStateM_get(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_addBuiltinDocString(lean_object*, lean_object*);
 lean_object* l_String_Slice_Pos_revSkipWhile___redArg(lean_object*, lean_object*, lean_object*);
 lean_object* l_WellFounded_opaqueFix_u2083___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_simp_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_simpMacroScopes(lean_object*);
 lean_object* l_Lean_Data_Trie_find_x3f___redArg(lean_object*, lean_object*);
 lean_object* l_Lean_Name_toStringWithSep(lean_object*, uint8_t, lean_object*, lean_object*);
-uint8_t lean_is_inaccessible_user_name(lean_object*);
+uint8_t l_Lean_Name_isInaccessibleUserName(lean_object*);
 uint8_t l_Lean_Name_hasMacroScopes(lean_object*);
 uint8_t l___private_Init_Data_ToString_Name_0__Lean_Name_toStringWithToken_maybePseudoSyntax(lean_object*);
 uint8_t l_Lean_Syntax_isTokenAntiquot(lean_object*);
@@ -11272,7 +11272,7 @@ else
 {
 uint8_t v___x_3837_; 
 lean_inc(v_n_3832_);
-v___x_3837_ = lean_is_inaccessible_user_name(v_n_3832_);
+v___x_3837_ = l_Lean_Name_isInaccessibleUserName(v_n_3832_);
 if (v___x_3837_ == 0)
 {
 uint8_t v___x_3838_; 
@@ -11412,7 +11412,7 @@ lean_inc(v_info_3885_);
 v_val_3886_ = lean_ctor_get(v_a_3884_, 2);
 v_table_3887_ = lean_ctor_get(v_a_3876_, 1);
 lean_inc(v_val_3886_);
-v___x_3888_ = lean_simp_macro_scopes(v_val_3886_);
+v___x_3888_ = l_Lean_Name_simpMacroScopes(v_val_3886_);
 v___x_3889_ = l_Lean_PrettyPrinter_Formatter_getExprPos_x3f(v_a_3884_);
 lean_dec_ref_known(v_a_3884_, 4);
 v___x_3890_ = 1;

@@ -83,7 +83,7 @@ lean_object* l_Lean_Environment_setExporting(lean_object*, uint8_t);
 lean_object* l_Lean_PersistentHashMap_mkEmptyEntriesArray(lean_object*, lean_object*);
 lean_object* lean_st_ref_set(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_getId(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 lean_object* l_Lean_Parser_getSyntaxKindOfParserAlias_x3f(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
@@ -11808,7 +11808,8 @@ v_resetjp_4248_:
 lean_object* v___x_4251_; lean_object* v___x_4252_; lean_object* v___x_4253_; 
 v___x_4251_ = l_Lean_Syntax_getId(v_id_4241_);
 lean_dec(v_id_4241_);
-v___x_4252_ = lean_erase_macro_scopes(v___x_4251_);
+v___x_4252_ = l_Lean_Name_eraseMacroScopes(v___x_4251_);
+lean_dec(v___x_4251_);
 v___x_4253_ = l_Lean_Parser_getSyntaxKindOfParserAlias_x3f(v___x_4252_);
 lean_dec(v___x_4252_);
 if (lean_obj_tag(v___x_4253_) == 0)

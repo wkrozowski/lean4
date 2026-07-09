@@ -82,7 +82,7 @@ lean_object* l_Lean_Syntax_SepArray_ofElems(lean_object*, lean_object*);
 lean_object* l_Lean_mkCIdent(lean_object*);
 extern lean_object* l_Lean_NameSet_empty;
 lean_object* l_Lean_TSyntax_getId(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 uint8_t lean_name_eq(lean_object*, lean_object*);
 lean_object* l_Lean_PersistentArray_push___redArg(lean_object*, lean_object*);
 lean_object* l_Lean_Name_str___override(lean_object*, lean_object*);
@@ -6195,7 +6195,8 @@ lean_closure_set(v_mkStructInst_2206_, 0, v_structName_2142_);
 v_seenFields_2207_ = l_Lean_NameSet_empty;
 v_fields_2208_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_forIn_x27Unsafe_loop___at___00Lean_Elab_Tactic_elabConfig_spec__4___closed__0));
 v___x_2209_ = l_Lean_TSyntax_getId(v_option_2203_);
-v___x_2210_ = lean_erase_macro_scopes(v___x_2209_);
+v___x_2210_ = l_Lean_Name_eraseMacroScopes(v___x_2209_);
+lean_dec(v___x_2209_);
 v___x_2211_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00Lean_Elab_Tactic_mkConfigItemViews_spec__0___closed__7));
 v___x_2212_ = lean_name_eq(v___x_2210_, v___x_2211_);
 if (v___x_2212_ == 0)

@@ -58,7 +58,7 @@ lean_object* l_Lean_LocalContext_findFromUserName_x3f(lean_object*, lean_object*
 lean_object* l_Lean_LocalDecl_toExpr(lean_object*);
 lean_object* l_Lean_SourceInfo_fromRef(lean_object*, uint8_t);
 lean_object* l_Array_mkArray0(lean_object*);
-lean_object* lean_mk_syntax_ident(lean_object*);
+lean_object* l_Lean_mkIdent(lean_object*);
 lean_object* l_Lean_Syntax_node1(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node2(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node3(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -871,7 +871,7 @@ v___x_259_ = lean_alloc_ctor(2, 2, 0);
 lean_ctor_set(v___x_259_, 0, v___x_249_);
 lean_ctor_set(v___x_259_, 1, v___x_258_);
 v___x_260_ = ((lean_object*)(l___private_Lean_Elab_Tactic_Split_0__Lean_Elab_Tactic_evalSplit_throwTermUnsupported___lam__0___closed__13));
-v___x_261_ = lean_mk_syntax_ident(v_name_240_);
+v___x_261_ = l_Lean_mkIdent(v_name_240_);
 v___x_262_ = l_Lean_Syntax_node1(v___x_249_, v___x_254_, v___x_261_);
 v___x_263_ = l_Lean_Syntax_node1(v___x_249_, v___x_260_, v___x_262_);
 v___x_264_ = l_Lean_Syntax_node2(v___x_249_, v___x_257_, v___x_259_, v___x_263_);

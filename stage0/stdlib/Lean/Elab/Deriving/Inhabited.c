@@ -68,7 +68,7 @@ lean_object* l_Lean_Name_mkStr1(lean_object*);
 lean_object* l_Lean_Elab_Deriving_mkContext(lean_object*, lean_object*, lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_array_get(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Name_append(lean_object*, lean_object*);
-lean_object* lean_mk_syntax_ident(lean_object*);
+lean_object* l_Lean_mkIdent(lean_object*);
 lean_object* l_Lean_mkCIdent(lean_object*);
 lean_object* l_Lean_Core_mkFreshUserName(lean_object*, lean_object*, lean_object*);
 lean_object* lean_array_push(lean_object*, lean_object*);
@@ -4209,7 +4209,7 @@ lean_object* v_ref_1245_; lean_object* v_quotContext_1246_; lean_object* v_currM
 v_ref_1245_ = lean_ctor_get(v___y_1227_, 5);
 v_quotContext_1246_ = lean_ctor_get(v___y_1227_, 10);
 v_currMacroScope_1247_ = lean_ctor_get(v___y_1227_, 11);
-v___x_1248_ = lean_mk_syntax_ident(v_a_1239_);
+v___x_1248_ = l_Lean_mkIdent(v_a_1239_);
 lean_inc(v___x_1248_);
 v___x_1249_ = lean_array_push(v_fst_1240_, v___x_1248_);
 v___x_1250_ = 0;
@@ -12969,7 +12969,7 @@ return v___x_4693_;
 v___jp_4467_:
 {
 lean_object* v___x_4476_; lean_object* v___x_4477_; lean_object* v___x_4478_; 
-v___x_4476_ = lean_mk_syntax_ident(v_instName_4462_);
+v___x_4476_ = l_Lean_mkIdent(v_instName_4462_);
 v___x_4477_ = l_Lean_mkCIdent(v___x_4466_);
 v___x_4478_ = l___private_Lean_Elab_Deriving_Inhabited_0__Lean_Elab_Deriving_mkInhabitedInstanceUsing_mkInstanceCmdWith(v_inductiveTypeName_4438_, v___x_4476_, v___y_4469_, v___x_4477_, v___y_4470_, v___y_4471_, v___y_4472_, v___y_4473_, v___y_4474_, v___y_4475_);
 lean_dec(v___y_4471_);

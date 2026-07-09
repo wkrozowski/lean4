@@ -50,7 +50,7 @@ uint8_t l_Lean_PersistentHashMap_Node_isEmpty___redArg(lean_object*);
 lean_object* lean_st_ref_take(lean_object*);
 lean_object* lean_st_ref_set(lean_object*, lean_object*);
 lean_object* l_Lean_Kernel_setDiagnostics(lean_object*, lean_object*);
-uint8_t lean_get_reducibility_status(lean_object*, lean_object*);
+uint8_t l_Lean_getReducibilityStatusCore(lean_object*, lean_object*);
 uint8_t l_Lean_Meta_isInstanceCore(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr1(lean_object*);
 extern lean_object* l_Lean_diagnostics_threshold;
@@ -3123,7 +3123,7 @@ _start:
 uint8_t v___x_1129_; 
 lean_inc(v_declName_1128_);
 lean_inc_ref(v_env_1126_);
-v___x_1129_ = lean_get_reducibility_status(v_env_1126_, v_declName_1128_);
+v___x_1129_ = l_Lean_getReducibilityStatusCore(v_env_1126_, v_declName_1128_);
 if (v___x_1129_ == 1)
 {
 uint8_t v___x_1130_; 
@@ -3202,7 +3202,7 @@ LEAN_EXPORT uint8_t l_Lean_Meta_mkDiagSummaryForUnfoldedReducible___lam__0(lean_
 _start:
 {
 uint8_t v___x_1166_; 
-v___x_1166_ = lean_get_reducibility_status(v_env_1164_, v_declName_1165_);
+v___x_1166_ = l_Lean_getReducibilityStatusCore(v_env_1164_, v_declName_1165_);
 if (v___x_1166_ == 0)
 {
 uint8_t v___x_1167_; 

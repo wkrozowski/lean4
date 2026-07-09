@@ -70,7 +70,7 @@ size_t lean_usize_of_nat(lean_object*);
 uint8_t lean_usize_dec_eq(size_t, size_t);
 lean_object* lean_array_uget_borrowed(lean_object*, size_t);
 lean_object* l_Lean_TSyntax_getId(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 lean_object* l_Lean_Syntax_identComponents(lean_object*, lean_object*);
 lean_object* lean_st_ref_take(lean_object*);
 lean_object* l_Lean_MessageLog_add(lean_object*, lean_object*);
@@ -6836,7 +6836,8 @@ v___x_2273_ = ((lean_object*)(l_Lean_Elab_ConfigEval_foldConfigM___redArg___clos
 v___x_2274_ = l_Lean_mkCIdentFrom(v_cfg_2241_, v___x_2273_, v___x_2266_);
 v___x_2275_ = ((lean_object*)(l_Lean_Elab_ConfigEval_foldConfigM___redArg___closed__8));
 v___x_2276_ = l_Lean_TSyntax_getId(v___x_2272_);
-v___x_2277_ = lean_erase_macro_scopes(v___x_2276_);
+v___x_2277_ = l_Lean_Name_eraseMacroScopes(v___x_2276_);
+lean_dec(v___x_2276_);
 v___x_2278_ = lean_box(0);
 lean_inc(v___x_2272_);
 v___x_2279_ = l_Lean_Syntax_identComponents(v___x_2272_, v___x_2278_);
@@ -6917,7 +6918,8 @@ v___x_2310_ = lean_unsigned_to_nat(3u);
 v___x_2311_ = l_Lean_Syntax_getArg(v_cfg_2241_, v___x_2310_);
 v___x_2312_ = lean_box(0);
 v___x_2313_ = l_Lean_TSyntax_getId(v_val_2309_);
-v___x_2314_ = lean_erase_macro_scopes(v___x_2313_);
+v___x_2314_ = l_Lean_Name_eraseMacroScopes(v___x_2313_);
+lean_dec(v___x_2313_);
 v___x_2315_ = l_Lean_Syntax_identComponents(v_val_2309_, v___x_2312_);
 v___x_2316_ = lean_box(0);
 v___x_2317_ = lean_alloc_ctor(0, 7, 0);
@@ -7058,7 +7060,8 @@ v___jp_2244_:
 {
 lean_object* v___x_2248_; lean_object* v___x_2249_; lean_object* v___x_2250_; lean_object* v___x_2251_; lean_object* v___x_2252_; lean_object* v___x_2253_; lean_object* v___x_2254_; 
 v___x_2248_ = l_Lean_TSyntax_getId(v___y_2245_);
-v___x_2249_ = lean_erase_macro_scopes(v___x_2248_);
+v___x_2249_ = l_Lean_Name_eraseMacroScopes(v___x_2248_);
+lean_dec(v___x_2248_);
 v___x_2250_ = lean_box(0);
 lean_inc(v___y_2245_);
 v___x_2251_ = l_Lean_Syntax_identComponents(v___y_2245_, v___x_2250_);
@@ -8774,7 +8777,8 @@ v___x_3069_ = ((lean_object*)(l_Lean_Elab_ConfigEval_foldConfigM___redArg___clos
 v___x_3070_ = l_Lean_mkCIdentFrom(v_cfg_3020_, v___x_3069_, v___x_3063_);
 v___x_3071_ = ((lean_object*)(l_Lean_Elab_ConfigEval_foldConfigM___redArg___closed__8));
 v___x_3072_ = l_Lean_TSyntax_getId(v___x_3068_);
-v___x_3073_ = lean_erase_macro_scopes(v___x_3072_);
+v___x_3073_ = l_Lean_Name_eraseMacroScopes(v___x_3072_);
+lean_dec(v___x_3072_);
 v___x_3074_ = lean_box(0);
 lean_inc(v___x_3068_);
 v___x_3075_ = l_Lean_Syntax_identComponents(v___x_3068_, v___x_3074_);
@@ -8853,7 +8857,8 @@ v___x_3106_ = lean_unsigned_to_nat(3u);
 v___x_3107_ = l_Lean_Syntax_getArg(v_cfg_3020_, v___x_3106_);
 v___x_3108_ = lean_box(0);
 v___x_3109_ = l_Lean_TSyntax_getId(v_val_3105_);
-v___x_3110_ = lean_erase_macro_scopes(v___x_3109_);
+v___x_3110_ = l_Lean_Name_eraseMacroScopes(v___x_3109_);
+lean_dec(v___x_3109_);
 v___x_3111_ = l_Lean_Syntax_identComponents(v_val_3105_, v___x_3108_);
 v___x_3112_ = lean_box(0);
 v___x_3113_ = lean_alloc_ctor(0, 7, 0);
@@ -8993,7 +8998,8 @@ v___jp_3028_:
 {
 lean_object* v___x_3032_; lean_object* v___x_3033_; lean_object* v___x_3034_; lean_object* v___x_3035_; lean_object* v___x_3036_; lean_object* v___x_3037_; lean_object* v___x_3038_; 
 v___x_3032_ = l_Lean_TSyntax_getId(v___y_3029_);
-v___x_3033_ = lean_erase_macro_scopes(v___x_3032_);
+v___x_3033_ = l_Lean_Name_eraseMacroScopes(v___x_3032_);
+lean_dec(v___x_3032_);
 v___x_3034_ = lean_box(0);
 lean_inc(v___y_3029_);
 v___x_3035_ = l_Lean_Syntax_identComponents(v___y_3029_, v___x_3034_);

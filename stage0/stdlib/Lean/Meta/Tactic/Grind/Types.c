@@ -79,7 +79,7 @@ lean_object* l_Lean_Name_mkStr2(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node3(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node6(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_TSyntax_getId(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 lean_object* l___private_Init_Meta_Defs_0__Lean_getEscapedNameParts_x3f(lean_object*, lean_object*);
 lean_object* l_Lean_quoteNameMk(lean_object*);
 lean_object* lean_string_intercalate(lean_object*, lean_object*);
@@ -233,7 +233,7 @@ lean_object* l_Repr_addAppParen(lean_object*, lean_object*);
 lean_object* l_Nat_reprFast(lean_object*);
 lean_object* l_Lean_instReprExpr_repr(lean_object*, lean_object*);
 lean_object* l_Lean_LocalDecl_toExpr(lean_object*);
-lean_object* l_Lean_Meta_Sym_shareCommon___redArg(lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Sym_shareCommon(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_PersistentHashMap_find_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_PersistentHashMap_insert___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_mkHCongrWithArity(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -17707,7 +17707,8 @@ v___x_6001_ = lean_alloc_ctor(2, 2, 0);
 lean_ctor_set(v___x_6001_, 0, v___x_5967_);
 lean_ctor_set(v___x_6001_, 1, v___x_6000_);
 v___x_6083_ = l_Lean_TSyntax_getId(v_id_5958_);
-v___x_6084_ = lean_erase_macro_scopes(v___x_6083_);
+v___x_6084_ = l_Lean_Name_eraseMacroScopes(v___x_6083_);
+lean_dec(v___x_6083_);
 lean_inc(v___x_6084_);
 v___x_6085_ = l___private_Init_Meta_Defs_0__Lean_getEscapedNameParts_x3f(v___x_5997_, v___x_6084_);
 if (lean_obj_tag(v___x_6085_) == 0)
@@ -28697,7 +28698,7 @@ _start:
 {
 lean_object* v___x_10719_; lean_object* v___x_10720_; 
 v___x_10719_ = l_Lean_LocalDecl_toExpr(v_localDecl_10707_);
-v___x_10720_ = l_Lean_Meta_Sym_shareCommon___redArg(v___x_10719_, v_a_10713_);
+v___x_10720_ = l_Lean_Meta_Sym_shareCommon(v___x_10719_, v_a_10712_, v_a_10713_, v_a_10714_, v_a_10715_, v_a_10716_, v_a_10717_);
 if (lean_obj_tag(v___x_10720_) == 0)
 {
 lean_object* v_a_10721_; lean_object* v___x_10722_; lean_object* v___x_10723_; lean_object* v___x_10724_; 

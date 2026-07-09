@@ -105,7 +105,7 @@ lean_object* l_Lean_PersistentArray_push___redArg(lean_object*, lean_object*);
 lean_object* l_Lean_DeclNameGenerator_mkUniqueName(lean_object*, lean_object*, lean_object*);
 uint8_t l_Lean_Syntax_isIdent(lean_object*);
 lean_object* l_Lean_Syntax_getId(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 uint8_t l_Lean_Name_isAtomic(lean_object*);
 lean_object* l_Lean_MessageData_ofName(lean_object*);
 lean_object* l_Lean_Elab_Term_elabType(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -6335,7 +6335,8 @@ _start:
 lean_object* v_id_1778_; lean_object* v___x_1779_; lean_object* v_n_1780_; uint8_t v___x_1781_; 
 v_id_1778_ = lean_ctor_get(v_binderView_1770_, 1);
 v___x_1779_ = l_Lean_Syntax_getId(v_id_1778_);
-v_n_1780_ = lean_erase_macro_scopes(v___x_1779_);
+v_n_1780_ = l_Lean_Name_eraseMacroScopes(v___x_1779_);
+lean_dec(v___x_1779_);
 v___x_1781_ = l_Lean_Name_isAtomic(v_n_1780_);
 if (v___x_1781_ == 0)
 {

@@ -94,7 +94,7 @@ lean_object* l_Lean_Elab_Term_saveState___redArg(lean_object*, lean_object*, lea
 extern lean_object* l_Lean_NameSet_empty;
 uint8_t l_Lean_BinderInfo_isExplicit(uint8_t);
 lean_object* l_Lean_MVarId_getDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-uint8_t lean_is_out_param(lean_object*);
+uint8_t l_Lean_Expr_isOutParam(lean_object*);
 lean_object* l_Lean_Elab_Term_isMVarApp___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Term_SavedState_restore(lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_array_set(lean_object*, lean_object*, lean_object*);
@@ -4180,9 +4180,9 @@ v_a_1041_ = lean_ctor_get(v___x_1040_, 0);
 lean_inc(v_a_1041_);
 lean_dec_ref_known(v___x_1040_, 1);
 v_type_1042_ = lean_ctor_get(v_a_1041_, 2);
-lean_inc_ref_n(v_type_1042_, 2);
+lean_inc_ref(v_type_1042_);
 lean_dec(v_a_1041_);
-v___x_1043_ = lean_is_out_param(v_type_1042_);
+v___x_1043_ = l_Lean_Expr_isOutParam(v_type_1042_);
 if (v___x_1043_ == 0)
 {
 lean_object* v___x_1044_; 

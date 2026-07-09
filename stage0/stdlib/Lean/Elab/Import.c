@@ -84,7 +84,7 @@ uint8_t lean_string_dec_eq(lean_object*, lean_object*);
 lean_object* lean_string_append(lean_object*, lean_object*);
 lean_object* l_Lean_Name_toStringWithToken___at___00Lean_Name_toString_spec__0(lean_object*, uint8_t);
 lean_object* l_Lean_importModules(lean_object*, lean_object*, uint32_t, lean_object*, uint8_t, uint8_t, uint8_t, lean_object*);
-lean_object* lean_mk_empty_environment(uint32_t);
+lean_object* l_Lean_mkEmptyEnvironment(uint32_t);
 lean_object* lean_io_error_to_string(lean_object*);
 extern lean_object* l_Lean_Elab_inServer;
 lean_object* l_Lean_getSrcSearchPath();
@@ -3200,7 +3200,7 @@ v_resetjp_1050_:
 {
 uint32_t v___x_1053_; lean_object* v___x_1054_; 
 v___x_1053_ = 0;
-v___x_1054_ = lean_mk_empty_environment(v___x_1053_);
+v___x_1054_ = l_Lean_mkEmptyEnvironment(v___x_1053_);
 if (lean_obj_tag(v___x_1054_) == 0)
 {
 lean_object* v_a_1055_; lean_object* v_fileName_1056_; lean_object* v_fileMap_1057_; lean_object* v___x_1058_; lean_object* v___x_1059_; uint8_t v___x_1060_; uint8_t v___x_1061_; lean_object* v___x_1062_; lean_object* v___x_1063_; lean_object* v___x_1065_; 

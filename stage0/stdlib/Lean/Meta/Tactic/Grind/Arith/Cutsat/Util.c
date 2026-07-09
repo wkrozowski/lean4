@@ -60,7 +60,7 @@ lean_object* l_Rat_add(lean_object*, lean_object*);
 extern lean_object* l_instInhabitedRat;
 lean_object* l_Rat_mul(lean_object*, lean_object*);
 uint8_t l_Rat_instDecidableLe(lean_object*, lean_object*);
-uint8_t l_Bool_toLBool(uint8_t);
+uint8_t l_Lean_Bool_toLBool(uint8_t);
 uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 uint8_t l_Int_decidableDvd(lean_object*, lean_object*);
 uint8_t lean_nat_dec_le(lean_object*, lean_object*);
@@ -6959,7 +6959,7 @@ uint8_t v___x_2537_; uint8_t v___x_2538_; lean_object* v___x_2539_; lean_object*
 v___x_2537_ = l_Int_decidableDvd(v_d_2520_, v_num_2528_);
 lean_dec(v_num_2528_);
 lean_dec(v_d_2520_);
-v___x_2538_ = l_Bool_toLBool(v___x_2537_);
+v___x_2538_ = l_Lean_Bool_toLBool(v___x_2537_);
 v___x_2539_ = lean_box(v___x_2538_);
 if (v_isShared_2526_ == 0)
 {
@@ -7123,7 +7123,7 @@ lean_inc(v_val_2597_);
 lean_dec_ref_known(v_a_2593_, 1);
 v___x_2598_ = lean_obj_once(&l_Int_Internal_Linear_Poly_eval_x3f___redArg___closed__0, &l_Int_Internal_Linear_Poly_eval_x3f___redArg___closed__0_once, _init_l_Int_Internal_Linear_Poly_eval_x3f___redArg___closed__0);
 v___x_2599_ = l_Rat_instDecidableLe(v_val_2597_, v___x_2598_);
-v___x_2600_ = l_Bool_toLBool(v___x_2599_);
+v___x_2600_ = l_Lean_Bool_toLBool(v___x_2599_);
 v___x_2601_ = lean_box(v___x_2600_);
 if (v_isShared_2596_ == 0)
 {
@@ -7365,7 +7365,7 @@ return v___x_2711_;
 v___jp_2697_:
 {
 uint8_t v___x_2699_; lean_object* v___x_2700_; lean_object* v___x_2702_; 
-v___x_2699_ = l_Bool_toLBool(v___y_2698_);
+v___x_2699_ = l_Lean_Bool_toLBool(v___y_2698_);
 v___x_2700_ = lean_box(v___x_2699_);
 if (v_isShared_2696_ == 0)
 {
@@ -7505,7 +7505,7 @@ lean_dec_ref_known(v_a_2758_, 1);
 v___x_2763_ = lean_obj_once(&l_Int_Internal_Linear_Poly_eval_x3f___redArg___closed__0, &l_Int_Internal_Linear_Poly_eval_x3f___redArg___closed__0_once, _init_l_Int_Internal_Linear_Poly_eval_x3f___redArg___closed__0);
 v___x_2764_ = l_instDecidableEqRat_decEq(v_val_2762_, v___x_2763_);
 lean_dec(v_val_2762_);
-v___x_2765_ = l_Bool_toLBool(v___x_2764_);
+v___x_2765_ = l_Lean_Bool_toLBool(v___x_2764_);
 v___x_2766_ = lean_box(v___x_2765_);
 if (v_isShared_2761_ == 0)
 {

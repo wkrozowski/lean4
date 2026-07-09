@@ -43,7 +43,7 @@ lean_object* l_Std_DTreeMap_Internal_Impl_minView___redArg(lean_object*, lean_ob
 lean_object* lean_array_fget_borrowed(lean_object*, lean_object*);
 lean_object* l_Lean_PersistentArray_anyM___redArg(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_PersistentArray_forIn___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 uint8_t lean_name_eq(lean_object*, lean_object*);
 lean_object* lean_name_append_index_after(lean_object*, lean_object*);
 lean_object* lean_array_fget(lean_object*, lean_object*);
@@ -8919,7 +8919,7 @@ LEAN_EXPORT lean_object* l_Lean_LocalContext_getUnusedName(lean_object* v_lctx_2
 _start:
 {
 lean_object* v_suggestion_2366_; uint8_t v___x_2367_; 
-v_suggestion_2366_ = lean_erase_macro_scopes(v_suggestion_2365_);
+v_suggestion_2366_ = l_Lean_Name_eraseMacroScopes(v_suggestion_2365_);
 v___x_2367_ = l_Lean_LocalContext_usesUserName(v_lctx_2364_, v_suggestion_2366_);
 if (v___x_2367_ == 0)
 {
@@ -8942,6 +8942,7 @@ _start:
 {
 lean_object* v_res_2373_; 
 v_res_2373_ = l_Lean_LocalContext_getUnusedName(v_lctx_2371_, v_suggestion_2372_);
+lean_dec(v_suggestion_2372_);
 lean_dec_ref(v_lctx_2371_);
 return v_res_2373_;
 }

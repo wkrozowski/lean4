@@ -74,7 +74,7 @@ lean_object* lean_array_fget(lean_object*, lean_object*);
 lean_object* lean_array_fset(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_canUnfoldDefault(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_ConstantInfo_name(lean_object*);
-uint8_t lean_has_match_pattern_attribute(lean_object*, lean_object*);
+uint8_t l_Lean_hasMatchPatternAttribute(lean_object*, lean_object*);
 uint8_t lean_name_eq(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr1(lean_object*);
 lean_object* l_mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -4324,7 +4324,6 @@ LEAN_EXPORT lean_object* l___private_Lean_Meta_WHNF_0__Lean_Meta_toCtorWhenStruc
 _start:
 {
 lean_object* v___x_1082_; 
-lean_inc(v_inductName_1075_);
 v___x_1082_ = l_Lean_Meta_useEtaStruct___redArg(v_inductName_1075_, v_a_1077_, v_a_1080_);
 if (lean_obj_tag(v___x_1082_) == 0)
 {
@@ -12800,7 +12799,7 @@ lean_inc_ref(v_env_3750_);
 lean_dec(v___x_3749_);
 v___x_3751_ = l_Lean_ConstantInfo_name(v_info_3738_);
 lean_inc(v___x_3751_);
-v___x_3752_ = lean_has_match_pattern_attribute(v_env_3750_, v___x_3751_);
+v___x_3752_ = l_Lean_hasMatchPatternAttribute(v_env_3750_, v___x_3751_);
 if (v___x_3752_ == 0)
 {
 lean_object* v___x_3753_; uint8_t v___x_3754_; 

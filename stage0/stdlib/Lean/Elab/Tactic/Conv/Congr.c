@@ -2142,6 +2142,7 @@ v___x_461_ = l_Lean_Expr_bindingName_x21(v_a_460_);
 lean_dec(v_a_460_);
 lean_inc(v_origTag_393_);
 v___x_462_ = l_Lean_Meta_appendTag(v_origTag_393_, v___x_461_);
+lean_dec(v___x_461_);
 lean_inc(v___x_449_);
 v___x_463_ = l_WellFounded_opaqueFix_u2083___at___00__private_Lean_Elab_Tactic_Conv_Congr_0__Lean_Elab_Tactic_Conv_mkCongrThm_spec__2___redArg___lam__1(v___x_449_, v_fst_433_, v_fst_437_, v_fst_441_, v_snd_442_, v___x_462_, v___y_399_, v___y_400_, v___y_401_, v___y_402_);
 v___y_410_ = v___x_463_;

@@ -88,7 +88,7 @@ lean_object* l_Lean_MessageData_ofFormat(lean_object*);
 lean_object* l_Lean_Name_mkStr2(lean_object*, lean_object*);
 lean_object* lean_array_uget(lean_object*, size_t);
 lean_object* lean_array_uset(lean_object*, size_t, lean_object*);
-lean_object* lean_mk_syntax_ident(lean_object*);
+lean_object* l_Lean_mkIdent(lean_object*);
 lean_object* l_Lean_MessageData_ofConstName(lean_object*, uint8_t);
 lean_object* lean_string_append(lean_object*, lean_object*);
 lean_object* l_Lean_MessageData_hint(lean_object*, lean_object*, lean_object*, lean_object*, uint8_t, lean_object*, lean_object*);
@@ -101,7 +101,7 @@ lean_object* l_Lean_Syntax_getId(lean_object*);
 uint8_t l_Lean_isPrivateName(lean_object*);
 uint8_t l_Lean_Name_isSuffixOf(lean_object*, lean_object*);
 uint8_t l_Lean_Environment_isConstructor(lean_object*, lean_object*);
-uint8_t lean_has_match_pattern_attribute(lean_object*, lean_object*);
+uint8_t l_Lean_hasMatchPatternAttribute(lean_object*, lean_object*);
 lean_object* l_Lean_Environment_constants(lean_object*);
 uint8_t lean_usize_dec_eq(size_t, size_t);
 lean_object* l_Lean_Meta_getFVarLocalDecl___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
@@ -150,7 +150,7 @@ lean_object* l_Array_toSubarray___redArg(lean_object*, lean_object*, lean_object
 uint8_t l_Lean_Syntax_structEq(lean_object*, lean_object*);
 lean_object* l_Lean_NameSet_insert(lean_object*, lean_object*);
 uint8_t l_Lean_NameSet_contains(lean_object*, lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 uint8_t l_Lean_Name_isAtomic(lean_object*);
 uint8_t l_Lean_Syntax_isIdent(lean_object*);
 lean_object* l_String_toRawSubstring_x27(lean_object*);
@@ -1172,7 +1172,7 @@ if (v___x_31_ == 0)
 {
 uint8_t v___x_32_; 
 lean_inc(v_x_10_);
-v___x_32_ = lean_has_match_pattern_attribute(v_env_9_, v_x_10_);
+v___x_32_ = l_Lean_hasMatchPatternAttribute(v_env_9_, v_x_10_);
 if (v___x_32_ == 0)
 {
 lean_dec(v_x_10_);
@@ -2030,7 +2030,7 @@ v___x_401_ = lean_unsigned_to_nat(0u);
 v_bs_x27_402_ = lean_array_uset(v_bs_398_, v_i_397_, v___x_401_);
 v___x_403_ = ((lean_object*)(l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00__private_Lean_Elab_PatternVar_0__Lean_Elab_Term_CollectPatternVars_throwCtorExpected_spec__0___closed__2));
 lean_inc(v_v_400_);
-v___x_404_ = lean_mk_syntax_ident(v_v_400_);
+v___x_404_ = l_Lean_mkIdent(v_v_400_);
 v___x_405_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_405_, 0, v___x_403_);
 lean_ctor_set(v___x_405_, 1, v___x_404_);
@@ -5870,8 +5870,7 @@ v___jp_2162_:
 {
 lean_object* v_id_2168_; lean_object* v___x_2169_; uint8_t v___x_2170_; 
 v_id_2168_ = l_Lean_Syntax_getId(v_idStx_2105_);
-lean_inc(v_id_2168_);
-v___x_2169_ = lean_erase_macro_scopes(v_id_2168_);
+v___x_2169_ = l_Lean_Name_eraseMacroScopes(v_id_2168_);
 v___x_2170_ = l_Lean_Name_isAtomic(v___x_2169_);
 lean_dec(v___x_2169_);
 if (v___x_2170_ == 0)
@@ -9754,7 +9753,7 @@ v___x_3756_ = lean_st_ref_get(v_a_3735_);
 v_env_3757_ = lean_ctor_get(v___x_3756_, 0);
 lean_inc_ref(v_env_3757_);
 lean_dec(v___x_3756_);
-v___x_3758_ = lean_has_match_pattern_attribute(v_env_3757_, v_declName_3746_);
+v___x_3758_ = l_Lean_hasMatchPatternAttribute(v_env_3757_, v_declName_3746_);
 if (v___x_3758_ == 0)
 {
 lean_object* v___x_3759_; 
@@ -10890,7 +10889,7 @@ v___x_4125_ = lean_st_ref_get(v___y_3781_);
 v_env_4126_ = lean_ctor_get(v___x_4125_, 0);
 lean_inc_ref(v_env_4126_);
 lean_dec(v___x_4125_);
-v___x_4127_ = lean_has_match_pattern_attribute(v_env_4126_, v_declName_4124_);
+v___x_4127_ = l_Lean_hasMatchPatternAttribute(v_env_4126_, v_declName_4124_);
 if (v___x_4127_ == 0)
 {
 lean_object* v___x_4128_; lean_object* v___x_4129_; 
@@ -12604,7 +12603,7 @@ v___x_4579_ = lean_st_ref_get(v___y_4553_);
 v_env_4580_ = lean_ctor_get(v___x_4579_, 0);
 lean_inc_ref(v_env_4580_);
 lean_dec(v___x_4579_);
-v___x_4581_ = lean_has_match_pattern_attribute(v_env_4580_, v_declName_4562_);
+v___x_4581_ = l_Lean_hasMatchPatternAttribute(v_env_4580_, v_declName_4562_);
 if (v___x_4581_ == 0)
 {
 lean_object* v___x_4583_; 

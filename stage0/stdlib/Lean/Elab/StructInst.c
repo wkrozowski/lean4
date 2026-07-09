@@ -132,7 +132,7 @@ lean_object* l___private_Lean_Expr_0__Lean_Expr_getAppArgsAux(lean_object*, lean
 lean_object* l_Lean_Expr_beta(lean_object*, lean_object*);
 uint8_t l_Lean_LocalDecl_isLet(lean_object*, uint8_t);
 uint8_t l_Lean_LocalDecl_kind(lean_object*);
-uint8_t lean_is_class(lean_object*, lean_object*);
+uint8_t l_Lean_isClass(lean_object*, lean_object*);
 lean_object* l_instMonadEIO(lean_object*);
 lean_object* l_StateRefT_x27_instMonad___redArg(lean_object*);
 lean_object* l_Lean_Core_instMonadCoreM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -174,7 +174,7 @@ lean_object* l_Lean_Core_mkFreshUserName(lean_object*, lean_object*, lean_object
 lean_object* l_Lean_Expr_fvar___override(lean_object*);
 lean_object* l___private_Lean_Meta_Basic_0__Lean_Meta_withExistingLocalDeclsImp(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t l_Lean_Expr_isFVar(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 uint8_t l_Lean_Name_isStr(lean_object*);
 lean_object* l_Lean_Name_getString_x21(lean_object*);
 lean_object* lean_string_append(lean_object*, lean_object*);
@@ -52143,7 +52143,8 @@ v___x_18214_ = l_Lean_Expr_isFVar(v_a_18213_);
 if (v___x_18214_ == 0)
 {
 lean_object* v___x_18215_; uint8_t v___x_18216_; 
-v___x_18215_ = lean_erase_macro_scopes(v___y_18200_);
+v___x_18215_ = l_Lean_Name_eraseMacroScopes(v___y_18200_);
+lean_dec(v___y_18200_);
 v___x_18216_ = l_Lean_Name_isStr(v___x_18215_);
 if (v___x_18216_ == 0)
 {
@@ -54898,9 +54899,8 @@ if (v___x_19062_ == 0)
 {
 lean_object* v___x_19063_; uint8_t v___x_19064_; 
 v___x_19063_ = lean_array_uget_borrowed(v_as_19053_, v_i_19054_);
-lean_inc(v___x_19063_);
 lean_inc_ref(v___x_19052_);
-v___x_19064_ = lean_is_class(v___x_19052_, v___x_19063_);
+v___x_19064_ = l_Lean_isClass(v___x_19052_, v___x_19063_);
 if (v___x_19064_ == 0)
 {
 v___y_19058_ = v_b_19056_;
@@ -57207,7 +57207,8 @@ v___x_19724_ = lean_st_ref_get(v___y_19502_);
 v_env_19725_ = lean_ctor_get(v___x_19724_, 0);
 lean_inc_ref(v_env_19725_);
 lean_dec(v___x_19724_);
-v___x_19726_ = lean_is_class(v_env_19725_, v___y_19697_);
+v___x_19726_ = l_Lean_isClass(v_env_19725_, v___y_19697_);
+lean_dec(v___y_19697_);
 if (v___x_19726_ == 0)
 {
 lean_object* v___x_19727_; lean_object* v___x_19728_; 

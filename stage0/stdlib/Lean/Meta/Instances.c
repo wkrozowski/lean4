@@ -139,7 +139,7 @@ lean_object* l_Lean_PersistentArray_push___redArg(lean_object*, lean_object*);
 lean_object* l_Lean_ScopedEnvExtension_addCore___redArg(lean_object*, lean_object*, lean_object*, uint8_t, lean_object*);
 lean_object* l_Lean_Meta_DiscrTree_mkPath(lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l___private_Lean_Meta_Basic_0__Lean_Meta_withNewMCtxDepthImp(lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-uint8_t lean_get_reducibility_status(lean_object*, lean_object*);
+uint8_t l_Lean_getReducibilityStatusCore(lean_object*, lean_object*);
 lean_object* l_Lean_Environment_find_x3f(lean_object*, lean_object*, uint8_t);
 uint8_t l_Lean_ConstantInfo_isDefinition(lean_object*);
 uint8_t l_Lean_wasOriginallyDefn(lean_object*, lean_object*);
@@ -176,7 +176,7 @@ lean_object* l_Lean_Name_str___override(lean_object*, lean_object*);
 lean_object* l_Lean_Name_num___override(lean_object*, lean_object*);
 lean_object* l_Lean_registerSimplePersistentEnvExtension___redArg(lean_object*);
 lean_object* l_Lean_PersistentEnvExtension_addEntry___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-uint8_t lean_is_class(lean_object*, lean_object*);
+uint8_t l_Lean_isClass(lean_object*, lean_object*);
 uint8_t l_Lean_instBEqAttributeKind_beq(uint8_t, uint8_t);
 lean_object* l_Lean_registerBuiltinAttribute(lean_object*);
 lean_object* l_Lean_registerTraceClass(lean_object*, uint8_t, lean_object*);
@@ -12795,7 +12795,7 @@ v___x_4013_ = lean_st_ref_get(v___y_4011_);
 v_env_4014_ = lean_ctor_get(v___x_4013_, 0);
 lean_inc_ref(v_env_4014_);
 lean_dec(v___x_4013_);
-v___x_4015_ = lean_get_reducibility_status(v_env_4014_, v_declName_4010_);
+v___x_4015_ = l_Lean_getReducibilityStatusCore(v_env_4014_, v_declName_4010_);
 v___x_4016_ = lean_box(v___x_4015_);
 v___x_4017_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_4017_, 0, v___x_4016_);
@@ -18184,13 +18184,13 @@ if (lean_obj_tag(v___x_5888_) == 4)
 {
 lean_object* v_declName_5889_; lean_object* v___y_5891_; lean_object* v___y_5892_; lean_object* v___y_5893_; lean_object* v___y_5894_; lean_object* v___x_5904_; lean_object* v_env_5905_; uint8_t v___x_5906_; 
 v_declName_5889_ = lean_ctor_get(v___x_5888_, 0);
-lean_inc_n(v_declName_5889_, 2);
+lean_inc(v_declName_5889_);
 lean_dec_ref_known(v___x_5888_, 2);
 v___x_5904_ = lean_st_ref_get(v___y_5886_);
 v_env_5905_ = lean_ctor_get(v___x_5904_, 0);
 lean_inc_ref(v_env_5905_);
 lean_dec(v___x_5904_);
-v___x_5906_ = lean_is_class(v_env_5905_, v_declName_5889_);
+v___x_5906_ = l_Lean_isClass(v_env_5905_, v_declName_5889_);
 if (v___x_5906_ == 0)
 {
 lean_object* v___x_5907_; lean_object* v___x_5908_; lean_object* v___x_5909_; lean_object* v___x_5910_; lean_object* v___x_5911_; lean_object* v___x_5912_; lean_object* v___x_5913_; lean_object* v___x_5914_; lean_object* v___x_5915_; lean_object* v___x_5916_; lean_object* v___x_5917_; lean_object* v___x_5918_; lean_object* v___x_5919_; lean_object* v___x_5920_; 

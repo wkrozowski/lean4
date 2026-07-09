@@ -85,7 +85,7 @@ lean_object* l___private_Lean_Expr_0__Lean_Expr_getAppArgsAux(lean_object*, lean
 lean_object* l_Lean_Meta_forallMetaBoundedTelescope(lean_object*, lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_whnf(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_expr_instantiate1(lean_object*, lean_object*);
-uint8_t lean_is_out_param(lean_object*);
+uint8_t l_Lean_Expr_isOutParam(lean_object*);
 lean_object* l_Lean_Name_mkStr1(lean_object*);
 uint8_t lean_usize_dec_eq(size_t, size_t);
 lean_object* l_Lean_Expr_constName_x21(lean_object*);
@@ -6742,7 +6742,8 @@ lean_dec_ref_known(v_a_2137_, 3);
 v_body_2151_ = lean_ctor_get(v_a_2139_, 2);
 lean_inc_ref(v_body_2151_);
 lean_dec_ref_known(v_a_2139_, 3);
-v___x_2167_ = lean_is_out_param(v_binderType_2149_);
+v___x_2167_ = l_Lean_Expr_isOutParam(v_binderType_2149_);
+lean_dec_ref(v_binderType_2149_);
 if (v___x_2167_ == 0)
 {
 v___y_2153_ = v_a_2126_;

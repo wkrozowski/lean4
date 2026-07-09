@@ -316,9 +316,9 @@ lean_object* l_Lean_Syntax_SepArray_ofElems(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node4(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Term_resolveId_x3f(lean_object*, lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t l_Lean_Syntax_isIdent(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 uint8_t l_Lean_Name_isAtomic(lean_object*);
-uint8_t lean_has_match_pattern_attribute(lean_object*, lean_object*);
+uint8_t l_Lean_hasMatchPatternAttribute(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node5(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 static lean_once_cell_t l_Lean_Elab_getResetInfoTrees___at___00Lean_Elab_withInfoTreeContext___at___00Lean_Elab_withMacroExpansionInfo___at___00Lean_Elab_Term_withMacroExpansion___at___00__private_Lean_Elab_Match_0__Lean_Elab_Term_expandSimpleMatch_spec__0_spec__0_spec__1_spec__2___redArg___closed__0_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Elab_getResetInfoTrees___at___00Lean_Elab_withInfoTreeContext___at___00Lean_Elab_withMacroExpansionInfo___at___00Lean_Elab_Term_withMacroExpansion___at___00__private_Lean_Elab_Match_0__Lean_Elab_Term_expandSimpleMatch_spec__0_spec__0_spec__1_spec__2___redArg___closed__0;
@@ -48665,7 +48665,8 @@ else
 {
 lean_object* v___x_17567_; lean_object* v___x_17568_; uint8_t v___x_17569_; 
 v___x_17567_ = l_Lean_Syntax_getId(v_stx_17565_);
-v___x_17568_ = lean_erase_macro_scopes(v___x_17567_);
+v___x_17568_ = l_Lean_Name_eraseMacroScopes(v___x_17567_);
+lean_dec(v___x_17567_);
 v___x_17569_ = l_Lean_Name_isAtomic(v___x_17568_);
 lean_dec(v___x_17568_);
 return v___x_17569_;
@@ -48793,7 +48794,7 @@ v___x_17604_ = lean_st_ref_get(v_a_17580_);
 v_env_17605_ = lean_ctor_get(v___x_17604_, 0);
 lean_inc_ref(v_env_17605_);
 lean_dec(v___x_17604_);
-v___x_17606_ = lean_has_match_pattern_attribute(v_env_17605_, v_declName_17595_);
+v___x_17606_ = l_Lean_hasMatchPatternAttribute(v_env_17605_, v_declName_17595_);
 if (v___x_17606_ == 0)
 {
 uint8_t v___x_17607_; lean_object* v___x_17608_; lean_object* v___x_17610_; 

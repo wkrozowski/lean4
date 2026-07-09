@@ -48,8 +48,8 @@ uint8_t l_Lean_Expr_hasMVar(lean_object*);
 lean_object* l_Lean_Expr_instantiateLevelParams(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_mkAppN(lean_object*, lean_object*);
 lean_object* l_Lean_mkConst(lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Sym_shareCommonInc___redArg(lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Sym_instantiateRevBetaS___redArg(lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Sym_shareCommonInc(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Sym_instantiateRevBetaS(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t l___private_Lean_Meta_Sym_ExprPtr_0__Lean_Meta_Sym_isSameExpr_unsafe__1(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_acLt(lean_object*, lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Sym_Simp_Theorems_getMatchWithExtra(lean_object*, lean_object*);
@@ -2198,15 +2198,14 @@ lean_inc(v_levelParams_694_);
 lean_inc(v_a_677_);
 v___x_695_ = l___private_Lean_Meta_Sym_Simp_Rewrite_0__Lean_Meta_Sym_Simp_mkValue(v_expr_654_, v_pattern_650_, v_a_677_, v_fst_692_);
 v___x_696_ = l_Lean_Expr_instantiateLevelParams(v_rhs_655_, v_levelParams_694_, v_a_677_);
-v___x_697_ = l_Lean_Meta_Sym_shareCommonInc___redArg(v___x_696_, v___y_661_);
+v___x_697_ = l_Lean_Meta_Sym_shareCommonInc(v___x_696_, v___y_660_, v___y_661_, v___y_662_, v___y_663_, v___y_664_, v___y_665_);
 if (lean_obj_tag(v___x_697_) == 0)
 {
 lean_object* v_a_698_; lean_object* v___x_699_; 
 v_a_698_ = lean_ctor_get(v___x_697_, 0);
 lean_inc(v_a_698_);
 lean_dec_ref_known(v___x_697_, 1);
-v___x_699_ = l_Lean_Meta_Sym_instantiateRevBetaS___redArg(v_a_698_, v_fst_692_, v___y_661_);
-lean_dec(v_fst_692_);
+v___x_699_ = l_Lean_Meta_Sym_instantiateRevBetaS(v_a_698_, v_fst_692_, v___y_660_, v___y_661_, v___y_662_, v___y_663_, v___y_664_, v___y_665_);
 if (lean_obj_tag(v___x_699_) == 0)
 {
 lean_object* v_a_700_; lean_object* v___x_702_; uint8_t v_isShared_703_; uint8_t v_isSharedCheck_736_; 

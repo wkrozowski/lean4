@@ -33,7 +33,7 @@ lean_object* l_Lean_Name_replacePrefix(lean_object*, lean_object*, lean_object*)
 uint8_t lean_nat_dec_lt(lean_object*, lean_object*);
 lean_object* l_Lean_Name_mkStr4(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node3(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* lean_mk_syntax_ident(lean_object*);
+lean_object* l_Lean_mkIdent(lean_object*);
 lean_object* l_Lean_Syntax_mkNumLit(lean_object*, lean_object*);
 lean_object* l_Array_mkArray0(lean_object*);
 lean_object* lean_array_mk(lean_object*);
@@ -6083,7 +6083,7 @@ lean_object* v_a_1785_; lean_object* v___x_1786_;
 v_a_1785_ = lean_ctor_get(v_r_1774_, 0);
 lean_inc(v_a_1785_);
 lean_dec_ref_known(v_r_1774_, 1);
-v___x_1786_ = lean_mk_syntax_ident(v_a_1785_);
+v___x_1786_ = l_Lean_mkIdent(v_a_1785_);
 return v___x_1786_;
 }
 case 1:

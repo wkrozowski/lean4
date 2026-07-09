@@ -27,7 +27,7 @@ lean_object* l_Lean_LocalContext_setBinderInfo(lean_object*, lean_object*, uint8
 uint8_t l_Lean_LocalDecl_binderInfo(lean_object*);
 uint8_t l_Lean_BinderInfo_isInstImplicit(uint8_t);
 lean_object* l_Lean_LocalDecl_type(lean_object*);
-uint8_t lean_is_out_param(lean_object*);
+uint8_t l_Lean_Expr_isOutParam(lean_object*);
 lean_object* lean_array_get_size(lean_object*);
 uint8_t lean_nat_dec_lt(lean_object*, lean_object*);
 lean_object* lean_array_fget_borrowed(lean_object*, lean_object*);
@@ -3128,7 +3128,8 @@ if (v___x_1024_ == 0)
 lean_object* v___x_1026_; uint8_t v___x_1027_; 
 v___x_1026_ = l_Lean_LocalDecl_type(v_a_1013_);
 lean_dec(v_a_1013_);
-v___x_1027_ = lean_is_out_param(v___x_1026_);
+v___x_1027_ = l_Lean_Expr_isOutParam(v___x_1026_);
+lean_dec_ref(v___x_1026_);
 if (v___x_1027_ == 0)
 {
 uint8_t v___x_1028_; lean_object* v___x_1029_; 

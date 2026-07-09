@@ -46,7 +46,7 @@ uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 lean_object* lean_expr_instantiate_rev(lean_object*, lean_object*);
 uint8_t l_Lean_isMarkedBorrowed(lean_object*);
 uint8_t l_Lean_Name_hasMacroScopes(lean_object*);
-lean_object* lean_erase_macro_scopes(lean_object*);
+lean_object* l_Lean_Name_eraseMacroScopes(lean_object*);
 uint8_t l___private_Lean_Data_Name_0__Lean_Name_quickCmpImpl(lean_object*, lean_object*);
 extern lean_object* l_Lean_Compiler_LCNF_anyExpr;
 lean_object* lean_replace_expr(lean_object*, lean_object*);
@@ -12604,7 +12604,8 @@ return v___x_3379_;
 else
 {
 lean_object* v_binderName_3380_; lean_object* v___x_3381_; 
-v_binderName_3380_ = lean_erase_macro_scopes(v_binderName_3375_);
+v_binderName_3380_ = l_Lean_Name_eraseMacroScopes(v_binderName_3375_);
+lean_dec(v_binderName_3375_);
 v___x_3381_ = l_Lean_Compiler_LCNF_mkFreshBinderName___redArg(v_binderName_3380_, v_a_3376_);
 return v___x_3381_;
 }

@@ -44,7 +44,7 @@ lean_object* l_Lean_Meta_instMonadMetaM___lam__1___boxed(lean_object*, lean_obje
 lean_object* l_instInhabitedOfMonad___redArg(lean_object*, lean_object*);
 lean_object* lean_panic_fn_borrowed(lean_object*, lean_object*);
 lean_object* lean_st_ref_get(lean_object*);
-uint8_t lean_is_matcher(lean_object*, lean_object*);
+uint8_t l_Lean_Meta_isMatcherCore(lean_object*, lean_object*);
 lean_object* l_Lean_Name_str___override(lean_object*, lean_object*);
 lean_object* l_Lean_Environment_find_x3f(lean_object*, lean_object*, uint8_t);
 lean_object* l_Lean_stringToMessageData(lean_object*);
@@ -10079,7 +10079,7 @@ return v___x_3570_;
 else
 {
 uint8_t v___x_3571_; 
-v___x_3571_ = lean_is_matcher(v_env_3561_, v_pre_3563_);
+v___x_3571_ = l_Lean_Meta_isMatcherCore(v_env_3561_, v_pre_3563_);
 return v___x_3571_;
 }
 }
@@ -10144,7 +10144,7 @@ v___x_3590_ = lean_st_ref_get(v___y_3588_);
 v_env_3591_ = lean_ctor_get(v___x_3590_, 0);
 lean_inc_ref(v_env_3591_);
 lean_dec(v___x_3590_);
-v___x_3592_ = lean_is_matcher(v_env_3591_, v_declName_3587_);
+v___x_3592_ = l_Lean_Meta_isMatcherCore(v_env_3591_, v_declName_3587_);
 v___x_3593_ = lean_box(v___x_3592_);
 v___x_3594_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_3594_, 0, v___x_3593_);

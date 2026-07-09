@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 lean_object* lean_st_ref_get(lean_object*);
-uint8_t lean_is_matcher(lean_object*, lean_object*);
+uint8_t l_Lean_Meta_isMatcherCore(lean_object*, lean_object*);
 lean_object* lean_mk_empty_array_with_capacity(lean_object*);
 lean_object* l_Lean_Name_mkStr4(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_instInhabitedMetaM___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -162,7 +162,7 @@ lean_object* l_Lean_Meta_getFunInfoNArgs(lean_object*, lean_object*, lean_object
 lean_object* lean_array_uget(lean_object*, size_t);
 lean_object* l_Lean_Meta_isProof(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_isTypeFormer(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-uint8_t lean_is_out_param(lean_object*);
+uint8_t l_Lean_Expr_isOutParam(lean_object*);
 uint8_t l_Lean_Expr_hasLooseBVars(lean_object*);
 lean_object* l_Lean_mkNatLit(lean_object*);
 lean_object* l_Lean_mkNatAdd(lean_object*, lean_object*);
@@ -9040,7 +9040,7 @@ v___x_2329_ = lean_st_ref_get(v___y_2327_);
 v_env_2330_ = lean_ctor_get(v___x_2329_, 0);
 lean_inc_ref(v_env_2330_);
 lean_dec(v___x_2329_);
-v___x_2331_ = lean_is_matcher(v_env_2330_, v_declName_2326_);
+v___x_2331_ = l_Lean_Meta_isMatcherCore(v_env_2330_, v_declName_2326_);
 v___x_2332_ = lean_box(v___x_2331_);
 v___x_2333_ = lean_alloc_ctor(0, 1, 0);
 lean_ctor_set(v___x_2333_, 0, v___x_2332_);
@@ -17890,7 +17890,8 @@ lean_dec_ref_known(v___x_5695_, 1);
 if (lean_obj_tag(v_a_5696_) == 0)
 {
 uint8_t v___x_5697_; 
-v___x_5697_ = lean_is_out_param(v___x_5694_);
+v___x_5697_ = l_Lean_Expr_isOutParam(v___x_5694_);
+lean_dec_ref(v___x_5694_);
 if (v___x_5697_ == 0)
 {
 uint8_t v___x_5698_; 

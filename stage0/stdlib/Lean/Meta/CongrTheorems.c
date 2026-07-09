@@ -77,7 +77,7 @@ uint8_t l_Lean_isPrivateName(lean_object*);
 lean_object* l_Lean_MessageData_ofName(lean_object*);
 extern lean_object* l_Lean_unknownIdentifierMessageTag;
 lean_object* l_Lean_replaceRef(lean_object*, lean_object*);
-uint8_t lean_is_class(lean_object*, lean_object*);
+uint8_t l_Lean_isClass(lean_object*, lean_object*);
 lean_object* l_Lean_Expr_fvarId_x21(lean_object*);
 lean_object* l_Lean_FVarId_getDecl___redArg(lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_isSubobjectField_x3f(lean_object*, lean_object*, lean_object*);
@@ -5419,8 +5419,8 @@ lean_inc_ref(v_env_2029_);
 lean_dec(v___x_2028_);
 v_toConstantVal_2030_ = lean_ctor_get(v_val_2027_, 0);
 v_induct_2031_ = lean_ctor_get(v_val_2027_, 1);
-lean_inc_n(v_induct_2031_, 2);
-v___x_2032_ = lean_is_class(v_env_2029_, v_induct_2031_);
+lean_inc(v_induct_2031_);
+v___x_2032_ = l_Lean_isClass(v_env_2029_, v_induct_2031_);
 if (v___x_2032_ == 0)
 {
 lean_object* v___x_2033_; lean_object* v___x_2035_; 

@@ -1420,7 +1420,7 @@ lean_dec_ref(v_simpArgs_367_);
 lean_dec(v_i_352_);
 if (lean_obj_tag(v___x_375_) == 0)
 {
-lean_object* v_a_376_; lean_object* v___x_377_; lean_object* v___x_378_; lean_object* v___x_379_; lean_object* v___x_380_; uint8_t v___x_381_; lean_object* v___x_382_; lean_object* v___x_383_; lean_object* v___x_384_; lean_object* v___x_385_; lean_object* v___x_386_; lean_object* v___x_387_; uint8_t v___x_388_; lean_object* v___x_389_; 
+lean_object* v_a_376_; lean_object* v___x_377_; lean_object* v___x_378_; lean_object* v___x_379_; lean_object* v___x_380_; lean_object* v___x_381_; uint8_t v___x_382_; lean_object* v___x_383_; lean_object* v___x_384_; lean_object* v___x_385_; lean_object* v___x_386_; lean_object* v___x_387_; uint8_t v___x_388_; lean_object* v___x_389_; 
 v_a_376_ = lean_ctor_get(v___x_375_, 0);
 lean_inc(v_a_376_);
 lean_dec_ref_known(v___x_375_, 1);
@@ -1438,14 +1438,14 @@ lean_ctor_set(v___x_380_, 2, v___x_379_);
 lean_ctor_set(v___x_380_, 3, v___x_379_);
 lean_ctor_set(v___x_380_, 4, v___x_379_);
 lean_ctor_set(v___x_380_, 5, v___x_379_);
-v___x_381_ = 0;
-v___x_382_ = lean_alloc_ctor(1, 1, 0);
-lean_ctor_set(v___x_382_, 0, v_stx_351_);
+v___x_381_ = lean_alloc_ctor(1, 1, 0);
+lean_ctor_set(v___x_381_, 0, v_stx_351_);
+v___x_382_ = 4;
 v___x_383_ = lean_alloc_ctor(0, 3, 1);
 lean_ctor_set(v___x_383_, 0, v___x_380_);
-lean_ctor_set(v___x_383_, 1, v___x_382_);
+lean_ctor_set(v___x_383_, 1, v___x_381_);
 lean_ctor_set(v___x_383_, 2, v___x_379_);
-lean_ctor_set_uint8(v___x_383_, sizeof(void*)*3, v___x_381_);
+lean_ctor_set_uint8(v___x_383_, sizeof(void*)*3, v___x_382_);
 v___x_384_ = lean_obj_once(&l___private_Lean_Linter_UnusedSimpArgs_0__Lean_Linter_warnUnused___closed__5, &l___private_Lean_Linter_UnusedSimpArgs_0__Lean_Linter_warnUnused___closed__5_once, _init_l___private_Lean_Linter_UnusedSimpArgs_0__Lean_Linter_warnUnused___closed__5);
 v___x_385_ = lean_unsigned_to_nat(1u);
 v___x_386_ = lean_mk_empty_array_with_capacity(v___x_385_);
