@@ -121,6 +121,14 @@ set(LEAN_EXTRA_LAKE_OPTS "" CACHE STRING "extra options to lake")
 set(LEAN_EXTRA_MAKE_OPTS "" CACHE STRING "extra options to leanmake")
 set(LEANC_CC ${CMAKE_C_COMPILER} CACHE STRING "C compiler to use in `leanc`")
 
+# Core-only flags.
+# We want to ship `prefer_native=true` but disable it in all stage builds for consistent behavior.
+# Note that currently this could lead to inconsistent behavior in server mode with `USE_LAKE=OFF`
+# but that option is not used anymore and should likely be deleted.
+string(APPEND LEAN_EXTRA_OPTS " -Dinterpreter.prefer_native=false")
+# More useful for devs than users
+string(APPEND LEAN_EXTRA_OPTS " -Dpp.rawOnError=true")
+
 # option used by the CI to fail on warnings
 option(WFAIL "Fail build if warnings are emitted by Lean" ON)
 if(WFAIL MATCHES "ON")
