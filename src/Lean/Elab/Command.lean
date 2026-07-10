@@ -17,6 +17,16 @@ public section
 
 namespace Lean.Elab.Command
 
+/-- Per-command state of all stateful linters, keyed by linter name; each value is that linter's
+state with its type erased. -/
+abbrev LinterStates := NameMap Dynamic
+
+/-- Reads a stateful linter's state by name at the expected type `σ`. Returns `none` if the linter
+is unregistered, has no state yet, or stored its state at a different type; the caller decides what a
+`none` means (e.g. fall back to a default, or throw). -/
+def LinterStates.get? [TypeName σ] (states : LinterStates) (name : Name) : Option σ :=
+  (states.find? name).bind (·.get? σ)
+
 structure State where
   env            : Environment
   messages       : MessageLog := {}
@@ -29,6 +39,9 @@ structure State where
   infoState      : InfoState := {}
   traceState     : TraceState := {}
   snapshotTasks  : Array (Language.SnapshotTask Language.SnapshotTree) := #[]
+  /-- Post-`pre`-pass stateful-linter state as of the *previous* command (`none` before the first
+  command). Read by the next command's linters; resolved asynchronously by this command's. -/
+  prevLinterStates : Option (Task LinterStates) := none
   deriving Nonempty
 
 structure Context where
@@ -68,6 +81,16 @@ structure Linter where
 structure ModuleLinter where
   run : Array Syntax → CommandElabM Unit
   name : Name := by exact decl_name%
+
+/-- A linter that accumulates type-erased state across commands. See `registerStatefulLinter`. -/
+structure StatefulLinter where
+  name : Name
+  /-- Initial state (`σ` erased). -/
+  init : Dynamic
+  /-- Pre pass: previous state of all linters ↦ this linter's intermediate state. -/
+  pre  : Syntax → (prev : LinterStates) → CommandElabM Dynamic
+  /-- Post pass: previous and pre state of all linters ↦ this linter's new state. -/
+  post : Syntax → (prev preSt : LinterStates) → CommandElabM Dynamic
 
 /-
 Make the compiler generate specialized `pure`/`bind` so we do not have to optimize through the
@@ -118,6 +141,29 @@ def addLinter (l : Linter) : IO Unit := do
 def addModuleLinter (l : ModuleLinter) : IO Unit := do
   let ls ← moduleLintersRef.get
   moduleLintersRef.set (ls.push l)
+
+builtin_initialize statefulLintersRef : IO.Ref (Array StatefulLinter) ← IO.mkRef #[]
+
+/-- Registers a stateful linter, keyed by `name`. Must run during initialization
+(`initialize`/`builtin_initialize`), before concurrent elaboration begins; throws otherwise, and
+throws if `name` is already registered.
+
+`pre`/`post` receive this linter's own state already typed as `self` — its previous state for `pre`,
+its just-computed pre state for `post` — so the common case needs no lookup. Use `LinterStates.get?`
+to read *other* linters' states out of the `prev`/`preSt` maps. -/
+def registerStatefulLinter [TypeName σ] (name : Name) (init : σ)
+    (pre  : Syntax → (self : σ) → (prev : LinterStates) → CommandElabM σ)
+    (post : Syntax → (self : σ) → (prev preSt : LinterStates) → CommandElabM σ) :
+    IO Unit := do
+  unless (← initializing) do
+    throw <| .userError s!"stateful linter '{name}' can only be registered during initialization"
+  let ls ← statefulLintersRef.get
+  if ls.any (·.name == name) then
+    throw <| .userError s!"stateful linter '{name}' is already registered"
+  statefulLintersRef.set <| ls.push
+    { name, init := .mk init
+      pre  := fun stx prev       => .mk <$> pre  stx ((prev.get?  name).getD init) prev
+      post := fun stx prev preSt => .mk <$> post stx ((preSt.get? name).getD init) prev preSt }
 
 instance : MonadInfoTree CommandElabM where
   getInfoState      := return (← get).infoState
@@ -291,6 +337,58 @@ def runModuleLinters (cmds : Array Syntax) : CommandElabM Unit := do
               modify fun s => { savedState with messages := s.messages, traceState := s.traceState }
 
 /--
+Runs all stateful linters over `stx` in two barriers, given the states `prev` from the previous
+command, and returns the new states.
+
+Every linter's `pre` runs first (each seeing `prev`), producing intermediate states; then every
+linter's `post` runs (each seeing `prev` and all the intermediate states), and its output becomes
+the new state threaded onward. A failing linter is logged and falls back to its previous state (in
+`pre`) or its intermediate state (in `post`), so the result always has one entry per registered
+linter. As in `runLinters`, per-linter `CommandElabM` state changes other than messages and traces
+are discarded.
+-/
+def runStatefulLinters (stx : Syntax) (prev : LinterStates) : CommandElabM LinterStates := do
+  profileitM Exception "stateful linting" (← getOptions) do
+    withTraceNode `Elab.lint (fun _ => return m!"running stateful linters") do
+      let linters ← statefulLintersRef.get
+      let run (phase : String) (name : Name) (fallback : Dynamic)
+          (act : CommandElabM Dynamic) : CommandElabM Dynamic :=
+        withTraceNode `Elab.lint
+            (fun _ => return m!"running stateful linter ({phase}): {.ofConstName name}")
+            (tag := name.toString) do
+          let savedState ← get
+          try
+            act
+          catch ex =>
+            match ex with
+            | .error ref msg =>
+              logException (.error ref m!"stateful linter {.ofConstName name} ({phase}) failed: {msg}")
+            | .internal _ _ => logException ex
+            pure fallback
+          finally
+            modify fun s => { savedState with messages := s.messages, traceState := s.traceState }
+      let mut preSt : LinterStates := {}
+      for l in linters do
+        preSt := preSt.insert l.name
+          (← run "pre" l.name (prev.find? l.name |>.getD l.init) (l.pre stx prev))
+      let mut postSt : LinterStates := {}
+      for l in linters do
+        postSt := postSt.insert l.name
+          (← run "post" l.name (preSt.find? l.name |>.getD l.init) (l.post stx prev preSt))
+      return postSt
+
+/-- The initial states of all registered stateful linters (each linter's `init`), used as the `prev`
+states for the first command so that even cross-linter reads see every linter's `init`. -/
+def initialLinterStates : BaseIO LinterStates := do
+  return (← statefulLintersRef.get).foldl (fun s l => s.insert l.name l.init) {}
+
+/-- The previous command's stateful-linter states as a task to bind on, falling back to a resolved
+task of `initialLinterStates` for the first command. -/
+def prevLinterStatesTask : Option (Task LinterStates) → BaseIO (Task LinterStates)
+  | some prev => return prev
+  | none      => return .pure (← initialLinterStates)
+
+/--
 Catches and logs exceptions occurring in `x`. Unlike `try catch` in `CommandElabM`, this function
 catches interrupt exceptions as well and thus is intended for use at the top level of elaboration.
 Interrupt and abort exceptions are caught but not logged.
@@ -390,6 +488,49 @@ def runLintersAsync (stx : Syntax) (cmds : Array Syntax) : CommandElabM Unit := 
   let task ← BaseIO.bindTask (sync := true) (t := (← getInfoState).substituteLazy) fun infoSt =>
     BaseIO.mapTask (t := treeTask) fun _ =>
       lintAct infoSt
+  logSnapshotTask { stx? := none, task, cancelTk? := cancelTk }
+
+open Language in
+def runStatefulLintersAsync (stx : Syntax) : CommandElabM Unit := do
+  if (← statefulLintersRef.get).isEmpty then return
+  if !Elab.async.get (← getOptions) then
+    -- Synchronous path: the previous command's states are already resolved, so run the two passes
+    -- inline and thread the result forward as an already-resolved task.
+    let prev := (← prevLinterStatesTask (← get).prevLinterStates).get
+    let postSt ← withoutModifyingEnv <| runStatefulLinters stx prev
+    modify fun s => { s with prevLinterStates := some (.pure postSt) }
+    return
+
+  -- Asynchronous path, mirroring `runLintersAsync`: run the linters in one task once the command's
+  -- info tree and message log are available. Additionally, bind on the previous command's state
+  -- task and resolve a fresh promise for this command's state from inside the task, so the next
+  -- command can read our state without blocking this command's elaboration.
+  let mut snaps := (← get).snapshotTasks
+  if let some elabSnap := (← read).snap? then
+    snaps := snaps.push { stx? := none, cancelTk? := none, task := elabSnap.new.result!.map (sync := true) toSnapshotTree }
+  let tree := SnapshotTree.mk { diagnostics := .empty } snaps
+  let treeTask ← tree.waitAll
+
+  let prevTask ← prevLinterStatesTask (← get).prevLinterStates
+  let statePromise ← IO.Promise.new (α := LinterStates)
+  -- thread this command's (future) state forward; a dropped promise degrades to the initial states
+  let inits ← initialLinterStates
+  modify fun s => { s with prevLinterStates := some (statePromise.resultD inits) }
+
+  let cancelTk ← IO.CancelToken.new
+  let lintAct ← wrapAsyncAsSnapshot (cancelTk? := cancelTk) fun (prev, infoSt) => do
+    let messages := tree.getAll.map (·.diagnostics.msgLog) |>.foldl (· ++ ·) .empty
+    -- do not double-report
+    let messages := messages.markAllReported
+    modify fun st => { st with messages := st.messages ++ messages }
+    modifyInfoState fun _ => infoSt
+    let postSt ← runStatefulLinters stx prev
+    statePromise.resolve postSt
+
+  let task ← BaseIO.bindTask (sync := true) (t := (← getInfoState).substituteLazy) fun infoSt =>
+    BaseIO.bindTask (t := treeTask) fun _ =>
+      BaseIO.mapTask (t := prevTask) fun prev =>
+        lintAct (prev, infoSt)
   logSnapshotTask { stx? := none, task, cancelTk? := cancelTk }
 
 /--
@@ -663,6 +804,7 @@ def elabCommandTopLevel (stx : Syntax) (cmds : Array Syntax := #[]) : CommandEla
   unless (stx.find? (·.isOfKind ``Lean.guardMsgsCmd)).isSome do
     withLogging do
       runLintersAsync stx cmds
+      runStatefulLintersAsync stx
 
 /-- Adapt a syntax transformation to a regular, command-producing elaborator. -/
 def adaptExpander (exp : Syntax → CommandElabM Syntax) : CommandElab := fun stx => do
