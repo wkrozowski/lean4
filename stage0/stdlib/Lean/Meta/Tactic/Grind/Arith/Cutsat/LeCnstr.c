@@ -71,8 +71,8 @@ lean_object* l_Lean_Meta_Grind_Arith_Cutsat_toInt(lean_object*, lean_object*, le
 lean_object* l_Lean_mkApp6(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_mkIntLit(lean_object*);
 lean_object* l_Lean_mkIntAdd(lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Grind_Arith_Cutsat_getOfNotLE_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Grind_Arith_Cutsat_getOfLE_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Grind_Arith_Cutsat_getOfNotLE_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Grind_Arith_Cutsat_getOfLE_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Grind_Arith_Cutsat_ToIntM_run(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_instantiateMVarsIfMVarApp___redArg(lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Structural_isInstLEInt___redArg(lean_object*, lean_object*);
@@ -110,8 +110,8 @@ uint8_t lean_int_dec_le(lean_object*, lean_object*);
 lean_object* l_Int_Internal_Linear_Poly_combine(lean_object*, lean_object*);
 uint8_t l_Int_Internal_Linear_Poly_isUnsatLe(lean_object*);
 uint8_t l_Lean_Meta_Grind_Arith_Cutsat_LeCnstr_isTrivial(lean_object*);
-lean_object* l_Lean_Meta_Grind_Arith_Cutsat_getOfNotLT_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Grind_Arith_Cutsat_getOfLT_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Grind_Arith_Cutsat_getOfNotLT_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Grind_Arith_Cutsat_getOfLT_x3f___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Nat_cast___at___00Lean_Meta_Grind_Arith_Cutsat_LeCnstr_norm_spec__0(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Meta_Grind_Arith_Cutsat_LeCnstr_norm(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_addMessageContextFull___at___00Lean_addTrace___at___00Lean_Meta_Grind_Arith_Cutsat_LeCnstr_applyEq_spec__0_spec__0(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -12317,7 +12317,7 @@ lean_object* v___y_3800_; lean_object* v___y_3801_; lean_object* v___y_3802_; le
 if (v_eqTrue_3783_ == 0)
 {
 lean_object* v___x_3905_; 
-v___x_3905_ = l_Lean_Meta_Grind_Arith_Cutsat_getOfNotLE_x3f___redArg(v_a_3784_, v_a_3785_, v_a_3791_, v_a_3792_, v_a_3793_, v_a_3794_);
+v___x_3905_ = l_Lean_Meta_Grind_Arith_Cutsat_getOfNotLE_x3f___redArg(v_a_3784_, v_a_3785_, v_a_3790_, v_a_3791_, v_a_3792_, v_a_3793_, v_a_3794_);
 if (lean_obj_tag(v___x_3905_) == 0)
 {
 lean_object* v_a_3906_; 
@@ -12384,7 +12384,7 @@ return v___x_3912_;
 else
 {
 lean_object* v___x_3915_; 
-v___x_3915_ = l_Lean_Meta_Grind_Arith_Cutsat_getOfLE_x3f___redArg(v_a_3784_, v_a_3785_, v_a_3791_, v_a_3792_, v_a_3793_, v_a_3794_);
+v___x_3915_ = l_Lean_Meta_Grind_Arith_Cutsat_getOfLE_x3f___redArg(v_a_3784_, v_a_3785_, v_a_3790_, v_a_3791_, v_a_3792_, v_a_3793_, v_a_3794_);
 if (lean_obj_tag(v___x_3915_) == 0)
 {
 lean_object* v_a_3916_; 
@@ -13618,7 +13618,7 @@ _start:
 if (v_eqTrue_4133_ == 0)
 {
 lean_object* v___x_4147_; 
-v___x_4147_ = l_Lean_Meta_Grind_Arith_Cutsat_getOfNotLT_x3f___redArg(v___y_4135_, v___y_4136_, v___y_4142_, v___y_4143_, v___y_4144_, v___y_4145_);
+v___x_4147_ = l_Lean_Meta_Grind_Arith_Cutsat_getOfNotLT_x3f___redArg(v___y_4135_, v___y_4136_, v___y_4141_, v___y_4142_, v___y_4143_, v___y_4144_, v___y_4145_);
 if (lean_obj_tag(v___x_4147_) == 0)
 {
 lean_object* v_a_4148_; lean_object* v___x_4149_; 
@@ -13685,7 +13685,7 @@ return v___x_4155_;
 else
 {
 lean_object* v___x_4158_; 
-v___x_4158_ = l_Lean_Meta_Grind_Arith_Cutsat_getOfLT_x3f___redArg(v___y_4135_, v___y_4136_, v___y_4142_, v___y_4143_, v___y_4144_, v___y_4145_);
+v___x_4158_ = l_Lean_Meta_Grind_Arith_Cutsat_getOfLT_x3f___redArg(v___y_4135_, v___y_4136_, v___y_4141_, v___y_4142_, v___y_4143_, v___y_4144_, v___y_4145_);
 if (lean_obj_tag(v___x_4158_) == 0)
 {
 lean_object* v_a_4159_; lean_object* v___x_4160_; 

@@ -6804,7 +6804,7 @@ _start:
 {
 lean_object* v___y_2196_; lean_object* v___x_2199_; uint8_t v_debug_2200_; 
 v___x_2199_ = lean_st_ref_get(v___y_2189_);
-v_debug_2200_ = lean_ctor_get_uint8(v___x_2199_, sizeof(void*)*10);
+v_debug_2200_ = lean_ctor_get_uint8(v___x_2199_, sizeof(void*)*11);
 lean_dec(v___x_2199_);
 if (v_debug_2200_ == 0)
 {

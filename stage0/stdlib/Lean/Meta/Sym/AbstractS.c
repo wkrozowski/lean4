@@ -4443,12 +4443,12 @@ default:
 {
 lean_object* v___x_1166_; lean_object* v___x_1167_; lean_object* v___x_1168_; 
 v___x_1166_ = lean_obj_once(&l___private_Lean_Meta_Sym_AbstractS_0__Lean_Meta_Sym_abstractFVarsCore___closed__0, &l___private_Lean_Meta_Sym_AbstractS_0__Lean_Meta_Sym_abstractFVarsCore___closed__0_once, _init_l___private_Lean_Meta_Sym_AbstractS_0__Lean_Meta_Sym_abstractFVarsCore___closed__0);
-lean_inc(v___y_1159_);
+lean_inc(v___y_1158_);
 v___x_1167_ = lean_alloc_ctor(0, 2, 0);
-lean_ctor_set(v___x_1167_, 0, v___y_1159_);
+lean_ctor_set(v___x_1167_, 0, v___y_1158_);
 lean_ctor_set(v___x_1167_, 1, v___x_1166_);
-v___x_1168_ = l___private_Lean_Meta_Sym_ReplaceS_0__Lean_Meta_Sym_visit___at___00Lean_Meta_Sym_abstractFVarsRange_spec__4(v___y_1158_, v_lctx_1147_, v___x_1148_, v_start_1149_, v_xs_1150_, v_maxFVar_1151_, v_e_1146_, v___y_1159_, v___x_1167_, v_debug_1152_, v___y_1155_, v___y_1156_);
-lean_dec(v___y_1158_);
+v___x_1168_ = l___private_Lean_Meta_Sym_ReplaceS_0__Lean_Meta_Sym_visit___at___00Lean_Meta_Sym_abstractFVarsRange_spec__4(v___y_1159_, v_lctx_1147_, v___x_1148_, v_start_1149_, v_xs_1150_, v_maxFVar_1151_, v_e_1146_, v___y_1158_, v___x_1167_, v_debug_1152_, v___y_1155_, v___y_1156_);
+lean_dec(v___y_1159_);
 if (lean_obj_tag(v___x_1168_) == 0)
 {
 lean_object* v_a_1169_; lean_object* v_a_1170_; lean_object* v___x_1172_; uint8_t v_isShared_1173_; uint8_t v_isSharedCheck_1178_; 
@@ -4549,7 +4549,7 @@ v___jp_1188_:
 lean_object* v_maxIndex_1192_; uint8_t v___x_1193_; 
 v_maxIndex_1192_ = l_Lean_LocalDecl_index(v___y_1191_);
 lean_dec_ref(v___y_1191_);
-v___x_1193_ = lean_nat_dec_lt(v_maxIndex_1192_, v___y_1189_);
+v___x_1193_ = lean_nat_dec_lt(v_maxIndex_1192_, v___y_1190_);
 lean_dec(v_maxIndex_1192_);
 if (v___x_1193_ == 0)
 {
@@ -4710,8 +4710,8 @@ if (lean_obj_tag(v_val_1221_) == 0)
 lean_object* v___x_1222_; lean_object* v___x_1223_; 
 v___x_1222_ = lean_obj_once(&l___private_Lean_Meta_Sym_AbstractS_0__Lean_Meta_Sym_abstractFVarsCore___lam__0___closed__3, &l___private_Lean_Meta_Sym_AbstractS_0__Lean_Meta_Sym_abstractFVarsCore___lam__0___closed__3_once, _init_l___private_Lean_Meta_Sym_AbstractS_0__Lean_Meta_Sym_abstractFVarsCore___lam__0___closed__3);
 v___x_1223_ = l_panic___at___00Lean_Meta_Sym_abstractFVarsRange_spec__3(v___x_1222_);
-v___y_1196_ = v_minIndex_1219_;
-v___y_1197_ = v___x_1205_;
+v___y_1196_ = v___x_1205_;
+v___y_1197_ = v_minIndex_1219_;
 v___y_1198_ = v___x_1223_;
 goto v___jp_1195_;
 }
@@ -4721,8 +4721,8 @@ lean_object* v_val_1224_;
 v_val_1224_ = lean_ctor_get(v_val_1221_, 0);
 lean_inc(v_val_1224_);
 lean_dec_ref_known(v_val_1221_, 1);
-v___y_1196_ = v_minIndex_1219_;
-v___y_1197_ = v___x_1205_;
+v___y_1196_ = v___x_1205_;
+v___y_1197_ = v_minIndex_1219_;
 v___y_1198_ = v_val_1224_;
 goto v___jp_1195_;
 }
@@ -4730,8 +4730,8 @@ goto v___jp_1195_;
 else
 {
 lean_dec(v___x_1220_);
-v___y_1158_ = v_minIndex_1219_;
-v___y_1159_ = v___x_1205_;
+v___y_1158_ = v___x_1205_;
+v___y_1159_ = v_minIndex_1219_;
 goto v___jp_1157_;
 }
 }
@@ -4806,7 +4806,7 @@ v_lctx_1269_ = lean_ctor_get(v_a_1256_, 2);
 v_maxFVar_1270_ = lean_ctor_get(v___x_1266_, 1);
 lean_inc_ref(v_maxFVar_1270_);
 lean_dec(v___x_1266_);
-v_debug_1271_ = lean_ctor_get_uint8(v___x_1267_, sizeof(void*)*10);
+v_debug_1271_ = lean_ctor_get_uint8(v___x_1267_, sizeof(void*)*11);
 lean_dec(v___x_1267_);
 v_env_1272_ = lean_ctor_get(v___x_1268_, 0);
 lean_inc_ref(v_env_1272_);
@@ -5069,7 +5069,7 @@ _start:
 {
 lean_object* v___y_1393_; lean_object* v___x_1396_; uint8_t v_debug_1397_; 
 v___x_1396_ = lean_st_ref_get(v___y_1386_);
-v_debug_1397_ = lean_ctor_get_uint8(v___x_1396_, sizeof(void*)*10);
+v_debug_1397_ = lean_ctor_get_uint8(v___x_1396_, sizeof(void*)*11);
 lean_dec(v___x_1396_);
 if (v_debug_1397_ == 0)
 {
@@ -5408,7 +5408,7 @@ _start:
 {
 lean_object* v___y_1539_; lean_object* v___x_1542_; uint8_t v_debug_1543_; 
 v___x_1542_ = lean_st_ref_get(v___y_1532_);
-v_debug_1543_ = lean_ctor_get_uint8(v___x_1542_, sizeof(void*)*10);
+v_debug_1543_ = lean_ctor_get_uint8(v___x_1542_, sizeof(void*)*11);
 lean_dec(v___x_1542_);
 if (v_debug_1543_ == 0)
 {

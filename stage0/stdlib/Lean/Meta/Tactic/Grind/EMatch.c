@@ -192,7 +192,7 @@ lean_object* lean_grind_mk_heq_proof(lean_object*, lean_object*, lean_object*, l
 lean_object* l_Lean_Meta_Grind_withoutModifyingState___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_mkMVar(lean_object*);
 lean_object* l_Array_toSubarray___redArg(lean_object*, lean_object*, lean_object*);
-lean_object* l_Lean_Meta_Sym_synthInstanceAndAssign___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_Sym_synthInstanceAndAssign___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t l_Lean_BinderInfo_isInstImplicit(uint8_t);
 lean_object* l_Lean_Environment_find_x3f(lean_object*, lean_object*, uint8_t);
 lean_object* l_Lean_MessageData_ofConstName(lean_object*, uint8_t);
@@ -17210,7 +17210,7 @@ v_a_5658_ = lean_ctor_get(v___x_5657_, 0);
 lean_inc_n(v_a_5658_, 2);
 lean_dec_ref_known(v___x_5657_, 1);
 lean_inc(v_a_5645_);
-v___x_5659_ = l_Lean_Meta_Sym_synthInstanceAndAssign___redArg(v_a_5645_, v_a_5658_, v___y_5620_, v___y_5621_, v___y_5622_, v___y_5623_);
+v___x_5659_ = l_Lean_Meta_Sym_synthInstanceAndAssign___redArg(v_a_5645_, v_a_5658_, v___y_5619_, v___y_5620_, v___y_5621_, v___y_5622_, v___y_5623_);
 if (lean_obj_tag(v___x_5659_) == 0)
 {
 lean_object* v_a_5660_; uint8_t v___x_5661_; 
