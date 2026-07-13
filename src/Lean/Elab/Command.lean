@@ -101,9 +101,10 @@ structure StatefulLinter (σ τ : Type) where private mk ::
   name : Name
 deriving Inhabited
 
-/-- The type-erased registry entry for a stateful linter. Its `pre`/`post` close over the typed
-handlers and `unsafeCast` between `LinterState` and the linter's real `σ`/`Option τ`. -/
-structure StatefulLinterDescr where
+/-- The type-erased registry entry for a stateful linter (the array element the runner iterates). Its
+`pre`/`post` close over the typed handlers and `unsafeCast` between `LinterState` and the linter's real
+`σ`/`Option τ`. -/
+structure StatefulLinterEntry where
   name : Name
   /-- Initial `σ`, erased. -/
   init : LinterState
@@ -190,7 +191,7 @@ def addModuleLinter (l : ModuleLinter) : IO Unit := do
   let ls ← moduleLintersRef.get
   moduleLintersRef.set (ls.push l)
 
-builtin_initialize statefulLintersRef : IO.Ref (Array StatefulLinterDescr) ← IO.mkRef #[]
+builtin_initialize statefulLintersRef : IO.Ref (Array StatefulLinterEntry) ← IO.mkRef #[]
 
 /-- Registers a stateful linter and returns its handle (which other linters import to read its state).
 Must run during initialization (`initialize`/`builtin_initialize`), before concurrent elaboration
@@ -207,10 +208,10 @@ never exposed.
 `pre` defaults to always declining; omit it for a post-only linter that merely reacts to other
 linters' pre-phase state (the handoff `τ` is then unconstrained, e.g. fix it with `(τ := Unit)`). -/
 unsafe def registerStatefulLinterImpl (name : Name) (init : σ)
-    (pre  : Syntax → (self : σ) → (readPrev : PrevStateFn) → CommandElabM (Option τ) :=
+    (pre  : Syntax → (selfPrevPostState : σ) → (readPrevPostState : PrevStateFn) → CommandElabM (Option τ) :=
        fun _ _ _ => pure none)
-    (post : Syntax → (self : σ) → (preState : Option τ) →
-       (readPrev : PrevStateFn) → (readPre : PreStateFn) → CommandElabM σ) :
+    (post : Syntax → (selfPrevPostState : σ) → (selfCurrentPreState : Option τ) →
+       (readPrevPostState : PrevStateFn) → (readCurrentPreState : PreStateFn) → CommandElabM σ) :
     IO (StatefulLinter σ τ) := do
   unless (← initializing) do
     throw <| .userError s!"stateful linter '{name}' can only be registered during initialization"
@@ -232,10 +233,10 @@ unsafe def registerStatefulLinterImpl (name : Name) (init : σ)
 
 @[inherit_doc registerStatefulLinterImpl, implemented_by registerStatefulLinterImpl]
 opaque registerStatefulLinter (name : Name) (init : σ)
-    (pre  : Syntax → (self : σ) → (readPrev : PrevStateFn) → CommandElabM (Option τ) :=
+    (pre  : Syntax → (selfPrevPostState : σ) → (readPrevPostState : PrevStateFn) → CommandElabM (Option τ) :=
        fun _ _ _ => pure none)
-    (post : Syntax → (self : σ) → (preState : Option τ) →
-       (readPrev : PrevStateFn) → (readPre : PreStateFn) → CommandElabM σ) :
+    (post : Syntax → (selfPrevPostState : σ) → (selfCurrentPreState : Option τ) →
+       (readPrevPostState : PrevStateFn) → (readCurrentPreState : PreStateFn) → CommandElabM σ) :
     IO (StatefulLinter σ τ)
 
 instance : MonadInfoTree CommandElabM where
