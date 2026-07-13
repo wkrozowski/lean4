@@ -4897,8 +4897,8 @@ else
 {
 lean_dec(v_a_1412_);
 lean_dec_ref(v_arg_1408_);
-lean_dec_ref(v_fn_1407_);
 lean_dec_ref_known(v_e_1394_, 2);
+lean_dec_ref(v_fn_1407_);
 return v___x_1428_;
 }
 }
@@ -7447,8 +7447,8 @@ if (lean_obj_tag(v_a_2311_) == 0)
 {
 uint8_t v_contextDependent_2313_; 
 lean_dec_ref(v_arg_2307_);
-lean_dec_ref_known(v_e_2288_, 2);
 lean_dec_ref(v_fn_2306_);
+lean_dec_ref_known(v_e_2288_, 2);
 v_contextDependent_2313_ = lean_ctor_get_uint8(v_a_2311_, 1);
 lean_dec_ref_known(v_a_2311_, 0);
 v_cd_2301_ = v_contextDependent_2313_;
@@ -7508,8 +7508,8 @@ if (lean_obj_tag(v_a_2311_) == 0)
 {
 uint8_t v_contextDependent_2342_; 
 lean_dec_ref(v_arg_2307_);
-lean_dec_ref_known(v_e_2288_, 2);
 lean_dec_ref(v_fn_2306_);
+lean_dec_ref_known(v_e_2288_, 2);
 v_contextDependent_2342_ = lean_ctor_get_uint8(v_a_2311_, 1);
 lean_dec_ref_known(v_a_2311_, 0);
 v_cd_2301_ = v_contextDependent_2342_;

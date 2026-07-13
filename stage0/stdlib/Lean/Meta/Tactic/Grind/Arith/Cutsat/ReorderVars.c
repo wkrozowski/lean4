@@ -4136,7 +4136,7 @@ lean_object* v_p_1455_; lean_object* v___x_1456_; lean_object* v___x_1457_; lean
 v_p_1455_ = lean_ctor_get(v_c_1453_, 0);
 lean_inc_ref(v_p_1455_);
 v___x_1456_ = l_Int_Internal_Linear_Poly_reorder(v_p_1455_, v_old2new_1454_);
-v___x_1457_ = lean_alloc_ctor(9, 1, 0);
+v___x_1457_ = lean_alloc_ctor(10, 1, 0);
 lean_ctor_set(v___x_1457_, 0, v_c_1453_);
 v___x_1458_ = lean_alloc_ctor(0, 2, 0);
 lean_ctor_set(v___x_1458_, 0, v___x_1456_);
