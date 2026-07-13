@@ -6,22 +6,22 @@ import LinterTest.Errors
 threading (the count keeps advancing). A plain `/- -/` comment avoids a counted module-doc command. -/
 
 /--
-error: stateful linter LinterTest.Errors.preThrower (pre) failed: pre boom
+error: stateful linter #1 (pre) failed: pre boom
 ---
 info: count: 1
 ---
-error: stateful linter LinterTest.Errors.postThrower (post) failed: post boom
+error: stateful linter #2 (post) failed: post boom
 -/
 #guard_msgs in
 def ea := 1
 
 set_option Elab.async false in
 /--
-error: stateful linter LinterTest.Errors.preThrower (pre) failed: pre boom
+error: stateful linter #1 (pre) failed: pre boom
 ---
 info: count: 2
 ---
-error: stateful linter LinterTest.Errors.postThrower (post) failed: post boom
+error: stateful linter #2 (post) failed: post boom
 -/
 #guard_msgs in
 def eb := 2

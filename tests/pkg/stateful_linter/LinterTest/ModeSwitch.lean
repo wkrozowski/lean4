@@ -13,7 +13,7 @@ structure Counter where
   count : Nat
 
 initialize counterLinter : StatefulLinter Counter Nat ←
-  registerStatefulLinter `LinterTest.ModeSwitch.counter (Counter.mk 0)
+  registerStatefulLinter (Counter.mk 0)
     (pre := fun stx self _ =>
       pure <| if Parser.isTerminalCommand stx then none else some (self.count + 1))
     (post := fun _ self preState _ _ => do

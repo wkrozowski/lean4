@@ -98,14 +98,12 @@ A linter never needs its *own* handle — its previous `σ` and this command's h
 must export its handle. -/
 structure StatefulLinter (σ τ : Type) where private mk ::
   private idx : Nat
-  name : Name
 deriving Inhabited
 
 /-- The type-erased registry entry for a stateful linter (the array element the runner iterates). Its
 `pre`/`post` close over the typed handlers and `unsafeCast` between `LinterState` and the linter's real
 `σ`/`Option τ`. -/
 structure StatefulLinterEntry where
-  name : Name
   /-- Initial `σ`, erased. -/
   init : LinterState
   /-- Pre pass: previous states of all linters ↦ this linter's `Option τ`, erased. -/
@@ -195,7 +193,7 @@ builtin_initialize statefulLintersRef : IO.Ref (Array StatefulLinterEntry) ← I
 
 /-- Registers a stateful linter and returns its handle (which other linters import to read its state).
 Must run during initialization (`initialize`/`builtin_initialize`), before concurrent elaboration
-begins; throws otherwise, and throws if `name` is already registered.
+begins; throws otherwise.
 
 A linter carries two types. `σ` is the *persistent* state threaded across commands: both phases read
 this command's previous `σ` as `self` (defaulting to `init` for the first command), and `post`
@@ -207,32 +205,29 @@ never exposed.
 
 `pre` defaults to always declining; omit it for a post-only linter that merely reacts to other
 linters' pre-phase state (the handoff `τ` is then unconstrained, e.g. fix it with `(τ := Unit)`). -/
-unsafe def registerStatefulLinterImpl (name : Name) (init : σ)
+unsafe def registerStatefulLinterImpl (init : σ)
     (pre  : Syntax → (selfPrevPostState : σ) → (readPrevPostState : PrevStateFn) → CommandElabM (Option τ) :=
        fun _ _ _ => pure none)
     (post : Syntax → (selfPrevPostState : σ) → (selfCurrentPreState : Option τ) →
        (readPrevPostState : PrevStateFn) → (readCurrentPreState : PreStateFn) → CommandElabM σ) :
     IO (StatefulLinter σ τ) := do
   unless (← initializing) do
-    throw <| .userError s!"stateful linter '{name}' can only be registered during initialization"
+    throw <| .userError "stateful linters can only be registered during initialization"
   let ls ← statefulLintersRef.get
-  if ls.any (·.name == name) then
-    throw <| .userError s!"stateful linter '{name}' is already registered"
   let idx := ls.size
   -- safety: `idx` is this linter's own slot, so `prev`/`preSt` hold its `σ`/`Option τ` there, and the
   -- entries we produce are read back at those same types via the handle's private index.
   statefulLintersRef.set <| ls.push
-    { name
-      init := unsafeCast init
+    { init := unsafeCast init
       pre  := fun stx prev =>
         unsafeCast <$> pre stx (unsafeCast prev[idx]!) (fun l => l.prevState prev)
       post := fun stx prev preSt =>
         unsafeCast <$> post stx (unsafeCast prev[idx]!) (unsafeCast preSt[idx]!)
           (fun l => l.prevState prev) (fun l => l.preState preSt) }
-  return ⟨idx, name⟩
+  return ⟨idx⟩
 
 @[inherit_doc registerStatefulLinterImpl, implemented_by registerStatefulLinterImpl]
-opaque registerStatefulLinter (name : Name) (init : σ)
+opaque registerStatefulLinter (init : σ)
     (pre  : Syntax → (selfPrevPostState : σ) → (readPrevPostState : PrevStateFn) → CommandElabM (Option τ) :=
        fun _ _ _ => pure none)
     (post : Syntax → (selfPrevPostState : σ) → (selfCurrentPreState : Option τ) →
@@ -425,20 +420,21 @@ def runStatefulLinters (stx : Syntax) (prev : LinterStates) : CommandElabM Linte
   profileitM Exception "stateful linting" (← getOptions) do
     withTraceNode `Elab.lint (fun _ => return m!"running stateful linters") do
       let linters ← statefulLintersRef.get
-      -- Runs one phase of one linter under a trace node, restoring elaborator state (keeping only
-      -- messages and traces) afterwards and falling back to `fallback` on any exception.
-      let run (phase : String) (name : Name) (fallback : LinterState)
+      -- Runs one phase of one linter (identified by its registration index) under a trace node,
+      -- restoring elaborator state (keeping only messages and traces) afterwards and falling back to
+      -- `fallback` on any exception.
+      let run (phase : String) (idx : Nat) (fallback : LinterState)
           (act : CommandElabM LinterState) : CommandElabM LinterState :=
         withTraceNode `Elab.lint
-            (fun _ => return m!"running stateful linter ({phase}): {.ofConstName name}")
-            (tag := name.toString) do
+            (fun _ => return m!"running stateful linter #{idx} ({phase})")
+            (tag := toString idx) do
           let savedState ← get
           try
             act
           catch ex =>
             match ex with
             | .error ref msg =>
-              logException (.error ref m!"stateful linter {.ofConstName name} ({phase}) failed: {msg}")
+              logException (.error ref m!"stateful linter #{idx} ({phase}) failed: {msg}")
             | .internal _ _ => logException ex
             pure fallback
           finally
@@ -446,15 +442,17 @@ def runStatefulLinters (stx : Syntax) (prev : LinterStates) : CommandElabM Linte
       -- Pre pass: on decline or failure a linter's slot holds an erased `none`, which post and other
       -- linters read as "no pre-state this command".
       let mut preSt : LinterStates := .emptyWithCapacity linters.size
+      let mut i := 0
       for l in linters do
-        preSt := preSt.push (← run "pre" l.name erasedNone (l.pre stx prev))
+        preSt := preSt.push (← run "pre" i erasedNone (l.pre stx prev))
+        i := i + 1
       -- Post pass produces the threaded state; it always runs (seeing an absent pre as such). On
       -- failure we freeze at the previous command's state, so a bad command is state-transparent
       -- rather than resetting accumulation.
       let mut postSt : LinterStates := .emptyWithCapacity linters.size
-      let mut i := 0
+      i := 0
       for l in linters do
-        postSt := postSt.push (← run "post" l.name prev[i]! (l.post stx prev preSt))
+        postSt := postSt.push (← run "post" i prev[i]! (l.post stx prev preSt))
         i := i + 1
       return postSt
 

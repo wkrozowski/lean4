@@ -20,22 +20,22 @@ structure Payload where
 /-- Registers a post-only linter that reports the count `emitter` staged this command, reading it
 through `emitter`'s handle. Its own handoff type is irrelevant, so `τ := Unit` and the handle is
 discarded (nobody reads this linter). -/
-def registerReader (emitter : StatefulLinter Counter Payload) (name : Name) (label : String) :
+def registerReader (emitter : StatefulLinter Counter Payload) (label : String) :
     IO Unit := do
-  let _ ← registerStatefulLinter (τ := Unit) name (Counter.mk 0)
+  let _ ← registerStatefulLinter (τ := Unit) (Counter.mk 0)
     (post := fun _ self _ _ readPre => do
       if let some p := readPre emitter then
         logInfo m!"{label} sees count {p.current}"
       pure self)
 
 initialize emitter : StatefulLinter Counter Payload ←
-  registerStatefulLinter `LinterTest.Readers.emitter (Counter.mk 0)
+  registerStatefulLinter (Counter.mk 0)
     (pre := fun stx self _ =>
       pure <| if Parser.isTerminalCommand stx then none else some { current := self.count + 1 })
     (post := fun _ self preState _ _ =>
       pure { count := (preState.map Payload.current).getD self.count })
 
 initialize
-  registerReader emitter `LinterTest.Readers.readerA "reader A"
-  registerReader emitter `LinterTest.Readers.readerB "reader B"
-  registerReader emitter `LinterTest.Readers.readerC "reader C"
+  registerReader emitter "reader A"
+  registerReader emitter "reader B"
+  registerReader emitter "reader C"

@@ -14,7 +14,7 @@ structure Counter where
   count : Nat
 
 initialize counterLinter : StatefulLinter Counter Nat ←
-  registerStatefulLinter `LinterTest.Errors.counter (Counter.mk 0)
+  registerStatefulLinter (Counter.mk 0)
     (pre := fun stx self _ =>
       pure <| if Parser.isTerminalCommand stx then none else some (self.count + 1))
     (post := fun _ self preState _ _ => do
@@ -23,14 +23,14 @@ initialize counterLinter : StatefulLinter Counter Nat ←
       | none   => pure self)
 
 initialize preThrower : StatefulLinter Unit Unit ←
-  registerStatefulLinter `LinterTest.Errors.preThrower ()
+  registerStatefulLinter ()
     (pre := fun stx _ _ => do
       unless Parser.isTerminalCommand stx do throwError "pre boom"
       pure none)
     (post := fun _ self _ _ _ => pure self)
 
 initialize postThrower : StatefulLinter Unit Unit ←
-  registerStatefulLinter `LinterTest.Errors.postThrower ()
+  registerStatefulLinter ()
     (post := fun stx self _ _ _ => do
       unless Parser.isTerminalCommand stx do throwError "post boom"
       pure self)
