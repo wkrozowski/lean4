@@ -142,7 +142,7 @@ since no pre-phase state exists yet when `pre` runs. -/
 abbrev PreStateFn := {σ τ : Type} → StatefulLinter σ τ → Option τ
 
 /-
-Make the compiler generate specialized `pure`/`bind` so we do not have t optimize through the
+Make the compiler generate specialized `pure`/`bind` so we do not have to optimize through the
 whole monad stack at every use site. May eventually be covered by `deriving`.
 
 Remark: see comment at TermElabM
