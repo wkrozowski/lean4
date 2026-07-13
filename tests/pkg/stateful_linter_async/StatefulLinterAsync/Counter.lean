@@ -24,8 +24,8 @@ the handle it returns (nobody reads this linter). -/
 def registerReader (emitter : StatefulLinter Counter Payload) (name : Name) (label : String) :
     IO Unit := do
   let _ ← registerStatefulLinter (τ := Unit) name (Counter.mk 0)
-    (post := fun _ self _ _ preSt => do
-      if let some p := emitter.preState preSt then
+    (post := fun _ self _ _ readPre => do
+      if let some p := readPre emitter then
         logInfo m!"{label} sees count {p.current}"
       pure self)
 

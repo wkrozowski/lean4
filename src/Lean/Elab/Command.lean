@@ -130,8 +130,18 @@ opaque preState (l : StatefulLinter σ τ) (preSt : LinterStates) : Option τ
 
 end StatefulLinter
 
+/-- Reads any linter's persistent state as of the *previous* command from its handle. Passed to both
+phases (as `readPrev`) so a handler consults *other* linters without touching the raw state array; its
+own previous state arrives as `self`. -/
+abbrev PrevStateFn := {σ τ : Type} → [Inhabited σ] → StatefulLinter σ τ → σ
+
+/-- Reads any linter's pre-phase handoff this command from its handle (`none` if it declined/threw).
+Passed to `post` (as `readPre`); a handler's own handoff arrives as `preState`. Not passed to `pre`,
+since no pre-phase state exists yet when `pre` runs. -/
+abbrev PreStateFn := {σ τ : Type} → StatefulLinter σ τ → Option τ
+
 /-
-Make the compiler generate specialized `pure`/`bind` so we do not have to optimize through the
+Make the compiler generate specialized `pure`/`bind` so we do not have t optimize through the
 whole monad stack at every use site. May eventually be covered by `deriving`.
 
 Remark: see comment at TermElabM
@@ -191,14 +201,16 @@ this command's previous `σ` as `self` (defaulting to `init` for the first comma
 produces the new `σ`. `τ` is the ephemeral `pre`→`post` handoff: `pre` returns `some` handoff or
 `none` to *decline* this command, and `post` receives it as `preState : Option τ` (`none` iff `pre`
 declined or threw), so it decides what an absent pre means, and always runs. To read *other* linters'
-state, import their handles and use `StatefulLinter.prevState`/`.preState`.
+state, import their handles and apply the provided `readPrev`/`readPre` to them; the raw state array is
+never exposed.
 
 `pre` defaults to always declining; omit it for a post-only linter that merely reacts to other
 linters' pre-phase state (the handoff `τ` is then unconstrained, e.g. fix it with `(τ := Unit)`). -/
 unsafe def registerStatefulLinterImpl (name : Name) (init : σ)
-    (pre  : Syntax → (self : σ) → (prev : LinterStates) → CommandElabM (Option τ) :=
+    (pre  : Syntax → (self : σ) → (readPrev : PrevStateFn) → CommandElabM (Option τ) :=
        fun _ _ _ => pure none)
-    (post : Syntax → (self : σ) → (preState : Option τ) → (prev preSt : LinterStates) → CommandElabM σ) :
+    (post : Syntax → (self : σ) → (preState : Option τ) →
+       (readPrev : PrevStateFn) → (readPre : PreStateFn) → CommandElabM σ) :
     IO (StatefulLinter σ τ) := do
   unless (← initializing) do
     throw <| .userError s!"stateful linter '{name}' can only be registered during initialization"
@@ -211,15 +223,19 @@ unsafe def registerStatefulLinterImpl (name : Name) (init : σ)
   statefulLintersRef.set <| ls.push
     { name
       init := unsafeCast init
-      pre  := fun stx prev       => unsafeCast <$> pre  stx (unsafeCast prev[idx]!) prev
-      post := fun stx prev preSt => unsafeCast <$> post stx (unsafeCast prev[idx]!) (unsafeCast preSt[idx]!) prev preSt }
+      pre  := fun stx prev =>
+        unsafeCast <$> pre stx (unsafeCast prev[idx]!) (fun l => l.prevState prev)
+      post := fun stx prev preSt =>
+        unsafeCast <$> post stx (unsafeCast prev[idx]!) (unsafeCast preSt[idx]!)
+          (fun l => l.prevState prev) (fun l => l.preState preSt) }
   return ⟨idx, name⟩
 
 @[inherit_doc registerStatefulLinterImpl, implemented_by registerStatefulLinterImpl]
 opaque registerStatefulLinter (name : Name) (init : σ)
-    (pre  : Syntax → (self : σ) → (prev : LinterStates) → CommandElabM (Option τ) :=
+    (pre  : Syntax → (self : σ) → (readPrev : PrevStateFn) → CommandElabM (Option τ) :=
        fun _ _ _ => pure none)
-    (post : Syntax → (self : σ) → (preState : Option τ) → (prev preSt : LinterStates) → CommandElabM σ) :
+    (post : Syntax → (self : σ) → (preState : Option τ) →
+       (readPrev : PrevStateFn) → (readPre : PreStateFn) → CommandElabM σ) :
     IO (StatefulLinter σ τ)
 
 instance : MonadInfoTree CommandElabM where
