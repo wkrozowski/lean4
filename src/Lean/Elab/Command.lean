@@ -17,21 +17,10 @@ public section
 
 namespace Lean.Elab.Command
 
-/-- The opaque per-linter state slot, mirroring `EnvExtensionState` for environment extensions: each
-registered linter owns one array index, and its state is stored there with its type erased into this
-type. Kept opaque so its representation cannot be observed. -/
+/-- Opaque linter state. Similar to `EnvExtensionState` for environment extensions. -/
 opaque LinterStateSpec : (α : Type) × Inhabited α := ⟨Unit, ⟨()⟩⟩
 @[expose] def LinterState : Type := LinterStateSpec.fst
 instance : Inhabited LinterState := LinterStateSpec.snd
-
-/-- Per-command state of all stateful linters, indexed by each linter's registration index; each entry
-is that linter's state with its type erased into `LinterState`. -/
-abbrev LinterStates := Array LinterState
-
--- An erased `Option _ = none`, stored for a linter that declined or threw in its pre pass. Sound to
--- read back at any `Option τ` because `none` has the same runtime representation for every `τ`.
-private unsafe def erasedNoneImpl : LinterState := unsafeCast (none : Option Unit)
-@[implemented_by erasedNoneImpl] opaque erasedNone : LinterState
 
 structure State where
   env            : Environment
@@ -47,7 +36,7 @@ structure State where
   snapshotTasks  : Array (Language.SnapshotTask Language.SnapshotTree) := #[]
   /-- Post-`pre`-pass stateful-linter state as of the *previous* command (`none` before the first
   command). Read by the next command's linters; resolved asynchronously by this command's. -/
-  prevLinterStates : Option (Task LinterStates) := none
+  prevLinterStates : Option (Task (Array LinterState)) := none
   deriving Nonempty
 
 structure Context where
@@ -106,26 +95,27 @@ deriving Inhabited
 structure StatefulLinterEntry where
   /-- Initial `σ`, erased. -/
   init : LinterState
-  /-- Pre pass: previous states of all linters ↦ this linter's `Option τ`, erased. -/
-  pre  : Syntax → (prev : LinterStates) → CommandElabM LinterState
+  /-- Pre pass: previous states of all linters ↦ `some` erased handoff `τ`, or `none` if it
+  declined. -/
+  pre  : Syntax → (prev : Array LinterState) → CommandElabM (Option LinterState)
   /-- Post pass: previous and pre states of all linters ↦ this linter's new `σ`, erased. -/
-  post : Syntax → (prev preSt : LinterStates) → CommandElabM LinterState
+  post : Syntax → (prev : Array LinterState) → (preSt : Array (Option LinterState)) → CommandElabM LinterState
 
 namespace StatefulLinter
 
-private unsafe def prevStateImpl [Inhabited σ] (l : StatefulLinter σ τ) (prev : LinterStates) : σ :=
+private unsafe def prevStateImpl [Inhabited σ] (l : StatefulLinter σ τ) (prev : Array LinterState) : σ :=
   unsafeCast prev[l.idx]!
 /-- This linter's persistent state as of the *previous* command, read from a `prev` map (available in
 both phases). For reading *another* linter; a linter's own previous state arrives directly as `self`. -/
 @[implemented_by prevStateImpl]
-opaque prevState [Inhabited σ] (l : StatefulLinter σ τ) (prev : LinterStates) : σ
+opaque prevState [Inhabited σ] (l : StatefulLinter σ τ) (prev : Array LinterState) : σ
 
-private unsafe def preStateImpl (l : StatefulLinter σ τ) (preSt : LinterStates) : Option τ :=
-  unsafeCast preSt[l.idx]!
+private unsafe def preStateImpl (l : StatefulLinter σ τ) (preSt : Array (Option LinterState)) : Option τ :=
+  (preSt[l.idx]!).map unsafeCast
 /-- This linter's pre-phase handoff this command (`none` if it declined or threw), read from a `preSt`
 map (available in `post`). For reading *another* linter; a linter's own handoff arrives as `preState`. -/
 @[implemented_by preStateImpl]
-opaque preState (l : StatefulLinter σ τ) (preSt : LinterStates) : Option τ
+opaque preState (l : StatefulLinter σ τ) (preSt : Array (Option LinterState)) : Option τ
 
 end StatefulLinter
 
@@ -220,9 +210,9 @@ unsafe def registerStatefulLinterImpl (init : σ)
   statefulLintersRef.set <| ls.push
     { init := unsafeCast init
       pre  := fun stx prev =>
-        unsafeCast <$> pre stx (unsafeCast prev[idx]!) (fun l => l.prevState prev)
+        (·.map unsafeCast) <$> pre stx (unsafeCast prev[idx]!) (fun l => l.prevState prev)
       post := fun stx prev preSt =>
-        unsafeCast <$> post stx (unsafeCast prev[idx]!) (unsafeCast preSt[idx]!)
+        unsafeCast <$> post stx (unsafeCast prev[idx]!) ((preSt[idx]!).map unsafeCast)
           (fun l => l.prevState prev) (fun l => l.preState preSt) }
   return ⟨idx⟩
 
@@ -409,22 +399,21 @@ def runModuleLinters (cmds : Array Syntax) : CommandElabM Unit := do
 Runs all stateful linters over `stx` in two barriers, given the states `prev` from the previous
 command, and returns the new states.
 
-Every linter's `pre` runs first (each seeing `prev`), producing intermediate states; then every
-linter's `post` runs (each seeing `prev` and all the intermediate states), and its output becomes
-the new state threaded onward. A failing linter is logged and falls back to an erased `none` (in
-`pre`) or its previous state (in `post`), so the result always has one entry per registered linter,
-in registration-index order. As in `runLinters`, per-linter `CommandElabM` state changes other than
-messages and traces are discarded.
+Every linter's `pre` runs first (each seeing `prev`), producing the pre states; then every linter's
+`post` runs (each seeing `prev` and all the pre states), and its output becomes the new state threaded
+onward. A failing linter is logged and falls back to `none` (in `pre`) or its previous state (in
+`post`), so the result always has one entry per registered linter, in registration-index order. As in
+`runLinters`, per-linter `CommandElabM` state changes other than messages and traces are discarded.
 -/
-def runStatefulLinters (stx : Syntax) (prev : LinterStates) : CommandElabM LinterStates := do
+def runStatefulLinters (stx : Syntax) (prev : Array LinterState) : CommandElabM (Array LinterState) := do
   profileitM Exception "stateful linting" (← getOptions) do
     withTraceNode `Elab.lint (fun _ => return m!"running stateful linters") do
       let linters ← statefulLintersRef.get
       -- Runs one phase of one linter (identified by its registration index) under a trace node,
-      -- restoring elaborator state (keeping only messages and traces) afterwards and falling back to
-      -- `fallback` on any exception.
-      let run (phase : String) (idx : Nat) (fallback : LinterState)
-          (act : CommandElabM LinterState) : CommandElabM LinterState :=
+      -- restoring elaborator state (keeping only messages and traces) afterwards and recovering with
+      -- `onError` on any exception.
+      let run {α : Type} (phase : String) (idx : Nat) (onError : CommandElabM α)
+          (act : CommandElabM α) : CommandElabM α :=
         withTraceNode `Elab.lint
             (fun _ => return m!"running stateful linter #{idx} ({phase})")
             (tag := toString idx) do
@@ -436,34 +425,34 @@ def runStatefulLinters (stx : Syntax) (prev : LinterStates) : CommandElabM Linte
             | .error ref msg =>
               logException (.error ref m!"stateful linter #{idx} ({phase}) failed: {msg}")
             | .internal _ _ => logException ex
-            pure fallback
+            onError
           finally
             modify fun s => { savedState with messages := s.messages, traceState := s.traceState }
-      -- Pre pass: on decline or failure a linter's slot holds an erased `none`, which post and other
-      -- linters read as "no pre-state this command".
-      let mut preSt : LinterStates := .emptyWithCapacity linters.size
+      -- Pre pass: each linter yields `some` handoff or `none` (declined, or failed → logged then
+      -- `none`), which post and other linters read as "no pre-state this command".
+      let mut preSt : Array (Option LinterState) := .emptyWithCapacity linters.size
       let mut i := 0
       for l in linters do
-        preSt := preSt.push (← run "pre" i erasedNone (l.pre stx prev))
+        preSt := preSt.push (← run "pre" i (pure none) (l.pre stx prev))
         i := i + 1
       -- Post pass produces the threaded state; it always runs (seeing an absent pre as such). On
       -- failure we freeze at the previous command's state, so a bad command is state-transparent
       -- rather than resetting accumulation.
-      let mut postSt : LinterStates := .emptyWithCapacity linters.size
+      let mut postSt : Array LinterState := .emptyWithCapacity linters.size
       i := 0
       for l in linters do
-        postSt := postSt.push (← run "post" i prev[i]! (l.post stx prev preSt))
+        postSt := postSt.push (← run "post" i (pure prev[i]!) (l.post stx prev preSt))
         i := i + 1
       return postSt
 
 /-- The initial states of all registered stateful linters (each linter's `init`), used as the `prev`
 states for the first command so that even cross-linter reads see every linter's `init`. -/
-def initialLinterStates : BaseIO LinterStates := do
+def initialLinterStates : BaseIO (Array LinterState) := do
   return (← statefulLintersRef.get).map (·.init)
 
 /-- The previous command's stateful-linter states as a task to bind on, falling back to a resolved
 task of `initialLinterStates` for the first command. -/
-def prevLinterStatesTask : Option (Task LinterStates) → BaseIO (Task LinterStates)
+def prevLinterStatesTask : Option (Task (Array LinterState)) → BaseIO (Task (Array LinterState))
   | some prev => return prev
   | none      => return .pure (← initialLinterStates)
 
@@ -591,7 +580,7 @@ def runStatefulLintersAsync (stx : Syntax) : CommandElabM Unit := do
   let treeTask ← tree.waitAll
 
   let prevTask ← prevLinterStatesTask (← get).prevLinterStates
-  let statePromise ← IO.Promise.new (α := LinterStates)
+  let statePromise ← IO.Promise.new (α := Array LinterState)
   -- thread this command's (future) state forward; a dropped promise degrades to the initial states
   let inits ← initialLinterStates
   modify fun s => { s with prevLinterStates := some (statePromise.resultD inits) }
