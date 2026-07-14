@@ -21,6 +21,11 @@ lake_out lint --builtin-only Main || true
 match_pat 'shouldBeFlaggedDummyMarker' produced.out
 match_pat "name ends with 'DummyMarker'" produced.out
 
+# Private decls are elided from `env.constants` at `.server`, so env linters
+# must not see (and hence not flag) the private def, even though its name
+# also matches the dummy linter's pattern.
+no_match_pat 'shouldNotBeFlaggedPrivateDummyMarker' produced.out
+
 # `linter.unusedVariables` (default-on) entries land in `lintLogExt` during
 # the build. `lintLogExt` persists its entries at the `server` OLean level
 # (not `exported`), so they are only visible because the lint driver imports
