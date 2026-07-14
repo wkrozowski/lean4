@@ -163,12 +163,12 @@ def addModuleLinter (l : ModuleLinter) : IO Unit := do
   moduleLintersRef.set (ls.push l)
 
 /--
-Registers a stateful linter and returns its handle (imported by other linters to read its state).
+Registers a stateful linter and returns its handle (used by other linters to read its state).
 Must be called during initialization.
 
 ### Lifecycle Phases
-* **`pre`**: Reads the previous command's state (via `readPrevPostState`) and optionally outputs
-a pre-phase state (type `Option τ`).
+* **`pre`**: Reads the previous command's persistant state (via `readPrevPostState`)
+and optionally outputs a pre-phase state (type `Option τ`).
 * **`post`**: Reads the previous command's state and all current pre-phase outputs
 (via `readPrevPostState` and `readCurrentPreState`), then produces the new state (type `σ`)
 for the next command.
@@ -381,9 +381,6 @@ def runStatefulLinters (stx : Syntax) (prev : Array LinterState) : CommandElabM 
   profileitM Exception "stateful linting" (← getOptions) do
     withTraceNode `Elab.lint (fun _ => return m!"running stateful linters") do
       let linters ← statefulLintersRef.get
-      -- Runs one phase of one linter (identified by its registration index) under a trace node,
-      -- restoring elaborator state (keeping only messages and traces) afterwards and recovering with
-      -- `onError` on any exception.
       let run {α : Type} (phase : String) (idx : Nat) (onError : CommandElabM α)
           (act : CommandElabM α) : CommandElabM α :=
         withTraceNode `Elab.lint
