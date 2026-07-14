@@ -667,10 +667,10 @@ LEAN_EXPORT lean_object* l___private_Lean_Util_Trace_0__Lean_addTraceNode___at__
 LEAN_EXPORT lean_object* l___private_Lean_Util_Trace_0__Lean_addTraceNode___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__9___redArg___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_MonadExcept_ofExcept___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__10___redArg(lean_object*);
 LEAN_EXPORT lean_object* l_MonadExcept_ofExcept___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__10___redArg___boxed(lean_object*, lean_object*);
-LEAN_EXPORT uint8_t l_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11(lean_object*);
-LEAN_EXPORT lean_object* l_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11___boxed(lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Option_get___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__12(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Lean_Option_get___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__12___boxed(lean_object*, lean_object*);
+LEAN_EXPORT uint8_t l_Lean_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11(lean_object*);
+LEAN_EXPORT lean_object* l_Lean_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11___boxed(lean_object*);
 static const lean_string_object l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4___closed__0_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 54, .m_capacity = 54, .m_length = 53, .m_data = "<exception thrown while producing trace node message>"};
 static const lean_object* l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4___closed__0 = (const lean_object*)&l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4___closed__0_value;
 static lean_once_cell_t l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4___closed__1_once = LEAN_ONCE_CELL_INITIALIZER;
@@ -11050,77 +11050,77 @@ v_res_3684_ = l_MonadExcept_ofExcept___at___00__private_Lean_Util_Trace_0__Lean_
 return v_res_3684_;
 }
 }
-LEAN_EXPORT uint8_t l_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11(lean_object* v_e_3685_){
+LEAN_EXPORT lean_object* l_Lean_Option_get___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__12(lean_object* v_opts_3685_, lean_object* v_opt_3686_){
 _start:
 {
-if (lean_obj_tag(v_e_3685_) == 0)
+lean_object* v_name_3687_; lean_object* v_defValue_3688_; lean_object* v_map_3689_; lean_object* v___x_3690_; 
+v_name_3687_ = lean_ctor_get(v_opt_3686_, 0);
+v_defValue_3688_ = lean_ctor_get(v_opt_3686_, 1);
+v_map_3689_ = lean_ctor_get(v_opts_3685_, 0);
+v___x_3690_ = l_Std_DTreeMap_Internal_Impl_Const_get_x3f___at___00Lean_NameMap_find_x3f_spec__0___redArg(v_map_3689_, v_name_3687_);
+if (lean_obj_tag(v___x_3690_) == 0)
 {
-uint8_t v___x_3686_; 
-v___x_3686_ = 2;
-return v___x_3686_;
+lean_inc(v_defValue_3688_);
+return v_defValue_3688_;
 }
 else
 {
-uint8_t v___x_3687_; 
-v___x_3687_ = 0;
-return v___x_3687_;
-}
-}
-}
-LEAN_EXPORT lean_object* l_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11___boxed(lean_object* v_e_3688_){
-_start:
+lean_object* v_val_3691_; 
+v_val_3691_ = lean_ctor_get(v___x_3690_, 0);
+lean_inc(v_val_3691_);
+lean_dec_ref_known(v___x_3690_, 1);
+if (lean_obj_tag(v_val_3691_) == 3)
 {
-uint8_t v_res_3689_; lean_object* v_r_3690_; 
-v_res_3689_ = l_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11(v_e_3688_);
-lean_dec_ref(v_e_3688_);
-v_r_3690_ = lean_box(v_res_3689_);
-return v_r_3690_;
-}
-}
-LEAN_EXPORT lean_object* l_Lean_Option_get___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__12(lean_object* v_opts_3691_, lean_object* v_opt_3692_){
-_start:
-{
-lean_object* v_name_3693_; lean_object* v_defValue_3694_; lean_object* v_map_3695_; lean_object* v___x_3696_; 
-v_name_3693_ = lean_ctor_get(v_opt_3692_, 0);
-v_defValue_3694_ = lean_ctor_get(v_opt_3692_, 1);
-v_map_3695_ = lean_ctor_get(v_opts_3691_, 0);
-v___x_3696_ = l_Std_DTreeMap_Internal_Impl_Const_get_x3f___at___00Lean_NameMap_find_x3f_spec__0___redArg(v_map_3695_, v_name_3693_);
-if (lean_obj_tag(v___x_3696_) == 0)
-{
-lean_inc(v_defValue_3694_);
-return v_defValue_3694_;
+lean_object* v_v_3692_; 
+v_v_3692_ = lean_ctor_get(v_val_3691_, 0);
+lean_inc(v_v_3692_);
+lean_dec_ref_known(v_val_3691_, 1);
+return v_v_3692_;
 }
 else
 {
-lean_object* v_val_3697_; 
-v_val_3697_ = lean_ctor_get(v___x_3696_, 0);
-lean_inc(v_val_3697_);
-lean_dec_ref_known(v___x_3696_, 1);
-if (lean_obj_tag(v_val_3697_) == 3)
+lean_dec(v_val_3691_);
+lean_inc(v_defValue_3688_);
+return v_defValue_3688_;
+}
+}
+}
+}
+LEAN_EXPORT lean_object* l_Lean_Option_get___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__12___boxed(lean_object* v_opts_3693_, lean_object* v_opt_3694_){
+_start:
 {
-lean_object* v_v_3698_; 
-v_v_3698_ = lean_ctor_get(v_val_3697_, 0);
-lean_inc(v_v_3698_);
-lean_dec_ref_known(v_val_3697_, 1);
-return v_v_3698_;
+lean_object* v_res_3695_; 
+v_res_3695_ = l_Lean_Option_get___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__12(v_opts_3693_, v_opt_3694_);
+lean_dec_ref(v_opt_3694_);
+lean_dec_ref(v_opts_3693_);
+return v_res_3695_;
+}
+}
+LEAN_EXPORT uint8_t l_Lean_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11(lean_object* v_e_3696_){
+_start:
+{
+if (lean_obj_tag(v_e_3696_) == 0)
+{
+uint8_t v___x_3697_; 
+v___x_3697_ = 2;
+return v___x_3697_;
 }
 else
 {
-lean_dec(v_val_3697_);
-lean_inc(v_defValue_3694_);
-return v_defValue_3694_;
+uint8_t v___x_3698_; 
+v___x_3698_ = 0;
+return v___x_3698_;
 }
 }
 }
-}
-LEAN_EXPORT lean_object* l_Lean_Option_get___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__12___boxed(lean_object* v_opts_3699_, lean_object* v_opt_3700_){
+LEAN_EXPORT lean_object* l_Lean_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11___boxed(lean_object* v_e_3699_){
 _start:
 {
-lean_object* v_res_3701_; 
-v_res_3701_ = l_Lean_Option_get___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__12(v_opts_3699_, v_opt_3700_);
-lean_dec_ref(v_opt_3700_);
-lean_dec_ref(v_opts_3699_);
-return v_res_3701_;
+uint8_t v_res_3700_; lean_object* v_r_3701_; 
+v_res_3700_ = l_Lean_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11(v_e_3699_);
+lean_dec_ref(v_e_3699_);
+v_r_3701_ = lean_box(v_res_3700_);
+return v_r_3701_;
 }
 }
 static lean_object* _init_l___private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4___closed__1(void){
@@ -11209,7 +11209,7 @@ return v___x_3730_;
 v___jp_3736_:
 {
 uint8_t v_result_3739_; lean_object* v___x_3740_; lean_object* v___x_3741_; double v___x_3742_; lean_object* v_data_3743_; 
-v_result_3739_ = l_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11(v_fst_3724_);
+v_result_3739_ = l_Lean_Except_toTraceResult___at___00__private_Lean_Util_Trace_0__Lean_withTraceNode_postCallback___at___00Lean_Elab_Tactic_Grind_evalGrindTactic_spec__4_spec__11(v_fst_3724_);
 v___x_3740_ = lean_box(v_result_3739_);
 v___x_3741_ = lean_alloc_ctor(1, 1, 0);
 lean_ctor_set(v___x_3741_, 0, v___x_3740_);

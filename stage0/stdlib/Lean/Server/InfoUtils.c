@@ -9889,6 +9889,8 @@ v___x_3180_ = l_Lean_Elab_Info_stx(v_info_3179_);
 v___x_3181_ = lean_unsigned_to_nat(0u);
 v___x_3182_ = l_Lean_Syntax_getArg(v___x_3168_, v___x_3181_);
 v___x_3183_ = l_Lean_Syntax_structEq(v___x_3180_, v___x_3182_);
+lean_dec(v___x_3182_);
+lean_dec(v___x_3180_);
 if (v___x_3183_ == 0)
 {
 if (v___y_3169_ == 0)

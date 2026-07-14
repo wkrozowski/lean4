@@ -328,7 +328,6 @@ goto v___jp_43_;
 else
 {
 lean_object* v___x_67_; 
-lean_inc_ref(v_f_37_);
 v___x_67_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_f_37_, v___y_40_, v___y_41_, v___y_42_);
 if (lean_obj_tag(v___x_67_) == 0)
 {
@@ -336,7 +335,6 @@ lean_object* v_a_68_; lean_object* v___x_69_;
 v_a_68_ = lean_ctor_get(v___x_67_, 1);
 lean_inc(v_a_68_);
 lean_dec_ref_known(v___x_67_, 2);
-lean_inc_ref(v_a_38_);
 v___x_69_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_a_38_, v___y_40_, v___y_41_, v_a_68_);
 if (lean_obj_tag(v___x_69_) == 0)
 {
@@ -568,7 +566,6 @@ goto v___jp_105_;
 else
 {
 lean_object* v___x_129_; 
-lean_inc_ref(v_t_99_);
 v___x_129_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_t_99_, v___y_102_, v___y_103_, v___y_104_);
 if (lean_obj_tag(v___x_129_) == 0)
 {
@@ -576,7 +573,6 @@ lean_object* v_a_130_; lean_object* v___x_131_;
 v_a_130_ = lean_ctor_get(v___x_129_, 1);
 lean_inc(v_a_130_);
 lean_dec_ref_known(v___x_129_, 2);
-lean_inc_ref(v_b_100_);
 v___x_131_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_b_100_, v___y_102_, v___y_103_, v_a_130_);
 if (lean_obj_tag(v___x_131_) == 0)
 {
@@ -811,7 +807,6 @@ goto v___jp_169_;
 else
 {
 lean_object* v___x_193_; 
-lean_inc_ref(v_struct_164_);
 v___x_193_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_struct_164_, v___y_166_, v___y_167_, v___y_168_);
 if (lean_obj_tag(v___x_193_) == 0)
 {
@@ -1177,7 +1172,6 @@ goto v___jp_316_;
 else
 {
 lean_object* v___x_340_; 
-lean_inc_ref(v_t_310_);
 v___x_340_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_t_310_, v___y_313_, v___y_314_, v___y_315_);
 if (lean_obj_tag(v___x_340_) == 0)
 {
@@ -1185,7 +1179,6 @@ lean_object* v_a_341_; lean_object* v___x_342_;
 v_a_341_ = lean_ctor_get(v___x_340_, 1);
 lean_inc(v_a_341_);
 lean_dec_ref_known(v___x_340_, 2);
-lean_inc_ref(v_b_311_);
 v___x_342_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_b_311_, v___y_313_, v___y_314_, v_a_341_);
 if (lean_obj_tag(v___x_342_) == 0)
 {
@@ -1420,7 +1413,6 @@ goto v___jp_382_;
 else
 {
 lean_object* v___x_406_; 
-lean_inc_ref(v_t_374_);
 v___x_406_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_t_374_, v___y_379_, v___y_380_, v___y_381_);
 if (lean_obj_tag(v___x_406_) == 0)
 {
@@ -1428,7 +1420,6 @@ lean_object* v_a_407_; lean_object* v___x_408_;
 v_a_407_ = lean_ctor_get(v___x_406_, 1);
 lean_inc(v_a_407_);
 lean_dec_ref_known(v___x_406_, 2);
-lean_inc_ref(v_v_375_);
 v___x_408_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_v_375_, v___y_379_, v___y_380_, v_a_407_);
 if (lean_obj_tag(v___x_408_) == 0)
 {
@@ -1436,7 +1427,6 @@ lean_object* v_a_409_; lean_object* v___x_410_;
 v_a_409_ = lean_ctor_get(v___x_408_, 1);
 lean_inc(v_a_409_);
 lean_dec_ref_known(v___x_408_, 2);
-lean_inc_ref(v_b_376_);
 v___x_410_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_b_376_, v___y_379_, v___y_380_, v_a_409_);
 if (lean_obj_tag(v___x_410_) == 0)
 {
@@ -1723,7 +1713,6 @@ goto v___jp_457_;
 else
 {
 lean_object* v___x_481_; 
-lean_inc_ref(v_e_452_);
 v___x_481_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_e_452_, v___y_454_, v___y_455_, v___y_456_);
 if (lean_obj_tag(v___x_481_) == 0)
 {
@@ -5603,7 +5592,6 @@ goto v___jp_1501_;
 else
 {
 lean_object* v___x_1505_; 
-lean_inc_ref(v_f_1496_);
 v___x_1505_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_f_1496_, v___y_1498_, v___y_1499_, v___y_1500_);
 if (lean_obj_tag(v___x_1505_) == 0)
 {
@@ -5611,7 +5599,6 @@ lean_object* v_a_1506_; lean_object* v___x_1507_;
 v_a_1506_ = lean_ctor_get(v___x_1505_, 1);
 lean_inc(v_a_1506_);
 lean_dec_ref_known(v___x_1505_, 2);
-lean_inc_ref(v_a_1497_);
 v___x_1507_ = l_Lean_Meta_Sym_Internal_Builder_assertShared(v_a_1497_, v___y_1498_, v___y_1499_, v_a_1506_);
 if (lean_obj_tag(v___x_1507_) == 0)
 {

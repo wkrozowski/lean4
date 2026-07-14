@@ -5994,8 +5994,6 @@ lean_object* v___x_2242_; lean_object* v___x_2243_; lean_object* v___x_2244_; ui
 v___x_2242_ = lean_box(0);
 v___x_2243_ = lean_array_fget_borrowed(v___x_2237_, v_a_2239_);
 v___x_2244_ = lean_array_fget_borrowed(v___x_2238_, v_a_2239_);
-lean_inc(v___x_2244_);
-lean_inc(v___x_2243_);
 v___x_2245_ = l_Lean_Syntax_structEq(v___x_2243_, v___x_2244_);
 if (v___x_2245_ == 0)
 {

@@ -14322,8 +14322,6 @@ if (lean_obj_tag(v_x_5658_) == 3)
 {
 lean_object* v_pat_5659_; uint8_t v___x_5660_; 
 v_pat_5659_ = lean_ctor_get(v_x_5658_, 0);
-lean_inc(v_pat_5659_);
-lean_dec_ref_known(v_x_5658_, 1);
 v___x_5660_ = l_Lean_Syntax_structEq(v_pat_5659_, v_pat_5655_);
 if (v___x_5660_ == 0)
 {
@@ -14344,9 +14342,7 @@ return v___x_5662_;
 else
 {
 lean_object* v___x_5663_; 
-lean_dec(v_x_5658_);
 lean_dec_ref(v___f_5656_);
-lean_dec(v_pat_5655_);
 v___x_5663_ = lean_box(2);
 return v___x_5663_;
 }
@@ -14358,6 +14354,8 @@ _start:
 uint8_t v___x_152228__boxed_5668_; lean_object* v_res_5669_; 
 v___x_152228__boxed_5668_ = lean_unbox(v___x_5666_);
 v_res_5669_ = l___private_Lean_Elab_Quotation_0__Lean_Elab_Term_Quotation_getHeadInfo___lam__10(v_pat_5664_, v___f_5665_, v___x_152228__boxed_5668_, v_x_5667_);
+lean_dec(v_x_5667_);
+lean_dec(v_pat_5664_);
 return v_res_5669_;
 }
 }
@@ -15449,7 +15447,6 @@ if (v___y_6263_ == 0)
 lean_object* v___x_6276_; 
 lean_dec_ref_known(v_x_6271_, 1);
 lean_dec_ref(v___f_6265_);
-lean_dec(v_quoted_6264_);
 v___x_6276_ = lean_box(2);
 return v___x_6276_;
 }
@@ -15460,6 +15457,7 @@ v_pat_6277_ = lean_ctor_get(v_x_6271_, 0);
 lean_inc(v_pat_6277_);
 lean_dec_ref_known(v_x_6271_, 1);
 v___x_6278_ = l_Lean_Syntax_structEq(v_quoted_6264_, v_pat_6277_);
+lean_dec(v_pat_6277_);
 if (v___x_6278_ == 0)
 {
 lean_object* v___x_6279_; 
@@ -15481,7 +15479,6 @@ case 1:
 {
 lean_object* v_k_6281_; lean_object* v_arity_6282_; lean_object* v___x_6284_; uint8_t v_isShared_6285_; uint8_t v_isSharedCheck_6293_; 
 lean_dec_ref(v___f_6265_);
-lean_dec(v_quoted_6264_);
 v_k_6281_ = lean_ctor_get(v_x_6271_, 0);
 v_arity_6282_ = lean_ctor_get(v_x_6271_, 1);
 v_isSharedCheck_6293_ = !lean_is_exclusive(v_x_6271_);
@@ -15554,7 +15551,6 @@ lean_dec(v___x_6269_);
 lean_dec(v_kind_6268_);
 lean_dec_ref(v___f_6267_);
 lean_dec_ref(v___f_6265_);
-lean_dec(v_quoted_6264_);
 v___x_6294_ = lean_box(2);
 return v___x_6294_;
 }
@@ -15587,6 +15583,7 @@ v___y_153873__boxed_6304_ = lean_unbox(v___y_6295_);
 v___x_153875__boxed_6305_ = lean_unbox(v___x_6298_);
 v_res_6306_ = l___private_Lean_Elab_Quotation_0__Lean_Elab_Term_Quotation_getHeadInfo___lam__13(v___y_153873__boxed_6304_, v_quoted_6296_, v___f_6297_, v___x_153875__boxed_6305_, v___f_6299_, v_kind_6300_, v___x_6301_, v_argPats_6302_, v_x_6303_);
 lean_dec_ref(v_argPats_6302_);
+lean_dec(v_quoted_6296_);
 return v_res_6306_;
 }
 }

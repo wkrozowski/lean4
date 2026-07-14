@@ -18732,8 +18732,6 @@ v_n_7767_ = lean_nat_sub(v_x_7763_, v_one_7766_);
 lean_dec(v_x_7763_);
 v___x_7768_ = lean_array_fget_borrowed(v_xs_7761_, v_n_7767_);
 v___x_7769_ = lean_array_fget_borrowed(v_ys_7762_, v_n_7767_);
-lean_inc(v___x_7769_);
-lean_inc(v___x_7768_);
 v___x_7770_ = l_Lean_Syntax_structEq(v___x_7768_, v___x_7769_);
 if (v___x_7770_ == 0)
 {

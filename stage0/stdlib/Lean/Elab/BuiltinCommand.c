@@ -45570,8 +45570,8 @@ lean_dec_ref_known(v___x_15216_, 1);
 v_defValue_15219_ = lean_ctor_get(v_val_15218_, 2);
 lean_inc_ref(v_defValue_15219_);
 lean_dec(v_val_15218_);
-lean_inc(v_v_15004_);
 v___x_15220_ = l_Lean_instBEqDataValue_beq(v_defValue_15219_, v_v_15004_);
+lean_dec_ref(v_defValue_15219_);
 if (v___x_15220_ == 0)
 {
 lean_dec_ref_known(v___x_15013_, 1);

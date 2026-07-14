@@ -861,7 +861,6 @@ return v___x_165_;
 else
 {
 uint8_t v___x_166_; 
-lean_dec_ref_known(v_x_164_, 1);
 v___x_166_ = 0;
 return v___x_166_;
 }
@@ -871,7 +870,6 @@ else
 if (lean_obj_tag(v_x_164_) == 0)
 {
 uint8_t v___x_167_; 
-lean_dec_ref_known(v_x_163_, 1);
 v___x_167_ = 0;
 return v___x_167_;
 }
@@ -879,11 +877,7 @@ else
 {
 lean_object* v_val_168_; lean_object* v_val_169_; uint8_t v___x_170_; 
 v_val_168_ = lean_ctor_get(v_x_163_, 0);
-lean_inc(v_val_168_);
-lean_dec_ref_known(v_x_163_, 1);
 v_val_169_ = lean_ctor_get(v_x_164_, 0);
-lean_inc(v_val_169_);
-lean_dec_ref_known(v_x_164_, 1);
 v___x_170_ = l_Lean_Parser_instBEqError_beq(v_val_168_, v_val_169_);
 return v___x_170_;
 }
@@ -895,6 +889,8 @@ _start:
 {
 uint8_t v_res_173_; lean_object* v_r_174_; 
 v_res_173_ = l_Option_instBEq_beq___at___00Lean_Parser_parseHeader_spec__0(v_x_171_, v_x_172_);
+lean_dec(v_x_172_);
+lean_dec(v_x_171_);
 v_r_174_ = lean_box(v_res_173_);
 return v_r_174_;
 }
@@ -1676,6 +1672,7 @@ lean_inc(v_snd_467_);
 lean_dec_ref(v___x_465_);
 v___x_468_ = lean_box(0);
 v___x_469_ = l_Option_instBEq_beq___at___00Lean_Parser_parseHeader_spec__0(v_errorMsg_443_, v___x_468_);
+lean_dec(v_errorMsg_443_);
 if (v___x_469_ == 0)
 {
 uint8_t v___x_470_; uint8_t v___x_471_; 

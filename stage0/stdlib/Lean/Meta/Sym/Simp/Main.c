@@ -333,7 +333,6 @@ goto v___jp_102_;
 else
 {
 lean_object* v___x_108_; 
-lean_inc_ref(v_e_94_);
 v___x_108_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_e_94_, v___y_95_, v___y_96_, v___y_97_, v___y_98_, v___y_99_, v___y_100_);
 if (lean_obj_tag(v___x_108_) == 0)
 {

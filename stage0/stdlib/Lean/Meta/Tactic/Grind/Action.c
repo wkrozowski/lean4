@@ -1997,7 +1997,6 @@ return v___x_892_;
 else
 {
 uint8_t v___x_893_; 
-lean_dec_ref_known(v_x_891_, 2);
 v___x_893_ = 0;
 return v___x_893_;
 }
@@ -2007,7 +2006,6 @@ else
 if (lean_obj_tag(v_x_891_) == 0)
 {
 uint8_t v___x_894_; 
-lean_dec_ref_known(v_x_890_, 2);
 v___x_894_ = 0;
 return v___x_894_;
 }
@@ -2015,20 +2013,12 @@ else
 {
 lean_object* v_head_895_; lean_object* v_tail_896_; lean_object* v_head_897_; lean_object* v_tail_898_; uint8_t v___x_899_; 
 v_head_895_ = lean_ctor_get(v_x_890_, 0);
-lean_inc(v_head_895_);
 v_tail_896_ = lean_ctor_get(v_x_890_, 1);
-lean_inc(v_tail_896_);
-lean_dec_ref_known(v_x_890_, 2);
 v_head_897_ = lean_ctor_get(v_x_891_, 0);
-lean_inc(v_head_897_);
 v_tail_898_ = lean_ctor_get(v_x_891_, 1);
-lean_inc(v_tail_898_);
-lean_dec_ref_known(v_x_891_, 2);
 v___x_899_ = l_Lean_Syntax_structEq(v_head_895_, v_head_897_);
 if (v___x_899_ == 0)
 {
-lean_dec(v_tail_898_);
-lean_dec(v_tail_896_);
 return v___x_899_;
 }
 else
@@ -2046,6 +2036,8 @@ _start:
 {
 uint8_t v_res_903_; lean_object* v_r_904_; 
 v_res_903_ = l_List_beq___at___00Lean_Meta_Grind_Action_mkGrindNext_spec__0(v_x_901_, v_x_902_);
+lean_dec(v_x_902_);
+lean_dec(v_x_901_);
 v_r_904_ = lean_box(v_res_903_);
 return v_r_904_;
 }
@@ -2055,7 +2047,6 @@ _start:
 {
 lean_object* v_s_924_; lean_object* v_ref_925_; lean_object* v___x_934_; uint8_t v___x_935_; 
 v___x_934_ = lean_box(0);
-lean_inc(v_s_920_);
 v___x_935_ = l_List_beq___at___00Lean_Meta_Grind_Action_mkGrindNext_spec__0(v_s_920_, v___x_934_);
 if (v___x_935_ == 0)
 {
@@ -2137,7 +2128,6 @@ _start:
 {
 lean_object* v_s_979_; lean_object* v_ref_980_; lean_object* v___x_991_; uint8_t v___x_992_; 
 v___x_991_ = lean_box(0);
-lean_inc(v_s_975_);
 v___x_992_ = l_List_beq___at___00Lean_Meta_Grind_Action_mkGrindNext_spec__0(v_s_975_, v___x_991_);
 if (v___x_992_ == 0)
 {

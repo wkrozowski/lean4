@@ -9544,8 +9544,8 @@ v_a_3050_ = lean_array_uget_borrowed(v_as_3031_, v_i_3033_);
 lean_inc(v_a_3050_);
 v___x_3051_ = lean_alloc_ctor(1, 1, 0);
 lean_ctor_set(v___x_3051_, 0, v_a_3050_);
-lean_inc_ref(v_b_3034_);
 v___x_3052_ = l_Lean_Elab_Tactic_Do_SpecAttr_SpecTheorems_isErased(v_b_3034_, v___x_3051_);
+lean_dec_ref_known(v___x_3051_, 1);
 if (v___x_3052_ == 0)
 {
 lean_object* v___x_3053_; 

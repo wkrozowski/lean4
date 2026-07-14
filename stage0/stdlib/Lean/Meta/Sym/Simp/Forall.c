@@ -1293,13 +1293,11 @@ goto v___jp_537_;
 else
 {
 lean_object* v___x_543_; 
-lean_inc_ref(v_f_528_);
 v___x_543_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_f_528_, v___y_530_, v___y_531_, v___y_532_, v___y_533_, v___y_534_, v___y_535_);
 if (lean_obj_tag(v___x_543_) == 0)
 {
 lean_object* v___x_544_; 
 lean_dec_ref_known(v___x_543_, 1);
-lean_inc_ref(v_a_529_);
 v___x_544_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_a_529_, v___y_530_, v___y_531_, v___y_532_, v___y_533_, v___y_534_, v___y_535_);
 if (lean_obj_tag(v___x_544_) == 0)
 {
@@ -1899,13 +1897,11 @@ goto v___jp_714_;
 else
 {
 lean_object* v___x_720_; 
-lean_inc_ref(v_t_705_);
 v___x_720_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_t_705_, v___y_707_, v___y_708_, v___y_709_, v___y_710_, v___y_711_, v___y_712_);
 if (lean_obj_tag(v___x_720_) == 0)
 {
 lean_object* v___x_721_; 
 lean_dec_ref_known(v___x_720_, 1);
-lean_inc_ref(v_b_706_);
 v___x_721_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_b_706_, v___y_707_, v___y_708_, v___y_709_, v___y_710_, v___y_711_, v___y_712_);
 if (lean_obj_tag(v___x_721_) == 0)
 {
@@ -2175,13 +2171,11 @@ goto v___jp_807_;
 else
 {
 lean_object* v___x_813_; 
-lean_inc_ref(v_f_798_);
 v___x_813_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_f_798_, v___y_800_, v___y_801_, v___y_802_, v___y_803_, v___y_804_, v___y_805_);
 if (lean_obj_tag(v___x_813_) == 0)
 {
 lean_object* v___x_814_; 
 lean_dec_ref_known(v___x_813_, 1);
-lean_inc_ref(v_a_799_);
 v___x_814_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_a_799_, v___y_800_, v___y_801_, v___y_802_, v___y_803_, v___y_804_, v___y_805_);
 if (lean_obj_tag(v___x_814_) == 0)
 {
@@ -5075,13 +5069,11 @@ goto v___jp_1594_;
 else
 {
 lean_object* v___x_1600_; 
-lean_inc_ref(v_t_1585_);
 v___x_1600_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_t_1585_, v___y_1587_, v___y_1588_, v___y_1589_, v___y_1590_, v___y_1591_, v___y_1592_);
 if (lean_obj_tag(v___x_1600_) == 0)
 {
 lean_object* v___x_1601_; 
 lean_dec_ref_known(v___x_1600_, 1);
-lean_inc_ref(v_b_1586_);
 v___x_1601_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_b_1586_, v___y_1587_, v___y_1588_, v___y_1589_, v___y_1590_, v___y_1591_, v___y_1592_);
 if (lean_obj_tag(v___x_1601_) == 0)
 {

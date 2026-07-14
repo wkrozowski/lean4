@@ -158,7 +158,6 @@ goto v___jp_10_;
 else
 {
 lean_object* v___x_16_; 
-lean_inc_ref(v_e_2_);
 v___x_16_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_e_2_, v___y_3_, v___y_4_, v___y_5_, v___y_6_, v___y_7_, v___y_8_);
 if (lean_obj_tag(v___x_16_) == 0)
 {

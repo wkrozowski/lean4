@@ -2353,13 +2353,11 @@ goto v___jp_570_;
 else
 {
 lean_object* v___x_576_; 
-lean_inc_ref(v_f_561_);
 v___x_576_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_f_561_, v___y_563_, v___y_564_, v___y_565_, v___y_566_, v___y_567_, v___y_568_);
 if (lean_obj_tag(v___x_576_) == 0)
 {
 lean_object* v___x_577_; 
 lean_dec_ref_known(v___x_576_, 1);
-lean_inc_ref(v_a_562_);
 v___x_577_ = l_Lean_Meta_Sym_Internal_Sym_assertShared(v_a_562_, v___y_563_, v___y_564_, v___y_565_, v___y_566_, v___y_567_, v___y_568_);
 if (lean_obj_tag(v___x_577_) == 0)
 {

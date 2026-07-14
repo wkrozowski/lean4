@@ -39,6 +39,7 @@ uint8_t lean_nat_dec_le(lean_object*, lean_object*);
 uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 lean_object* lean_nat_sub(lean_object*, lean_object*);
 uint16_t lean_uint16_of_nat(lean_object*);
+uint8_t lean_uint8_dec_lt(uint8_t, uint8_t);
 uint8_t lean_uint8_of_nat(lean_object*);
 uint32_t lean_uint32_of_nat(lean_object*);
 LEAN_EXPORT uint8_t l_UInt8_ofFin(lean_object*);
@@ -842,36 +843,16 @@ return v_r_191_;
 LEAN_EXPORT uint8_t l_UInt8_toAsciiLower(uint8_t v_b_194_){
 _start:
 {
-uint8_t v___y_196_; uint8_t v___x_199_; uint8_t v___x_200_; 
-v___x_199_ = 65;
-v___x_200_ = lean_uint8_dec_le(v___x_199_, v_b_194_);
-if (v___x_200_ == 0)
-{
-v___y_196_ = v___x_200_;
-goto v___jp_195_;
-}
-else
-{
-uint8_t v___x_201_; uint8_t v___x_202_; 
-v___x_201_ = 90;
-v___x_202_ = lean_uint8_dec_le(v_b_194_, v___x_201_);
-v___y_196_ = v___x_202_;
-goto v___jp_195_;
-}
-v___jp_195_:
-{
-if (v___y_196_ == 0)
-{
-return v_b_194_;
-}
-else
-{
-uint8_t v___x_197_; uint8_t v___x_198_; 
-v___x_197_ = 32;
-v___x_198_ = lean_uint8_add(v_b_194_, v___x_197_);
-return v___x_198_;
-}
-}
+uint8_t v___x_195_; uint8_t v___x_196_; uint8_t v___x_197_; uint8_t v___x_198_; uint8_t v___x_199_; uint8_t v___x_200_; uint8_t v___x_201_; uint8_t v___x_202_; 
+v___x_195_ = 65;
+v___x_196_ = lean_uint8_sub(v_b_194_, v___x_195_);
+v___x_197_ = 26;
+v___x_198_ = lean_uint8_dec_lt(v___x_196_, v___x_197_);
+v___x_199_ = lean_bool_to_uint8(v___x_198_);
+v___x_200_ = 5;
+v___x_201_ = lean_uint8_shift_left(v___x_199_, v___x_200_);
+v___x_202_ = lean_uint8_add(v_b_194_, v___x_201_);
+return v___x_202_;
 }
 }
 LEAN_EXPORT lean_object* l_UInt8_toAsciiLower___boxed(lean_object* v_b_203_){
