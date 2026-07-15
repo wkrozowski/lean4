@@ -335,15 +335,27 @@ instance : MonadLog CommandElabM where
     let msg := { msg with data := MessageData.withNamingContext { currNamespace := currNamespace, openDecls := openDecls } msg.data }
     modify fun s => { s with messages := s.messages.add msg }
 
-def runLinters (stx : Syntax) : CommandElabM Unit := do
+structure LinterInfoGroup where
+  deriving TypeName
+
+def mkLinterInfoGroupNode (trees : PersistentArray InfoTree) : InfoTree :=
+  InfoTree.node (Info.ofCustomInfo { stx := .missing, value := Dynamic.mk (⟨⟩ : LinterInfoGroup) }) trees
+
+private def pushInfoChild : InfoTree → InfoTree → InfoTree
+  | .context ctx (.node i cs), child => .context ctx (.node i (cs.push child))
+  | t, _ => t
+
+def runLinters (stx : Syntax) (promise : Option (IO.Promise InfoTree) := .none) : CommandElabM Unit := do
   profileitM Exception "linting" (← getOptions) do
     withTraceNode `Elab.lint (fun _ => return m!"running linters") do
       let linters ← lintersRef.get
+      let producedInfoTrees ← IO.mkRef ({} : PersistentArray InfoTree)
       unless linters.isEmpty do
         for linter in linters do
           withTraceNode `Elab.lint (fun _ => return m!"running linter: {.ofConstName linter.name}")
               (tag := linter.name.toString) do
             let savedState ← get
+            let originalSize := savedState.infoState.trees.size
             try
               linter.run stx
             catch ex =>
@@ -355,7 +367,15 @@ def runLinters (stx : Syntax) : CommandElabM Unit := do
             finally
               -- TODO: it would be good to preserve even more state (#4363) but preserving info
               -- trees currently breaks from linters adding context-less info nodes
+              let newInfoState ← getInfoState
+              if newInfoState.enabled then
+                producedInfoTrees.modify fun old =>
+                  old.append (newInfoState.trees.foldl (·.push ·) {} (start := originalSize))
               modify fun s => { savedState with messages := s.messages, traceState := s.traceState }
+      if let some promise := promise then
+        if (← getInfoState).enabled then
+          promise.resolve <|
+            mkLinterInfoGroupNode (← producedInfoTrees.get)
 
 def runModuleLinters (cmds : Array Syntax) : CommandElabM Unit := do
   profileitM Exception "module linting" (← getOptions) do
@@ -493,6 +513,9 @@ def runLintersAsync (stx : Syntax) (cmds : Array Syntax) : CommandElabM Unit := 
         runModuleLinters cmds
     return
 
+  -- We create a promise for the info trees produced by the linters
+  let lintersInfoPromise ← IO.Promise.new (α := InfoTree)
+
   -- linters should have access to the complete info tree and message log
   let mut snaps := (← get).snapshotTasks
   if let some elabSnap := (← read).snap? then
@@ -509,7 +532,7 @@ def runLintersAsync (stx : Syntax) (cmds : Array Syntax) : CommandElabM Unit := 
     let messages := messages.markAllReported
     modify fun st => { st with messages := st.messages ++ messages }
     modifyInfoState fun _ => infoSt
-    runLinters stx
+    runLinters stx lintersInfoPromise
     if Parser.isTerminalCommand stx then
         runModuleLinters cmds
 
@@ -517,6 +540,12 @@ def runLintersAsync (stx : Syntax) (cmds : Array Syntax) : CommandElabM Unit := 
     BaseIO.mapTask (t := treeTask) fun _ =>
       lintAct infoSt
   logSnapshotTask { stx? := none, task, cancelTk? := cancelTk }
+
+  let infoHole ← liftCoreM mkFreshMVarId
+  modifyInfoState fun s => { s with
+    trees          := s.trees.modify 0 (pushInfoChild · (.hole infoHole))
+    lazyAssignment := s.lazyAssignment.insert infoHole (lintersInfoPromise.resultD default)
+  }
 
 open Language in
 def runStatefulLintersAsync (stx : Syntax) : CommandElabM Unit := do
