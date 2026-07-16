@@ -2,7 +2,9 @@ import LinterTest.Readers
 import LinterTest.ModeSwitch
 import LinterTest.Errors
 import LinterTest.PreFailure
+import LinterTest.Suggest
 import LinterTest.TestReadersAsync
 import LinterTest.TestModeSwitch
 import LinterTest.TestErrors
 import LinterTest.TestPreFailure
+import LinterTest.TestSuggest
