@@ -318,17 +318,29 @@ def registerParametricAttribute (impl : ParametricAttributeImpl α) : IO (Parame
 
 namespace ParametricAttribute
 
-def getParam? [Inhabited α] (attr : ParametricAttribute α) (env : Environment) (decl : Name) : Option α :=
+/--
+Looks up the parameter stored for `decl` directly in an extension `ext` (see
+`registerParametricAttributeExt`), without needing the full `ParametricAttribute`. This lets a
+parametric attribute's `getParam` consult its own extension for entries set on *other* declarations,
+which is otherwise impossible because the `ParametricAttribute` value does not yet exist while
+`getParam` runs.
+
+`preserveOrder` must match the value the extension was created with.
+-/
+def getParamFromExt? [Inhabited α]
+    (ext : PersistentEnvExtension (Name × α) (Name × α) (List Name × NameMap α))
+    (preserveOrder : Bool) (env : Environment) (decl : Name) : Option α :=
   match env.getModuleIdxFor? decl with
   | some modIdx =>
-    let entry? := if attr.preserveOrder then
-      (attr.ext.getModuleEntries env modIdx).find? (·.1 == decl)
+    let entry? := if preserveOrder then
+      (ext.getModuleEntries env modIdx).find? (·.1 == decl)
     else
-      (attr.ext.getModuleEntries env modIdx).binSearch (decl, default) (fun a b => Name.quickLt a.1 b.1)
-    match entry? with
-    | some (_, val) => some val
-    | none          => none
-  | none        => (attr.ext.getState env).2.find? decl
+      (ext.getModuleEntries env modIdx).binSearch (decl, default) (fun a b => Name.quickLt a.1 b.1)
+    entry?.map (·.2)
+  | none        => (ext.getState env).2.find? decl
+
+def getParam? [Inhabited α] (attr : ParametricAttribute α) (env : Environment) (decl : Name) : Option α :=
+  getParamFromExt? attr.ext attr.preserveOrder env decl
 
 def setParam (attr : ParametricAttribute α) (env : Environment) (decl : Name) (param : α) : Except String Environment :=
   if (env.getModuleIdxFor? decl).isSome then
