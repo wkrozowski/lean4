@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Lean.PostprocessTraces
-// Imports: public import Lean.PostprocessTraces.Basic
+// Imports: public import Lean.PostprocessTraces.Basic public import Lean.PostprocessTraces.PostprocessTracesCommand public import Lean.PostprocessTraces.StoredTraces public import Lean.PostprocessTraces.Postprocessors
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -14,12 +14,24 @@
 extern "C" {
 #endif
 lean_object* runtime_initialize_Lean_PostprocessTraces_Basic(uint8_t builtin);
+lean_object* runtime_initialize_Lean_PostprocessTraces_PostprocessTracesCommand(uint8_t builtin);
+lean_object* runtime_initialize_Lean_PostprocessTraces_StoredTraces(uint8_t builtin);
+lean_object* runtime_initialize_Lean_PostprocessTraces_Postprocessors(uint8_t builtin);
 static bool _G_runtime_initialized = false;
 LEAN_EXPORT lean_object* runtime_initialize_Lean_PostprocessTraces(uint8_t builtin) {
 lean_object * res;
 if (_G_runtime_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_runtime_initialized = true;
 res = runtime_initialize_Lean_PostprocessTraces_Basic(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lean_PostprocessTraces_PostprocessTracesCommand(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lean_PostprocessTraces_StoredTraces(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = runtime_initialize_Lean_PostprocessTraces_Postprocessors(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 return lean_io_result_mk_ok(lean_box(0));
@@ -32,12 +44,24 @@ _G_meta_initialized = true;
 return lean_io_result_mk_ok(lean_box(0));
 }
 lean_object* initialize_Lean_PostprocessTraces_Basic(uint8_t builtin);
+lean_object* initialize_Lean_PostprocessTraces_PostprocessTracesCommand(uint8_t builtin);
+lean_object* initialize_Lean_PostprocessTraces_StoredTraces(uint8_t builtin);
+lean_object* initialize_Lean_PostprocessTraces_Postprocessors(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Lean_PostprocessTraces(uint8_t builtin) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
 res = initialize_Lean_PostprocessTraces_Basic(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Lean_PostprocessTraces_PostprocessTracesCommand(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Lean_PostprocessTraces_StoredTraces(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Lean_PostprocessTraces_Postprocessors(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = runtime_initialize_Lean_PostprocessTraces(builtin);

@@ -588,7 +588,7 @@ lean_object* v_a_230_; lean_object* v_toIntVarMap_231_; lean_object* v___x_232_;
 v_a_230_ = lean_ctor_get(v___x_229_, 0);
 lean_inc(v_a_230_);
 lean_dec_ref_known(v___x_229_, 1);
-v_toIntVarMap_231_ = lean_ctor_get(v_a_230_, 21);
+v_toIntVarMap_231_ = lean_ctor_get(v_a_230_, 22);
 lean_inc_ref(v_toIntVarMap_231_);
 lean_dec(v_a_230_);
 v___x_232_ = l_Lean_PersistentHashMap_find_x3f___at___00__private_Lean_Meta_Tactic_Grind_Arith_Cutsat_MBTC_0__Lean_Meta_Grind_Arith_Cutsat_getAssignmentExt_x3f_spec__0___redArg(v_toIntVarMap_231_, v_e_136_);
@@ -950,7 +950,7 @@ lean_object* v_a_162_; lean_object* v_toIntTermMap_163_; lean_object* v___x_164_
 v_a_162_ = lean_ctor_get(v___x_161_, 0);
 lean_inc(v_a_162_);
 lean_dec_ref_known(v___x_161_, 1);
-v_toIntTermMap_163_ = lean_ctor_get(v_a_162_, 20);
+v_toIntTermMap_163_ = lean_ctor_get(v_a_162_, 21);
 lean_inc_ref(v_toIntTermMap_163_);
 lean_dec(v_a_162_);
 v___x_164_ = l_Lean_PersistentHashMap_find_x3f___at___00__private_Lean_Meta_Tactic_Grind_Arith_Cutsat_MBTC_0__Lean_Meta_Grind_Arith_Cutsat_getAssignmentExt_x3f_spec__0___redArg(v_toIntTermMap_163_, v_e_136_);

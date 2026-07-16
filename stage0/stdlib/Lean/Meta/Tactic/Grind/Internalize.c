@@ -6159,7 +6159,7 @@ lean_object* v_a_1953_; uint8_t v___y_2009_; uint8_t v_splitIte_2020_;
 v_a_1953_ = lean_ctor_get(v___x_1952_, 0);
 lean_inc(v_a_1953_);
 lean_dec_ref_known(v___x_1952_, 1);
-v_splitIte_2020_ = lean_ctor_get_uint8(v_a_1953_, sizeof(void*)*13 + 7);
+v_splitIte_2020_ = lean_ctor_get_uint8(v_a_1953_, sizeof(void*)*14 + 7);
 lean_dec(v_a_1953_);
 if (v_splitIte_2020_ == 0)
 {
@@ -6197,7 +6197,7 @@ lean_object* v_a_1957_; uint8_t v_splitMatch_1958_;
 v_a_1957_ = lean_ctor_get(v___x_1956_, 0);
 lean_inc(v_a_1957_);
 lean_dec_ref_known(v___x_1956_, 1);
-v_splitMatch_1958_ = lean_ctor_get_uint8(v_a_1957_, sizeof(void*)*13 + 6);
+v_splitMatch_1958_ = lean_ctor_get_uint8(v_a_1957_, sizeof(void*)*14 + 6);
 lean_dec(v_a_1957_);
 if (v_splitMatch_1958_ == 0)
 {
@@ -6867,7 +6867,7 @@ v_a_2083_ = lean_ctor_get(v___x_2082_, 0);
 lean_inc(v_a_2083_);
 lean_dec_ref_known(v___x_2082_, 1);
 v_splitSource_2084_ = lean_ctor_get(v_a_1873_, 4);
-v_splitImp_2098_ = lean_ctor_get_uint8(v_a_2083_, sizeof(void*)*13 + 9);
+v_splitImp_2098_ = lean_ctor_get_uint8(v_a_2083_, sizeof(void*)*14 + 9);
 lean_dec(v_a_2083_);
 if (v_splitImp_2098_ == 0)
 {
@@ -6933,7 +6933,7 @@ lean_object* v_a_2110_; uint8_t v_lookahead_2111_;
 v_a_2110_ = lean_ctor_get(v___x_2109_, 0);
 lean_inc(v_a_2110_);
 lean_dec_ref_known(v___x_2109_, 1);
-v_lookahead_2111_ = lean_ctor_get_uint8(v_a_2110_, sizeof(void*)*13 + 14);
+v_lookahead_2111_ = lean_ctor_get_uint8(v_a_2110_, sizeof(void*)*14 + 14);
 lean_dec(v_a_2110_);
 if (v_lookahead_2111_ == 0)
 {
@@ -7347,7 +7347,7 @@ goto v_resetjp_1912_;
 v_resetjp_1912_:
 {
 uint8_t v_splitIndPred_1915_; 
-v_splitIndPred_1915_ = lean_ctor_get_uint8(v_a_1911_, sizeof(void*)*13 + 8);
+v_splitIndPred_1915_ = lean_ctor_get_uint8(v_a_1911_, sizeof(void*)*14 + 8);
 lean_dec(v_a_1911_);
 if (v_splitIndPred_1915_ == 0)
 {
@@ -11451,7 +11451,7 @@ goto v_resetjp_3592_;
 v_resetjp_3592_:
 {
 uint8_t v_matchEqs_3595_; 
-v_matchEqs_3595_ = lean_ctor_get_uint8(v_a_3591_, sizeof(void*)*13 + 5);
+v_matchEqs_3595_ = lean_ctor_get_uint8(v_a_3591_, sizeof(void*)*14 + 5);
 lean_dec(v_a_3591_);
 if (v_matchEqs_3595_ == 0)
 {
@@ -17772,8 +17772,8 @@ return v___x_5633_;
 }
 else
 {
-lean_dec_ref_known(v_symbols_5592_, 2);
 lean_dec(v_head_5593_);
+lean_dec_ref_known(v_symbols_5592_, 2);
 lean_dec_ref(v_thm_5588_);
 lean_dec_ref(v_s_5587_);
 goto v___jp_5589_;
@@ -18761,7 +18761,7 @@ goto v_resetjp_5955_;
 v_resetjp_5955_:
 {
 uint8_t v_inj_5958_; 
-v_inj_5958_ = lean_ctor_get_uint8(v_a_5954_, sizeof(void*)*13 + 26);
+v_inj_5958_ = lean_ctor_get_uint8(v_a_5954_, sizeof(void*)*14 + 26);
 lean_dec(v_a_5954_);
 if (v_inj_5958_ == 0)
 {
@@ -20043,7 +20043,7 @@ goto v_resetjp_6539_;
 v_resetjp_6539_:
 {
 uint8_t v_etaStruct_6542_; 
-v_etaStruct_6542_ = lean_ctor_get_uint8(v_a_6538_, sizeof(void*)*13 + 12);
+v_etaStruct_6542_ = lean_ctor_get_uint8(v_a_6538_, sizeof(void*)*14 + 12);
 lean_dec(v_a_6538_);
 if (v_etaStruct_6542_ == 0)
 {
@@ -24067,7 +24067,7 @@ goto v_resetjp_7961_;
 v_resetjp_7961_:
 {
 uint8_t v_funext_7964_; 
-v_funext_7964_ = lean_ctor_get_uint8(v_a_7960_, sizeof(void*)*13 + 13);
+v_funext_7964_ = lean_ctor_get_uint8(v_a_7960_, sizeof(void*)*14 + 13);
 lean_dec(v_a_7960_);
 if (v_funext_7964_ == 0)
 {
@@ -25753,7 +25753,7 @@ goto v_resetjp_8818_;
 v_resetjp_8818_:
 {
 uint8_t v_funCC_8821_; 
-v_funCC_8821_ = lean_ctor_get_uint8(v_a_8817_, sizeof(void*)*13 + 30);
+v_funCC_8821_ = lean_ctor_get_uint8(v_a_8817_, sizeof(void*)*14 + 30);
 lean_dec(v_a_8817_);
 if (v_funCC_8821_ == 0)
 {

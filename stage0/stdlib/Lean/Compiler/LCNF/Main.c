@@ -1994,10 +1994,10 @@ return v___x_521_;
 LEAN_EXPORT lean_object* l_Lean_PersistentHashMap_findAux___at___00Lean_PersistentHashMap_find_x3f___at___00Lean_SMap_find_x3f___at___00Lean_Compiler_LCNF_shouldGenerateCode_spec__2_spec__2_spec__3___redArg___boxed(lean_object* v_x_522_, lean_object* v_x_523_, lean_object* v_x_524_){
 _start:
 {
-size_t v_x_3193__boxed_525_; lean_object* v_res_526_; 
-v_x_3193__boxed_525_ = lean_unbox_usize(v_x_523_);
+size_t v_x_3194__boxed_525_; lean_object* v_res_526_; 
+v_x_3194__boxed_525_ = lean_unbox_usize(v_x_523_);
 lean_dec(v_x_523_);
-v_res_526_ = l_Lean_PersistentHashMap_findAux___at___00Lean_PersistentHashMap_find_x3f___at___00Lean_SMap_find_x3f___at___00Lean_Compiler_LCNF_shouldGenerateCode_spec__2_spec__2_spec__3___redArg(v_x_522_, v_x_3193__boxed_525_, v_x_524_);
+v_res_526_ = l_Lean_PersistentHashMap_findAux___at___00Lean_PersistentHashMap_find_x3f___at___00Lean_SMap_find_x3f___at___00Lean_Compiler_LCNF_shouldGenerateCode_spec__2_spec__2_spec__3___redArg(v_x_522_, v_x_3194__boxed_525_, v_x_524_);
 lean_dec(v_x_524_);
 lean_dec_ref(v_x_522_);
 return v_res_526_;
@@ -2779,10 +2779,10 @@ return v___x_743_;
 LEAN_EXPORT lean_object* l_Lean_PersistentHashMap_findAux___at___00Lean_PersistentHashMap_find_x3f___at___00Lean_SMap_find_x3f___at___00Lean_Compiler_LCNF_shouldGenerateCode_spec__2_spec__2_spec__3___boxed(lean_object* v_00_u03b2_744_, lean_object* v_x_745_, lean_object* v_x_746_, lean_object* v_x_747_){
 _start:
 {
-size_t v_x_3717__boxed_748_; lean_object* v_res_749_; 
-v_x_3717__boxed_748_ = lean_unbox_usize(v_x_746_);
+size_t v_x_3720__boxed_748_; lean_object* v_res_749_; 
+v_x_3720__boxed_748_ = lean_unbox_usize(v_x_746_);
 lean_dec(v_x_746_);
-v_res_749_ = l_Lean_PersistentHashMap_findAux___at___00Lean_PersistentHashMap_find_x3f___at___00Lean_SMap_find_x3f___at___00Lean_Compiler_LCNF_shouldGenerateCode_spec__2_spec__2_spec__3(v_00_u03b2_744_, v_x_745_, v_x_3717__boxed_748_, v_x_747_);
+v_res_749_ = l_Lean_PersistentHashMap_findAux___at___00Lean_PersistentHashMap_find_x3f___at___00Lean_SMap_find_x3f___at___00Lean_Compiler_LCNF_shouldGenerateCode_spec__2_spec__2_spec__3(v_00_u03b2_744_, v_x_745_, v_x_3720__boxed_748_, v_x_747_);
 lean_dec(v_x_747_);
 lean_dec_ref(v_x_745_);
 return v_res_749_;
