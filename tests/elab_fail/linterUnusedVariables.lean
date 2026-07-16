@@ -1,11 +1,9 @@
 import Lean
 
-set_option Elab.async true
 set_option linter.missingDocs false
 set_option linter.all true
 set_option linter.unusedSimpArgs false
 set_option linter.redundantVisibility false
-set_option trace.Elab true
 
 def explicitlyUsedVariable (x : Nat) : Nat :=
   x
