@@ -434,7 +434,7 @@ private def specPreOf? (subgoals : List MVarId) : VCGenM (Option Expr) := do
 /--
 Handle a spec-ready program `info.prog`: select its `@[spec]` theorem and either frame or apply it.
 
-- A monad structural combinator or an already-framed residual applies its spec directly.
+- A spec with a conjunctive precondition, or an already-framed residual, applies its spec directly.
 - Otherwise the frame operator for the monad is selected (the `@[frameproc]` registered for the
   program type, or the default meet frame). The choice is per node, since sub-programs may reach a
   different monad (e.g. a `monadLift`ed base call).
@@ -449,7 +449,7 @@ private def applyFrameOrSpec (scope : VCGen.Scope) (goal : MVarId) (pre : Expr) 
   let thm ← match spec with
     | .ok thm => pure thm
     | .error res => return res
-  if isStructuralCombinator info.prog || isFramedPost info.post then
+  if isStructuralCombinator info.prog || thm.conjunctivePre || isFramedPost info.post then
     return ← applySpec scope goal info thm
   let procs := (← read).frameProcs.byProg
   let fp := info.M.getAppFn.constName?.bind (procs[·]?) |>.getD meetFrameProc
