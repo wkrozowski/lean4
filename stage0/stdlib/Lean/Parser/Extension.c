@@ -16653,11 +16653,11 @@ return v_res_5449_;
 LEAN_EXPORT lean_object* l_Lean_Parser_parserOfStack___lam__0(lean_object* v_prec_5450_, lean_object* v_x_5451_){
 _start:
 {
-lean_object* v_quotDepth_5452_; uint8_t v_suppressInsideQuot_5453_; lean_object* v_savedPos_x3f_5454_; lean_object* v_forbiddenTk_x3f_5455_; lean_object* v___x_5457_; uint8_t v_isShared_5458_; uint8_t v_isSharedCheck_5462_; 
+lean_object* v_quotDepth_5452_; uint8_t v_suppressInsideQuot_5453_; lean_object* v_savedPos_x3f_5454_; lean_object* v_forbiddenTks_5455_; lean_object* v___x_5457_; uint8_t v_isShared_5458_; uint8_t v_isSharedCheck_5462_; 
 v_quotDepth_5452_ = lean_ctor_get(v_x_5451_, 1);
 v_suppressInsideQuot_5453_ = lean_ctor_get_uint8(v_x_5451_, sizeof(void*)*4);
 v_savedPos_x3f_5454_ = lean_ctor_get(v_x_5451_, 2);
-v_forbiddenTk_x3f_5455_ = lean_ctor_get(v_x_5451_, 3);
+v_forbiddenTks_5455_ = lean_ctor_get(v_x_5451_, 3);
 v_isSharedCheck_5462_ = !lean_is_exclusive(v_x_5451_);
 if (v_isSharedCheck_5462_ == 0)
 {
@@ -16670,7 +16670,7 @@ goto v_resetjp_5456_;
 }
 else
 {
-lean_inc(v_forbiddenTk_x3f_5455_);
+lean_inc(v_forbiddenTks_5455_);
 lean_inc(v_savedPos_x3f_5454_);
 lean_inc(v_quotDepth_5452_);
 lean_dec(v_x_5451_);
@@ -16694,7 +16694,7 @@ v_reuseFailAlloc_5461_ = lean_alloc_ctor(0, 4, 1);
 lean_ctor_set(v_reuseFailAlloc_5461_, 0, v_prec_5450_);
 lean_ctor_set(v_reuseFailAlloc_5461_, 1, v_quotDepth_5452_);
 lean_ctor_set(v_reuseFailAlloc_5461_, 2, v_savedPos_x3f_5454_);
-lean_ctor_set(v_reuseFailAlloc_5461_, 3, v_forbiddenTk_x3f_5455_);
+lean_ctor_set(v_reuseFailAlloc_5461_, 3, v_forbiddenTks_5455_);
 lean_ctor_set_uint8(v_reuseFailAlloc_5461_, sizeof(void*)*4, v_suppressInsideQuot_5453_);
 v___x_5460_ = v_reuseFailAlloc_5461_;
 goto v_reusejp_5459_;

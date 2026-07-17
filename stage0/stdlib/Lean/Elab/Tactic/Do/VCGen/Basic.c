@@ -13677,11 +13677,11 @@ v___jp_4409_:
 {
 if (v___y_4412_ == 0)
 {
-if (lean_obj_tag(v___y_4410_) == 0)
+if (lean_obj_tag(v___y_4411_) == 0)
 {
 lean_object* v___x_4413_; lean_object* v___x_4414_; 
-lean_dec_ref_known(v___y_4410_, 2);
-lean_dec_ref(v___y_4411_);
+lean_dec_ref_known(v___y_4411_, 2);
+lean_dec_ref(v___y_4410_);
 v___x_4413_ = lean_unsigned_to_nat(1u);
 v___x_4414_ = lean_nat_add(v_i_4401_, v___x_4413_);
 lean_dec(v_i_4401_);
@@ -13690,20 +13690,20 @@ goto _start;
 }
 else
 {
-lean_dec_ref_known(v___y_4410_, 2);
+lean_dec_ref_known(v___y_4411_, 2);
 lean_dec(v_i_4401_);
 lean_dec_ref(v_runInBase_4400_);
 lean_dec(v_k_4399_);
-return v___y_4411_;
+return v___y_4410_;
 }
 }
 else
 {
-lean_dec_ref(v___y_4410_);
+lean_dec_ref(v___y_4411_);
 lean_dec(v_i_4401_);
 lean_dec_ref(v_runInBase_4400_);
 lean_dec(v_k_4399_);
-return v___y_4411_;
+return v___y_4410_;
 }
 }
 v___jp_4416_:
@@ -13715,15 +13715,15 @@ if (v___x_4419_ == 0)
 uint8_t v___x_4420_; 
 lean_inc_ref(v_a_4418_);
 v___x_4420_ = l_Lean_Exception_isRuntime(v_a_4418_);
-v___y_4410_ = v_a_4418_;
-v___y_4411_ = v___y_4417_;
+v___y_4410_ = v___y_4417_;
+v___y_4411_ = v_a_4418_;
 v___y_4412_ = v___x_4420_;
 goto v___jp_4409_;
 }
 else
 {
-v___y_4410_ = v_a_4418_;
-v___y_4411_ = v___y_4417_;
+v___y_4410_ = v___y_4417_;
+v___y_4411_ = v_a_4418_;
 v___y_4412_ = v___x_4419_;
 goto v___jp_4409_;
 }
