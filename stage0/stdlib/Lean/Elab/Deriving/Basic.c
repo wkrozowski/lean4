@@ -132,7 +132,7 @@ lean_object* l_Lean_MessageData_ofSyntax(lean_object*);
 lean_object* l_Lean_indentD(lean_object*);
 lean_object* l_Lean_Meta_Closure_mkValueTypeClosure(lean_object*, lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 extern lean_object* l_Lean_Meta_backward_inferInstanceAs_wrap;
-lean_object* l_Lean_Meta_wrapInstance(lean_object*, lean_object*, uint8_t, uint8_t, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_wrapInstance(lean_object*, lean_object*, uint8_t, uint8_t, uint8_t, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l___private_Lean_Meta_Basic_0__Lean_Meta_withNewMCtxDepthImp(lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t lean_name_eq(lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Command_NameGen_mkBaseNameWithSuffix(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -12484,7 +12484,7 @@ LEAN_EXPORT lean_object* l_Lean_Elab_Term_processDefDeriving___lam__1(lean_objec
 _start:
 {
 lean_object* v___x_3784_; 
-v___x_3784_ = l_Lean_Meta_wrapInstance(v_instVal_3772_, v_instType_3773_, v___x_3774_, v___x_3775_, v___y_3776_, v___y_3779_, v___y_3780_, v___y_3781_, v___y_3782_);
+v___x_3784_ = l_Lean_Meta_wrapInstance(v_instVal_3772_, v_instType_3773_, v___x_3774_, v___x_3775_, v___y_3776_, v___x_3774_, v___y_3779_, v___y_3780_, v___y_3781_, v___y_3782_);
 return v___x_3784_;
 }
 }

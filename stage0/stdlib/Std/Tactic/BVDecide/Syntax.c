@@ -153,9 +153,9 @@ static lean_once_cell_t l_Lean_Parser_bv__normalize___closed__6_once = LEAN_ONCE
 static lean_object* l_Lean_Parser_bv__normalize___closed__6;
 static lean_once_cell_t l_Lean_Parser_bv__normalize___closed__7_once = LEAN_ONCE_CELL_INITIALIZER;
 static lean_object* l_Lean_Parser_bv__normalize___closed__7;
-static const lean_string_object l_Lean_Parser_bv__normalize___closed__8_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 5, .m_capacity = 5, .m_length = 2, .m_data = "← "};
+static const lean_string_object l_Lean_Parser_bv__normalize___closed__8_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 5, .m_capacity = 5, .m_length = 2, .m_data = " ←"};
 static const lean_object* l_Lean_Parser_bv__normalize___closed__8 = (const lean_object*)&l_Lean_Parser_bv__normalize___closed__8_value;
-static const lean_string_object l_Lean_Parser_bv__normalize___closed__9_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 4, .m_capacity = 4, .m_length = 3, .m_data = "<- "};
+static const lean_string_object l_Lean_Parser_bv__normalize___closed__9_value = {.m_header = {.m_rc = 0, .m_cs_sz = 0, .m_other = 0, .m_tag = 249}, .m_size = 4, .m_capacity = 4, .m_length = 3, .m_data = " <-"};
 static const lean_object* l_Lean_Parser_bv__normalize___closed__9 = (const lean_object*)&l_Lean_Parser_bv__normalize___closed__9_value;
 static const lean_ctor_object l_Lean_Parser_bv__normalize___closed__10_value = {.m_header = {.m_rc = 0, .m_cs_sz = sizeof(lean_ctor_object) + sizeof(void*)*2 + 8, .m_other = 2, .m_tag = 12}, .m_objs = {((lean_object*)&l_Lean_Parser_bv__normalize___closed__8_value),((lean_object*)&l_Lean_Parser_bv__normalize___closed__9_value),LEAN_SCALAR_PTR_LITERAL(0, 0, 0, 0, 0, 0, 0, 0)}};
 static const lean_object* l_Lean_Parser_bv__normalize___closed__10 = (const lean_object*)&l_Lean_Parser_bv__normalize___closed__10_value;
