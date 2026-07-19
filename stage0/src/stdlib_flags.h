@@ -1,4 +1,3 @@
-// update me again!
 #include "util/options.h"
 
 // Should we test stage 2 and run update-stage0 on PR merge? NO
