@@ -66,7 +66,7 @@ def deprecationTypeMismatchNote? (oldName newName : Name) : CoreM (Option Messag
     \ninstead of{indentExpr old.type}"
 
 builtin_initialize deprecatedAttr : ParametricAttribute DeprecationEntry ← do
-  let ext ← registerParametricAttributeExt (α := DeprecationEntry) `deprecated
+  let ext ← registerParametricAttributeExt (α := DeprecationEntry) `Lean.Linter.deprecatedAttr
   registerParametricAttributeForExt (ext := ext) {
     name := `deprecated
     descr := "mark declaration as deprecated",
