@@ -260,14 +260,6 @@ structure ParametricAttributeImpl (α : Type) extends AttributeImplCore where
   filterExport : Environment → Name → α → Bool := fun env n _ =>
     env.contains (skipRealize := false) n
 
-/--
-Registers the persistent environment extension backing a parametric attribute.
-
-This takes the extension-relevant fields directly rather than a `ParametricAttributeImpl`, so the
-extension can be created independently of the attribute's `getParam`. This lets `getParam` consult
-the extension (via `getParam?`) for entries set on other declarations — see
-`registerParametricAttributeForExt`.
--/
 def registerParametricAttributeExt (ref : Name) (preserveOrder : Bool := false)
     (filterExport : Environment → Name → α → Bool := fun env n _ =>
       env.contains (skipRealize := false) n) :
@@ -288,13 +280,6 @@ def registerParametricAttributeExt (ref : Name) (preserveOrder : Bool := false)
     statsFn         := fun (_, m) => "parametric attribute" ++ Format.line ++ "number of local entries: " ++ format m.size
   }
 
-/--
-Registers a parametric attribute over an already-created extension `ext` (see
-`registerParametricAttributeExt`).
-
-`ext` must have been created with the same `preserveOrder` as `impl`, otherwise `getParam?` and the
-export logic will disagree on how entries are ordered.
--/
 def registerParametricAttributeForExt (impl : ParametricAttributeImpl α)
     (ext : PersistentEnvExtension (Name × α) (Name × α) (List Name × NameMap α)) :
     IO (ParametricAttribute α) := do
@@ -318,15 +303,6 @@ def registerParametricAttribute (impl : ParametricAttributeImpl α) : IO (Parame
 
 namespace ParametricAttribute
 
-/--
-Looks up the parameter stored for `decl` directly in an extension `ext` (see
-`registerParametricAttributeExt`), without needing the full `ParametricAttribute`. This lets a
-parametric attribute's `getParam` consult its own extension for entries set on *other* declarations,
-which is otherwise impossible because the `ParametricAttribute` value does not yet exist while
-`getParam` runs.
-
-`preserveOrder` must match the value the extension was created with.
--/
 def getParamFromExt? [Inhabited α]
     (ext : PersistentEnvExtension (Name × α) (Name × α) (List Name × NameMap α))
     (preserveOrder : Bool) (env : Environment) (decl : Name) : Option α :=
@@ -336,19 +312,25 @@ def getParamFromExt? [Inhabited α]
       (ext.getModuleEntries env modIdx).find? (·.1 == decl)
     else
       (ext.getModuleEntries env modIdx).binSearch (decl, default) (fun a b => Name.quickLt a.1 b.1)
-    entry?.map (·.2)
+    match entry? with
+    | some (_, val) => some val
+    | none          => none
   | none        => (ext.getState env).2.find? decl
 
 def getParam? [Inhabited α] (attr : ParametricAttribute α) (env : Environment) (decl : Name) : Option α :=
   getParamFromExt? attr.ext attr.preserveOrder env decl
 
-def setParam (attr : ParametricAttribute α) (env : Environment) (decl : Name) (param : α) : Except String Environment :=
+def setParamFromExt
+  (ext : PersistentEnvExtension (Name × α) (Name × α) (List Name × NameMap α)) (attr : AttributeImpl) (env : Environment) (decl : Name) (param : α) : Except String Environment :=
   if (env.getModuleIdxFor? decl).isSome then
-    Except.error (s!"Failed to add parametric attribute `[{attr.attr.name}]` to `{decl}`: Declaration is in an imported module")
-  else if ((attr.ext.getState env).2.find? decl).isSome then
-    Except.error (s!"Failed to add parametric attribute `[{attr.attr.name}]` to `{decl}`: Attribute has already been set")
+    Except.error (s!"Failed to add parametric attribute `[{attr.name}]` to `{decl}`: Declaration is in an imported module")
+  else if ((ext.getState env).2.find? decl).isSome then
+    Except.error (s!"Failed to add parametric attribute `[{attr.name}]` to `{decl}`: Attribute has already been set")
   else
-    Except.ok (attr.ext.addEntry env (decl, param))
+    Except.ok (ext.addEntry env (decl, param))
+
+def setParam (attr : ParametricAttribute α) (env : Environment) (decl : Name) (param : α) : Except String Environment :=
+  setParamFromExt attr.ext attr.attr env decl param
 
 end ParametricAttribute
 
