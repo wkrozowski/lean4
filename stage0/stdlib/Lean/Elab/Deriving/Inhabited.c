@@ -15347,9 +15347,9 @@ return v___x_5200_;
 LEAN_EXPORT lean_object* l_Lean_Elab_Deriving_mkInhabitedInstanceHandler___lam__0___boxed(lean_object* v_____do__lift_5201_, lean_object* v___y_5202_, lean_object* v___y_5203_, lean_object* v___y_5204_){
 _start:
 {
-uint8_t v_____do__lift_1703__boxed_5205_; lean_object* v_res_5206_; 
-v_____do__lift_1703__boxed_5205_ = lean_unbox(v_____do__lift_5201_);
-v_res_5206_ = l_Lean_Elab_Deriving_mkInhabitedInstanceHandler___lam__0(v_____do__lift_1703__boxed_5205_, v___y_5202_, v___y_5203_);
+uint8_t v_____do__lift_1704__boxed_5205_; lean_object* v_res_5206_; 
+v_____do__lift_1704__boxed_5205_ = lean_unbox(v_____do__lift_5201_);
+v_res_5206_ = l_Lean_Elab_Deriving_mkInhabitedInstanceHandler___lam__0(v_____do__lift_1704__boxed_5205_, v___y_5202_, v___y_5203_);
 lean_dec(v___y_5203_);
 lean_dec_ref(v___y_5202_);
 return v_res_5206_;
