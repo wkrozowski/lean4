@@ -387,19 +387,16 @@ def runModuleLinters (cmds : Array Syntax) : CommandElabM Unit := do
             finally
               modify fun s => { savedState with messages := s.messages, traceState := s.traceState }
 
-def runStatefulLinters (stx : Syntax) (prev : Array LinterState)
-    (promise : Option (IO.Promise InfoTree) := .none) : CommandElabM (Array LinterState) := do
+def runStatefulLinters (stx : Syntax) (prev : Array LinterState) : CommandElabM (Array LinterState) := do
   profileitM Exception "stateful linting" (← getOptions) do
     withTraceNode `Elab.lint (fun _ => return m!"running stateful linters") do
       let linters ← statefulLintersRef.get
-      let producedInfoTrees ← IO.mkRef ({} : PersistentArray InfoTree)
       let run {α : Type} (phase : String) (idx : Nat) (onError : CommandElabM α)
           (act : CommandElabM α) : CommandElabM α :=
         withTraceNode `Elab.lint
             (fun _ => return m!"running stateful linter #{idx} ({phase})")
             (tag := toString idx) do
           let savedState ← get
-          let originalSize := savedState.infoState.trees.size
           try
             act
           catch ex =>
@@ -409,10 +406,6 @@ def runStatefulLinters (stx : Syntax) (prev : Array LinterState)
             | .internal _ _ => logException ex
             onError
           finally
-            let newInfoState ← getInfoState
-            if newInfoState.enabled then
-              producedInfoTrees.modify fun old =>
-                old.append (newInfoState.trees.foldl (·.push ·) {} (start := originalSize))
             modify fun s => { savedState with messages := s.messages, traceState := s.traceState }
       let mut preSt : Array (Option LinterState) := .emptyWithCapacity linters.size
       let mut i := 0
@@ -424,10 +417,6 @@ def runStatefulLinters (stx : Syntax) (prev : Array LinterState)
       for l in linters do
         postSt := postSt.push (← run "post" i (pure prev[i]!) (l.post stx prev preSt))
         i := i + 1
-      if let some promise := promise then
-        if (← getInfoState).enabled then
-          promise.resolve <|
-            mkLinterInfoGroupNode (← producedInfoTrees.get)
       return postSt
 
 def initialLinterStates : BaseIO (Array LinterState) := do
@@ -544,14 +533,6 @@ def runLintersAsync (stx : Syntax) (cmds : Array Syntax) : CommandElabM Unit := 
       lintAct infoSt
   logSnapshotTask { stx? := none, task, cancelTk? := cancelTk }
 
-  let infoHole ← liftCoreM mkFreshMVarId
-  modifyInfoState fun s => { s with
-    trees          := s.trees.modify 0 (pushInfoChild · (.hole infoHole))
-    lazyAssignment := s.lazyAssignment
-      |>.insert infoHole (lintersInfoPromise.resultD default)
-
-  }
-
 open Language in
 def runStatefulLintersAsync (stx : Syntax) : CommandElabM Unit := do
   if (← statefulLintersRef.get).isEmpty then return
@@ -573,16 +554,13 @@ def runStatefulLintersAsync (stx : Syntax) : CommandElabM Unit := do
   let inits ← initialLinterStates
   modify fun s => { s with prevLinterStates := some (statePromise.resultD inits) }
 
-  -- We create a promise for the info trees produced by the linters
-  let lintersInfoPromise ← IO.Promise.new (α := InfoTree)
-
   let cancelTk ← IO.CancelToken.new
   let lintAct ← wrapAsyncAsSnapshot (cancelTk? := cancelTk) fun (prev, infoSt) => do
     let messages := tree.getAll.map (·.diagnostics.msgLog) |>.foldl (· ++ ·) .empty
     let messages := messages.markAllReported
     modify fun st => { st with messages := st.messages ++ messages }
     modifyInfoState fun _ => infoSt
-    let postSt ← runStatefulLinters stx prev lintersInfoPromise
+    let postSt ← runStatefulLinters stx prev
     statePromise.resolve postSt
 
   let task ← BaseIO.bindTask (sync := true) (t := (← getInfoState).substituteLazy) fun infoSt =>
@@ -590,12 +568,6 @@ def runStatefulLintersAsync (stx : Syntax) : CommandElabM Unit := do
       BaseIO.mapTask (t := prevTask) fun prev =>
         lintAct (prev, infoSt)
   logSnapshotTask { stx? := none, task, cancelTk? := cancelTk }
-
-  let infoHole ← liftCoreM mkFreshMVarId
-  modifyInfoState fun s => { s with
-    trees          := s.trees.modify 0 (pushInfoChild · (.hole infoHole))
-    lazyAssignment := s.lazyAssignment.insert infoHole (lintersInfoPromise.resultD default)
-  }
 
 /--
 Registers a command elaborator for the given syntax node kind.

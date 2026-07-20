@@ -11186,7 +11186,7 @@ goto v_resetjp_3604_;
 v_resetjp_3604_:
 {
 uint8_t v_trace_3607_; 
-v_trace_3607_ = lean_ctor_get_uint8(v_a_3603_, sizeof(void*)*13);
+v_trace_3607_ = lean_ctor_get_uint8(v_a_3603_, sizeof(void*)*14);
 lean_dec(v_a_3603_);
 if (v_trace_3607_ == 0)
 {

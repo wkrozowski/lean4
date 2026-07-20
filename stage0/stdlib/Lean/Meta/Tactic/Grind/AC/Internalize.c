@@ -1873,7 +1873,7 @@ goto v_resetjp_609_;
 v_resetjp_609_:
 {
 uint8_t v_ac_612_; uint8_t v___y_614_; 
-v_ac_612_ = lean_ctor_get_uint8(v_a_608_, sizeof(void*)*13 + 24);
+v_ac_612_ = lean_ctor_get_uint8(v_a_608_, sizeof(void*)*14 + 24);
 lean_dec(v_a_608_);
 if (v_ac_612_ == 0)
 {

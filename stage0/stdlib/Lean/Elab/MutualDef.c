@@ -26608,18 +26608,18 @@ return v_res_8683_;
 LEAN_EXPORT lean_object* l_Lean_Meta_withLCtx_x27___at___00__private_Lean_Elab_MutualDef_0__Lean_Elab_Term_elabFunValues_spec__8___redArg(lean_object* v_lctx_8684_, lean_object* v_x_8685_, lean_object* v___y_8686_, lean_object* v___y_8687_, lean_object* v___y_8688_, lean_object* v___y_8689_, lean_object* v___y_8690_, lean_object* v___y_8691_){
 _start:
 {
-lean_object* v_keyedConfig_8693_; uint8_t v_trackZetaDelta_8694_; lean_object* v_zetaDeltaSet_8695_; lean_object* v_localInstances_8696_; lean_object* v_defEqCtx_x3f_8697_; lean_object* v_synthPendingDepth_8698_; lean_object* v_canUnfold_x3f_8699_; uint8_t v_univApprox_8700_; uint8_t v_inTypeClassResolution_8701_; uint8_t v_cacheInferType_8702_; lean_object* v___x_8703_; lean_object* v___x_8704_; 
+lean_object* v_keyedConfig_8693_; uint8_t v_trackZetaDelta_8694_; lean_object* v_zetaDeltaSet_8695_; lean_object* v_localInstances_8696_; lean_object* v_defEqCtx_x3f_8697_; lean_object* v_synthPendingDepth_8698_; lean_object* v_customCanUnfoldPredicate_x3f_8699_; uint8_t v_univApprox_8700_; uint8_t v_inTypeClassResolution_8701_; uint8_t v_cacheInferType_8702_; lean_object* v___x_8703_; lean_object* v___x_8704_; 
 v_keyedConfig_8693_ = lean_ctor_get(v___y_8688_, 0);
 v_trackZetaDelta_8694_ = lean_ctor_get_uint8(v___y_8688_, sizeof(void*)*7);
 v_zetaDeltaSet_8695_ = lean_ctor_get(v___y_8688_, 1);
 v_localInstances_8696_ = lean_ctor_get(v___y_8688_, 3);
 v_defEqCtx_x3f_8697_ = lean_ctor_get(v___y_8688_, 4);
 v_synthPendingDepth_8698_ = lean_ctor_get(v___y_8688_, 5);
-v_canUnfold_x3f_8699_ = lean_ctor_get(v___y_8688_, 6);
+v_customCanUnfoldPredicate_x3f_8699_ = lean_ctor_get(v___y_8688_, 6);
 v_univApprox_8700_ = lean_ctor_get_uint8(v___y_8688_, sizeof(void*)*7 + 1);
 v_inTypeClassResolution_8701_ = lean_ctor_get_uint8(v___y_8688_, sizeof(void*)*7 + 2);
 v_cacheInferType_8702_ = lean_ctor_get_uint8(v___y_8688_, sizeof(void*)*7 + 3);
-lean_inc(v_canUnfold_x3f_8699_);
+lean_inc(v_customCanUnfoldPredicate_x3f_8699_);
 lean_inc(v_synthPendingDepth_8698_);
 lean_inc(v_defEqCtx_x3f_8697_);
 lean_inc_ref(v_localInstances_8696_);
@@ -26632,7 +26632,7 @@ lean_ctor_set(v___x_8703_, 2, v_lctx_8684_);
 lean_ctor_set(v___x_8703_, 3, v_localInstances_8696_);
 lean_ctor_set(v___x_8703_, 4, v_defEqCtx_x3f_8697_);
 lean_ctor_set(v___x_8703_, 5, v_synthPendingDepth_8698_);
-lean_ctor_set(v___x_8703_, 6, v_canUnfold_x3f_8699_);
+lean_ctor_set(v___x_8703_, 6, v_customCanUnfoldPredicate_x3f_8699_);
 lean_ctor_set_uint8(v___x_8703_, sizeof(void*)*7, v_trackZetaDelta_8694_);
 lean_ctor_set_uint8(v___x_8703_, sizeof(void*)*7 + 1, v_univApprox_8700_);
 lean_ctor_set_uint8(v___x_8703_, sizeof(void*)*7 + 2, v_inTypeClassResolution_8701_);
@@ -48543,7 +48543,7 @@ goto v_reusejp_16839_;
 }
 v_reusejp_16839_:
 {
-lean_object* v___x_16841_; lean_object* v_cache_16842_; lean_object* v_keyedConfig_16843_; lean_object* v_zetaDeltaSet_16844_; lean_object* v_lctx_16845_; lean_object* v_localInstances_16846_; lean_object* v_defEqCtx_x3f_16847_; lean_object* v_synthPendingDepth_16848_; lean_object* v_canUnfold_x3f_16849_; uint8_t v_univApprox_16850_; uint8_t v_inTypeClassResolution_16851_; uint8_t v_cacheInferType_16852_; lean_object* v_letRecsToLift_16853_; size_t v_sz_16854_; size_t v___x_16855_; lean_object* v___x_16856_; lean_object* v_a_16858_; lean_object* v_a_16870_; lean_object* v___y_16874_; uint8_t v___x_16894_; lean_object* v___x_16895_; lean_object* v___x_16896_; 
+lean_object* v___x_16841_; lean_object* v_cache_16842_; lean_object* v_keyedConfig_16843_; lean_object* v_zetaDeltaSet_16844_; lean_object* v_lctx_16845_; lean_object* v_localInstances_16846_; lean_object* v_defEqCtx_x3f_16847_; lean_object* v_synthPendingDepth_16848_; lean_object* v_customCanUnfoldPredicate_x3f_16849_; uint8_t v_univApprox_16850_; uint8_t v_inTypeClassResolution_16851_; uint8_t v_cacheInferType_16852_; lean_object* v_letRecsToLift_16853_; size_t v_sz_16854_; size_t v___x_16855_; lean_object* v___x_16856_; lean_object* v_a_16858_; lean_object* v_a_16870_; lean_object* v___y_16874_; uint8_t v___x_16894_; lean_object* v___x_16895_; lean_object* v___x_16896_; 
 v___x_16841_ = lean_st_ref_set(v_a_16812_, v___x_16840_);
 v_cache_16842_ = lean_ctor_get(v___x_16816_, 1);
 lean_inc_ref(v_cache_16842_);
@@ -48554,7 +48554,7 @@ v_lctx_16845_ = lean_ctor_get(v_a_16811_, 2);
 v_localInstances_16846_ = lean_ctor_get(v_a_16811_, 3);
 v_defEqCtx_x3f_16847_ = lean_ctor_get(v_a_16811_, 4);
 v_synthPendingDepth_16848_ = lean_ctor_get(v_a_16811_, 5);
-v_canUnfold_x3f_16849_ = lean_ctor_get(v_a_16811_, 6);
+v_customCanUnfoldPredicate_x3f_16849_ = lean_ctor_get(v_a_16811_, 6);
 v_univApprox_16850_ = lean_ctor_get_uint8(v_a_16811_, sizeof(void*)*7 + 1);
 v_inTypeClassResolution_16851_ = lean_ctor_get_uint8(v_a_16811_, sizeof(void*)*7 + 2);
 v_cacheInferType_16852_ = lean_ctor_get_uint8(v_a_16811_, sizeof(void*)*7 + 3);
@@ -48564,7 +48564,7 @@ v___x_16855_ = ((size_t)0ULL);
 lean_inc_ref(v_letRecsToLift_16853_);
 v___x_16856_ = l___private_Init_Data_Array_Basic_0__Array_mapMUnsafe_map___at___00__private_Lean_Elab_MutualDef_0__Lean_Elab_Term_MutualClosure_mkFreeVarMap___at___00__private_Lean_Elab_MutualDef_0__Lean_Elab_Term_MutualClosure_mkLetRecClosures_spec__0_spec__1(v_sz_16854_, v___x_16855_, v_letRecsToLift_16853_);
 v___x_16894_ = 1;
-lean_inc(v_canUnfold_x3f_16849_);
+lean_inc(v_customCanUnfoldPredicate_x3f_16849_);
 lean_inc(v_synthPendingDepth_16848_);
 lean_inc(v_defEqCtx_x3f_16847_);
 lean_inc_ref(v_localInstances_16846_);
@@ -48578,7 +48578,7 @@ lean_ctor_set(v___x_16895_, 2, v_lctx_16845_);
 lean_ctor_set(v___x_16895_, 3, v_localInstances_16846_);
 lean_ctor_set(v___x_16895_, 4, v_defEqCtx_x3f_16847_);
 lean_ctor_set(v___x_16895_, 5, v_synthPendingDepth_16848_);
-lean_ctor_set(v___x_16895_, 6, v_canUnfold_x3f_16849_);
+lean_ctor_set(v___x_16895_, 6, v_customCanUnfoldPredicate_x3f_16849_);
 lean_ctor_set_uint8(v___x_16895_, sizeof(void*)*7, v___x_16894_);
 lean_ctor_set_uint8(v___x_16895_, sizeof(void*)*7 + 1, v_univApprox_16850_);
 lean_ctor_set_uint8(v___x_16895_, sizeof(void*)*7 + 2, v_inTypeClassResolution_16851_);

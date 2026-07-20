@@ -31,7 +31,7 @@ size_t lean_usize_land(size_t, size_t);
 lean_object* lean_array_uget_borrowed(lean_object*, size_t);
 uint8_t lean_usize_dec_eq(size_t, size_t);
 uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
-lean_object* l_Lean_Elab_Tactic_Do_Internal_VCGen_mkLatticeOpRule(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Elab_Tactic_Do_Internal_VCGen_mkLatticeOpRule(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Meta_Sym_BackwardRule_shareCommon(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* lean_st_ref_take(lean_object*);
 lean_object* lean_nat_add(lean_object*, lean_object*);
@@ -2417,7 +2417,7 @@ else
 {
 lean_object* v___x_896_; 
 lean_dec(v___x_887_);
-v___x_896_ = l_Lean_Elab_Tactic_Do_Internal_VCGen_mkLatticeOpRule(v_rhs_871_, v_op_872_, v_a_876_, v_a_877_, v_a_878_, v_a_879_);
+v___x_896_ = l_Lean_Elab_Tactic_Do_Internal_VCGen_mkLatticeOpRule(v_rhs_871_, v_op_872_, v_a_874_, v_a_875_, v_a_876_, v_a_877_, v_a_878_, v_a_879_);
 if (lean_obj_tag(v___x_896_) == 0)
 {
 lean_object* v_a_897_; lean_object* v___x_898_; 

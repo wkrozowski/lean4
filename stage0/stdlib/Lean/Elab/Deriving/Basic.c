@@ -132,7 +132,7 @@ lean_object* l_Lean_MessageData_ofSyntax(lean_object*);
 lean_object* l_Lean_indentD(lean_object*);
 lean_object* l_Lean_Meta_Closure_mkValueTypeClosure(lean_object*, lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 extern lean_object* l_Lean_Meta_backward_inferInstanceAs_wrap;
-lean_object* l_Lean_Meta_wrapInstance(lean_object*, lean_object*, uint8_t, uint8_t, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* l_Lean_Meta_wrapInstance(lean_object*, lean_object*, uint8_t, uint8_t, uint8_t, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l___private_Lean_Meta_Basic_0__Lean_Meta_withNewMCtxDepthImp(lean_object*, uint8_t, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t lean_name_eq(lean_object*, lean_object*);
 lean_object* l_Lean_Elab_Command_NameGen_mkBaseNameWithSuffix(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -11406,18 +11406,18 @@ return v_res_3319_;
 LEAN_EXPORT lean_object* l_Lean_Meta_withLCtx_x27___at___00Lean_Elab_Term_processDefDeriving_spec__6___redArg(lean_object* v_lctx_3320_, lean_object* v_x_3321_, lean_object* v___y_3322_, lean_object* v___y_3323_, lean_object* v___y_3324_, lean_object* v___y_3325_, lean_object* v___y_3326_, lean_object* v___y_3327_){
 _start:
 {
-lean_object* v_keyedConfig_3329_; uint8_t v_trackZetaDelta_3330_; lean_object* v_zetaDeltaSet_3331_; lean_object* v_localInstances_3332_; lean_object* v_defEqCtx_x3f_3333_; lean_object* v_synthPendingDepth_3334_; lean_object* v_canUnfold_x3f_3335_; uint8_t v_univApprox_3336_; uint8_t v_inTypeClassResolution_3337_; uint8_t v_cacheInferType_3338_; lean_object* v___x_3339_; lean_object* v___x_3340_; 
+lean_object* v_keyedConfig_3329_; uint8_t v_trackZetaDelta_3330_; lean_object* v_zetaDeltaSet_3331_; lean_object* v_localInstances_3332_; lean_object* v_defEqCtx_x3f_3333_; lean_object* v_synthPendingDepth_3334_; lean_object* v_customCanUnfoldPredicate_x3f_3335_; uint8_t v_univApprox_3336_; uint8_t v_inTypeClassResolution_3337_; uint8_t v_cacheInferType_3338_; lean_object* v___x_3339_; lean_object* v___x_3340_; 
 v_keyedConfig_3329_ = lean_ctor_get(v___y_3324_, 0);
 v_trackZetaDelta_3330_ = lean_ctor_get_uint8(v___y_3324_, sizeof(void*)*7);
 v_zetaDeltaSet_3331_ = lean_ctor_get(v___y_3324_, 1);
 v_localInstances_3332_ = lean_ctor_get(v___y_3324_, 3);
 v_defEqCtx_x3f_3333_ = lean_ctor_get(v___y_3324_, 4);
 v_synthPendingDepth_3334_ = lean_ctor_get(v___y_3324_, 5);
-v_canUnfold_x3f_3335_ = lean_ctor_get(v___y_3324_, 6);
+v_customCanUnfoldPredicate_x3f_3335_ = lean_ctor_get(v___y_3324_, 6);
 v_univApprox_3336_ = lean_ctor_get_uint8(v___y_3324_, sizeof(void*)*7 + 1);
 v_inTypeClassResolution_3337_ = lean_ctor_get_uint8(v___y_3324_, sizeof(void*)*7 + 2);
 v_cacheInferType_3338_ = lean_ctor_get_uint8(v___y_3324_, sizeof(void*)*7 + 3);
-lean_inc(v_canUnfold_x3f_3335_);
+lean_inc(v_customCanUnfoldPredicate_x3f_3335_);
 lean_inc(v_synthPendingDepth_3334_);
 lean_inc(v_defEqCtx_x3f_3333_);
 lean_inc_ref(v_localInstances_3332_);
@@ -11430,7 +11430,7 @@ lean_ctor_set(v___x_3339_, 2, v_lctx_3320_);
 lean_ctor_set(v___x_3339_, 3, v_localInstances_3332_);
 lean_ctor_set(v___x_3339_, 4, v_defEqCtx_x3f_3333_);
 lean_ctor_set(v___x_3339_, 5, v_synthPendingDepth_3334_);
-lean_ctor_set(v___x_3339_, 6, v_canUnfold_x3f_3335_);
+lean_ctor_set(v___x_3339_, 6, v_customCanUnfoldPredicate_x3f_3335_);
 lean_ctor_set_uint8(v___x_3339_, sizeof(void*)*7, v_trackZetaDelta_3330_);
 lean_ctor_set_uint8(v___x_3339_, sizeof(void*)*7 + 1, v_univApprox_3336_);
 lean_ctor_set_uint8(v___x_3339_, sizeof(void*)*7 + 2, v_inTypeClassResolution_3337_);
@@ -12484,7 +12484,7 @@ LEAN_EXPORT lean_object* l_Lean_Elab_Term_processDefDeriving___lam__1(lean_objec
 _start:
 {
 lean_object* v___x_3784_; 
-v___x_3784_ = l_Lean_Meta_wrapInstance(v_instVal_3772_, v_instType_3773_, v___x_3774_, v___x_3775_, v___y_3776_, v___y_3779_, v___y_3780_, v___y_3781_, v___y_3782_);
+v___x_3784_ = l_Lean_Meta_wrapInstance(v_instVal_3772_, v_instType_3773_, v___x_3774_, v___x_3775_, v___y_3776_, v___x_3774_, v___y_3779_, v___y_3780_, v___y_3781_, v___y_3782_);
 return v___x_3784_;
 }
 }

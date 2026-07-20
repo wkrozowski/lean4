@@ -10855,7 +10855,7 @@ goto v_resetjp_3419_;
 v_resetjp_3419_:
 {
 uint8_t v_ring_3422_; 
-v_ring_3422_ = lean_ctor_get_uint8(v_a_3418_, sizeof(void*)*13 + 21);
+v_ring_3422_ = lean_ctor_get_uint8(v_a_3418_, sizeof(void*)*14 + 21);
 lean_dec(v_a_3418_);
 if (v_ring_3422_ == 0)
 {

@@ -94,7 +94,7 @@ LEAN_EXPORT lean_object* l_Lean_Meta_Sym_mkEqRefl___boxed(lean_object*, lean_obj
 LEAN_EXPORT lean_object* l___private_Lean_Meta_Sym_InferType_0__Lean_Meta_Sym_inferTypeWithoutCache(lean_object* v_e_1_, lean_object* v_a_2_, lean_object* v_a_3_, lean_object* v_a_4_, lean_object* v_a_5_){
 _start:
 {
-lean_object* v_keyedConfig_7_; uint8_t v_trackZetaDelta_8_; lean_object* v_zetaDeltaSet_9_; lean_object* v_lctx_10_; lean_object* v_localInstances_11_; lean_object* v_defEqCtx_x3f_12_; lean_object* v_synthPendingDepth_13_; lean_object* v_canUnfold_x3f_14_; uint8_t v_univApprox_15_; uint8_t v_inTypeClassResolution_16_; uint8_t v___x_17_; lean_object* v___x_18_; lean_object* v___x_19_; 
+lean_object* v_keyedConfig_7_; uint8_t v_trackZetaDelta_8_; lean_object* v_zetaDeltaSet_9_; lean_object* v_lctx_10_; lean_object* v_localInstances_11_; lean_object* v_defEqCtx_x3f_12_; lean_object* v_synthPendingDepth_13_; lean_object* v_customCanUnfoldPredicate_x3f_14_; uint8_t v_univApprox_15_; uint8_t v_inTypeClassResolution_16_; uint8_t v___x_17_; lean_object* v___x_18_; lean_object* v___x_19_; 
 v_keyedConfig_7_ = lean_ctor_get(v_a_2_, 0);
 v_trackZetaDelta_8_ = lean_ctor_get_uint8(v_a_2_, sizeof(void*)*7);
 v_zetaDeltaSet_9_ = lean_ctor_get(v_a_2_, 1);
@@ -102,11 +102,11 @@ v_lctx_10_ = lean_ctor_get(v_a_2_, 2);
 v_localInstances_11_ = lean_ctor_get(v_a_2_, 3);
 v_defEqCtx_x3f_12_ = lean_ctor_get(v_a_2_, 4);
 v_synthPendingDepth_13_ = lean_ctor_get(v_a_2_, 5);
-v_canUnfold_x3f_14_ = lean_ctor_get(v_a_2_, 6);
+v_customCanUnfoldPredicate_x3f_14_ = lean_ctor_get(v_a_2_, 6);
 v_univApprox_15_ = lean_ctor_get_uint8(v_a_2_, sizeof(void*)*7 + 1);
 v_inTypeClassResolution_16_ = lean_ctor_get_uint8(v_a_2_, sizeof(void*)*7 + 2);
 v___x_17_ = 0;
-lean_inc(v_canUnfold_x3f_14_);
+lean_inc(v_customCanUnfoldPredicate_x3f_14_);
 lean_inc(v_synthPendingDepth_13_);
 lean_inc(v_defEqCtx_x3f_12_);
 lean_inc_ref(v_localInstances_11_);
@@ -120,7 +120,7 @@ lean_ctor_set(v___x_18_, 2, v_lctx_10_);
 lean_ctor_set(v___x_18_, 3, v_localInstances_11_);
 lean_ctor_set(v___x_18_, 4, v_defEqCtx_x3f_12_);
 lean_ctor_set(v___x_18_, 5, v_synthPendingDepth_13_);
-lean_ctor_set(v___x_18_, 6, v_canUnfold_x3f_14_);
+lean_ctor_set(v___x_18_, 6, v_customCanUnfoldPredicate_x3f_14_);
 lean_ctor_set_uint8(v___x_18_, sizeof(void*)*7, v_trackZetaDelta_8_);
 lean_ctor_set_uint8(v___x_18_, sizeof(void*)*7 + 1, v_univApprox_15_);
 lean_ctor_set_uint8(v___x_18_, sizeof(void*)*7 + 2, v_inTypeClassResolution_16_);
@@ -147,7 +147,7 @@ return v_res_26_;
 LEAN_EXPORT lean_object* l___private_Lean_Meta_Sym_InferType_0__Lean_Meta_Sym_getLevelWithoutCache(lean_object* v_type_27_, lean_object* v_a_28_, lean_object* v_a_29_, lean_object* v_a_30_, lean_object* v_a_31_){
 _start:
 {
-lean_object* v_keyedConfig_33_; uint8_t v_trackZetaDelta_34_; lean_object* v_zetaDeltaSet_35_; lean_object* v_lctx_36_; lean_object* v_localInstances_37_; lean_object* v_defEqCtx_x3f_38_; lean_object* v_synthPendingDepth_39_; lean_object* v_canUnfold_x3f_40_; uint8_t v_univApprox_41_; uint8_t v_inTypeClassResolution_42_; uint8_t v___x_43_; lean_object* v___x_44_; lean_object* v___x_45_; 
+lean_object* v_keyedConfig_33_; uint8_t v_trackZetaDelta_34_; lean_object* v_zetaDeltaSet_35_; lean_object* v_lctx_36_; lean_object* v_localInstances_37_; lean_object* v_defEqCtx_x3f_38_; lean_object* v_synthPendingDepth_39_; lean_object* v_customCanUnfoldPredicate_x3f_40_; uint8_t v_univApprox_41_; uint8_t v_inTypeClassResolution_42_; uint8_t v___x_43_; lean_object* v___x_44_; lean_object* v___x_45_; 
 v_keyedConfig_33_ = lean_ctor_get(v_a_28_, 0);
 v_trackZetaDelta_34_ = lean_ctor_get_uint8(v_a_28_, sizeof(void*)*7);
 v_zetaDeltaSet_35_ = lean_ctor_get(v_a_28_, 1);
@@ -155,11 +155,11 @@ v_lctx_36_ = lean_ctor_get(v_a_28_, 2);
 v_localInstances_37_ = lean_ctor_get(v_a_28_, 3);
 v_defEqCtx_x3f_38_ = lean_ctor_get(v_a_28_, 4);
 v_synthPendingDepth_39_ = lean_ctor_get(v_a_28_, 5);
-v_canUnfold_x3f_40_ = lean_ctor_get(v_a_28_, 6);
+v_customCanUnfoldPredicate_x3f_40_ = lean_ctor_get(v_a_28_, 6);
 v_univApprox_41_ = lean_ctor_get_uint8(v_a_28_, sizeof(void*)*7 + 1);
 v_inTypeClassResolution_42_ = lean_ctor_get_uint8(v_a_28_, sizeof(void*)*7 + 2);
 v___x_43_ = 0;
-lean_inc(v_canUnfold_x3f_40_);
+lean_inc(v_customCanUnfoldPredicate_x3f_40_);
 lean_inc(v_synthPendingDepth_39_);
 lean_inc(v_defEqCtx_x3f_38_);
 lean_inc_ref(v_localInstances_37_);
@@ -173,7 +173,7 @@ lean_ctor_set(v___x_44_, 2, v_lctx_36_);
 lean_ctor_set(v___x_44_, 3, v_localInstances_37_);
 lean_ctor_set(v___x_44_, 4, v_defEqCtx_x3f_38_);
 lean_ctor_set(v___x_44_, 5, v_synthPendingDepth_39_);
-lean_ctor_set(v___x_44_, 6, v_canUnfold_x3f_40_);
+lean_ctor_set(v___x_44_, 6, v_customCanUnfoldPredicate_x3f_40_);
 lean_ctor_set_uint8(v___x_44_, sizeof(void*)*7, v_trackZetaDelta_34_);
 lean_ctor_set_uint8(v___x_44_, sizeof(void*)*7 + 1, v_univApprox_41_);
 lean_ctor_set_uint8(v___x_44_, sizeof(void*)*7 + 2, v_inTypeClassResolution_42_);

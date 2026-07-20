@@ -2368,8 +2368,8 @@ goto v___jp_579_;
 else
 {
 lean_object* v___x_595_; 
-lean_dec_ref_known(v_a_556_, 5);
 lean_dec_ref(v_value_560_);
+lean_dec_ref_known(v_a_556_, 5);
 lean_dec_ref(v_ctorTerm_545_);
 if (v_isShared_559_ == 0)
 {
