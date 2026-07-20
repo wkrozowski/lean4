@@ -33,7 +33,6 @@ structure DeprecationEntry where
   since? : Option String := none
   deriving Inhabited
 
-/-- Outcome of following a chain of `@[deprecated]` redirections. See `followDeprecation`. -/
 inductive TransitiveDeprecation where
   /-- The chain ends at `finalName`, which is not itself deprecated. -/
   | replacement (finalName : Name)
@@ -42,11 +41,6 @@ inductive TransitiveDeprecation where
   /-- The chain is longer than the allotted fuel. -/
   | exhausted
 
-/--
-Follows the chain of deprecations starting at `name`, using at most `fuel` steps: as long as the
-current declaration is deprecated in favor of another declaration, moves on to that declaration.
-`getEntry` looks up the `DeprecationEntry` (if any) for a declaration.
--/
 def followDeprecation (getEntry : Name → Option DeprecationEntry) :
     Nat → Name → TransitiveDeprecation
   | 0, _ => .exhausted
@@ -61,11 +55,7 @@ def followDeprecation (getEntry : Name → Option DeprecationEntry) :
                      else followDeprecation getEntry fuel next
 
 open Meta in
-/--
-If the initial declaration `oldName` and its suggested replacement `newName` have different types
-(up to reducible defeq), returns an explanatory note. Used to flag that a transitive replacement may
-not be a drop-in substitute.
--/
+
 def deprecationTypeMismatchNote? (oldName newName : Name) : CoreM (Option MessageData) := do
   let env ← getEnv
   let some old := env.find? oldName | return none
