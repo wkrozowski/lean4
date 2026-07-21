@@ -2,8 +2,9 @@ import Lean.Data.Options
 
 /-!
 Options are deprecated with a `@[deprecated]` attribute on `register_option`, which warns on
-meta-code references to the option. `register_option` mirrors the attribute's message and `since`
-into the option's internal `deprecation?` field so that `set_option` also warns (the `set_option`
+meta-code references to the option. `register_option` mirrors the attribute's replacement name,
+message, and `since` into the option's internal `deprecation?` field so that `set_option` also warns
+(the `set_option`
 side requires the option to be registered in an imported module; see `deprecatedOptions.lean`).
 
 The `deprecation?` field is an internal implementation detail: setting it directly on
@@ -28,6 +29,16 @@ register_option myOwn.plainOpt : Nat := { defValue := 3, descr := "a plain optio
 
 #guard_msgs in
 def usesPlainOpt (o : Options) : Nat := myOwn.plainOpt.get o
+
+-- A `@[deprecated <name>]` attribute names a replacement option instead of a custom message.
+register_option myOwn.newOpt : Bool := { defValue := true, descr := "the replacement option" }
+
+@[deprecated myOwn.newOpt (since := "2026-01-15")]
+register_option myOwn.deprecatedByName : Bool := { defValue := true, descr := "an option" }
+
+/-- warning: `myOwn.deprecatedByName` has been deprecated: Use `myOwn.newOpt` instead -/
+#guard_msgs in
+def usesDeprecatedByName (o : Options) : Bool := myOwn.deprecatedByName.get o
 
 -- Setting `deprecation?` directly is an error: it is internal and populated from the attribute.
 /--
