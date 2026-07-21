@@ -274,11 +274,11 @@ namespace BVExpr
 instance : Hashable (BVExpr w) where
   hash expr := expr.hashCode _
 
+/-
+No pointer-equality/hash-comparison fast path here: cache-key comparisons must be evaluable by
+`cbv`, which cannot reduce `UInt64` hash computations symbolically.
+-/
 instance decEq : DecidableEq (BVExpr w) := fun l r =>
-  withPtrEqDecEq l r fun _ =>
-    if h : hash l ≠ hash r then
-      .isFalse (ne_of_apply_ne hash h)
-    else
       match l with
       | .var lidx =>
         match r with

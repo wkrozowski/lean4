@@ -240,9 +240,21 @@ Lookup a `Decl` in a `Cache`.
 -/
 @[irreducible, inline]
 def Cache.get? (cache : Cache α decls) (decl : Decl α) : Option (CacheHit decls decl) :=
-  match hfound : cache.val[decl]? with
-  | some hit =>
-    some ⟨hit, Cache.get?_bounds _ _ hfound, Cache.get?_property _ _ hfound⟩
+  /-
+  The bound and validity of a hit are rechecked decidably instead of being derived from
+  `Cache.WF` via a dependent `match hfound : …`: a dependent discriminant cannot be rewritten
+  by congruence during symbolic evaluation (`cbv`), which would leave the lookup permanently
+  stuck. The recheck is cheap and keeps the definition evaluable both natively and symbolically.
+  -/
+  match cache.val[decl]? with
+  | some idx =>
+    if hbound : idx < decls.size then
+      if hvalid : decls[idx]'hbound = decl then
+        some ⟨idx, hbound, hvalid⟩
+      else
+        none
+    else
+      none
   | none => none
 
 /--

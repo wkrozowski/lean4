@@ -127,7 +127,7 @@ The notation `m[a]?` is preferred over calling this function directly.
 
 Tries to retrieve the mapping for the given key, returning `none` if no such mapping is present.
 -/
-@[inline] def get? (m : HashMap α β) (a : α) : Option β :=
+@[cbv_opaque, inline] def get? (m : HashMap α β) (a : α) : Option β :=
   DHashMap.Const.get? m.inner a
 
 @[inline, inherit_doc DHashMap.contains] def contains (m : HashMap α β)

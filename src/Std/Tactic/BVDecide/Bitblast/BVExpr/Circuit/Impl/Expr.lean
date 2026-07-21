@@ -77,7 +77,7 @@ def Cache.insert (cache : Cache aig) (expr : BVExpr w) (refs : AIG.RefVec aig w)
 
 @[inline]
 def Cache.get? (cache : Cache aig) (expr : BVExpr w) : Option (AIG.RefVec aig w) :=
-  match h : cache.map.get? ⟨w, expr⟩ with
+  match cache.map.get? ⟨w, expr⟩ with
   | some refs =>
     --have : ⟨w, expr⟩ ∈ cache.map := by
     --  rw [Std.DHashMap.mem_iff_contains, Std.DHashMap.contains_eq_isSome_get?]
@@ -126,8 +126,8 @@ where
     | some vec =>
       ⟨⟨⟨aig, vec⟩, Nat.le_refl ..⟩, cache⟩
     | none =>
-      let ⟨result, cache⟩ := go aig expr cache
-      ⟨result, cache.insert expr result.val.vec⟩
+      let ⟨⟨⟨aig, vec⟩, haig⟩, cache⟩ := go aig expr cache
+      ⟨⟨⟨aig, vec⟩, haig⟩, cache.insert expr vec⟩
   termination_by (sizeOf expr, 1)
 
   go {w : Nat} (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache aig) : Return aig w :=

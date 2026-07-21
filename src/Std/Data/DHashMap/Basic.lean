@@ -120,7 +120,7 @@ instance : LawfulSingleton ((a : α) × β a) (DHashMap α β) :=
   let m' := Raw₀.getThenInsertIfNew? ⟨m.1, m.2.size_buckets_pos⟩ a b
   ⟨m'.1, ⟨m'.2.1, .getThenInsertIfNew?₀ m.2⟩⟩
 
-@[inline, inherit_doc Raw.get?] def get? [LawfulBEq α] (m : DHashMap α β)
+@[cbv_opaque, inline, inherit_doc Raw.get?] def get? [LawfulBEq α] (m : DHashMap α β)
     (a : α) : Option (β a) :=
   Raw₀.get? ⟨m.1, m.2.size_buckets_pos⟩ a
 
@@ -154,7 +154,7 @@ section
 
 variable {β : Type v}
 
-@[inline, inherit_doc Raw.Const.get?] def Const.get?
+@[cbv_opaque, inline, inherit_doc Raw.Const.get?] def Const.get?
     (m : DHashMap α (fun _ => β)) (a : α) : Option β :=
   Raw₀.Const.get? ⟨m.1, m.2.size_buckets_pos⟩ a
 
