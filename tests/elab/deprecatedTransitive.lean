@@ -1,9 +1,10 @@
 /-!
 # Warn when a `@[deprecated]` attribute points at an already-deprecated declaration
 
-When `A` is deprecated in favor of `B`, and `B` is itself deprecated in favor of `C`, the
-deprecation of `A` should point at `C` instead of `B`. The `@[deprecated]` attribute follows the
-chain of deprecations (bounded by `linter.deprecated.transitiveFuel`) and warns accordingly.
+When `A` is deprecated in favor of `B`, and `B` is itself deprecated in favor of `C`, deprecating
+`A` towards `B` is discouraged: `B`'s deprecation record points at `C`, so `A` should point at `C`
+instead. The `@[deprecated]` attribute inspects `B`'s deprecation record (only one step) and warns
+accordingly. The check can be turned off with `linter.deprecated.deprecatedTarget`.
 -/
 
 set_option linter.deprecated true
@@ -18,7 +19,7 @@ def b1 : Nat := 0
 @[deprecated b1 (since := "2020-01-01")]
 def a1 : Nat := 0
 
-/-! Longer chain: `a2 → b2 → c2 → d2`, endpoint `d2`. -/
+/-! Longer chain `a2 → b2 → c2 → d2`: only one step is followed, so `a2` is pointed at `c2`. -/
 
 def d2 : Nat := 0
 
@@ -30,7 +31,7 @@ set_option linter.deprecated false in
 @[deprecated c2 (since := "2020-01-01")]
 def b2 : Nat := 0
 
-/-- warning: `b2` is itself deprecated in favor of `d2`; consider deprecating `a2` in favor of `d2` instead -/
+/-- warning: `b2` is itself deprecated in favor of `c2`; consider deprecating `a2` in favor of `c2` instead -/
 #guard_msgs in
 @[deprecated b2 (since := "2020-01-01")]
 def a2 : Nat := 0
@@ -45,7 +46,7 @@ def b3 : Nat := 0
 @[deprecated b3 (since := "2020-01-01")]
 def a3 : Nat := 0
 
-/-! Chain ending at a text-only deprecation. -/
+/-! One step at a target that is itself text-only deprecated: `a4` is pointed at `c4`. -/
 
 @[deprecated "no replacement" (since := "2020-01-01")]
 def c4 : Nat := 0
@@ -54,12 +55,12 @@ set_option linter.deprecated false in
 @[deprecated c4 (since := "2020-01-01")]
 def b4 : Nat := 0
 
-/-- warning: `b4` is itself deprecated (via a chain of deprecations ending at `c4`), but without an explicit replacement; `a4` is being deprecated in favor of a deprecated declaration -/
+/-- warning: `b4` is itself deprecated in favor of `c4`; consider deprecating `a4` in favor of `c4` instead -/
 #guard_msgs in
 @[deprecated b4 (since := "2020-01-01")]
 def a4 : Nat := 0
 
-/-! Type disagreement between the initial declaration and the final replacement. -/
+/-! Type disagreement between the initial declaration and the suggested replacement. -/
 
 def c5 : Bool := true
 
@@ -86,36 +87,21 @@ def c6 : Nat := 0
 @[deprecated c6 (since := "2020-01-01")]
 def a6 : Nat := 0
 
-/-! Fuel: a chain longer than the fuel budget reports exhaustion instead of following it fully. -/
-
-def e0 : Nat := 0
-
-set_option linter.deprecated false in
-@[deprecated e0 (since := "2020-01-01")]
-def e1 : Nat := 0
-
-set_option linter.deprecated false in
-@[deprecated e1 (since := "2020-01-01")]
-def e2 : Nat := 0
-
-set_option linter.deprecated false in
-@[deprecated e2 (since := "2020-01-01")]
-def e3 : Nat := 0
-
-set_option linter.deprecated.transitiveFuel 2 in
-/-- warning: the deprecation chain starting at `e3` exceeds 2 steps; consider deprecating `a7` in favor of a non-deprecated declaration -/
-#guard_msgs in
-@[deprecated e3 (since := "2020-01-01")]
-def a7 : Nat := 0
-
-/-! Disabling via fuel 0 suppresses the transitive check. -/
+/-! Disabling via `linter.deprecated.deprecatedTarget` suppresses the check. -/
 
 def c8 : Nat := 0
 
 @[deprecated c8 (since := "2020-01-01")]
 def b8 : Nat := 0
 
-set_option linter.deprecated.transitiveFuel 0 in
+set_option linter.deprecated.deprecatedTarget false in
 #guard_msgs in
 @[deprecated b8 (since := "2020-01-01")]
 def a8 : Nat := 0
+
+/-! Turning off `linter.deprecated` entirely also suppresses the check. -/
+
+set_option linter.deprecated false in
+#guard_msgs in
+@[deprecated b8 (since := "2020-01-01")]
+def a9 : Nat := 0

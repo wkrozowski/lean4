@@ -21,10 +21,10 @@ register_builtin_option linter.deprecated : Bool := {
   descr := "if true, generate deprecation warnings"
 }
 
-register_builtin_option linter.deprecated.transitiveFuel : Nat := {
-  defValue := 100
-  descr := "maximum number of steps to follow when checking whether a `@[deprecated]` attribute \
-    points at a declaration that is itself deprecated; set to 0 to disable that check"
+register_builtin_option linter.deprecated.deprecatedTarget : Bool := {
+  defValue := true
+  descr := "if true, warn when a `@[deprecated]` attribute points at a declaration that is \
+    itself deprecated"
 }
 
 structure DeprecationEntry where
@@ -33,29 +33,7 @@ structure DeprecationEntry where
   since? : Option String := none
   deriving Inhabited
 
-inductive TransitiveDeprecation where
-  /-- The chain ends at `finalName`, which is not itself deprecated. -/
-  | replacement (finalName : Name)
-  /-- The chain ends at `lastName`, which is deprecated without an explicit replacement. -/
-  | noReplacement (lastName : Name)
-  /-- The chain is longer than the allotted fuel. -/
-  | exhausted
-
-def followDeprecation (getEntry : Name → Option DeprecationEntry) :
-    Nat → Name → TransitiveDeprecation
-  | 0, _ => .exhausted
-  | fuel + 1, name =>
-    match getEntry name with
-    | none       => .replacement name
-    | some entry =>
-      match entry.newName? with
-      | none      => .noReplacement name
-      -- guard against a declaration deprecated in favor of itself
-      | some next => if next == name then .noReplacement name
-                     else followDeprecation getEntry fuel next
-
 open Meta in
-
 def deprecationTypeMismatchNote? (oldName newName : Name) : CoreM (Option MessageData) := do
   let env ← getEnv
   let some old := env.find? oldName | return none
@@ -76,30 +54,25 @@ builtin_initialize deprecatedAttr : ParametricAttribute DeprecationEntry ← do
       let newName? ← id?.mapM Elab.realizeGlobalConstNoOverloadWithInfo
       if let some newName := newName? then
         recordExtraModUseFromDecl (isMeta := false) newName
-        -- Warn if `newName` is itself deprecated, so the deprecation points at the ultimate target.
-        let fuel := linter.deprecated.transitiveFuel.get (← getOptions)
-        if fuel > 0 && getLinterValue linter.deprecated (← getLinterOptions) then
+        if getLinterValue linter.deprecated (← getLinterOptions)
+            && linter.deprecated.deprecatedTarget.get (← getOptions) then
           let env ← getEnv
-          let getEntry n := ParametricAttribute.getParamFromExt? ext (preserveOrder := false) env n
-          match followDeprecation getEntry fuel newName with
-          | .replacement finalName =>
-            if finalName != newName && finalName != declName then
-              let mut msg := m!"`{.ofConstName newName true}` is itself deprecated in favor of \
-                `{.ofConstName finalName true}`; consider deprecating `{.ofConstName declName true}` \
-                in favor of `{.ofConstName finalName true}` instead"
-              if let some note ← deprecationTypeMismatchNote? declName finalName then
-                msg := msg ++ note
-              logWarning msg
-          | .noReplacement lastName =>
-            let via := if lastName == newName then m!""
-              else m!" (via a chain of deprecations ending at `{.ofConstName lastName true}`)"
-            logWarning m!"`{.ofConstName newName true}` is itself deprecated{via}, but without an \
-              explicit replacement; `{.ofConstName declName true}` is being deprecated in favor of \
-              a deprecated declaration"
-          | .exhausted =>
-            logWarning m!"the deprecation chain starting at `{.ofConstName newName true}` exceeds \
-              {fuel} steps; consider deprecating `{.ofConstName declName true}` in favor of a \
-              non-deprecated declaration"
+          match ParametricAttribute.getParamFromExt? ext (preserveOrder := false) env newName with
+          | none => pure ()
+          | some entry =>
+            match entry.newName? with
+            | some next =>
+              if next != newName && next != declName then
+                let mut msg := m!"`{.ofConstName newName true}` is itself deprecated in favor of \
+                  `{.ofConstName next true}`; consider deprecating `{.ofConstName declName true}` \
+                  in favor of `{.ofConstName next true}` instead"
+                if let some note ← deprecationTypeMismatchNote? declName next then
+                  msg := msg ++ note
+                logWarning msg
+            | none =>
+              logWarning m!"`{.ofConstName newName true}` is itself deprecated, but without an \
+                explicit replacement; `{.ofConstName declName true}` is being deprecated in favor \
+                of a deprecated declaration"
       let text? := text?.map TSyntax.getString
       let since? := since?.map TSyntax.getString
       if id?.isNone && text?.isNone then
