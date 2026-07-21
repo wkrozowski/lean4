@@ -23,11 +23,11 @@ open Std.Sat
 
 structure Return (aig : AIG BVBit) where
   result : AIG.ExtendingEntrypoint aig
-  cache : BVExpr.Cache result.val.aig
+  cache : BVExpr.Cache
 
 namespace BVPred
 
-def bitblast (aig : AIG BVBit) (input : BVExpr.WithCache BVPred aig) : Return aig :=
+def bitblast (aig : AIG BVBit) (input : BVExpr.WithCache BVPred) : Return aig :=
   let ⟨pred, cache⟩ := input
   match pred with
   | .bin lhs op rhs =>
@@ -37,7 +37,6 @@ def bitblast (aig : AIG BVBit) (input : BVExpr.WithCache BVPred aig) : Return ai
     match op with
     | .eq =>
       let res := mkEq aig ⟨lhsRefs, rhsRefs⟩
-      let cache := cache.cast (AIG.LawfulOperator.le_size (f := mkEq) ..)
       have := by
         apply AIG.LawfulOperator.le_size_of_le_aig_size (f := mkEq)
         dsimp only at hlhs hrhs
@@ -45,8 +44,6 @@ def bitblast (aig : AIG BVBit) (input : BVExpr.WithCache BVPred aig) : Return ai
       ⟨⟨res, this⟩, cache⟩
     | .ult =>
       let res := mkUlt aig ⟨lhsRefs, rhsRefs⟩
-      have := AIG.LawfulOperator.le_size (f := mkUlt) ..
-      let cache := cache.cast this
       have := by
         apply AIG.LawfulOperator.le_size_of_le_aig_size (f := mkUlt)
         dsimp only at hlhs hrhs
@@ -62,7 +59,7 @@ def bitblast (aig : AIG BVBit) (input : BVExpr.WithCache BVPred aig) : Return ai
     let res := blastGetLsbD aig ⟨refs, idx⟩
     ⟨⟨⟨aig, res⟩, hrefs⟩, cache⟩
 
-theorem bitblast_decl_eq (aig : AIG BVBit) (input : BVExpr.WithCache BVPred aig) :
+theorem bitblast_decl_eq (aig : AIG BVBit) (input : BVExpr.WithCache BVPred) :
     ∀ (idx : Nat) (h1) (h2), (bitblast aig input).result.val.aig.decls[idx]'h2 = aig.decls[idx]'h1 := by
   intro idx h1 h2
   rcases input with ⟨pred, cache⟩
@@ -94,7 +91,7 @@ theorem bitblast_decl_eq (aig : AIG BVBit) (input : BVExpr.WithCache BVPred aig)
     simp only
     rw [BVExpr.bitblast_decl_eq]
 
-theorem bitblast_le_size (aig : AIG BVBit) (input : BVExpr.WithCache BVPred aig) :
+theorem bitblast_le_size (aig : AIG BVBit) (input : BVExpr.WithCache BVPred) :
     aig.decls.size ≤ (bitblast aig input).result.val.aig.decls.size := by
   exact (bitblast aig input).result.property
 

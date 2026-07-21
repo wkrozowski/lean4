@@ -29,9 +29,9 @@ namespace bitblast
 mutual
 
 theorem go_Inv_of_Inv (expr : BVLogicalExpr) (aig : AIG BVBit) (assign : BVExpr.Assignment)
-    (cache : BVExpr.Cache aig) (hinv : BVExpr.Cache.Inv assign aig cache) :
+    (cache : BVExpr.Cache) (hinv : BVExpr.Cache.Inv assign aig cache) :
     BVExpr.Cache.Inv assign (go aig expr cache).result.val.aig (go aig expr cache).cache := by
-  induction expr generalizing aig with
+  induction expr generalizing aig cache with
   | const =>
     simp only [go]
     apply BVExpr.Cache.Inv_cast
@@ -66,9 +66,9 @@ theorem go_Inv_of_Inv (expr : BVLogicalExpr) (aig : AIG BVBit) (assign : BVExpr.
       exact hinv
 
 theorem go_eval_eq_eval (expr : BVLogicalExpr) (aig : AIG BVBit) (assign : BVExpr.Assignment)
-    (cache : BVExpr.Cache aig) (hinv : BVExpr.Cache.Inv assign aig cache) :
+    (cache : BVExpr.Cache) (hinv : BVExpr.Cache.Inv assign aig cache) :
     ⟦(go aig expr cache).result, assign.toAIGAssignment⟧ = expr.eval assign := by
-  induction expr generalizing aig with
+  induction expr generalizing aig cache with
   | const => simp [go]
   | literal =>
     simp only [go, eval_literal]

@@ -45,84 +45,50 @@ instance : Hashable Cache.Key where
   -- The width is already mixed into the hash of `key.expr` which is completely cached.
   hash key := hash key.expr
 
-structure Cache (aig : AIG BVBit) where
+/-
+`Cache` is deliberately not indexed by the `AIG` it refers to: an index would make any
+structure field of type `Cache aig` depend on sibling data fields (e.g. in `Return`),
+which blocks `cbv` congruence from evaluating those siblings. Well-formedness with
+respect to an `AIG` is instead stated as a separate `Prop` where needed.
+-/
+structure Cache where
   map : Std.HashMap Cache.Key (Array AIG.Fanin)
-  hbound : ∀ k (h1 : k ∈ map), ∀ (h2 : i < (map.get k h1).size), (map.get k h1)[i].gate < aig.decls.size
 
 @[inline]
-def Cache.empty : Cache aig :=
-  ⟨{}, by simp⟩
+def Cache.empty : Cache :=
+  ⟨{}⟩
 
 @[inline]
-def Cache.insert (cache : Cache aig) (expr : BVExpr w) (refs : AIG.RefVec aig w) :
-    Cache aig :=
-  let ⟨map, hbound⟩ := cache
-  have := by
-    sorry
-    --intro i k hk h2
-    --rw [Std.HashMap.get_insert]
-    --split
-    --next heq =>
-    --  rcases k with ⟨w, expr⟩
-    --  simp only [beq_iff_eq, Key.mk.injEq] at heq
-    --  rcases heq with ⟨heq1, heq2⟩
-    --  symm at heq1
-    --  subst heq1
-    --  have := refs.hrefs h2
-    --  rw [getElem_congr_coll]
-    --  · exact this
-    --  · simp
-    --· apply hbound
-  ⟨map.insert ⟨w, expr⟩ refs.refs.toArray, this⟩
+def Cache.insert {aig : AIG BVBit} (cache : Cache) (expr : BVExpr w) (refs : AIG.RefVec aig w) :
+    Cache :=
+  ⟨cache.map.insert ⟨w, expr⟩ refs.refs.toArray⟩
 
 @[inline]
-def Cache.get? (cache : Cache aig) (expr : BVExpr w) : Option (AIG.RefVec aig w) :=
+def Cache.get? (cache : Cache) (aig : AIG BVBit) (expr : BVExpr w) :
+    Option (AIG.RefVec aig w) :=
   match cache.map.get? ⟨w, expr⟩ with
   | some refs =>
-    --have : ⟨w, expr⟩ ∈ cache.map := by
-    --  rw [Std.DHashMap.mem_iff_contains, Std.DHashMap.contains_eq_isSome_get?]
-    --  simp [h]
-    --have : cache.map.get ⟨w, expr⟩ this = refs := by
-    --  rw [Std.DHashMap.get?_eq_some_get (h := this)] at h
-    --  simpa using h
-    --have := by
-    --  intro i hi
-    --  rw [← this]
-    --  apply cache.hbound
-    --some ⟨refs, this⟩
     if h : refs.size = w then
-      let refs := Vector.mk refs h
-      some ⟨refs, sorry⟩
+      some ⟨Vector.mk refs h, sorry⟩
     else
       none
   | none => none
 
-@[inline]
-def Cache.cast (cache : Cache aig1) (h : aig1.decls.size ≤ aig2.decls.size) :
-    Cache aig2 :=
-  let ⟨map, hbound⟩ := cache
-  have := by
-    intro i k hk h2
-    apply Nat.lt_of_lt_of_le
-    · apply hbound
-    · exact h
-  ⟨map, this⟩
-
-structure WithCache (α : Type u) (aig : AIG BVBit) where
+structure WithCache (α : Type u) where
   val : α
-  cache : Cache aig
+  cache : Cache
 
 structure Return (aig : AIG BVBit) (w : Nat) where
   result : AIG.ExtendingRefVecEntry aig w
-  cache : Cache result.val.aig
+  cache : Cache
 
 set_option maxHeartbeats 400000 in
-def bitblast (aig : AIG BVBit) (input : WithCache (BVExpr w) aig) : Return aig w :=
+def bitblast (aig : AIG BVBit) (input : WithCache (BVExpr w)) : Return aig w :=
   let ⟨expr, cache⟩ := input
   goCache aig expr cache
 where
-  goCache {w : Nat} (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache aig) : Return aig w :=
-    match cache.get? expr with
+  goCache {w : Nat} (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache) : Return aig w :=
+    match cache.get? aig expr with
     | some vec =>
       ⟨⟨⟨aig, vec⟩, Nat.le_refl ..⟩, cache⟩
     | none =>
@@ -130,12 +96,11 @@ where
       ⟨⟨⟨aig, vec⟩, haig⟩, cache.insert expr vec⟩
   termination_by (sizeOf expr, 1)
 
-  go {w : Nat} (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache aig) : Return aig w :=
+  go {w : Nat} (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache) : Return aig w :=
     match expr with
     | .var a =>
       let res := bitblast.blastVar aig ⟨a⟩
       have := AIG.LawfulVecOperator.le_size (f := bitblast.blastVar) ..
-      let cache := cache.cast this
       ⟨⟨res, this⟩, cache⟩
     | .const val =>
       let res := bitblast.blastConst aig val
@@ -153,49 +118,49 @@ where
            apply AIG.RefVec.zip_le_size_of_le_aig_size
            dsimp only at hlaig hraig
            omega
-         ⟨⟨res, this⟩, cache.cast (AIG.RefVec.zip_le_size ..)⟩
+         ⟨⟨res, this⟩, cache⟩
       | .or =>
          let res := AIG.RefVec.zip aig ⟨lhs, rhs⟩ AIG.mkOrCached
          have := by
            apply AIG.RefVec.zip_le_size_of_le_aig_size
            dsimp only at hlaig hraig
            omega
-         ⟨⟨res, this⟩, cache.cast (AIG.RefVec.zip_le_size ..)⟩
+         ⟨⟨res, this⟩, cache⟩
       | .xor =>
          let res := AIG.RefVec.zip aig ⟨lhs, rhs⟩ AIG.mkXorCached
          have := by
            apply AIG.RefVec.zip_le_size_of_le_aig_size
            dsimp only at hlaig hraig
            omega
-         ⟨⟨res, this⟩, cache.cast (AIG.RefVec.zip_le_size ..)⟩
+         ⟨⟨res, this⟩, cache⟩
       | .add =>
         let res := bitblast.blastAdd aig ⟨lhs, rhs⟩
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastAdd)
           dsimp only at hlaig hraig
           omega
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastAdd) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .mul =>
         let res := bitblast.blastMul aig ⟨lhs, rhs⟩
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastMul)
           dsimp only at hlaig hraig
           omega
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastMul) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .udiv =>
         let res := bitblast.blastUdiv aig ⟨lhs, rhs⟩
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastUdiv)
           dsimp only at hlaig hraig
           omega
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastUdiv) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .umod =>
         let res := bitblast.blastUmod aig ⟨lhs, rhs⟩
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastUmod)
           dsimp only at hlaig hraig
           omega
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastUmod) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
     | .un op expr =>
       let ⟨⟨⟨eaig, evec⟩, heaig⟩, cache⟩ := goCache aig expr cache
       match op with
@@ -205,47 +170,47 @@ where
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastNot)
           dsimp only at heaig
           omega
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastNot) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .rotateLeft distance =>
         let res := bitblast.blastRotateLeft eaig ⟨evec, distance⟩
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastRotateLeft)
           dsimp only at heaig
           assumption
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastRotateLeft) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .rotateRight distance =>
         let res := bitblast.blastRotateRight eaig ⟨evec, distance⟩
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastRotateRight)
           dsimp only at heaig
           assumption
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastRotateRight) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .arithShiftRightConst distance =>
         let res := bitblast.blastArithShiftRightConst eaig ⟨evec, distance⟩
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastArithShiftRightConst)
           dsimp only at heaig
           assumption
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastArithShiftRightConst) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .reverse =>
         let res := bitblast.blastReverse eaig evec
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastReverse)
           dsimp only at heaig
           omega
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastReverse) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .clz =>
         let res := bitblast.blastClz eaig evec
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastClz)
           omega
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastClz) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
       | .cpop =>
         let res := bitblast.blastCpop eaig evec
         have := by
           apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastCpop)
           omega
-        ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastCpop) ..)⟩
+        ⟨⟨res, this⟩, cache⟩
     | .append lhs rhs h =>
       let ⟨⟨⟨aig, lhs⟩, hlaig⟩, cache⟩ := goCache aig lhs cache
       let ⟨⟨⟨aig, rhs⟩, hraig⟩, cache⟩ := goCache aig rhs cache
@@ -257,7 +222,7 @@ where
         apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastAppend)
         dsimp only at hlaig hraig
         omega
-      ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastAppend) ..)⟩
+      ⟨⟨res, this⟩, cache⟩
     | .replicate n expr h =>
       let ⟨⟨⟨aig, expr⟩, haig⟩, cache⟩ := goCache aig expr cache
       let res := bitblast.blastReplicate aig ⟨n, expr, h⟩
@@ -265,7 +230,7 @@ where
         apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastReplicate)
         dsimp only at haig
         assumption
-      ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastReplicate) ..)⟩
+      ⟨⟨res, this⟩, cache⟩
     | .extract start len expr =>
       let ⟨⟨⟨eaig, evec⟩, heaig⟩, cache⟩ := goCache aig expr cache
       let res := bitblast.blastExtract eaig ⟨evec, start⟩
@@ -273,7 +238,7 @@ where
         apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastExtract)
         dsimp only at heaig
         exact heaig
-      ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastExtract) ..)⟩
+      ⟨⟨res, this⟩, cache⟩
     | .shiftLeft lhs rhs =>
       let ⟨⟨⟨aig, lhs⟩, hlaig⟩, cache⟩ := goCache aig lhs cache
       let ⟨⟨⟨aig, rhs⟩, hraig⟩, cache⟩ := goCache aig rhs cache
@@ -285,7 +250,7 @@ where
         apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastShiftLeft)
         dsimp only at hlaig hraig
         omega
-      ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastShiftLeft) ..)⟩
+      ⟨⟨res, this⟩, cache⟩
     | .shiftRight lhs rhs =>
       let ⟨⟨⟨aig, lhs⟩, hlaig⟩, cache⟩ := goCache aig lhs cache
       let ⟨⟨⟨aig, rhs⟩, hraig⟩, cache⟩ := goCache aig rhs cache
@@ -297,7 +262,7 @@ where
         apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastShiftRight)
         dsimp only at hlaig hraig
         omega
-      ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastShiftRight) ..)⟩
+      ⟨⟨res, this⟩, cache⟩
     | .arithShiftRight lhs rhs =>
       let ⟨⟨⟨aig, lhs⟩, hlaig⟩, cache⟩ := goCache aig lhs cache
       let ⟨⟨⟨aig, rhs⟩, hraig⟩, cache⟩ := goCache aig rhs cache
@@ -309,7 +274,7 @@ where
         apply AIG.LawfulVecOperator.le_size_of_le_aig_size (f := bitblast.blastArithShiftRight)
         dsimp only at hlaig hraig
         omega
-      ⟨⟨res, this⟩, cache.cast (AIG.LawfulVecOperator.le_size (f := bitblast.blastArithShiftRight) ..)⟩
+      ⟨⟨res, this⟩, cache⟩
   termination_by (sizeOf expr, 0)
 
 
@@ -317,7 +282,7 @@ namespace bitblast
 
 mutual
 
-theorem goCache_decl_eq (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache aig) :
+theorem goCache_decl_eq (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache) :
     ∀ (idx : Nat) (h1) (h2), (goCache aig expr cache).result.val.aig.decls[idx]'h2 = aig.decls[idx]'h1 := by
   generalize hres : goCache aig expr cache = res
   intro idx h1 h2
@@ -330,7 +295,7 @@ theorem goCache_decl_eq (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache aig) 
     apply go_decl_eq
 termination_by (sizeOf expr, 1)
 
-theorem go_decl_eq (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache aig) :
+theorem go_decl_eq (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache) :
     ∀ (idx : Nat) (h1) (h2), (go aig expr cache).result.val.aig.decls[idx]'h2 = aig.decls[idx]'h1 := by
   intro idx h1 h2
   unfold go
@@ -414,17 +379,17 @@ end
 
 end bitblast
 
-theorem bitblast_decl_eq (aig : AIG BVBit) (input : WithCache (BVExpr w) aig) :
+theorem bitblast_decl_eq (aig : AIG BVBit) (input : WithCache (BVExpr w)) :
     ∀ (idx : Nat) (h1) (h2), (bitblast aig input).result.val.aig.decls[idx]'h2 = aig.decls[idx]'h1 := by
   intros
   unfold bitblast
   apply bitblast.goCache_decl_eq
 
-theorem bitblast_le_size (aig : AIG BVBit) (input : WithCache (BVExpr w) aig) :
+theorem bitblast_le_size (aig : AIG BVBit) (input : WithCache (BVExpr w)) :
     aig.decls.size ≤ (bitblast aig input).result.val.aig.decls.size := by
   exact (bitblast aig input).result.property
 
-theorem bitblast_lt_size_of_lt_aig_size (aig : AIG BVBit) (input : WithCache (BVExpr w) aig)
+theorem bitblast_lt_size_of_lt_aig_size (aig : AIG BVBit) (input : WithCache (BVExpr w))
     (h : x < aig.decls.size) :
     x < (bitblast aig input).result.val.aig.decls.size := by
   apply Nat.lt_of_lt_of_le
