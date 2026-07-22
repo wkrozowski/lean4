@@ -60,6 +60,8 @@ builtin_initialize deprecatedAttr : ParametricAttribute DeprecationEntry ← do
           match ParametricAttribute.getParamFromExt? ext (preserveOrder := false) env newName with
           | none => pure ()
           | some entry =>
+            let disableNote : MessageData := .note m!"This warning can be disabled with \
+              `set_option {linter.deprecated.deprecatedTarget.name} false`"
             match entry.newName? with
             | some next =>
               if next != newName && next != declName then
@@ -68,11 +70,11 @@ builtin_initialize deprecatedAttr : ParametricAttribute DeprecationEntry ← do
                   in favor of `{.ofConstName next true}` instead"
                 if let some note ← deprecationTypeMismatchNote? declName next then
                   msg := msg ++ note
-                logWarning msg
+                logWarning <| msg ++ disableNote
             | none =>
-              logWarning m!"`{.ofConstName newName true}` is itself deprecated, but without an \
+              logWarning <| m!"`{.ofConstName newName true}` is itself deprecated, but without an \
                 explicit replacement; `{.ofConstName declName true}` is being deprecated in favor \
-                of a deprecated declaration"
+                of a deprecated declaration" ++ disableNote
       let text? := text?.map TSyntax.getString
       let since? := since?.map TSyntax.getString
       if id?.isNone && text?.isNone then

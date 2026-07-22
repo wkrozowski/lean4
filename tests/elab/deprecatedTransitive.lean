@@ -14,7 +14,11 @@ def c1 : Nat := 0
 @[deprecated c1 (since := "2020-01-01")]
 def b1 : Nat := 0
 
-/-- warning: `b1` is itself deprecated in favor of `c1`; consider deprecating `a1` in favor of `c1` instead -/
+/--
+warning: `b1` is itself deprecated in favor of `c1`; consider deprecating `a1` in favor of `c1` instead
+
+Note: This warning can be disabled with `set_option linter.deprecated.deprecatedTarget false`
+-/
 #guard_msgs in
 @[deprecated b1 (since := "2020-01-01")]
 def a1 : Nat := 0
@@ -31,7 +35,11 @@ set_option linter.deprecated false in
 @[deprecated c2 (since := "2020-01-01")]
 def b2 : Nat := 0
 
-/-- warning: `b2` is itself deprecated in favor of `c2`; consider deprecating `a2` in favor of `c2` instead -/
+/--
+warning: `b2` is itself deprecated in favor of `c2`; consider deprecating `a2` in favor of `c2` instead
+
+Note: This warning can be disabled with `set_option linter.deprecated.deprecatedTarget false`
+-/
 #guard_msgs in
 @[deprecated b2 (since := "2020-01-01")]
 def a2 : Nat := 0
@@ -41,7 +49,11 @@ def a2 : Nat := 0
 @[deprecated "no replacement" (since := "2020-01-01")]
 def b3 : Nat := 0
 
-/-- warning: `b3` is itself deprecated, but without an explicit replacement; `a3` is being deprecated in favor of a deprecated declaration -/
+/--
+warning: `b3` is itself deprecated, but without an explicit replacement; `a3` is being deprecated in favor of a deprecated declaration
+
+Note: This warning can be disabled with `set_option linter.deprecated.deprecatedTarget false`
+-/
 #guard_msgs in
 @[deprecated b3 (since := "2020-01-01")]
 def a3 : Nat := 0
@@ -55,7 +67,11 @@ set_option linter.deprecated false in
 @[deprecated c4 (since := "2020-01-01")]
 def b4 : Nat := 0
 
-/-- warning: `b4` is itself deprecated in favor of `c4`; consider deprecating `a4` in favor of `c4` instead -/
+/--
+warning: `b4` is itself deprecated in favor of `c4`; consider deprecating `a4` in favor of `c4` instead
+
+Note: This warning can be disabled with `set_option linter.deprecated.deprecatedTarget false`
+-/
 #guard_msgs in
 @[deprecated b4 (since := "2020-01-01")]
 def a4 : Nat := 0
@@ -74,6 +90,8 @@ Note: The suggested replacement has a different type:
   Bool
 instead of
   Nat
+
+Note: This warning can be disabled with `set_option linter.deprecated.deprecatedTarget false`
 -/
 #guard_msgs in
 @[deprecated b5 (since := "2020-01-01")]
