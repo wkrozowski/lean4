@@ -1,6 +1,6 @@
 #include "util/options.h"
 
-// Should we test stage 2 and run update-stage0 on PR merge? YES
+// Should we test stage 2 and run update-stage0 on PR merge? NO
 // (change to "YES" to trigger)
 
 namespace lean {
