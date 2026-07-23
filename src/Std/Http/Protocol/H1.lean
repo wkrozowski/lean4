@@ -16,6 +16,7 @@ public import Std.Http.Protocol.H1.Message
 public import Std.Http.Protocol.H1.Reader
 public import Std.Http.Protocol.H1.Writer
 public import Std.Http.Protocol.H1.Event
+public import Std.Http.Protocol.H1.Redirect
 
 public section
 
