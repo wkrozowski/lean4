@@ -1,3 +1,11 @@
+/-!
+Tests that the `linter.deprecated` replacement hint is only offered when the replacement binds
+the same universe parameters in the same order: explicit universe arguments at the use site are
+positional and survive the in-place textual replacement.
+-/
+
+set_option linter.deprecated true
+
 def new1.{u,v} : Sort u → Sort v → Nat := fun _ _ => 0
 
 @[deprecated new1 (since:="")]
