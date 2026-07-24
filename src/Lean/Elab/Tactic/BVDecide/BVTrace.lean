@@ -42,6 +42,8 @@ def evalBvTrace : Tactic := fun
     let g ← getMainGoal
     let trace ← g.withContext do
       bvDecide g ctx
+    if let some g' := trace.remainingGoal? then
+      replaceMainGoal [g']
     /-
     Ideally trace.lratCert would be the `ByteArray` version of the proof already and we just write
     it. This isn't yet possible so instead we do the following:

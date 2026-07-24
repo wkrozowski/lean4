@@ -30,6 +30,11 @@ public structure UnsatProver.Result (α : Type) where
   Used by `bv_decide?` to exfiltrate the LRAT certificate to avoid calling the SAT solver again.
   -/
   cert : α
+  /--
+  With `showCbvGoal := true` the certificate verification goal is left open inside `proof` and
+  returned here so it can be presented to the user.
+  -/
+  remainingGoal? : Option MVarId := none
 
 public structure ReflectionResult where
   /--
@@ -80,7 +85,7 @@ public def reflectBV (g : MVarId) : M ReflectionResult := g.withContext do
     }
 
 public def closeWithBVReflection (g : MVarId) (unsatProver : UnsatProver α) :
-    MetaM (Except CounterExample α) := M.run do
+    MetaM (Except CounterExample (α × Option MVarId)) := M.run do
   g.withContext do
     let reflectionResult ←
       withTraceNode `Meta.Tactic.bv (fun _ => return "Reflecting goal into BVLogicalExpr") do
@@ -91,10 +96,10 @@ public def closeWithBVReflection (g : MVarId) (unsatProver : UnsatProver α) :
       (atomNumber, (width, expr, synthetic))
     let atomsAssignment := Std.HashMap.ofList atomsPairs
     match ← unsatProver g reflectionResult atomsAssignment with
-    | .ok ⟨bvExprUnsat, cert⟩ =>
+    | .ok ⟨bvExprUnsat, cert, remainingGoal?⟩ =>
       let proveFalse ← reflectionResult.proveFalse bvExprUnsat
       g.assign proveFalse
-      return .ok cert
+      return .ok (cert, remainingGoal?)
     | .error counterExample => return .error counterExample
 
 end Lean.Meta.Tactic.BVDecide

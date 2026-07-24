@@ -39,8 +39,10 @@ def mkContext (lratPath : System.FilePath) (cfg : BVDecideConfig) : TermElabM Ta
   TacticContext.new lratPath cfg
 
 @[inherit_doc Lean.Parser.Tactic.bvCheck]
-def bvCheck (g : MVarId) (ctx : TacticContext) : MetaM Unit := do
-  discard <| closeWithBVReflection g (lratChecker ctx)
+def bvCheck (g : MVarId) (ctx : TacticContext) : MetaM (List MVarId) := do
+  match ← closeWithBVReflection g (lratChecker ctx) with
+  | .ok (_, remainingGoal?) => return remainingGoal?.toList
+  | .error _ => return []
 
 
 open Lean.Meta.Tactic in
@@ -49,7 +51,7 @@ def evalBvCheck : Tactic := fun
   | `(tactic| bv_check%$tk $cfgStx:optConfig $path:str) => do
     let cfg ← elabBVDecideConfig cfgStx
     let ctx ← mkContext path.getString cfg
-    liftMetaFinishingTactic fun g => do
+    liftMetaTactic fun g => do
       let g'? ← Normalize.bvNormalize g cfg
       match g'? with
       | some g' => bvCheck g' ctx
@@ -57,6 +59,7 @@ def evalBvCheck : Tactic := fun
         let bvNormalizeStx ← `(tactic| bv_normalize $cfgStx)
         logWarning m!"This goal can be closed by only applying bv_normalize, no need to keep the LRAT proof around."
         TryThis.addSuggestion tk bvNormalizeStx (origSpan? := ← getRef)
+        return []
   | _ => throwUnsupportedSyntax
 
 end BVCheck

@@ -15,7 +15,8 @@ This module provides the implementation of the `bv_decide` frontend itself.
 -/
 namespace Lean.Meta.Tactic.BVDecide
 
-def bvUnsat (g : MVarId) (ctx : TacticContext) : MetaM (Except CounterExample LratCert) := M.run do
+def bvUnsat (g : MVarId) (ctx : TacticContext) :
+    MetaM (Except CounterExample (LratCert × Option MVarId)) := M.run do
   closeWithBVReflection g (lratBitblaster ctx)
 
 /--
@@ -27,6 +28,11 @@ public structure Result where
   certificate.
   -/
   lratCert : Option LratCert
+  /--
+  With `showCbvGoal := true` this contains the certificate verification goal that was left open
+  instead of being closed by `cbv`. It must be presented to the user as a remaining goal.
+  -/
+  remainingGoal? : Option MVarId := none
 
 /--
 Try to close `g` using a bitblaster. Return either a `CounterExample` if one is found or a `Result`
@@ -34,9 +40,9 @@ if `g` is proven.
 -/
 public def bvDecide' (g : MVarId) (ctx : TacticContext) : MetaM (Except CounterExample Result) := do
   let g? ← Normalize.bvNormalize g ctx.config
-  let some g := g? | return .ok ⟨none⟩
+  let some g := g? | return .ok ⟨none, none⟩
   match ← bvUnsat g ctx with
-  | .ok lratCert => return .ok ⟨some lratCert⟩
+  | .ok (lratCert, remainingGoal?) => return .ok ⟨some lratCert, remainingGoal?⟩
   | .error counterExample => return .error counterExample
 
 /--

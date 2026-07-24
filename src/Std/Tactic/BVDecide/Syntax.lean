@@ -100,6 +100,12 @@ structure BVDecideConfig where
   the certificate is verified by call-by-value reduction (`cbv`) instead.
   -/
   native : Bool := true
+  /--
+  Instead of verifying the LRAT certificate, leave the verification goal that would be passed to
+  `cbv` (see `native := false`) open, so it can be inspected in the InfoView and closed manually.
+  Takes precedence over `native`. Intended for debugging `cbv`.
+  -/
+  showCbvGoal : Bool := false
 
 end Lean.Elab.Tactic.BVDecide
 

@@ -24,8 +24,9 @@ def evalBvDecide : Tactic := fun
     let cfg ← elabBVDecideConfig cfg
     IO.FS.withTempFile fun _ lratFile => do
       let cfg ← TacticContext.new lratFile cfg
-      liftMetaFinishingTactic fun g => do
-        discard <| bvDecide g cfg
+      liftMetaTactic fun g => do
+        let result ← bvDecide g cfg
+        return result.remainingGoal?.toList
   | _ => throwUnsupportedSyntax
 
 end Lean.Elab.Tactic.BVDecide

@@ -24,9 +24,12 @@ open Std.Tactic.BVDecide.Reflect
 
 /--
 Turn an `LratCert` into a proof that some `reflectedExpr` is UNSAT.
+
+With `showCbvGoal := true` the returned proof contains an unassigned metavariable for the
+certificate verification goal, which is returned alongside the proof.
 -/
 def LratCert.toReflectionProof (cert : LratCert) (ctx : TacticContext)
-    (reflectionResult : ReflectionResult) : MetaM Expr := do
+    (reflectionResult : ReflectionResult) : MetaM (Expr × Option MVarId) := do
   withTraceNode `Meta.Tactic.sat (fun _ => return "Compiling expr term") do
     mkAuxDecl ctx.exprDef reflectionResult.expr (mkConst ``BVLogicalExpr) ctx
 
@@ -41,23 +44,26 @@ def LratCert.toReflectionProof (cert : LratCert) (ctx : TacticContext)
     mkReflectionProof reflectedExpr certExpr reflectionTerm ctx
 where
   mkReflectionProof (reflectedExpr certExpr reflectionTerm : Expr) (ctx : TacticContext) :
-      MetaM Expr := do
-    if ctx.config.native then
+      MetaM (Expr × Option MVarId) := do
+    if ctx.config.native && !ctx.config.showCbvGoal then
       match (← nativeEqTrue `bv_decide reflectionTerm (axiomDeclRange? := (← getRef))) with
       | .notTrue =>
         throwError m!"Tactic `bv_decide` failed: The LRAT certificate could not be verified; \
           evaluating the following term returned `false`:{indentExpr reflectionTerm}"
       | .success auxProof =>
-        return mkApp3 (mkConst ``unsat_of_verifyBVExpr_eq_true) reflectedExpr certExpr auxProof
+        return (mkApp3 (mkConst ``unsat_of_verifyBVExpr_eq_true) reflectedExpr certExpr auxProof, none)
     else
       let target ← mkEq reflectionTerm (mkConst ``Bool.true)
       let mvar ← mkFreshExprMVar (some target)
       let [mvar'] ← mvar.mvarId!.applyConst ``of_decide_eq_true
         | throwError "Could not apply `of_decide_eq_true`"
+      if ctx.config.showCbvGoal then
+        let auxProof ← instantiateMVars mvar
+        return (mkApp3 (mkConst ``unsat_of_verifyBVExpr_eq_true) reflectedExpr certExpr auxProof, some mvar')
       match (← Meta.Tactic.Cbv.cbvGoal mvar') with
       | .none =>
         let auxProof ← instantiateMVars mvar
-        return mkApp3 (mkConst ``unsat_of_verifyBVExpr_eq_true) reflectedExpr certExpr auxProof
+        return (mkApp3 (mkConst ``unsat_of_verifyBVExpr_eq_true) reflectedExpr certExpr auxProof, none)
       | .some remaining =>
         throwError "Could not evaluate expression to a value: {remaining}"
   /--
@@ -72,7 +78,7 @@ where
       hints := .abbrev,
       safety := .safe
     }
-    if ctx.config.native then
+    if ctx.config.native && !ctx.config.showCbvGoal then
       withOptions (fun opt => opt.set `compiler.extract_closed false) do
         addAndCompile decl
     else
@@ -118,8 +124,8 @@ public def lratBitblaster (ctx : TacticContext) : UnsatProver LratCert :=
     match res with
     | .ok cert =>
       trace[Meta.Tactic.sat] "SAT solver found a proof."
-      let proof ← cert.toReflectionProof ctx reflectionResult
-      return .ok ⟨proof, cert⟩
+      let (proof, remainingGoal?) ← cert.toReflectionProof ctx reflectionResult
+      return .ok ⟨proof, cert, remainingGoal?⟩
     | .error assignment =>
       trace[Meta.Tactic.sat] "SAT solver found a counter example."
       let equations := reconstructCounterExample map assignment aigSize atomsAssignment
@@ -133,7 +139,7 @@ public def lratChecker (ctx : TacticContext) : UnsatProver Unit :=
   fun _ (reflectionResult : ReflectionResult) _ => do
   withTraceNode `Meta.Tactic.sat (fun _ => return "Preparing LRAT reflection term") do
     let cert ← LratCert.ofFile ctx.lratPath ctx.config.trimProofs
-    let proof ← cert.toReflectionProof ctx reflectionResult
-    return .ok ⟨proof, ()⟩
+    let (proof, remainingGoal?) ← cert.toReflectionProof ctx reflectionResult
+    return .ok ⟨proof, (), remainingGoal?⟩
 
 end Lean.Meta.Tactic.BVDecide
