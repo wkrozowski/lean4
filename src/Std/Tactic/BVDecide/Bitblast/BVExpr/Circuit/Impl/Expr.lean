@@ -97,6 +97,16 @@ def Cache.get? (cache : Cache aig) (expr : BVExpr w) : Option (AIG.RefVec aig w)
       none
   | none => none
 
+ def Cache.get?_cbv (cache : Cache aig) (expr : BVExpr w) : Option (AIG.RefVec aig w) :=
+    match cache.map.get? ⟨w, expr⟩ with   -- no `h :` — that's the whole point
+    | some refs =>
+      if h : refs.size = w then some ⟨Vector.mk refs h, sorry⟩ else none
+    | none => none
+
+  @[cbv_eval]
+  theorem Cache.get?_cbv_eval (cache : Cache aig) (expr : BVExpr w) :
+      Cache.get? cache expr = Cache.get?_cbv cache expr := by sorry
+
 @[inline]
 def Cache.cast (cache : Cache aig1) (h : aig1.decls.size ≤ aig2.decls.size) :
     Cache aig2 :=
@@ -126,8 +136,10 @@ where
     | some vec =>
       ⟨⟨⟨aig, vec⟩, Nat.le_refl ..⟩, cache⟩
     | none =>
-      let ⟨result, cache⟩ := go aig expr cache
-      ⟨result, cache.insert expr result.val.vec⟩
+      -- Fully destructure so the inserted value is a match-bound variable, not a dependent
+      -- projection chain; `cbv` freezes dependent projections of propositionally-reached values.
+      let ⟨⟨⟨aig, vec⟩, haig⟩, cache⟩ := go aig expr cache
+      ⟨⟨⟨aig, vec⟩, haig⟩, cache.insert expr vec⟩
   termination_by (sizeOf expr, 1)
 
   go {w : Nat} (aig : AIG BVBit) (expr : BVExpr w) (cache : Cache aig) : Return aig w :=

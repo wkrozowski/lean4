@@ -276,9 +276,6 @@ instance : Hashable (BVExpr w) where
 
 instance decEq : DecidableEq (BVExpr w) := fun l r =>
   withPtrEqDecEq l r fun _ =>
-    if h : hash l ≠ hash r then
-      .isFalse (ne_of_apply_ne hash h)
-    else
       match l with
       | .var lidx =>
         match r with

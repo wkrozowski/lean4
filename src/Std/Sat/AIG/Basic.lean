@@ -238,12 +238,21 @@ theorem Cache.get?_property {decls : Array (Decl α)} {idx : Nat} (c : Cache α 
 /--
 Lookup a `Decl` in a `Cache`.
 -/
-@[irreducible, inline]
+@[irreducible, inline, cbv_opaque]
 def Cache.get? (cache : Cache α decls) (decl : Decl α) : Option (CacheHit decls decl) :=
   match hfound : cache.val[decl]? with
   | some hit =>
     some ⟨hit, Cache.get?_bounds _ _ hfound, Cache.get?_property _ _ hfound⟩
   | none => none
+
+ def Cache.get?_cbv (cache : Cache α decls) (decl : Decl α) : Option (CacheHit decls decl) :=
+    match cache.val[decl]? with
+    | some idx => some ⟨idx, sorry, sorry⟩
+    | none => none
+
+  @[cbv_eval]
+  theorem Cache.get?_cbv_eval (cache : Cache α decls) (decl : Decl α) :
+      Cache.get? cache decl = Cache.get?_cbv cache decl := by sorry
 
 /--
 An `Array Decl` is a Direct Acyclic Graph (DAG) if a gate at index `i` only points to nodes with index lower than `i`.
