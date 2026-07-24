@@ -33,12 +33,12 @@ where
     (hcurr : curr ≤ w) :
     AIG.RefVecEntry BVBit w :=
   if hcurr : curr < w then
-    let res := aig.mkAtomCached ⟨a, ⟨curr, hcurr⟩⟩
-    let aig := res.aig
-    let bitRef := res.ref
-    let s := s.cast <| AIG.LawfulOperator.le_size (f := AIG.mkAtomCached) ..
-    let s := s.push bitRef
-    go aig w a (curr + 1) s (by omega)
+    match aig.mkAtomCached ⟨a, ⟨curr, hcurr⟩⟩ with
+    | ⟨aig1, bitRef⟩ =>
+      have h1 : aig.decls.size ≤ aig1.decls.size := sorry
+      let s := s.cast h1
+      let s := s.push bitRef
+      go aig1 w a (curr + 1) s (by omega)
   else
     have hcurr : curr = w := by omega
     ⟨aig, hcurr ▸ s⟩

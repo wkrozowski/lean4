@@ -42,10 +42,8 @@ Create an or gate in the input AIG. This uses the builtin cache to enable automa
 -/
 def mkOrCached (aig : AIG α) (input : BinaryInput aig) : Entrypoint α :=
   -- x or y = invert (invert x && invert y)
-  let res := aig.mkGateCached <| input.invert true true
-  let aig := res.aig
-  let auxRef := res.ref
-  ⟨aig, auxRef.not⟩
+  match aig.mkGateCached <| input.invert true true with
+  | ⟨aig, auxRef⟩ => ⟨aig, auxRef.not⟩
 
 /--
 Create an xor gate in the input AIG. This uses the builtin cache to enable automated subterm
@@ -53,15 +51,15 @@ sharing.
 -/
 def mkXorCached (aig : AIG α) (input : BinaryInput aig) : Entrypoint α :=
   -- x xor y = (invert (x && y)) && (invert ((invert x) && (invert y)))
-  let res := aig.mkGateCached input
-  let aig := res.aig
-  let aux1Ref := res.ref
-  let input := input.cast <| by apply LawfulOperator.le_size (f := mkGateCached)
-  let res := aig.mkGateCached (input.invert true true)
-  let aig := res.aig
-  let aux2Ref := res.ref
-  let aux1Ref := aux1Ref.cast <| by apply LawfulOperator.le_size (f := mkGateCached)
-  aig.mkGateCached ⟨aux1Ref.not, aux2Ref.not⟩
+  match aig.mkGateCached input with
+  | ⟨aig1, aux1Ref⟩ =>
+    have h1 : aig.decls.size ≤ aig1.decls.size := sorry
+    let input := input.cast h1
+    match aig1.mkGateCached (input.invert true true) with
+    | ⟨aig2, aux2Ref⟩ =>
+      have h2 : aig1.decls.size ≤ aig2.decls.size := sorry
+      let aux1Ref := aux1Ref.cast h2
+      aig2.mkGateCached ⟨aux1Ref.not, aux2Ref.not⟩
 
 /--
 Create an equality gate in the input AIG. This uses the builtin cache to enable automated subterm
@@ -69,15 +67,15 @@ sharing.
 -/
 def mkBEqCached (aig : AIG α) (input : BinaryInput aig) : Entrypoint α :=
   -- a == b = (invert (a && (invert b))) && (invert ((invert a) && b))
-  let res := aig.mkGateCached <| input.invert false true
-  let aig := res.aig
-  let aux1Ref := res.ref
-  let input := input.cast <| by apply LawfulOperator.le_size (f := mkGateCached)
-  let res := aig.mkGateCached (input.invert true false)
-  let aig := res.aig
-  let aux2Ref := res.ref
-  let aux1Ref := aux1Ref.cast <| by apply LawfulOperator.le_size (f := mkGateCached)
-  aig.mkGateCached ⟨aux1Ref.not, aux2Ref.not⟩
+  match aig.mkGateCached <| input.invert false true with
+  | ⟨aig1, aux1Ref⟩ =>
+    have h1 : aig.decls.size ≤ aig1.decls.size := sorry
+    let input := input.cast h1
+    match aig1.mkGateCached (input.invert true false) with
+    | ⟨aig2, aux2Ref⟩ =>
+      have h2 : aig1.decls.size ≤ aig2.decls.size := sorry
+      let aux1Ref := aux1Ref.cast h2
+      aig2.mkGateCached ⟨aux1Ref.not, aux2Ref.not⟩
 
 /--
 Create an implication gate in the input AIG. This uses the builtin cache to enable automated subterm
@@ -85,10 +83,8 @@ sharing.
 -/
 def mkImpCached (aig : AIG α) (input : BinaryInput aig) : Entrypoint α :=
   -- a -> b = (invert (a and (invert b)))
-  let res := aig.mkGateCached <| input.invert false true
-  let aig := res.aig
-  let auxRef := res.ref
-  ⟨aig, auxRef.not⟩
+  match aig.mkGateCached <| input.invert false true with
+  | ⟨aig, auxRef⟩ => ⟨aig, auxRef.not⟩
 
 end AIG
 

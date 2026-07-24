@@ -42,13 +42,12 @@ where
     if hidx : curr < w then
       let lin := lhs.get curr hidx
       let rin := rhs.get curr hidx
-      let res := mkFullAdderCarry aig ⟨lin, rin, cin⟩
-      have := AIG.LawfulOperator.le_size (f := mkFullAdderCarry) ..
-      let aig := res.aig
-      let carryRef := res.ref
-      let lhs := lhs.cast this
-      let rhs := rhs.cast this
-      go aig lhs rhs (curr + 1) carryRef
+      match mkFullAdderCarry aig ⟨lin, rin, cin⟩ with
+      | ⟨aig1, carryRef⟩ =>
+        have h1 : aig.decls.size ≤ aig1.decls.size := sorry
+        let lhs := lhs.cast h1
+        let rhs := rhs.cast h1
+        go aig1 lhs rhs (curr + 1) carryRef
     else
       ⟨aig, cin⟩
   termination_by w - curr

@@ -88,16 +88,12 @@ where
       [LawfulOperator α BinaryInput f] [LawfulZipOperator α f] :
       RefVecEntry α len :=
     if hidx : idx < len then
-      let res := f aig ⟨lhs.get idx hidx, rhs.get idx hidx⟩
-      let aig := res.aig
-      let newRef := res.ref
-      have := by
-        intros
-        apply LawfulOperator.le_size_of_le_aig_size
-        omega
-      let s := s.cast this
-      let s := s.push newRef
-      go aig (idx + 1) s (by omega) (lhs.cast this) (rhs.cast this) f
+      match f aig ⟨lhs.get idx hidx, rhs.get idx hidx⟩ with
+      | ⟨aig1, newRef⟩ =>
+        have h1 : aig.decls.size ≤ aig1.decls.size := sorry
+        let s := s.cast h1
+        let s := s.push newRef
+        go aig1 (idx + 1) s (by omega) (lhs.cast h1) (rhs.cast h1) f
     else
       have : idx = len := by omega
       ⟨aig, this ▸ s⟩

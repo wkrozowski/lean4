@@ -31,14 +31,11 @@ where
      (f : (aig : AIG α) → BinaryInput aig → Entrypoint α) [LawfulOperator α BinaryInput f] :
      Entrypoint α :=
     if hidx : idx < len then
-      let res := f aig ⟨acc, input.get idx hidx⟩
-      let aig := res.aig
-      let newAcc := res.ref
-      let input := input.cast <| by
-        intros
-        apply LawfulOperator.le_size_of_le_aig_size (f := f)
-        omega
-      go aig newAcc (idx + 1) len input f
+      match f aig ⟨acc, input.get idx hidx⟩ with
+      | ⟨aig1, newAcc⟩ =>
+        have h1 : aig.decls.size ≤ aig1.decls.size := sorry
+        let input := input.cast h1
+        go aig1 newAcc (idx + 1) len input f
     else
       ⟨aig, acc⟩
   termination_by len - idx

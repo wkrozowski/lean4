@@ -245,10 +245,14 @@ def Cache.get? (cache : Cache α decls) (decl : Decl α) : Option (CacheHit decl
     some ⟨hit, Cache.get?_bounds _ _ hfound, Cache.get?_property _ _ hfound⟩
   | none => none
 
- def Cache.get?_cbv (cache : Cache α decls) (decl : Decl α) : Option (CacheHit decls decl) :=
-    match cache.val[decl]? with
-    | some idx => some ⟨idx, sorry, sorry⟩
-    | none => none
+@[inline]
+def Cache.get?_cbv (cache : Cache α decls) (decl : Decl α) : Option (CacheHit decls decl) :=
+  match cache.val[decl]? with
+  | some idx =>
+    if h : idx < decls.size then
+      if heq : decls[idx] = decl then some ⟨idx, h, heq⟩ else none
+    else none
+  | none => none
 
   @[cbv_eval]
   theorem Cache.get?_cbv_eval (cache : Cache α decls) (decl : Decl α) :

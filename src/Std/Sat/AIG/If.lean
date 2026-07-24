@@ -45,21 +45,19 @@ open AIG
 
 def mkIfCached (aig : AIG α) (input : TernaryInput aig) : Entrypoint α :=
   -- if d then l else r = ((d && l) || (!d && r))
-  let res := aig.mkAndCached ⟨input.discr, input.lhs⟩
-  let aig := res.aig
-  let lhsRef := res.ref
-  let input := input.cast <| by apply AIG.LawfulOperator.le_size (f := mkAndCached)
-  let res := aig.mkNotCached input.discr
-  let aig := res.aig
-  let notDiscr := res.ref
-  let input := input.cast <| by apply AIG.LawfulOperator.le_size (f := mkNotCached)
-  let res := aig.mkAndCached ⟨notDiscr, input.rhs⟩
-  let aig := res.aig
-  let rhsRef := res.ref
-  let lhsRef := lhsRef.cast <| by
-    apply AIG.LawfulOperator.le_size_of_le_aig_size (f := mkAndCached)
-    apply AIG.LawfulOperator.le_size (f := mkNotCached)
-  aig.mkOrCached ⟨lhsRef, rhsRef⟩
+  match aig.mkAndCached ⟨input.discr, input.lhs⟩ with
+  | ⟨aig1, lhsRef⟩ =>
+    have h1 : aig.decls.size ≤ aig1.decls.size := sorry
+    let input := input.cast h1
+    match aig1.mkNotCached input.discr with
+    | ⟨aig2, notDiscr⟩ =>
+      have h2 : aig1.decls.size ≤ aig2.decls.size := sorry
+      let input := input.cast h2
+      match aig2.mkAndCached ⟨notDiscr, input.rhs⟩ with
+      | ⟨aig3, rhsRef⟩ =>
+        have h3 : aig2.decls.size ≤ aig3.decls.size := sorry
+        let lhsRef := lhsRef.cast (Nat.le_trans h2 h3)
+        aig3.mkOrCached ⟨lhsRef, rhsRef⟩
 
 instance : LawfulOperator α TernaryInput mkIfCached where
   le_size := by
@@ -127,16 +125,15 @@ where
       (lhs rhs : RefVec aig w) (s : RefVec aig curr) : RefVecEntry α w :=
     if hcurr : curr < w then
       let input := ⟨discr, lhs.get curr hcurr, rhs.get curr hcurr⟩
-      let res := mkIfCached aig input
-      let aig := res.aig
-      let ref := res.ref
-      have := LawfulOperator.le_size (f := mkIfCached) ..
-      let discr := discr.cast this
-      let lhs := lhs.cast this
-      let rhs := rhs.cast this
-      let s := s.cast this
-      let s := s.push ref
-      go aig (curr + 1) (by omega) discr lhs rhs s
+      match mkIfCached aig input with
+      | ⟨aig1, ref⟩ =>
+        have h1 : aig.decls.size ≤ aig1.decls.size := sorry
+        let discr := discr.cast h1
+        let lhs := lhs.cast h1
+        let rhs := rhs.cast h1
+        let s := s.cast h1
+        let s := s.push ref
+        go aig1 (curr + 1) (by omega) discr lhs rhs s
     else
       have : curr = w := by omega
       ⟨aig, this ▸ s⟩

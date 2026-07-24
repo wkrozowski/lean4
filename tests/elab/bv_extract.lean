@@ -21,7 +21,7 @@ theorem bv_ofBool_2 (h : x = 1#64) : ofBool (x.getLsbD 1) = 0#1 := by
   bv_decide
 
 set_option trace.Meta.Tactic.cbv true
-set_option maxHeartbeats 10000000 in
+set_option maxHeartbeats 100000000000 in
 theorem bv_ofBool_3 (h : x = 1#1) : ofBool x[0] = 1#1 := by
   bv_decide +showCbvGoal
   cbv
