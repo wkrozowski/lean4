@@ -1,0 +1,12 @@
+name = "cq"
+defaultTargets = ["Quality"]
+
+[[lean_lib]]
+name = "Quality"
+globs = "Quality.*"
+
+[[lean_lib]]
+name = "Clean"
+
+[[lean_lib]]
+name = "Failing"

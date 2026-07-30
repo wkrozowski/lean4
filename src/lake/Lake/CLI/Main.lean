@@ -346,7 +346,9 @@ def lakeLongOption : (opt : String) → CliM PUnit
 | "--builtin-lint" => modifyThe LakeOptions ({· with runBuiltinLint := true})
 | "--builtin-only" => modifyThe LakeOptions ({· with runBuiltinLint := true, builtinOnly := true})
 | "--record-exceptions" =>
-  modifyThe LakeOptions ({· with runBuiltinLint := true, builtinLint.recordExceptions := true})
+  modifyThe LakeOptions ({· with runBuiltinLint := true, builtinLint.mode := .recordExceptions})
+| "--code-quality" =>
+  modifyThe LakeOptions ({· with runBuiltinLint := true, builtinLint.mode := .codeQuality})
 | "--linters" => do
   let opts ← getThe LakeOptions
   if opts.builtinLint.lintOnly then
@@ -1058,7 +1060,9 @@ protected def lint : CliM PUnit := do
   processOptions lakeOption
   let opts ← getThe LakeOptions
   let ws ← loadWorkspace (← mkLoadConfig opts)
+  -- The lint driver inherits stdout, which code-quality mode reserves for its JSON output.
   let hasDriver := !ws.root.lintDriver.isEmpty && !opts.builtinOnly
+    && opts.builtinLint.mode != .codeQuality
   let pkgBuiltinLint := ws.root.config.builtinLint?
   let doBuiltinLint := opts.runBuiltinLint || pkgBuiltinLint == some true
   let mut exitCode : UInt32 := 0

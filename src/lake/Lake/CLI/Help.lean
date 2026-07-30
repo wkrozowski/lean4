@@ -287,6 +287,13 @@ OPTIONS:
                         `set_option <linter> false in` exception by editing the
                         offending source files in place, silencing the warning
                         for that declaration. Implies `--builtin-lint`.
+  --code-quality        run the registered package code quality checks instead
+                        of the linter passes, printing their metrics as a
+                        single JSON array on stdout (diagnostics go to stderr);
+                        the lint driver is skipped. Implies `--builtin-lint`.
+
+The mode flags `--record-exceptions` and `--code-quality` override each other;
+the last one on the command line wins.
 
 A lint driver can be configured by either setting the `lintDriver` package
 configuration option or by tagging a script or executable `@[lint_driver]`.

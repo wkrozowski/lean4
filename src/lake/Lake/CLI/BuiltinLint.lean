@@ -11,11 +11,24 @@ public import Lean.Linter.PersistentLintLog
 import Lean.CoreM
 import Lean.DocString.Extension
 import Lean.Elab.DocString.Builtin.Postponed
+import Lean.Linter.CodeQuality
 import Lake.Config.Workspace
 
 open Lean Lean.Core Meta
 
 namespace Lake.BuiltinLint
+
+/-- The operating mode of a builtin lint run. -/
+public inductive Mode where
+  /-- Report linter findings and exit nonzero if any were found. -/
+  | report
+  /-- Record linter warnings as `set_option <linter> false in` exceptions by editing the
+  source files in place. -/
+  | recordExceptions
+  /-- Run the registered package code quality checks instead of the linter passes, printing
+  their metrics as a single JSON array on stdout. -/
+  | codeQuality
+  deriving BEq, Inhabited
 
 /-- Arguments for builtin linting via `lake lint --builtin-lint`. -/
 public structure Args where
@@ -28,9 +41,9 @@ public structure Args where
   mods : Array Name := #[]
   /-- Whether to only run the user provided linters -/
   lintOnly : Bool := false
-  /-- Whether to record linter warnings as `set_option <linter> false in` exceptions
-  by editing the source files in place. -/
-  recordExceptions : Bool := false
+  /-- How the lint results are consumed. Later mode flags on the command line override
+  earlier ones. -/
+  mode : Mode := .report
   /-- Source search path used to resolve modules to their `.lean` files when recording
   exceptions for environment linters. Populated from the workspace's `LEAN_SRC_PATH`, since
   `getSrcSearchPath` alone does not cover package sources during a `lake lint` run. -/
@@ -45,7 +58,7 @@ public def leanOptOverrides (args : Args) : LeanOptions :=
   let base : Array LeanOption :=
     merged.toArray.map fun (n, b) => ⟨`weak ++ n, .ofBool b⟩
   let base :=
-    if args.recordExceptions then
+    if args.mode == .recordExceptions then
       base.push ⟨`internal.cmdlineSnapshots, .ofBool false⟩
     else base
   LeanOptions.ofArray base
@@ -166,7 +179,7 @@ module imported by several targets is thus checked only once. Its modules are sk
 result's `checkedModules` extends it with the ones this target covered, to thread into the next
 target.
 
-Failures are reported on stderr, unless `args.recordExceptions` is set, in which case they are
+Failures are reported on stderr, unless the mode is `recordExceptions`, in which case they are
 turned into exception records at the flagged docstring's positions for the caller to write.
 -/
 private def runDeferredChecks (args : Args) (linterOpts : Linter.LinterOptions) (sp : SearchPath)
@@ -178,7 +191,7 @@ private def runDeferredChecks (args : Args) (linterOpts : Linter.LinterOptions) 
     else
       Lean.Linter.getLinterValue linter.doc.deferred linterOpts
   unless selected do
-    let outcome := if args.recordExceptions then .recorded #[] false else .reported false
+    let outcome := if args.mode == .recordExceptions then .recorded #[] false else .reported false
     return { outcome, checkedModules := docCheckedModules }
   let (outcome, _) ←
       CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
@@ -186,7 +199,7 @@ private def runDeferredChecks (args : Args) (linterOpts : Linter.LinterOptions) 
       (fun m => pkgRoot.isPrefixOf m && !docCheckedModules.contains m)
       (shouldCheck := fun c =>
         return Linter.getLinterValue linter.doc.deferred (← c.options.toLinterOptions))
-    if args.recordExceptions then
+    if args.mode == .recordExceptions then
       let mut recs : Array ExceptionRecord := #[]
       let mut unlocated := false
       for (failMod, c, _) in failures do
@@ -223,6 +236,46 @@ private def runDeferredChecks (args : Args) (linterOpts : Linter.LinterOptions) 
       checkedModules := checkedModules.insert m
   return { outcome, checkedModules }
 
+/--
+Imports `mod` (plus `extraImport`) into a fresh environment for linting. Peeks at the .olean
+header to learn whether `mod` participates in the module system; if so, imports at the server
+level, mirroring `processHeaderCore`, while exposing server-level data (i.e. the state of
+`lintLogExt`).
+-/
+private def importModuleEnv (mod : Name) (extraImport : Import) : IO Environment := do
+  unsafe Lean.enableInitializersExecution
+  let modFile ← findOLean mod
+  let (modData, region) ← readModuleData modFile
+  let isModule ← getIsModule modData
+  let level := if isModule then OLeanLevel.server else OLeanLevel.private
+  unsafe region.free
+  importModules #[{ module := mod }, extraImport] {}
+    (trustLevel := 1024) (loadExts := true) (level := level)
+
+/--
+Runs the registered package code quality checks once per distinct package root among `mods` and
+prints all resulting entries as a single JSON array on stdout, keeping stderr for diagnostics.
+Returns 1 iff some check threw an exception.
+-/
+private def runCodeQuality (mods : Array Name) (sp : SearchPath) : IO UInt32 := do
+  let mut entries : Array Linter.CodeQuality.Entry := #[]
+  let mut anyCheckFailed := false
+  -- Checks are package-scoped: each sees the whole environment and restricts itself to
+  -- `pkgRoot`, so a root shared by several targets is checked only once.
+  let mut checkedRoots : NameSet := {}
+  for mod in mods do
+    let pkgRoot := mod.getRoot
+    if checkedRoots.contains pkgRoot then continue
+    checkedRoots := checkedRoots.insert pkgRoot
+    let env ← importModuleEnv mod { module := `Lean.Linter.CodeQuality }
+    let (results, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
+      Linter.CodeQuality.runPackageChecks (← Linter.CodeQuality.getPackageChecks)
+        { pkgRoot, srcSearchPath := sp }
+    entries := entries ++ results.entries
+    anyCheckFailed := anyCheckFailed || !results.failures.isEmpty
+  IO.println (toJson entries).compress
+  return if anyCheckFailed then 1 else 0
+
 public def run (args : Args) : IO UInt32 := do
   let mods := args.mods
   if mods.isEmpty then
@@ -232,25 +285,18 @@ public def run (args : Args) : IO UInt32 := do
 
   let sp := args.srcSearchPath ++ (← getSrcSearchPath)
 
+  if args.mode == .codeQuality then
+    return ← runCodeQuality mods sp
+
   let mut anyFailed := false
-  -- Accumulated exceptions to record (only populated when `args.recordExceptions` is set).
+  -- Accumulated exceptions to record (only populated in `recordExceptions` mode).
   let mut records : Array ExceptionRecord := #[]
   let mut anyUnlocated := false
   -- Modules whose deferred docstring checks have already been run. A module can appear in
   -- several targets' import closures, so this runs each such module's checks only once.
   let mut docCheckedModules : NameSet := {}
   for mod in mods do
-    unsafe Lean.enableInitializersExecution
-    -- Peek at the .olean header to learn whether `mod` participates in the module system.
-    -- If so, import at the server level level, mirroring `processHeaderCore`, while
-    -- exposing server-level data (i.e. the state of `lintLogExt`).
-    let modFile ← findOLean mod
-    let (modData, region) ← readModuleData modFile
-    let isModule ← getIsModule modData
-    let level := if isModule then OLeanLevel.server else OLeanLevel.private
-    unsafe region.free
-    let env ← importModules #[{ module := mod }, envLinterModule] {}
-      (trustLevel := 1024) (loadExts := true) (level := level)
+    let env ← importModuleEnv mod envLinterModule
     -- We create `LinterOptions` out of the passed overrides
     let linterOpts : Lean.Linter.LinterOptions := {
       toOptions := args.linterOverrides.foldl (init := {}) fun o (n, b) => o.setBool n b
@@ -266,7 +312,7 @@ public def run (args : Args) : IO UInt32 := do
           if entries.isEmpty then none else some (m, entries)
       else textGroups
     let textFailed := !textGroups.isEmpty
-    if args.recordExceptions then
+    if args.mode == .recordExceptions then
       for (m, entries) in textGroups do
         for e in entries do
           match e.position? with
@@ -288,12 +334,12 @@ public def run (args : Args) : IO UInt32 := do
       let decls ← Linter.EnvLinter.getDeclsInPackage mod.getRoot
       let linters ← Linter.EnvLinter.getEnvLinters (if args.lintOnly then some linterOpts else none)
       if linters.isEmpty then
-        unless args.recordExceptions do
+        unless args.mode == .recordExceptions do
           IO.println s!"-- No environment linters were run for {mod}."
         return (false, #[], false)
       let results ← Linter.EnvLinter.lintCore decls linters
       let failed := results.any (!·.2.isEmpty)
-      if args.recordExceptions then
+      if args.mode == .recordExceptions then
         let mainModule := (← getEnv).mainModule
         let mut recs : Array ExceptionRecord := #[]
         let mut unlocated := false
@@ -342,7 +388,7 @@ public def run (args : Args) : IO UInt32 := do
       records := records ++ recs
       if unlocated then anyUnlocated := true
 
-  if args.recordExceptions then
+  if args.mode == .recordExceptions then
     recordExceptionsToFiles records
     return if anyUnlocated then 1 else 0
 

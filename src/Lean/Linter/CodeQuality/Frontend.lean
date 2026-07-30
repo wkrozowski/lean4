@@ -27,7 +27,7 @@ per package; each check sees the whole environment and is responsible for restri
 its metrics to the package named by the `PackageCheckContext` it receives. Registered
 checks are tracked by the `packageCheckExt` environment extension and are run
 concurrently, one task per check, by `runPackageChecks`, which combines all results
-into a single array of entries.
+into a single array of entries alongside the names of any checks that failed.
 -/
 
 
@@ -75,18 +75,26 @@ def getPackageChecks : CoreM (Array NamedPackageCheck) := do
   (packageCheckExt.getState (← getEnv)).mapM fun declName =>
     return { declName, run := ← getPackageCheck declName }
 
+/-- The combined outcome of a `runPackageChecks` run. -/
+structure PackageCheckResults where
+  /-- The entries produced by the checks that succeeded, in registration order. -/
+  entries : Array Entry := #[]
+  /-- The checks that threw an exception; their errors were reported on stderr. -/
+  failures : Array Name := #[]
+
 def runPackageChecks (checks : Array NamedPackageCheck) (ctx : PackageCheckContext) :
-    CoreM (Array Entry) := do
+    CoreM PackageCheckResults := do
   let tasks ← checks.mapM fun check => do
     (check.declName, ·) <$> (EIO.asTask <| (← Core.wrapAsync (fun _ =>
       check.run ctx |>.run' Elab.Command.mkMetaContext
     ) (cancelTk? := none)) ())
-  let mut entries := #[]
+  let mut results : PackageCheckResults := {}
   for (declName, task) in tasks do
     match task.get with
-    | .ok checkEntries => entries := entries ++ checkEntries
+    | .ok checkEntries => results := { results with entries := results.entries ++ checkEntries }
     | .error err =>
       IO.eprintln s!"code quality check `{declName}` failed: {← err.toMessageData.toString}"
-  return entries
+      results := { results with failures := results.failures.push declName }
+  return results
 
 end Lean.Linter.CodeQuality

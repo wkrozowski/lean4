@@ -53,8 +53,8 @@ def testGetPackageChecks : CoreM (Array Name) := do
 /-! ## Test: runPackageChecks combines all results into one entry array, threading the context -/
 
 def testRunPackageChecks : CoreM String := do
-  let entries ← runPackageChecks (← getPackageChecks) { pkgRoot := `MyPkg }
-  return (toJson entries).compress
+  let results ← runPackageChecks (← getPackageChecks) { pkgRoot := `MyPkg }
+  return (toJson results.entries).compress
 
 /--
 info: "[{\"name\":\"dummyMetric\",\"source\":{\"module\":{\"name\":\"MyModule\"}},\"value\":{\"scalar\":{\"value\":42}}},{\"name\":\"dummyMetric\",\"source\":{\"declaration\":{\"name\":\"MyModule.foo\"}},\"value\":{\"scalar\":{\"value\":1}}},{\"name\":\"dictMetric\",\"source\":{\"module\":{\"name\":\"MyModule\"}},\"value\":{\"dict\":{\"dictionary\":{\"a\":1,\"b\":2}}}},{\"name\":\"pkgRootMetric\",\"source\":{\"module\":{\"name\":\"MyPkg\"}},\"value\":{\"scalar\":{\"value\":0}}}]"
@@ -75,6 +75,19 @@ info: "[{\"name\":\"dummyMetric\",\"source\":{\"module\":{\"name\":\"MyModule\"}
 -/
 #guard_msgs in
 #eval testRunPackageChecks
+
+/-! ## Test: crashed checks are listed in `failures` -/
+
+def testFailures : CoreM (Array Name) := do
+  return (← runPackageChecks (← getPackageChecks) { pkgRoot := `MyPkg }).failures
+
+/--
+info: code quality check `failingMetric` failed: boom
+---
+info: #[`failingMetric]
+-/
+#guard_msgs in
+#eval testFailures
 
 /-! ## Test: a declaration that is not `meta` is rejected -/
 
