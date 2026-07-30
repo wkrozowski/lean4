@@ -34,10 +34,20 @@ no_match_pat 'unusedLet' produced.stderr
 lake_out lint --builtin-only || true
 match_pat 'unusedLet' produced.out
 
-# --- Package-root dedup: two targets sharing the root `Quality` run the checks once. ---
+# --- Cross-target attribution: each package module is attributed exactly once. ---
+# `Quality.Sub` imports the root `Quality` but is not imported by it, so it is only
+# attributed when its own target is processed; `Quality`'s modules, already covered by
+# the first target, are not re-attributed there.
 lake_split lint --code-quality Quality Quality.Sub
 test_exp $rc = 0
-test_exp "$(grep -o rootMetric produced.stdout | wc -l)" -eq 1
+match_text '{"name":"rootMetric","source":{"module":{"name":"Quality"}}' produced.stdout
+match_text '{"name":"rootMetric","source":{"module":{"name":"Quality.Sub"}}' produced.stdout
+test_exp "$(grep -o '"name":"rootMetric"' produced.stdout | wc -l)" -eq 2
+test_exp "$(grep -o '"name":"dictMetric"' produced.stdout | wc -l)" -eq 1
+# A repeated target has no uncovered modules left and contributes nothing.
+lake_split lint --code-quality Quality Quality
+test_exp $rc = 0
+test_exp "$(cat produced.stdout)" = "$expected_json"
 
 # --- A crashing check: reported on stderr, empty JSON array on stdout, exit 1. ---
 lake_split lint --code-quality Failing

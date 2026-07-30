@@ -3,11 +3,15 @@ import Lean
 open Lean Linter CodeQuality
 
 @[package_code_quality_check]
-public meta def rootMetric : PackageCheck := fun ctx =>
-  return #[{ name := "rootMetric", source := .module ctx.pkgRoot, value := .scalar 1.0 }]
+public meta def rootMetric : PackageCheck := fun ctx => do
+  let mut entries := #[]
+  for m in ctx.modules do
+    entries := entries.push { name := "rootMetric", source := .module m, value := .scalar 1.0 }
+  return entries
 
 @[package_code_quality_check]
-public meta def dictMetric : PackageCheck := fun _ =>
+public meta def dictMetric : PackageCheck := fun ctx => do
+  unless ctx.modules.contains `Quality do return #[]
   return #[{ name := "dictMetric", source := .declaration `Quality.someDef,
              value := .dict (Std.TreeMap.empty.insert "a" 1.0 |>.insert "b" 2.0) }]
 

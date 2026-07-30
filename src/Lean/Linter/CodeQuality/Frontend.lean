@@ -7,6 +7,7 @@ module
 
 prelude
 public import Init.System.FilePath
+public import Lean.Data.NameMap.Basic
 public import Lean.Linter.CodeQuality.Basic
 public import Lean.Elab.InfoTree.Main
 import Lean.CoreM
@@ -23,17 +24,27 @@ namespace Lean.Linter.CodeQuality
 
 A package code quality check is a declaration of type `PackageCheck` tagged with the
 `@[package_code_quality_check]` attribute. The driver runs every registered check once
-per package; each check sees the whole environment and is responsible for restricting
-its metrics to the package named by the `PackageCheckContext` it receives. Registered
+per lint target; each check sees the whole environment and is responsible for restricting
+its metrics to the modules listed in the `PackageCheckContext` it receives. Registered
 checks are tracked by the `packageCheckExt` environment extension and are run
 concurrently, one task per check, by `runPackageChecks`, which combines all results
 into a single array of entries alongside the names of any checks that failed.
+
+Checks are discovered from the environment of each lint target, so a package's own checks
+run for a target only if that target's import closure contains the module defining them
+(checks defined in Lean itself are always available).
 -/
 
 
 /-- Global inputs provided by the driver to every code quality check. -/
 structure PackageCheckContext where
+  /-- The root module name of the package being checked. -/
   pkgRoot : Name
+  /-- The package modules this invocation must attribute its metrics to: the modules of the
+  package present in the environment that no earlier invocation covered. Restricting metrics
+  to this set (rather than to everything under `pkgRoot`) keeps them complete and free of
+  double counting when several lint targets share package modules. -/
+  modules : NameSet := {}
   srcSearchPath : System.SearchPath := {}
 
 abbrev PackageCheck := PackageCheckContext → MetaM (Array Entry)

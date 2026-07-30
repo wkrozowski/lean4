@@ -237,56 +237,55 @@ private def runDeferredChecks (args : Args) (linterOpts : Linter.LinterOptions) 
   return { outcome, checkedModules }
 
 /--
-Imports `mod` (plus `extraImport`) into a fresh environment for linting. Peeks at the .olean
+Imports `mod` (plus `extraImports`) into a fresh environment for linting. Peeks at the .olean
 header to learn whether `mod` participates in the module system; if so, imports at the server
 level, mirroring `processHeaderCore`, while exposing server-level data (i.e. the state of
 `lintLogExt`).
 -/
-private def importModuleEnv (mod : Name) (extraImport : Import) : IO Environment := do
+private def importModuleEnv (mod : Name) (extraImports : Array Import) : IO Environment := do
   unsafe Lean.enableInitializersExecution
   let modFile ← findOLean mod
   let (modData, region) ← readModuleData modFile
   let isModule ← getIsModule modData
   let level := if isModule then OLeanLevel.server else OLeanLevel.private
   unsafe region.free
-  importModules #[{ module := mod }, extraImport] {}
+  importModules (#[{ module := mod }] ++ extraImports) {}
     (trustLevel := 1024) (loadExts := true) (level := level)
 
 /--
-Runs the registered package code quality checks once per distinct package root among `mods` and
-prints all resulting entries as a single JSON array on stdout, keeping stderr for diagnostics.
-Returns 1 iff some check threw an exception.
+Runs the registered package code quality checks for one lint target. `coveredModules` names the
+package modules whose metrics earlier targets already attributed; the checks are told to
+attribute the package modules of `env` outside that set, and the returned set extends it with
+them, to thread into the next target. This keeps the metrics complete and free of double
+counting when several targets share package modules.
 -/
-private def runCodeQuality (mods : Array Name) (sp : SearchPath) : IO UInt32 := do
-  let mut entries : Array Linter.CodeQuality.Entry := #[]
-  let mut anyCheckFailed := false
-  -- Checks are package-scoped: each sees the whole environment and restricts itself to
-  -- `pkgRoot`, so a root shared by several targets is checked only once.
-  let mut checkedRoots : NameSet := {}
-  for mod in mods do
-    let pkgRoot := mod.getRoot
-    if checkedRoots.contains pkgRoot then continue
-    checkedRoots := checkedRoots.insert pkgRoot
-    let env ← importModuleEnv mod { module := `Lean.Linter.CodeQuality }
-    let (results, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
-      Linter.CodeQuality.runPackageChecks (← Linter.CodeQuality.getPackageChecks)
-        { pkgRoot, srcSearchPath := sp }
-    entries := entries ++ results.entries
-    anyCheckFailed := anyCheckFailed || !results.failures.isEmpty
-  IO.println (toJson entries).compress
-  return if anyCheckFailed then 1 else 0
+private def runPackageQualityChecks (sp : SearchPath) (env : Environment) (pkgRoot : Name)
+    (coveredModules : NameSet) :
+    IO (Linter.CodeQuality.PackageCheckResults × NameSet) := do
+  let mut modules : NameSet := {}
+  let mut covered := coveredModules
+  for m in env.header.moduleNames do
+    if pkgRoot.isPrefixOf m && !covered.contains m then
+      modules := modules.insert m
+      covered := covered.insert m
+  if modules.isEmpty then
+    return ({}, covered)
+  let (results, _) ← CoreM.toIO (ctx := { fileName := "", fileMap := default }) (s := { env }) do
+    Linter.CodeQuality.runPackageChecks (← Linter.CodeQuality.getPackageChecks)
+      { pkgRoot, modules, srcSearchPath := sp }
+  return (results, covered)
 
 public def run (args : Args) : IO UInt32 := do
   let mods := args.mods
   if mods.isEmpty then
     IO.eprintln "lake lint: no modules specified for builtin linting"
     return 1
-  let envLinterModule : Import := { module := `Lean.Linter.EnvLinter }
+  -- `Lean.Linter.EnvLinter` provides the builtin env linters, `Lean.Linter.CodeQuality` the
+  -- package check driver; both ship with Lean, so importing them unconditionally is cheap.
+  let extraImports : Array Import :=
+    #[{ module := `Lean.Linter.EnvLinter }, { module := `Lean.Linter.CodeQuality }]
 
   let sp := args.srcSearchPath ++ (← getSrcSearchPath)
-
-  if args.mode == .codeQuality then
-    return ← runCodeQuality mods sp
 
   let mut anyFailed := false
   -- Accumulated exceptions to record (only populated in `recordExceptions` mode).
@@ -295,8 +294,18 @@ public def run (args : Args) : IO UInt32 := do
   -- Modules whose deferred docstring checks have already been run. A module can appear in
   -- several targets' import closures, so this runs each such module's checks only once.
   let mut docCheckedModules : NameSet := {}
+  -- Code quality results and covered modules (only populated in `codeQuality` mode).
+  let mut cqResults : Linter.CodeQuality.PackageCheckResults := {}
+  let mut cqCoveredModules : NameSet := {}
   for mod in mods do
-    let env ← importModuleEnv mod envLinterModule
+    let env ← importModuleEnv mod extraImports
+
+    if args.mode == .codeQuality then
+      let (results, covered) ← runPackageQualityChecks sp env mod.getRoot cqCoveredModules
+      cqResults := { entries := cqResults.entries ++ results.entries
+                     failures := cqResults.failures ++ results.failures }
+      cqCoveredModules := covered
+      continue
     -- We create `LinterOptions` out of the passed overrides
     let linterOpts : Lean.Linter.LinterOptions := {
       toOptions := args.linterOverrides.foldl (init := {}) fun o (n, b) => o.setBool n b
@@ -387,6 +396,11 @@ public def run (args : Args) : IO UInt32 := do
     | .recorded recs unlocated =>
       records := records ++ recs
       if unlocated then anyUnlocated := true
+
+  if args.mode == .codeQuality then
+    -- A single JSON array on stdout; diagnostics went to stderr.
+    IO.println (toJson cqResults.entries).compress
+    return if cqResults.failures.isEmpty then 0 else 1
 
   if args.mode == .recordExceptions then
     recordExceptionsToFiles records
